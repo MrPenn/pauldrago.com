@@ -5,3 +5,4 @@ preview/
 node_modules/
 dist/
 .astro/
+.wrangler/
