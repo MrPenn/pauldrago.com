@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+
+const articles = (await getCollection('articles', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date - a.data.date);
+const iso = (d) => d.toISOString().slice(0, 10);
+const long = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Person', '@id': 'https://pauldrago.com/#paul-drago', name: 'Paul Drago', url: 'https://pauldrago.com/', sameAs: ['https://www.linkedin.com/in/pauldrago'] },
+    { '@type': 'CollectionPage', '@id': 'https://pauldrago.com/articles#webpage', url: 'https://pauldrago.com/articles', name: 'Articles by Paul Drago',
+      description: 'Articles on marketing measurement, market decisions, and accountable growth.', author: { '@id': 'https://pauldrago.com/#paul-drago' } },
+  ],
+};
+---
+<Base
+  title="Articles | Paul Drago"
+  description="Articles by Paul Drago on marketing measurement, market decisions, and accountable growth."
+  path="/articles"
+  variant="articles"
+  subline="Articles"
+  robots={articles.length ? '' : 'noindex,follow'}
+  footerNote="Writing on marketing measurement, markets, and accountable growth."
+  stylesheets={['/assets/personal-site.css']}
+  jsonld={jsonld}
+>
+<main id="main">
+  <section class="articles-hero">
+    <div class="container">
+      <h1 class="display-title articles-title">Articles.</h1>
+      <p class="articles-intro">Essays on bank marketing measurement, market expansion, acquisitions, and marketing leadership.</p>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+  <section class="article-index" aria-labelledby="article-index-heading">
+    <div class="container">
+      <h2 class="article-index-heading" id="article-index-heading">Article index</h2>
+      {articles.length === 0 ? (
+        <div class="article-empty">
+          <div class="article-empty-label">In progress</div>
+          <p class="article-empty-copy">The first articles are being written now.</p>
+        </div>
+      ) : (
+        <ul class="article-list">
+          {articles.map((a) => (
+            <li class="article-list-item">
+              <time class="article-list-date" datetime={iso(a.data.date)}>{long(a.data.date)}</time>
+              <a class="article-list-title" href={`/articles/${a.id}`}>{a.data.title}</a>
+              <p class="article-list-description">{a.data.description}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  </section>
+</main>
+</Base>

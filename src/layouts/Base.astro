@@ -1,0 +1,135 @@
+---
+const SITE = 'https://pauldrago.com';
+const BOOKING = 'https://cal.com/pauldrago/20-min-intro-call';
+const CAL_ATTRS = {
+  'data-cal-link': 'pauldrago/20-min-intro-call',
+  'data-cal-namespace': '20-min-intro-call',
+  'data-cal-config': '{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}',
+};
+const {
+  title,
+  description,
+  path = '/',
+  variant = 'product',
+  subline = '',
+  footerNote = 'Financial services marketing, market analysis, and executive leadership.',
+  ogType = 'website',
+  ogImage = `${SITE}/assets/evidence-table-social.jpg`,
+  ogImageAlt = 'Financial reporting table and market analysis materials',
+  robots = '',
+  stylesheets = [],
+  scripts = [],
+  lastUpdated = '2026-09-22',
+  jsonld = null,
+} = Astro.props;
+const canonical = SITE + (path === '/' ? '/' : path);
+const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<meta name="description" content={description}>
+{robots && <meta name="robots" content={robots} />}
+<link rel="canonical" href={canonical}>
+<meta property="og:type" content={ogType}>
+<meta property="og:site_name" content="Paul Drago">
+<meta property="og:title" content={title}>
+<meta property="og:description" content={description}>
+<meta property="og:url" content={canonical}>
+<meta property="og:image" content={ogImage}>
+<meta property="og:image:alt" content={ogImageAlt}>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content={title}>
+<meta name="twitter:description" content={description}>
+<meta name="twitter:image" content={ogImage}>
+<link rel="alternate" type="application/rss+xml" title="Paul Drago, articles" href="/rss.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/site-shell.css">
+{stylesheets.map((href) => <link rel="stylesheet" href={href} />)}
+{jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div>
+
+<header>
+  <div class="container">
+    <div class="header-inner">
+      {variant === 'home' && (
+        <>
+          <div class="brand-group">
+            <div class="brand-name">Paul Drago</div>
+            <div class="brand-subline">{subline}</div>
+          </div>
+          <a class="header-link" href="/financial-services">Financial services</a>
+        </>
+      )}
+      {variant === 'services' && (
+        <>
+          <a class="brand-home" href="/" aria-label="Paul Drago home">
+            <div class="brand-group">
+              <div class="brand-name">Paul Drago</div>
+              <div class="brand-subline">{subline}</div>
+            </div>
+          </a>
+          <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
+        </>
+      )}
+      {variant === 'product' && (
+        <>
+          <a class="brand-home" href="/financial-services" aria-label="Paul Drago financial services">
+            <div class="brand-group">
+              <div class="brand-name">Paul Drago</div>
+              <div class="brand-subline">{subline}</div>
+            </div>
+          </a>
+          <nav class="header-actions" aria-label="Primary">
+            <a class="services-link" href="/financial-services">Financial services</a>
+            <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
+          </nav>
+        </>
+      )}
+      {variant === 'articles' && (
+        <>
+          <a class="brand-home" href="/">
+            <span class="brand-group">
+              <span class="brand-name">Paul Drago</span>
+              <span class="brand-subline">{subline}</span>
+            </span>
+          </a>
+          <a class="header-link" href="/">Home</a>
+        </>
+      )}
+    </div>
+  </div>
+</header>
+
+<slot />
+
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">Paul Drago</div>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="/financial-services">Financial services</a>
+        <a href="/articles">Articles</a>
+        <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
+        <a href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </div>
+    </div>
+    <div class="footer-meta">
+      <div>{footerNote}</div>
+      <div><time datetime={lastUpdated}>Last updated {updatedLabel}.</time></div>
+    </div>
+  </div>
+</footer>
+{scripts.map((src) => <script is:inline src={src}></script>)}
+<script is:inline src="/assets/cal-booking.js"></script>
+</body>
+</html>

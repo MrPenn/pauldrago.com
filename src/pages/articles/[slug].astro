@@ -1,0 +1,53 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  return articles.map((article) => ({ params: { slug: article.id }, props: { article } }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const iso = (d) => d.toISOString().slice(0, 10);
+const long = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const path = `/articles/${article.id}`;
+const jsonld = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: article.data.title,
+  description: article.data.description,
+  datePublished: iso(article.data.date),
+  dateModified: iso(article.data.updated ?? article.data.date),
+  url: `https://pauldrago.com${path}`,
+  author: { '@type': 'Person', '@id': 'https://pauldrago.com/#paul-drago', name: 'Paul Drago' },
+};
+---
+<Base
+  title={`${article.data.title} | Paul Drago`}
+  description={article.data.description}
+  path={path}
+  variant="articles"
+  subline="Articles"
+  ogType="article"
+  footerNote="Writing on marketing measurement, markets, and accountable growth."
+  stylesheets={['/assets/personal-site.css']}
+  lastUpdated={iso(article.data.updated ?? article.data.date)}
+  jsonld={jsonld}
+>
+  <main id="main">
+    <article class="article">
+      <div class="container">
+        <header class="article-header">
+          <p class="article-kicker"><a href="/articles">Articles</a></p>
+          <h1 class="display-title article-title">{article.data.title}</h1>
+          <p class="article-intro">{article.data.description}</p>
+          <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time></p>
+        </header>
+        <div class="article-body">
+          <Content />
+        </div>
+      </div>
+    </article>
+  </main>
+</Base>

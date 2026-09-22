@@ -1,29 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Paul Drago | Financial Services Advisor</title>
-<meta name="description" content="Paul Drago advises banks and credit unions on marketing measurement, market decisions, and the operating work behind growth.">
-<link rel="canonical" href="https://pauldrago.com/">
-<meta property="og:type" content="profile">
-<meta property="og:site_name" content="Paul Drago">
-<meta property="og:title" content="Paul Drago | Financial Services Advisor">
-<meta property="og:description" content="Financial services advisory focused on marketing measurement, market decisions, and growth operations.">
-<meta property="og:url" content="https://pauldrago.com/">
-<meta property="og:image" content="https://pauldrago.com/assets/evidence-table-social.jpg">
-<meta property="og:image:alt" content="Financial reporting table and market analysis materials">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Paul Drago | Financial Services Advisor">
-<meta name="twitter:description" content="Financial services advisory focused on marketing measurement, market decisions, and growth operations.">
-<meta name="twitter:image" content="https://pauldrago.com/assets/evidence-table-social.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/site-shell.css">
-<link rel="stylesheet" href="assets/personal-site.css">
-<script type="application/ld+json">
-{
+---
+import Base from '../layouts/Base.astro';
+const meta = {
+  "title": "Paul Drago | Financial Services Advisor",
+  "description": "Paul Drago advises banks and credit unions on marketing measurement, market decisions, and the operating work behind growth.",
+  "path": "/",
+  "variant": "home",
+  "subline": "Advisor and operator",
+  "footerNote": "Financial services marketing, market analysis, and executive leadership.",
+  "ogType": "profile",
+  "ogImage": "https://pauldrago.com/assets/evidence-table-social.jpg",
+  "ogImageAlt": "Financial reporting table and market analysis materials",
+  "robots": "",
+  "stylesheets": [
+    "/assets/personal-site.css"
+  ],
+  "scripts": [],
+  "lastUpdated": "2026-09-22"
+};
+const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -54,25 +48,9 @@
       "mainEntity": {"@id": "https://pauldrago.com/#paul-drago"}
     }
   ]
-}
-</script>
-</head>
-<body>
-<a class="skip-link" href="#main">Skip to content</a>
-<div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div>
-
-<header>
-  <div class="container">
-    <div class="header-inner">
-      <div class="brand-group">
-        <div class="brand-name">Paul Drago</div>
-        <div class="brand-subline">Advisor and operator</div>
-      </div>
-      <a class="header-link" href="financial-services.html">Financial services</a>
-    </div>
-  </div>
-</header>
-
+};
+---
+<Base {...meta} jsonld={jsonld}>
 <main id="main">
   <section class="home-hero">
     <div class="container">
@@ -82,11 +60,11 @@
       <nav class="link-groups" aria-label="Selected links">
         <section class="link-group" aria-labelledby="work-links">
           <h2 class="link-group-title" id="work-links">Work</h2>
-          <a class="plain-link" href="financial-services.html">
+          <a class="plain-link" href="/financial-services">
             <i class="plain-link-icon" data-lucide="landmark" aria-hidden="true"></i>
             <span><span class="plain-link-title">Financial services</span><span class="plain-link-description">Marketing measurement, market analysis, acquisition footprints, and fractional leadership.</span></span>
           </a>
-          <a class="plain-link" href="marketing-measurement-reset.html">
+          <a class="plain-link" href="/marketing-measurement-reset">
             <i class="plain-link-icon" data-lucide="chart-no-axes-combined" aria-hidden="true"></i>
             <span><span class="plain-link-title">Measurement reset</span><span class="plain-link-description">Connect acquisition spend to retained accounts, funded balances, and board reporting.</span></span>
           </a>
@@ -94,7 +72,7 @@
 
         <section class="link-group" aria-labelledby="writing-links">
           <h2 class="link-group-title" id="writing-links">Writing</h2>
-          <a class="plain-link" href="articles.html">
+          <a class="plain-link" href="/articles">
             <i class="plain-link-icon" data-lucide="notebook-pen" aria-hidden="true"></i>
             <span><span class="plain-link-title">Articles</span><span class="plain-link-description">Essays and working notes.</span></span>
           </a>
@@ -102,7 +80,7 @@
 
         <section class="link-group" aria-labelledby="contact-links">
           <h2 class="link-group-title" id="contact-links">Contact</h2>
-          <a class="plain-link" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>
+          <a class="plain-link" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"&#125;'>
             <i class="plain-link-icon" data-lucide="calendar" aria-hidden="true"></i>
             <span><span class="plain-link-title">Book a call</span></span>
           </a>
@@ -119,25 +97,6 @@
     </div>
   </section>
 </main>
-
-<hr class="section-divider">
-<footer>
-  <div class="container">
-    <div class="footer-top">
-      <div class="footer-brand">Paul Drago</div>
-      <div class="footer-links">
-        <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
-        <a href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-      </div>
-    </div>
-    <div class="footer-meta">
-      <div>Financial services marketing, market analysis, and executive leadership.</div>
-      <div><time datetime="2026-09-21">Last updated September 21, 2026.</time></div>
-    </div>
-  </div>
-</footer>
-<script src="assets/cal-booking.js"></script>
-<script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
-<script>lucide.createIcons();</script>
-</body>
-</html>
+<script is:inline src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+<script is:inline>lucide.createIcons();</script>
+</Base>
