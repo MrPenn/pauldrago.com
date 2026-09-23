@@ -628,9 +628,9 @@ button):focus-visible {
 /* Hero hook on the branch page: the two answers and the fact that separates them */
 .flip-model .model-title { font-size: 24px; }
 .flip-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
-.flip-answer { display: flex; flex-direction: column; gap: 4px; padding: 14px; border: 1px solid var(--hairline); }
-.flip-answer.is-case { border: 2px solid var(--brass); }
-.flip-answer-label { color: var(--secondary); font-size: 13px; font-weight: 600; }
+.flip-answer { display: grid; grid-row: span 3; grid-template-rows: subgrid; row-gap: 4px; align-content: start; padding: 14px; border: 1px solid var(--hairline); }
+.flip-answer.is-case { padding: 13px; border: 2px solid var(--brass); }
+.flip-answer-label { align-self: end; color: var(--secondary); font-size: 13px; font-weight: 600; }
 .flip-answer-county { color: var(--paper); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 20px; line-height: 1.1; text-transform: uppercase; }
 .flip-answer.is-case .flip-answer-county { color: var(--brass); }
 .flip-answer-why { color: var(--secondary); font-size: 13px; line-height: 1.4; }
