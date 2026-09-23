@@ -52,7 +52,7 @@ const mfi = kf.metroMedianFamilyIncome;
 // it opens at the start of its plan year, and each year's contribution uses the average balance.
 const ramp = data.ramp;
 const path = (key) => [0, ...ramp.byAge.map((a) => a[key])];
-const contribution = (avgDeposits) => avgDeposits * ramp.depositSpread * 10 - ramp.branchCost; // $ thousands
+const contribution = (avgDeposits) => avgDeposits * ramp.nim * 10 - ramp.branchCost[1]; // $ thousands, high end of running cost
 const YEARS = [1, 2, 3, 4, 5];
 const plan = [
   { site: 'Forney', county: 'Kaufman', opens: 1, ramp: 'median' },
@@ -75,6 +75,7 @@ const terrellCost = -sum(terrellPlan.byYear.map((y) => y?.contribution ?? 0));
 const firstPositive = YEARS[expectedTotals.findIndex((t) => t > 0)];
 const forneyCovers = YEARS.find((_, i) => terrellPlan.byYear[i] && forneyPlan.byYear[i].contribution >= -terrellPlan.byYear[i].contribution);
 const kUSD = (n) => `${n < 0 ? '-' : ''}$${num(Math.abs(Math.round(n / 10) * 10))}K`;
+const costUSD = (n) => (n >= 1000 ? `$${n / 1000}M` : `$${n}K`);
 const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
 const buildOut = plan.length * ramp.buildOut;
 const age = (n) => ramp.byAge.find((a) => a.age === n);
@@ -253,7 +254,7 @@ const band = `${line('p75')} ${path('p25').map((v, a) => [a, v]).reverse().map((
             <tr><th scope="row">At ${ramp.target}M or more</th>{[1, 3, 5].map((n) => <td>{pct(age(n).atTargetShare)}</td>)}</tr>
           </tbody>
         </table>
-        <p class="market-table-note">Break-even is ${ramp.breakeven}M: a ${ramp.branchCost}K annual running cost (staff and occupancy) over a {ramp.depositSpread}% deposit spread. Published estimates put break-even at $25M to $40M and ${ramp.target}M as the level where a branch earns its target return (<a href="https://www.federalreserve.gov/econres/notes/feds-notes/size-and-survival-of-entrants-to-retail-banking-20230901.html" target="_blank" rel="noopener noreferrer">Federal Reserve, 2023</a>; <a href="https://www.americanbanker.com/news/the-more-things-change-bank-ceos-on-why-theyre-adding-branches" target="_blank" rel="noopener noreferrer">American Banker, April 2026</a>).</p>
+        <p class="market-table-note">Break-even is where the margin on a branch's deposits covers its running cost: {costUSD(ramp.branchCost[0])} to {costUSD(ramp.branchCost[1])} a year (<a href="https://www.bankingexchange.com/recent-articles/item/2079-workbook-time-to-close-underperforming-branches" target="_blank" rel="noopener noreferrer">Banking Exchange</a>; <a href="https://www.bitsaboutmoney.com/archive/branch-banking/" target="_blank" rel="noopener noreferrer">Bits About Money</a>) over the community-bank net interest margin of {ramp.nim}% (<a href="https://www.fdic.gov/quarterly-banking-profile/quarterly-banking-profile-2q-2026" target="_blank" rel="noopener noreferrer">FDIC, second quarter 2026</a>). That is ${ramp.breakevenLow}M to ${ramp.breakeven}M; the plan uses ${ramp.breakeven}M. The Federal Reserve draws a similar line: the median unsuccessful new branch doesn't reach $25M within ten years. The ${ramp.target}M target is what the median new branch holds 15 years after opening (<a href="https://www.federalreserve.gov/econres/notes/feds-notes/size-and-survival-of-entrants-to-retail-banking-20230901.html" target="_blank" rel="noopener noreferrer">Federal Reserve, 2023</a>).</p>
       </div>
     </div>
     <p class="plan-finding">At year five, {pct(failing(age(5)))} of new community-bank branches in the metro were closed or still below break-even. The plan below budgets for that instead of assuming every branch hits the median.</p>
@@ -279,7 +280,7 @@ const band = `${line('p75')} ${path('p25').map((v, a) => [a, v]).reverse().map((
           <tr><th scope="row">If every branch ramps like the bottom quarter</th>{downsideTotals.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{kUSD(t)}</td>)}</tr>
         </tbody>
       </table>
-      <p class="market-table-note">Deposit spread less running cost, on each year's average balance. Deposits only: loan income from a branch would improve every row. Before build-out of about ${ramp.buildOut}M a branch (<a href="https://www.americanbanker.com/news/the-more-things-change-bank-ceos-on-why-theyre-adding-branches" target="_blank" rel="noopener noreferrer">Bancography, via American Banker</a>).</p>
+      <p class="market-table-note">Net interest margin on each year's average deposits, less {costUSD(ramp.branchCost[1])} a year in running cost, the high end of the published range. Fee income and head-office overhead are left out. Before build-out of about ${ramp.buildOut}M a branch, which Bancography expects to take four years to break even (<a href="https://www.americanbanker.com/news/the-more-things-change-bank-ceos-on-why-theyre-adding-branches" target="_blank" rel="noopener noreferrer">American Banker, April 2026</a>).</p>
     </div>
     <div class="market-findings market-findings-two">
       <div class="market-finding">
