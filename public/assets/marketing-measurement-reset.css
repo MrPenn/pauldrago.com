@@ -832,3 +832,5 @@ input):focus-visible {
 /* The illustrative report sits under both offers, so neither column is left empty beside it. */
 .section-d .artifact-preview { max-width: 760px; margin-top: 40px; }
 .section-d-cta-row { margin-top: 28px; }
+.closing-band-section .headline-96 { font-size: clamp(36px, 4.5vw, 58px); }
+@media (max-width: 700px) { .closing-band-section .headline-96 { font-size: 30px; } }

@@ -460,7 +460,8 @@ footer {
 /* Labels read as sentence-case titles, not tracked uppercase kickers. */
 :is(.model-label, .band-label, .offer-label, .sources-label, .input-list-title, .call-prep-title, .call-note-label,
     .offer-badge, .artifact-kicker, .call-prep-kicker, .service-group-label, .other-decisions-label,
-    .article-index-heading, .privacy-toc-label, .visual-label, .fd-eyebrow, .market-weights-title, .calc-eyebrow) {
+    .article-index-heading, .privacy-toc-label, .visual-label, .fd-eyebrow, .market-weights-title, .calc-eyebrow,
+    .router-service, .link-group-title) {
   letter-spacing: 0 !important;
   text-transform: none !important;
   font-size: 14px !important;
