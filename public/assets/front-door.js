@@ -99,6 +99,23 @@
     }, 0.6);
   });
 
+  /* ---------- Stat callouts: a row of units, the share filled in brass ---------- */
+  document.querySelectorAll('[data-fd="stat"]').forEach(function (fig) {
+    var units = fig.querySelector('.fd-stat-units');
+    if (!units) return;
+    var value = parseInt(fig.getAttribute('data-value'), 10) || 0;
+    var of = parseInt(fig.getAttribute('data-of'), 10) || 100;
+    var cols = of === 100 ? 50 : of;
+    units.setAttribute('data-cols', String(cols));
+    for (var i = 0; i < of; i++) units.appendChild(h('div', 'fd-cell'));
+    onEnter(fig, function () {
+      var per = reduceMotion ? 0 : Math.max(8, Math.round(600 / value));
+      for (var j = 0; j < value; j++) {
+        (function (j) { setTimeout(function () { units.children[j].classList.add('is-fintech'); }, 120 + j * per); })(j);
+      }
+    }, 0.5);
+  });
+
   /* ---------- Pinned sequences: step observer ---------- */
   var sequences = [];
   document.querySelectorAll('[data-fd="scrolly"]').forEach(function (sec) {

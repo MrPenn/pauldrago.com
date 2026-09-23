@@ -865,3 +865,48 @@
 @media (max-width: 760px) {
   .article-body .fd-pq::before { font-size: 96px; left: -6px; top: -0.2em; }
 }
+
+/* ---------- Stat callouts: the number, its sentence, and a picture of it ---------- */
+figure.fd-stat {
+  display: block;
+  margin: 40px 0 28px !important;
+  padding: 20px 0 16px;
+  border-top: 2px solid var(--brass);
+  border-bottom: 1px solid var(--hairline);
+}
+.fd-stat-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: baseline; }
+.fd-stat .fd-stat-num {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(48px, 5vw, 68px);
+  line-height: 0.9;
+  color: var(--paper);
+}
+.fd-stat .fd-stat-label {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.4;
+  color: var(--paper);
+  max-width: 34ch;
+}
+.fd-stat-units {
+  display: grid;
+  gap: 4px;
+  margin-top: 18px;
+}
+.fd-stat-units[data-cols="20"] { grid-template-columns: repeat(20, 1fr); }
+.fd-stat-units[data-cols="25"] { grid-template-columns: repeat(25, 1fr); }
+.fd-stat-units[data-cols="50"] { grid-template-columns: repeat(50, 1fr); gap: 3px; }
+.fd-stat-units .fd-cell { aspect-ratio: 1 / 1; }
+.fd-stat .fd-stat-src {
+  margin-top: 12px;
+  color: var(--secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: none;
+}
+@media (max-width: 760px) {
+  .fd-stat .fd-stat-num { font-size: 44px; }
+  .fd-stat .fd-stat-label { font-size: 17px; }
+  .fd-stat-units[data-cols="50"] { grid-template-columns: repeat(25, 1fr); }
+}

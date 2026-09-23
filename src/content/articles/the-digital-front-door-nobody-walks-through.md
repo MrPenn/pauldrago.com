@@ -51,7 +51,7 @@ Even Cornerstone, whose research produced the 44% figure, describes the challeng
 
 Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars.
 
-<p class="fd-stat"><span class="fd-stat-num">95%</span><span class="fd-stat-label">of consumers rate their bank’s online and mobile experience good, very good or excellent</span></p>
+<figure class="fd-stat" data-fd="stat" data-value="19" data-of="20"><div class="fd-stat-head"><span class="fd-stat-num">95%</span><span class="fd-stat-label">of consumers rate their bank’s online and mobile experience good, very good or excellent.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">ABA and Morning Consult, 2025 Preferred Banking Methods survey, 4,403 U.S. adults.</figcaption></figure>
 
 Both things can be true and still leave the competitive question unanswered. In the ABA survey, 95% of consumers rated their bank's online and mobile experience as good, very good or excellent.[^2] When nearly everyone's customers say the same thing, "ours works fine" is not a competitive position.
 
@@ -207,7 +207,7 @@ A full-service community bank has a broader set of capabilities to assemble. Alo
 
 Having more capabilities does not automatically produce a more compelling experience.
 
-<p class="fd-stat"><span class="fd-stat-num">64%</span><span class="fd-stat-label">of Chime’s revenue in the second quarter of 2026 was payments, most of it debit interchange</span></p>
+<figure class="fd-stat" data-fd="stat" data-value="16" data-of="25"><div class="fd-stat-head"><span class="fd-stat-num">64%</span><span class="fd-stat-label">of Chime’s revenue in the second quarter of 2026 was payments, most of it debit interchange.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">Chime reported results, Q2 2026: $430 million of $670 million.</figcaption></figure>
 
 Chime does not literally have one product. It has multiple accounts, credit products and banking partners; Chime itself is a financial technology company, not a chartered bank. Its banking services are provided by The Bancorp Bank or Stride Bank, and Chime has agreed to acquire Stride, pending regulatory approval, with closing expected in the first half of 2027.[^8]
 
@@ -272,7 +272,7 @@ Once you see the problem this way, good enough becomes understandable. If the ap
 No individual executive needs to be making a bad decision. The failure happens between the decisions.
 
 
-<p class="fd-stat"><span class="fd-stat-num">34%</span><span class="fd-stat-label">of activated new checking customers went inactive or left within their first year, by the institutions’ own estimate</span></p>
+<figure class="fd-stat" data-fd="stat" data-value="34" data-of="100"><div class="fd-stat-head"><span class="fd-stat-num">34%</span><span class="fd-stat-label">of activated new checking customers went inactive or left within their first year, by the institutions’ own estimate.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">Digital Banking Report for Pinwheel, The Power of Primacy, March 2024.</figcaption></figure>
 
 In March 2024 research published in *The Power of Primacy*, financial institutions estimated that 34% of activated new customers became inactive or churned within their first year. The report also presented an estimated direct-deposit penetration rate of 55%.[^11] These were institution-reported estimates, not an audit of individual account histories. They are useful here because they distinguish an account opened from a relationship established.
 
