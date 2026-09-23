@@ -36,6 +36,18 @@ const apiHost = isDevelopment ? import.meta.env.PUBLIC_POSTHOG_HOST : '/ingest';
       applyAnalyticsConsent();
     };
 
+    // Error tracking: the SDK's exception autocapture only hooks in once it has loaded, so errors
+    // thrown earlier (usually page-load errors) are held here and handed over when it loads.
+    const earlyErrors = [];
+    const holdError = (event) => earlyErrors.push(event.type === 'error' ? event.error || event.message : event.reason);
+    window.addEventListener('error', holdError);
+    window.addEventListener('unhandledrejection', holdError);
+    function flushEarlyErrors(ph) {
+      window.removeEventListener('error', holdError);
+      window.removeEventListener('unhandledrejection', holdError);
+      earlyErrors.splice(0).forEach((error) => ph.captureException(error, { captured_before_load: true }));
+    }
+
     let posthogStarted = false;
     const interactionEvents = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
     function startPostHog() {
@@ -53,7 +65,10 @@ const apiHost = isDevelopment ? import.meta.env.PUBLIC_POSTHOG_HOST : '/ingest';
           capture_console_errors: false,
         },
         enable_heatmaps: true,
-        loaded: applyAnalyticsConsent,
+        loaded: (ph) => {
+          applyAnalyticsConsent(ph);
+          flushEarlyErrors(ph);
+        },
       });
     }
     interactionEvents.forEach((type) => window.addEventListener(type, startPostHog, { once: true, passive: true }));
