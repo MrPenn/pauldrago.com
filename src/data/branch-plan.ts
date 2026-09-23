@@ -18,6 +18,9 @@ export type Town = {
   lmiPopulationShare: number;
   minorityPopulationShare: number;
   lmiTracts: number;
+  lmiTractsWithoutBranch: number;
+  largestBank: string;
+  largestBankShare: number;
 };
 
 // What a branch is for, and the public evidence that a town supports it. Thresholds are stated so

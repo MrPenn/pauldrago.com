@@ -117,7 +117,7 @@ const SOURCES = {
 <Base {...meta} jsonld={jsonld}>
 <main id="main" class="sample-plan">
   <div class="container">
-    <p class="sample-banner">Sample deliverable. The bank is hypothetical; every figure comes from public data and can be checked. <a href="/branch-market-expansion-analysis">About this analysis</a></p>
+    <p class="sample-banner">Sample deliverable. The bank is hypothetical; every market figure comes from public data and can be checked. <a href="/branch-market-expansion-analysis">About this analysis</a></p>
 
     <div class="report-cover">
       <h1 class="display-title report-title">Five-year branch plan: Kaufman and Ellis counties</h1>
@@ -127,12 +127,12 @@ const SOURCES = {
     <section class="report-brief" aria-label="Two-page brief">
       <section class="brief-block" id="recommendation" aria-labelledby="recommendation-h">
         <h2 class="brief-h2" id="recommendation-h">Recommendation</h2>
-        <p class="report-lede">Open three branches over five years where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 once {first.town} is on plan. The network covers its running cost from year {model.firstPositiveYear}; the build-out takes longer to earn back. Kaufman passes the CRA and fair-lending check as planned; Ellis passes with the lending commitment in decision 4 (<a href="#cra">appendix D</a>).</p>
+        <p class="report-lede">Open three branches over five years where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 once {first.town} is on plan. The network covers its running cost from year {model.firstPositiveYear} and earns back the build-out in year {planPace.paybackYear}. Kaufman meets the plan's CRA test as sited; Ellis meets it with the lending commitment in decision 4 (<a href="#cra">appendix D</a>).</p>
         <dl class="report-figures">
           <div><dt>Build-out</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">{PLAN.length} branches at ${ramp.buildOut}M each, plus launch marketing</span></dd></div>
           <div><dt>Covers its running cost</dt><dd><span class="report-figure">Year {model.firstPositiveYear}</span><span class="report-figure-note">the network, if each branch follows the median ramp</span></dd></div>
           <div><dt>Still to earn back, end of year 5</dt><dd><span class="report-figure">{mUSD(model.cumulative[4])}</span><span class="report-figure-note">with the network returning {mUSD(model.operating[4])} a year</span></dd></div>
-          <div><dt>New branches failing at year 5</dt><dd><span class="report-figure">{pct(failing(age(5)))}</span><span class="report-figure-note">closed or below operating break-even, Dallas-Fort Worth</span></dd></div>
+          <div><dt>New branches failing at year 5</dt><dd><span class="report-figure">{pct(failing(age(5)))}</span><span class="report-figure-note">closed or not yet covering running cost, Dallas-Fort Worth</span></dd></div>
         </dl>
       </section>
 
@@ -142,7 +142,7 @@ const SOURCES = {
           <li><strong>Approve {first.town} and {second.town}:</strong> {mUSD(firstTwoBuild * 1000)} of build-out, opening in years 1 and 2.</li>
           <li><strong>Approve {third.town} in principle,</strong> released if {first.town} holds ${gate}M at the end of year 2, the median for a branch that age.</li>
           <li><strong>Measure each branch every June</strong> against its planned ramp, and decide {REVIEW_SITES.join(' and ')} at the year 5 review.</li>
-          <li><strong>Commit to lending in Ellis's lower-income tracts</strong> around Waxahachie and Ennis from year 2, and confirm how the final CRA rule applies to our charter.</li>
+          <li><strong>Commit to lending in low- or moderate-income tracts</strong> around Waxahachie and Ennis from year 2, and confirm how the final CRA rule applies to our charter.</li>
         </ol>
       </section>
 
@@ -180,7 +180,7 @@ const SOURCES = {
             </tbody>
           </table>
         </div>
-        <p class="brief-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one): that is what the gates are for (<a href="#economics">appendix E</a>).</p>
+        <p class="brief-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one); the {third.town} gate and the year 5 review limit that exposure (<a href="#economics">appendix E</a>).</p>
       </section>
 
       <div class="brief-page-two">
@@ -195,8 +195,8 @@ const SOURCES = {
               <tbody>
                 <tr><td>1</td><th scope="row">{first.town}</th><td>{tagsFor(first).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits +{pct(first.depositGrowthPct)} since 2021, jobs +{pct(first.jobGrowthPct)} since 2019. A hospital opens on US-80 in 2027.</td></tr>
                 <tr><td>2</td><th scope="row">{second.town}</th><td>{tagsFor(second).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits +{pct(second.depositGrowthPct)}, jobs +{pct(second.jobGrowthPct)}. Medline opens in 2027; the highest home-purchase tract on either map.</td></tr>
-                <tr><td>3</td><th scope="row">{third.town}</th><td>{tagsFor(third).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits +{pct(third.depositGrowthPct)}, the fastest studied, in {third.branches === 1 ? 'one branch' : `${third.branches} branches`} today. Gated on {first.town}.</td></tr>
-                <tr><td>5</td><th scope="row">Review</th><td></td><td>{REVIEW_SITES.map((r) => `${r} (${tagsFor(town(r)).filter((k) => PICKING_TAGS.includes(k)).map((k) => tagLabel[k]).join(', ')})`).join(' and ')}, decided on actual results.</td></tr>
+                <tr><td>3</td><th scope="row">{third.town}</th><td>{tagsFor(third).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits +{pct(third.depositGrowthPct)}, the fastest studied, all in {third.branches === 1 ? 'one branch' : `${third.branches} branches`} of the county's largest bank. Gated on {first.town}.</td></tr>
+                <tr><td>5</td><th scope="row">Review</th><td></td><td>{REVIEW_SITES.join(' and ')}, decided on actual results.</td></tr>
               </tbody>
             </table>
           </div>
@@ -205,7 +205,7 @@ const SOURCES = {
         <section class="brief-block" aria-labelledby="change-h">
           <h2 class="brief-h2" id="change-h">What would change it</h2>
           <ul class="report-risks brief-risks">
-            <li><strong>Slow ramps.</strong> Only {pct(age(5).atTargetShare)} of new branches in the metro hold ${ramp.target}M at year 5. If all three ramp like the bottom quarter, operations are {mUSD(model.downside[4])} a year short in year 5; the {third.town} gate holds exposure to two branches until then.</li>
+            <li><strong>Slow ramps.</strong> Only {pct(age(5).atTargetShare)} of new branches in the metro hold ${ramp.target}M at year 5. If {first.town} misses ${gate}M at year 2, the {third.town} gate stops the plan at two branches.</li>
             <li><strong>A different CRA outcome.</strong> If the proposal isn't finalized as written, or the bank is supervised by the Federal Reserve, a $2 billion bank is a large bank and Waxahachie moves ahead of {third.town}.</li>
             <li><strong>{first.town} and {third.town} overlap.</strong> They are about {siteGap} miles apart. Site {third.town} southwest of town, toward the growth along the Dallas County line.</li>
           </ul>
@@ -221,7 +221,7 @@ const SOURCES = {
 
     <section class="report-section report-appendix" id="markets" aria-labelledby="markets-h">
       <h2 class="report-h2" id="markets-h"><span>A</span> Why Kaufman and Ellis</h2>
-      <p class="report-p">Weighted on deposit size and income alone, {mapView[0].county} ranks first. Weighted on where the market is going and who wins its deposits, the order is {fullCase.map((r) => `${r.county} (${r.score})`).join(', ')}. Collin is the bigger prize, but it is the national banks' market: {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of it, and community banks captured {money(Collin.communityGrowth)} of its {money(Collin.depositGrowth)} deposit growth since 2021. In Kaufman, community banks hold {pct(Kaufman.communityShare)} of deposits and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M. In Ellis, {pct(Ellis.communityShare)}.</p>
+      <p class="report-p">Weighted on deposit size, income, and deposit growth, {mapView[0].county} ranks first. Weighted on where the market is going and who wins its deposits, the order is {fullCase.map((r) => `${r.county} (${r.score})`).join(', ')}. Collin is the bigger prize, but it is the largest banks' market: {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of it, and community banks captured {money(Collin.communityGrowth)} of its {money(Collin.depositGrowth)} deposit growth since 2021. In Kaufman, community banks hold {pct(Kaufman.communityShare)} of deposits and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M. In Ellis, {pct(Ellis.communityShare)}.</p>
       <MarketTable />
     </section>
 
@@ -253,12 +253,12 @@ const SOURCES = {
       </div>
       <div class="market-findings market-findings-two">
         <div class="market-finding">
-          <h3>{first.town} goes first: faster growth, fewer national banks</h3>
-          <p>{first.town} and {second.town} both pass on deposits and jobs. {first.town}'s jobs grew {pct(first.jobGrowthPct)} to {second.town}'s {pct(second.jobGrowthPct)}, and community banks hold {pct(first.communityShare)} of its deposits against {pct(second.communityShare)} in {second.town}, where the national banks are already established.</p>
+          <h3>{first.town} goes first: faster growth, fewer large banks</h3>
+          <p>{first.town}'s jobs grew {pct(first.jobGrowthPct)} to {second.town}'s {pct(second.jobGrowthPct)}, and community banks hold {pct(first.communityShare)} of its deposits against {pct(second.communityShare)} in {second.town}, where the largest banks are already established.</p>
         </div>
         <div class="market-finding">
-          <h3>{third.town}: the fastest deposit growth, and one branch to compete with</h3>
-          <p>No other town passes on both, so the third site is the strongest on deposits. {third.town}'s grew {pct(third.depositGrowthPct)} since 2021, and {third.branches === 1 ? 'one branch serves' : `${third.branches} branches serve`} the town. Waxahachie grew {pct(town('Waxahachie').depositGrowthPct)} with {town('Waxahachie').branches} branches competing; Terrell has Amazon's payroll coming but slower deposits. Both wait for the year 5 review.</p>
+          <h3>{third.town}: the fastest deposit growth, and one incumbent branch to take on</h3>
+          <p>With no other town tagged for both, the third site goes to the fastest deposit growth: {third.town}'s grew {pct(third.depositGrowthPct)} since 2021, all of it held by {third.branches === 1 ? 'one branch' : `${third.branches} branches`} of {third.largestBank}. Waxahachie grew {pct(town('Waxahachie').depositGrowthPct)} with {town('Waxahachie').branches} branches competing; Terrell has Amazon's payroll coming but slower deposits. Both wait for the year 5 review.</p>
         </div>
       </div>
     </section>
@@ -301,8 +301,8 @@ const SOURCES = {
         </table>
         <p class="market-table-note">{data.asOf.fairAccess}. Home-purchase loans are owner-occupied originations by all lenders in {data.asOf.fairAccess.match(/HMDA (\d{4})/)?.[1]}.</p>
       </div>
-      <h3 class="report-h3">Kaufman passes the check; Ellis needs a lending commitment</h3>
-      <p class="report-p">In Kaufman, {pct(first.minorityPopulationShare)} of the people within five miles of {first.town} live in majority-minority tracts, and {pct(third.lmiPopulationShare)} of those near {third.town} live in low- or moderate-income tracts. Home-purchase lending in the county's low- or moderate-income tracts ({pct(Kaufman.fairAccess.purchaseLoansInLmiShare)} of loans) runs below those tracts' share of owner-occupied homes ({pct(Kaufman.fairAccess.ownerHomesInLmiShare)}), which leaves room for the lending test to show results.</p>
+      <h3 class="report-h3">Kaufman meets the CRA test; Ellis needs a lending commitment</h3>
+      <p class="report-p">In Kaufman, {pct(first.minorityPopulationShare)} of the people within five miles of {first.town} live in majority-minority tracts, and {pct(third.lmiPopulationShare)} of those near {third.town} live in low- or moderate-income tracts. Home-purchase lending in the county's low- or moderate-income tracts ({pct(Kaufman.fairAccess.purchaseLoansInLmiShare)} of loans) runs below those tracts' share of owner-occupied homes ({pct(Kaufman.fairAccess.ownerHomesInLmiShare)}), a gap the bank's lending there can close.</p>
       <p class="report-p">In Ellis, no one within five miles of {second.town} lives in a low- or moderate-income tract, and {pct(second.minorityPopulationShare)} live in majority-minority tracts. The plan answers that with lending: a mortgage and small-business lending commitment in the low- or moderate-income tracts around Waxahachie ({pct(town('Waxahachie').lmiPopulationShare)} of nearby residents) and Ennis ({pct(town('Ennis').lmiPopulationShare)}) from year 2, with Waxahachie at the year 5 review.</p>
     </section>
 
@@ -312,13 +312,13 @@ const SOURCES = {
       <div class="plan-ramp">
         <figure class="plan-chart">
           <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ramp-chart-title">
-            <title id="ramp-chart-title">Deposits in new community-bank branches by year since opening, against the ${ramp.breakeven}M operating break-even and the ${ramp.target}M four-year payback: the median reaches ${age(3).median}M in year 3 and ${age(5).median}M in year 5.</title>
+            <title id="ramp-chart-title">Deposits in new community-bank branches by year since opening, against the ${ramp.breakeven}M operating break-even and the ${ramp.target}M payback level: the median reaches ${age(3).median}M in year 3 and ${age(5).median}M in year 5.</title>
             {[0, 40, 80, 120].map((v) => <g class="plan-grid"><line x1={L} x2={W - R} y1={y(v)} y2={y(v)} />{v > 0 && <text x={L - 8} y={y(v)} dy="0.35em">${v}M</text>}</g>)}
             {[0, 1, 2, 3, 4, 5].map((a) => <text class="plan-axis" x={x(a)} y={H - 10}>{a === 0 ? 'Open' : `Year ${a}`}</text>)}
             <path class="plan-band" d={band} />
             <line class="plan-target" x1={L} x2={W - R} y1={y(ramp.target)} y2={y(ramp.target)} />
             <line class="plan-breakeven" x1={L} x2={W - R} y1={y(ramp.breakeven)} y2={y(ramp.breakeven)} />
-            <text class="plan-line-label" x={L + 6} y={y(ramp.target)} dy="-0.45em">${ramp.target}M four-year payback</text>
+            <text class="plan-line-label" x={L + 6} y={y(ramp.target)} dy="-0.45em">${ramp.target}M payback level</text>
             <text class="plan-line-label plan-line-label-end" x={W - R - 6} y={y(ramp.breakeven)} dy="1.15em">${ramp.breakeven}M operating break-even</text>
             <path class="plan-median" d={line('median')} />
           </svg>
@@ -332,14 +332,14 @@ const SOURCES = {
               <tr><th scope="row">Closed</th>{[1, 3, 5].map((n) => <td>{pct(100 - age(n).stillOpenShare)}</td>)}</tr>
               <tr><th scope="row">Open, below operating break-even</th>{[1, 3, 5].map((n) => <td>{pct(age(n).belowBreakevenShare)}</td>)}</tr>
               <tr><th scope="row">Above operating break-even, below ${ramp.target}M</th>{[1, 3, 5].map((n) => <td>{pct(age(n).stillOpenShare - age(n).belowBreakevenShare - age(n).atTargetShare)}</td>)}</tr>
-              <tr><th scope="row">At ${ramp.target}M or more (four-year payback)</th>{[1, 3, 5].map((n) => <td>{pct(age(n).atTargetShare)}</td>)}</tr>
+              <tr><th scope="row">At the ${ramp.target}M payback level or more</th>{[1, 3, 5].map((n) => <td>{pct(age(n).atTargetShare)}</td>)}</tr>
             </tbody>
           </table>
-          <p class="market-table-note">A new branch has to earn back its build-out, about ${ramp.buildOut}M, which Bancography expects to recover in {ramp.paybackYears} years (<a href={SOURCES.ab.href} target="_blank" rel="noopener noreferrer">{SOURCES.ab.text}</a>), and its running cost, up to {costUSD(ramp.branchCost[1])} a year (<a href={SOURCES.be.href} target="_blank" rel="noopener noreferrer">{SOURCES.be.text}</a>; <a href={SOURCES.bam.href} target="_blank" rel="noopener noreferrer">{SOURCES.bam.text}</a>). At the community-bank net interest margin of {ramp.nim}% (<a href={SOURCES.qbp.href} target="_blank" rel="noopener noreferrer">{SOURCES.qbp.text}</a>), covering the running cost takes ${ramp.breakeven}M in deposits: operating break-even. Earning back ${ramp.buildOut}M plus {ramp.paybackYears} years of running cost within {ramp.paybackYears} years takes an average of ${ramp.payback}M: call it ${ramp.target}M, break-even with the build-out. That is also what the median new branch holds 15 years after opening (<a href={SOURCES.fed.href} target="_blank" rel="noopener noreferrer">{SOURCES.fed.text}</a>).</p>
+          <p class="market-table-note">A new branch has to earn back its build-out, about ${ramp.buildOut}M, which Bancography expects to recover in {ramp.paybackYears} years (<a href={SOURCES.ab.href} target="_blank" rel="noopener noreferrer">{SOURCES.ab.text}</a>), and its running cost, up to {costUSD(ramp.branchCost[1])} a year (<a href={SOURCES.be.href} target="_blank" rel="noopener noreferrer">{SOURCES.be.text}</a>; <a href={SOURCES.bam.href} target="_blank" rel="noopener noreferrer">{SOURCES.bam.text}</a>). At the community-bank net interest margin of {ramp.nim}% (<a href={SOURCES.qbp.href} target="_blank" rel="noopener noreferrer">{SOURCES.qbp.text}</a>), covering the running cost takes ${ramp.breakeven}M in deposits: operating break-even. Earning back ${ramp.buildOut}M plus {ramp.paybackYears} years of running cost within {ramp.paybackYears} years takes an average of ${ramp.payback}M: call it ${ramp.target}M, the payback level. That is also what the median new branch holds 15 years after opening (<a href={SOURCES.fed.href} target="_blank" rel="noopener noreferrer">{SOURCES.fed.text}</a>).</p>
         </div>
       </div>
 
-      <h3 class="report-h3">Each branch runs a loss for its first two years</h3>
+      <h3 class="report-h3">A branch turns positive in its third year and earns about {mUSD(model.expected[0].byYear[4].contribution)} a year by its fifth</h3>
       <div class="market-table-wrap">
         <table class="market-table plan-network">
           <caption class="sr-only">Operating contribution by branch and year under the plan</caption>
@@ -355,7 +355,7 @@ const SOURCES = {
         <p class="market-table-note">Launch marketing is ${LAUNCH_MARKETING[0]}K in a branch's first year and ${LAUNCH_MARKETING[1]}K in its second. Published first-year budgets for a new branch run $50K to $150K (<a href="https://www.chatterbuzzmedia.com/blog/credit-union-new-branch-opening-playbook/" target="_blank" rel="noopener noreferrer">Chatter Buzz Media, 2026</a>), and a branch in a new market needs 18 to 24 months of marketing (<a href="http://bankingjournal.aba.com/2026/08/bank-marketings-essential-role-in-successful-branch-expansion/" target="_blank" rel="noopener noreferrer">ABA Banking Journal, August 2026</a>); the second-year figure is our assumption.</p>
       </div>
 
-      <h3 class="report-h3">Both paces pay back in year {planPace.paybackYear}; the faster one earns more by year 10</h3>
+      <h3 class="report-h3">The faster pace is {mUSD(planPace.run.cumulative[1] - fasterPace.run.cumulative[1])} deeper in year 2 and {mUSD(fasterPace.run.cumulative[9] - planPace.run.cumulative[9])} ahead by year 10</h3>
       <div class="market-table-wrap">
         <table class="market-table plan-network pace-table">
           <caption class="sr-only">Cumulative cash by year for two paces</caption>
@@ -370,16 +370,15 @@ const SOURCES = {
 
     <section class="report-section report-appendix" id="risks" aria-labelledby="risks-h">
       <h2 class="report-h2" id="risks-h"><span>F</span> Other risks and questions before the vote</h2>
-      <p class="report-p">The three risks most likely to change the plan are in the brief. These matter too:</p>
       <ul class="report-risks">
-        <li><strong>The incumbent holds its customers.</strong> {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits, and the {third.branches === 1 ? 'one branch' : 'branches'} in {third.town} {third.branches === 1 ? 'belongs' : 'belong'} to a community bank. Entry depends on lenders who already know those customers.</li>
+        <li><strong>The incumbent may hold its customers.</strong> {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits{third.largestBank === incumbent.bank ? ` and ${pct(third.largestBankShare)} of ${third.town}'s` : ''}. Entry depends on lenders who already know those customers.</li>
         <li><strong>The pipeline slips.</strong> The Forney hospital (fall 2027) and Medline's Midlothian distribution center (second quarter of 2027) anchor the first two sites. A delay of a year moves each ramp by a year.</li>
-        <li><strong>Margins narrow.</strong> At the all-bank margin of {ramp.nimIndustry}% instead of {ramp.nim}%, operating break-even moves to ${industryBreakeven}M and the four-year payback to ${industryPayback}M.</li>
+        <li><strong>Margins narrow.</strong> At the all-bank margin of {ramp.nimIndustry}% instead of {ramp.nim}%, operating break-even moves to ${industryBreakeven}M and the payback level to ${industryPayback}M.</li>
       </ul>
       <h3 class="report-h3" id="questions">Questions before the vote</h3>
       <p class="report-p">The data can't answer these. The bank's lenders, branch managers, directors, and the local economic development offices can, and the answers belong in the board packet next to the numbers.</p>
       <ol class="local-questions">
-        <li><strong>{incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits.</strong> Is that loyalty or habit, and who at our bank knows its customers?</li>
+        <li><strong>Is {incumbent.bank}'s hold on Kaufman loyalty or habit?</strong> Who at our bank knows its customers?</li>
         <li><strong>Forney's growth is households.</strong> Do they bank near home or near work in Dallas, and does that call for a full branch or a smaller one with lenders?</li>
         <li><strong>Medline and the Midlothian industrial parks bring payroll from 2027.</strong> Which employers need treasury and payroll services, and who banks them today?</li>
         <li><strong>{third.town}'s growth is along the Dallas County line.</strong> Do those households bank in {third.town}, in Forney, or back in Dallas?</li>

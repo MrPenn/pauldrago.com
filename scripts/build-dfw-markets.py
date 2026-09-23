@@ -317,6 +317,10 @@ for name, fips in COUNTIES.items():
         town_dep = sum(r['DEPSUMBR'] for r in in_town_now)
         est = [sum(business[y].get(z, (0, 0))[0] for z in zips) for y in ZBP_YEARS]
         emp = [sum(business[y].get(z, (0, 0))[1] for z in zips) for y in ZBP_YEARS]
+        town_banks = collections.Counter()
+        for r in in_town_now:
+            town_banks[r['NAMEFULL']] += r['DEPSUMBR']
+        leader, leader_dep = town_banks.most_common(1)[0]
         towns.append({
             'town': town, 'county': name,
             'deposits': round(town_dep / 1e3),  # $ millions
@@ -330,6 +334,7 @@ for name, fips in COUNTIES.items():
             'minorityPopulationShare': round(sum(tracts[t]['population'] for t in near if t in minority) / residents * 100),
             'lmiTracts': sum(1 for t in near if t in lmi),
             'lmiTractsWithoutBranch': sum(1 for t in near if t in lmi and t not in branch_tracts),
+            'largestBank': leader, 'largestBankShare': round(leader_dep / town_dep * 100),
         })
 
 OUT.write_text(json.dumps({

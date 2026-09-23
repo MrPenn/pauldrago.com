@@ -152,7 +152,9 @@
       "lmiPopulationShare": 0,
       "minorityPopulationShare": 5,
       "lmiTracts": 0,
-      "lmiTractsWithoutBranch": 0
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "Citizens National Bank of Texas",
+      "largestBankShare": 37
     },
     {
       "town": "Waxahachie",
@@ -169,7 +171,9 @@
       "lmiPopulationShare": 39,
       "minorityPopulationShare": 25,
       "lmiTracts": 3,
-      "lmiTractsWithoutBranch": 1
+      "lmiTractsWithoutBranch": 1,
+      "largestBank": "Citizens National Bank of Texas",
+      "largestBankShare": 55
     },
     {
       "town": "Red Oak",
@@ -186,7 +190,9 @@
       "lmiPopulationShare": 0,
       "minorityPopulationShare": 53,
       "lmiTracts": 0,
-      "lmiTractsWithoutBranch": 0
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "Citizens National Bank of Texas",
+      "largestBankShare": 33
     },
     {
       "town": "Ennis",
@@ -203,7 +209,9 @@
       "lmiPopulationShare": 52,
       "minorityPopulationShare": 52,
       "lmiTracts": 2,
-      "lmiTractsWithoutBranch": 0
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "Trinity Capital Bank of Texas",
+      "largestBankShare": 35
     },
     {
       "town": "Forney",
@@ -220,7 +228,9 @@
       "lmiPopulationShare": 0,
       "minorityPopulationShare": 56,
       "lmiTracts": 0,
-      "lmiTractsWithoutBranch": 0
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "City Bank",
+      "largestBankShare": 32
     },
     {
       "town": "Terrell",
@@ -237,7 +247,9 @@
       "lmiPopulationShare": 100,
       "minorityPopulationShare": 74,
       "lmiTracts": 4,
-      "lmiTractsWithoutBranch": 2
+      "lmiTractsWithoutBranch": 2,
+      "largestBank": "The American National Bank of Texas",
+      "largestBankShare": 68
     },
     {
       "town": "Kaufman",
@@ -254,7 +266,9 @@
       "lmiPopulationShare": 9,
       "minorityPopulationShare": 9,
       "lmiTracts": 1,
-      "lmiTractsWithoutBranch": 1
+      "lmiTractsWithoutBranch": 1,
+      "largestBank": "The American National Bank of Texas",
+      "largestBankShare": 69
     },
     {
       "town": "Crandall",
@@ -271,7 +285,9 @@
       "lmiPopulationShare": 45,
       "minorityPopulationShare": 45,
       "lmiTracts": 1,
-      "lmiTractsWithoutBranch": 0
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "The American National Bank of Texas",
+      "largestBankShare": 100
     }
   ],
   "ramp": {
