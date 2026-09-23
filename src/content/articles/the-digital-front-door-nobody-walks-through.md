@@ -24,7 +24,6 @@ For most of a decade, community banks heard the same prescription. Make account 
 
 Banks responded with platform contracts, implementation projects and new digital capabilities. But removing a reason to choose someone else is not the same as creating a reason to choose you.
 
-<p class="fd-mq">Removing a reason to choose someone else is not the same as creating a reason to choose you.</p>
 
 Digital banks and fintechs took 44 of every 100 checking accounts opened in 2024. Community banks took 4, by Cornerstone Advisors' estimate, across all ages.[^1] Younger customers did go digital: 63% of Gen Z respondents in the American Bankers Association's 2025 survey used mobile banking most often, and 3% used branches.[^2]
 
@@ -41,9 +40,10 @@ Removing that friction leaves a different question. Why would I open this accoun
 
 Those sound similar. Strategically, they are not close. One is about access; the other is about preference. A bank can solve the first without making much progress on the second.
 
+<blockquote class="fd-pq"><p>Removing a reason to choose someone else is not the same as creating a reason to choose you.</p></blockquote>
+
 Even Cornerstone, whose research produced the 44% figure, describes the challenge as a product problem that digital investment alone will not solve.[^1] I would go one step further. The issue is not simply that community banks need better checking products. It is that a bank can manage every product it offers without ever managing the institution itself as a product.
 
-<p class="fd-mq">A bank can manage every product it offers without ever managing the institution itself as a product.</p>
 
 ## The 4.8-star trap
 
@@ -55,13 +55,12 @@ Ask a community bank executive about the mobile experience and the answer is usu
 
 Both things can be true and still leave the competitive question unanswered. In the ABA survey, 95% of consumers rated their bank's online and mobile experience as good, very good or excellent.[^2] When nearly everyone's customers say the same thing, "ours works fine" is not a competitive position.
 
-A five-star review might mean the customer checked a balance, deposited a check and moved $200 without anything breaking. Those are real accomplishments. They are also a long way from evidence that somebody would switch banks to get the experience. **App-store ratings can become retention metrics masquerading as competitive metrics.**
+A five-star review might mean the customer checked a balance, deposited a check and moved $200 without anything breaking. Those are real accomplishments. They are also a long way from evidence that somebody would switch banks to get the experience. App-store ratings can become retention metrics masquerading as competitive metrics.
 
 The benchmarking problem runs deeper than the rating. Inside the bank, the comparison is a checklist: mobile deposit, card controls, digital payments, account opening. Feature parity achieved. But a customer does not limit the comparison to other community banks. Their phone also contains products that make complicated tasks feel simple, explain what happens next and recover gracefully when something goes wrong.
 
 Your benchmark should not stop at the bank across town. It should include the best financial experience on your customer's phone. Good enough is a dangerous place to be when the customer knows what excellent feels like.
 
-<p class="fd-mq">Your benchmark is the best financial experience on your customer’s phone.</p>
 
 ## So, why should I bank with you?
 
@@ -79,6 +78,8 @@ Strip away the campaign and have the conversation with a 25-year-old deciding wh
   <p class="fd-bank"><span class="fd-who">Bank</span>Someday, if you start a business, you’ll appreciate having a relationship with a local lender.</p>
   <p class="fd-cust"><span class="fd-who">Customer</span>I am currently trying to get $2,000 into an emergency fund.</p>
 </div>
+
+<blockquote class="fd-pq"><p>A relationship bank should have something meaningful to offer when the customer has $500, not only when the customer needs $500,000.</p></blockquote>
 
 None of those advantages has to be false for the pitch to fail. They are distant. And behind the pitch sits an assumption the bank rarely says out loud: the younger customer is a small balance to tolerate until a mortgage or business loan makes the relationship worth having.
 
@@ -195,7 +196,6 @@ Nor does a disappointing result tell the institution which lever to pull. Would 
 
 Human judgment and local knowledge still matter. A person who understands the situation and can take responsibility for resolving it is worth something. But that value needs to be visible before a complicated loan application makes the relationship interesting to the institution.
 
-<p class="fd-pull">A relationship bank should have something meaningful to offer when the customer has $500, not only when the customer needs $500,000.</p>
 
 ## Chime has fewer levers
 
@@ -213,7 +213,6 @@ Chime does not literally have one product. It has multiple accounts, credit prod
 
 What differs is the presentation. Checking, cards, savings and credit building sit inside one Chime-branded app.[^8] To the customer, the promise is not a tour of the underlying organization. It is a way to manage money.
 
-<p class="fd-mq">To the customer, the promise is not a tour of the underlying organization. It is a way to manage money.</p>
 
 A community bank can have more to offer and still make the customer do more work to understand how it fits together.
 
@@ -225,7 +224,6 @@ Walk inside the community bank. Marketing owns the brand, Digital owns the app, 
 
 There is nothing wrong with specialization. A complicated financial institution needs it. The problem appears when the organizational model becomes the customer experience.
 
-<p class="fd-mq">The problem appears when the organizational model becomes the customer experience.</p>
 
 <section class="fd-scrolly" data-fd="scrolly" data-scrolly="org" aria-label="Twelve functions, one bank">
 <div class="fd-steps">
@@ -273,11 +271,12 @@ Once you see the problem this way, good enough becomes understandable. If the ap
 
 No individual executive needs to be making a bad decision. The failure happens between the decisions.
 
-<p class="fd-mq">The failure happens between the decisions.</p>
 
 <p class="fd-stat"><span class="fd-stat-num">34%</span><span class="fd-stat-label">of activated new checking customers went inactive or left within their first year, by the institutions’ own estimate</span></p>
 
 In March 2024 research published in *The Power of Primacy*, financial institutions estimated that 34% of activated new customers became inactive or churned within their first year. The report also presented an estimated direct-deposit penetration rate of 55%.[^11] These were institution-reported estimates, not an audit of individual account histories. They are useful here because they distinguish an account opened from a relationship established.
+
+<blockquote class="fd-pq"><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>
 
 Marketing meets its application target and Digital meets its adoption target while a third of the new customers never make the bank part of their everyday financial lives. The departmental scorecards register the symptoms without explaining the cause.
 
@@ -289,6 +288,8 @@ That is a product-management question, and it does not get answered merely becau
 
 <p class="fd-deck">Advertising is the only lever one department can pull alone.</p>
 
+<blockquote class="fd-pq"><p>The skateboard is not a creative problem. It is what a structural problem looks like after it has been handed to the one department that can ship something by Friday.</p></blockquote>
+
 Suppose Marketing does the research properly. YouGov's U.S. research among employed Gen Z consumers places low or no maintenance fees, security and reliability, and brand trustworthiness among the leading account-selection factors. Digital usability matters too.[^12] Separate YouGov research found that building an emergency fund was Gen Z's most frequently cited savings goal.[^13]
 
 That points toward a more useful conversation than how to make an existing checking campaign look younger: simpler pricing, cash-flow support, emergency savings and clearer guidance through everyday financial decisions.
@@ -299,7 +300,6 @@ Suddenly the conversation is not about Marketing. It is about fee income and pro
 
 That meeting is harder. The temptation is to return to the lever that can move without changing the rest of the institution: the advertising.
 
-<p class="fd-mq">The advertising is the one lever that moves without changing the rest of the institution.</p>
 
 The photography gets younger. The palette gets brighter. Someone wants TikTok. The copy turns conspicuously casual, and a hundred-year-old bank puts on a hoodie and picks up a skateboard.
 
@@ -307,7 +307,6 @@ The problem was never age. A bank should not be embarrassed that it has existed 
 
 Modern is not the same as young. Authentic is not the same as casual. Customer-centric does not mean putting younger customers in the ads.
 
-<p class="fd-pull">The skateboard is not a creative problem. It is what a structural problem looks like after it has been handed to the one department that can ship something by Friday.</p>
 
 ## What if the bank actually used all of its advantages?
 
@@ -325,7 +324,6 @@ Human support alone is not the differentiator. The proposition is continuity, us
 
 A few years later there may be a car loan, a house or a business. The bank should still have to earn that business. But it would enter the conversation with a history of being useful, rather than a promise that usefulness begins now.
 
-<p class="fd-mq">A history of being useful, rather than a promise that usefulness begins now.</p>
 
 Local employers, merchants and community relationships strengthen the proposition further when they produce something the customer can feel. That is not a worse version of Chime. It is an experience that makes the bank's additional capabilities worth choosing.
 
@@ -337,7 +335,6 @@ Community banks do not need to copy Chime's palette, vocabulary or roadmap. The 
 
 A bank has several ways to do that. Digital provides speed, people provide judgment, lending expands the relationship and local knowledge makes advice more useful. But those capabilities need to feel like parts of one product. Otherwise, they are merely parts of one cost structure.
 
-<p class="fd-mq">Parts of one product. Otherwise, parts of one cost structure.</p>
 
 Getting there requires more than a rebrand or a new box on the organizational chart. Start with three decisions.
 

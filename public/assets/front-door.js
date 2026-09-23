@@ -387,12 +387,6 @@
       });
     });
 
-    // margin quotes share the rail; each is anchored to the paragraph before it
-    Array.prototype.slice.call(body.querySelectorAll('.fd-mq')).forEach(function (q) {
-      var prev = q.previousElementSibling;
-      while (prev && !/^(P|UL|OL|DIV|SECTION|FIGURE)$/.test(prev.tagName)) prev = prev.previousElementSibling;
-      marginNotes.push({ el: q, anchor: prev || q, quote: true });
-    });
     function layoutSidenotes() {
       if (!isWide()) return;
       var bodyTop = body.getBoundingClientRect().top + window.scrollY;

@@ -764,3 +764,104 @@
   .fd-lede::first-letter { font-size: 62px; }
   .fd-mq { font-size: 18px; }
 }
+
+/* ============================================================
+   Three voices. Archivo Black for the headline, section heads and big
+   numbers. Source Serif 4 for reading, decks and pull quotes. Inter for
+   labels, captions, inputs and notes.
+   ============================================================ */
+.article-body {
+  max-width: 62ch;
+  font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  font-size: 19.5px;
+  line-height: 1.55;
+}
+.article-body p { font-variant-numeric: oldstyle-nums proportional-nums; }
+.article-intro { font-family: 'Source Serif 4', Georgia, serif; font-size: 22px; }
+.fd-lede { font-size: 22px; line-height: 1.5; }
+.fd-lede::first-letter { font-size: 84px; line-height: 0.8; margin-top: 8px; }
+.article-body h2 { font-size: clamp(24px, 2.4vw, 29px); line-height: 1.12; }
+.fd-deck {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.45;
+  color: var(--secondary);
+}
+.fd-brief li { font-family: 'Source Serif 4', Georgia, serif; font-size: 17px; }
+.fd-dialogue p { font-size: 18px; }
+.fd-decisions li { font-size: 18.5px; }
+
+/* everything that is an instrument stays in Inter */
+.fd-figure, .fd-graphic, .fd-calc, .fd-stat, .fd-sidenote, .fd-note-inline, .fd-sticky-notes,
+.fd-opener-inner, .fd-eyebrow, .fd-who, .fd-field, .fd-ledger, .fd-org, .fd-one-sub, .fd-one-status,
+.fd-g-bar-name, .fd-g-row-label, .fd-g-balance .sub, .fd-g-payback, figcaption, .fd-calc-lede, .fd-durbin {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.fd-stat-label { font-size: 14px; }
+
+/* Pull quotes: embedded, break the column, hang the opening mark into the margin */
+.fd-pq {
+  position: relative;
+  margin: 48px 0 48px !important;
+  padding: 0 0 22px 0;
+  border: 0;
+  border-bottom: 2px solid var(--brass);
+  opacity: 1;
+}
+.fd-pq p {
+  margin: 0;
+  max-width: 30ch;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(24px, 2.6vw, 30px);
+  line-height: 1.28;
+  color: var(--paper);
+  text-wrap: balance;
+}
+.fd-pq::before {
+  content: "\201C";
+  position: absolute;
+  left: -0.62em;
+  top: -0.12em;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: clamp(64px, 6vw, 84px);
+  line-height: 1;
+  color: var(--brass);
+}
+/* the one line inside the org sequence takes the same voice */
+.fd-pull {
+  border-top: 0;
+  padding-top: 0;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  text-transform: none;
+  font-size: clamp(24px, 2.6vw, 30px);
+  line-height: 1.28;
+}
+.fd-mq { display: none; }
+
+@media (max-width: 760px) {
+  .article-body { font-size: 18px; line-height: 1.55; }
+  .article-intro { font-size: 19px; }
+  .fd-lede { font-size: 19px; }
+  .fd-lede::first-letter { font-size: 64px; }
+  .fd-pq { margin: 36px 0 !important; padding-left: 26px; }
+  .fd-pq::before { left: -4px; font-size: 56px; }
+}
+
+/* refinements */
+.article-body .fd-pq { border-left: 0; padding-left: 0; opacity: 1; }
+.article-body .fd-pq::before { font-size: 132px; top: -0.22em; left: -0.55em; font-weight: 600; }
+.article-body h2::before {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+}
+.article-body h2::before { content: counter(sec, upper-roman) "."; }
+@media (max-width: 760px) {
+  .article-body .fd-pq::before { font-size: 96px; left: -6px; top: -0.2em; }
+}
