@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import { AUTHOR } from '../../data/author';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles', ({ data }) => !data.draft);
@@ -22,7 +23,16 @@ const jsonld = {
   datePublished: iso(article.data.date),
   dateModified: iso(article.data.updated ?? article.data.date),
   url: `https://pauldrago.com${path}`,
-  author: { '@type': 'Person', '@id': 'https://pauldrago.com/#paul-drago', name: 'Paul Drago' },
+  author: {
+    '@type': 'Person',
+    '@id': AUTHOR.id,
+    name: AUTHOR.name,
+    url: AUTHOR.url,
+    jobTitle: AUTHOR.jobTitle,
+    description: AUTHOR.bio,
+    sameAs: [AUTHOR.linkedin],
+  },
+  publisher: { '@id': AUTHOR.id },
 };
 ---
 <Base
@@ -47,10 +57,20 @@ const jsonld = {
           <h1 class="display-title article-title">{article.data.title}</h1>
           <p class="article-intro">{article.data.description}</p>
           <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time><span class="article-meta-sep" aria-hidden="true"> · </span><span>{minutes}-minute read</span></p>
+          <p class="article-byline">By <a href="/">{AUTHOR.name}</a>, {AUTHOR.byline}</p>
         </header>
         <div class="article-body">
           <Content />
         </div>
+        <aside class="article-author" aria-label="About the author">
+          <p class="article-author-label">About the author</p>
+          <p class="article-author-bio">{AUTHOR.bio}</p>
+          <p class="article-author-links">
+            <a class="btn btn-small" href={AUTHOR.booking} {...AUTHOR.calAttrs}>Book a 20-minute call</a>
+            <a class="article-author-link" href={AUTHOR.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="article-author-link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
+          </p>
+        </aside>
       </div>
     </article>
   </main>
