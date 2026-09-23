@@ -8,6 +8,7 @@ Public sources only:
   - HMDA (CFPB), which carries the FFIEC tract income level and minority share used in CRA and fair-lending
     review, plus home-purchase lending by tract
   - Census geocoder (branch tract) and Census tract gazetteer (tract locations)
+  - FDIC Summary of Deposits history for the Dallas-Fort Worth metro, to measure how new branches ramp
 
 Re-run after FDIC publishes a new Summary of Deposits (each fall):
     python3 scripts/build-dfw-markets.py
@@ -21,6 +22,7 @@ import json
 import statistics
 import urllib.parse
 import urllib.request
+from datetime import datetime
 from pathlib import Path
 
 SOD_YEAR, SOD_BASE_YEAR = 2026, 2021
@@ -28,6 +30,14 @@ HMDA_YEAR = 2025
 # Towns inside the county the example recommends, for the where-in-the-county view (lat, lon).
 TOWNS = {'Kaufman': {'Forney': (32.748, -96.471), 'Terrell': (32.736, -96.275), 'Kaufman': (32.589, -96.309)}}
 TOWN_RADIUS_MILES = 5
+# New-branch ramp: community-bank branches opened in the metro in these years, tracked every June since.
+RAMP_MSA, RAMP_OPENED, RAMP_HISTORY_FROM = 19100, (2009, 2023), 2008
+RAMP_TARGET = 50_000  # $ thousands: the deposit level at which a branch typically earns its target return
+# Branch economics for the plan. Published ranges: running cost $250K to $1M a year, deposit spread 2 to 2.5%.
+BRANCH_COST = 750      # $ thousands a year, staff and occupancy
+DEPOSIT_SPREAD = 2.25  # percent earned on deposits
+BUILD_OUT = 3.5        # $ millions, new freestanding branch (Bancography, via American Banker, April 2026)
+BREAKEVEN = round(BRANCH_COST / DEPOSIT_SPREAD * 100)  # $ thousands of deposits
 POP_VINTAGE = 2025
 COUNTIES = {'Collin': '085', 'Ellis': '139', 'Kaufman': '257'}
 # A single branch holding more than this is treated as booked (headquarters or corporate) rather than local.
@@ -90,6 +100,66 @@ def hmda_tracts(fips):
         if r['action_taken'] == '1' and r['loan_purpose'] == '1' and r.get('occupancy_type') == '1':
             purchases[t] += 1
     return tracts, purchases, mfi
+
+
+def ramp():
+    # Every branch in the metro, every year, keyed by the FDIC's unique branch number.
+    by = collections.defaultdict(dict)
+    for year in range(RAMP_HISTORY_FROM, SOD_YEAR + 1):
+        rows, offset = [], 0
+        while True:
+            q = urllib.parse.urlencode({
+                'filters': f'MSABR:{RAMP_MSA} AND YEAR:{year}',
+                'fields': 'UNINUMBR,CERT,DEPSUMBR,ASSET,SIMS_ESTABLISHED_DATE,SIMS_ACQUIRED_DATE,CITYBR,BRSERTYP',
+                'limit': 10000, 'offset': offset, 'format': 'json',
+            })
+            d = json.loads(get(f'https://api.fdic.gov/banks/sod?{q}'))
+            rows += [r['data'] for r in d['data']]
+            if len(rows) >= d['meta']['total'] or not d['data']:
+                break
+            offset += 10000
+        for r in rows:
+            by[r['UNINUMBR']][year] = r
+    first = {u: min(ys) for u, ys in by.items()}
+    last = {u: max(ys) for u, ys in by.items()}
+    by_bank_city = collections.defaultdict(list)
+    for u, ys in by.items():
+        by_bank_city[(ys[first[u]]['CERT'], ys[first[u]]['CITYBR'])].append(u)
+    paths, relocations = [], 0
+    for u, ys in by.items():
+        r = ys[first[u]]
+        try:
+            opened = datetime.strptime(r['SIMS_ESTABLISHED_DATE'], '%m/%d/%Y')
+        except (TypeError, ValueError):
+            continue
+        if not RAMP_OPENED[0] <= opened.year <= RAMP_OPENED[1] or first[u] > opened.year + 1:
+            continue
+        # Full-service brick-and-mortar branches of community banks, opened new (not bought or booked).
+        if r['BRSERTYP'] != 11 or r['ASSET'] >= COMMUNITY_ASSETS or r['SIMS_ACQUIRED_DATE']:
+            continue
+        if max(x['DEPSUMBR'] for x in ys.values()) >= BOOKED_THRESHOLD:
+            continue
+        # A branch that replaced one the same bank closed in the same town is a relocation: it opened with deposits.
+        if any(v != u and opened.year - 1 <= last[v] <= opened.year + 1 and last[v] < SOD_YEAR for v in by_bank_city[(r['CERT'], r['CITYBR'])]):
+            relocations += 1
+            continue
+        path = {int((datetime(y, 6, 30) - opened).days / 365.25 + 0.5): x['DEPSUMBR'] for y, x in ys.items() if datetime(y, 6, 30) >= opened}
+        paths.append((path, SOD_YEAR - opened.year))
+    by_age = []
+    for age in range(1, 6):
+        eligible = [p for p, observed in paths if observed >= age]
+        still_open = sorted(p[age] for p in eligible if age in p)
+        q = statistics.quantiles(still_open, n=4)
+        by_age.append({
+            'age': age, 'branches': len(eligible),
+            'reachedTargetShare': round(sum(1 for p in eligible if any(a <= age and v >= RAMP_TARGET for a, v in p.items())) / len(eligible) * 100),
+            'stillOpenShare': round(len(still_open) / len(eligible) * 100),
+            'belowBreakevenShare': round(sum(1 for v in still_open if v < BREAKEVEN) / len(eligible) * 100),
+            'atTargetShare': round(sum(1 for v in still_open if v >= RAMP_TARGET) / len(eligible) * 100),
+            'p25': round(q[0] / 1e3), 'median': round(q[1] / 1e3), 'p75': round(q[2] / 1e3),  # $ millions
+        })
+    return {'branches': len(paths), 'relocationsExcluded': relocations, 'opened': list(RAMP_OPENED), 'target': RAMP_TARGET // 1000,
+            'breakeven': round(BREAKEVEN / 1e3), 'branchCost': BRANCH_COST, 'depositSpread': DEPOSIT_SPREAD, 'buildOut': BUILD_OUT, 'byAge': by_age}
 
 
 def miles(a, b):
@@ -178,6 +248,7 @@ OUT.write_text(json.dumps({
         'deposits': f'FDIC Summary of Deposits, June 30, {SOD_YEAR} (growth from June 30, {SOD_BASE_YEAR})',
         'population': f'U.S. Census Bureau county population estimates, April 2020 to July {POP_VINTAGE}',
         'households': f'U.S. Census Bureau American Community Survey, {acs_release}',
+        'ramp': f'FDIC Summary of Deposits, June {RAMP_HISTORY_FROM} to June {SOD_YEAR}, Dallas-Fort Worth metro',
         'fairAccess': f'HMDA {HMDA_YEAR} (CFPB) with FFIEC tract income and minority data; branches placed by the Census geocoder',
     },
     'notes': [
@@ -186,5 +257,6 @@ OUT.write_text(json.dumps({
     ],
     'markets': markets,
     'towns': towns,
+    'ramp': ramp(),
 }, indent=2) + '\n')
 print(f'Wrote {OUT}')

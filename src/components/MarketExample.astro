@@ -1,6 +1,6 @@
 ---
-// Worked example for the branch-analysis page, run on three real Dallas-area counties in four steps:
-// what the data shows, what is coming, CRA and fair access, and what local knowledge has to answer.
+// Worked example for the branch-analysis page, run on three real Dallas-area counties in five steps:
+// what the data shows, what is coming, CRA and fair access, what local knowledge has to answer, and the plan.
 // Market and fair-access figures come from src/data/dfw-markets.json (scripts/build-dfw-markets.py);
 // the pipeline signals from src/data/dfw-signals.json. The bank is hypothetical.
 import data from '../data/dfw-markets.json';
@@ -47,18 +47,57 @@ const towns = data.towns.Kaufman;
 const forney = towns.find((t) => t.town === 'Forney');
 const terrell = towns.find((t) => t.town === 'Terrell');
 const mfi = kf.metroMedianFamilyIncome;
+
+// The five-year plan. Each branch follows the metro's new-branch ramp (median or bottom quarter);
+// it opens at the start of its plan year, and each year's contribution uses the average balance.
+const ramp = data.ramp;
+const path = (key) => [0, ...ramp.byAge.map((a) => a[key])];
+const contribution = (avgDeposits) => avgDeposits * ramp.depositSpread * 10 - ramp.branchCost; // $ thousands
+const YEARS = [1, 2, 3, 4, 5];
+const plan = [
+  { site: 'Forney', county: 'Kaufman', opens: 1, ramp: 'median' },
+  { site: 'Terrell', county: 'Kaufman', opens: 2, ramp: 'p25' },
+  { site: 'Midlothian', county: 'Ellis', opens: 3, ramp: 'median' },
+];
+const model = (rampFor) => plan.map((b) => {
+  const d = path(rampFor(b));
+  return { ...b, byYear: YEARS.map((y) => { const age = y - b.opens + 1; return age < 1 ? null : { deposits: d[age], contribution: contribution((d[age - 1] + d[age]) / 2) }; }) };
+});
+const expected = model((b) => b.ramp);
+const downside = model(() => 'p25');
+const totals = (m) => YEARS.map((_, i) => m.reduce((sum, b) => sum + (b.byYear[i]?.contribution ?? 0), 0));
+const expectedTotals = totals(expected);
+const downsideTotals = totals(downside);
+const sum = (xs) => xs.reduce((a, b) => a + b, 0);
+const terrellPlan = expected.find((b) => b.site === 'Terrell');
+const forneyPlan = expected.find((b) => b.site === 'Forney');
+const terrellCost = -sum(terrellPlan.byYear.map((y) => y?.contribution ?? 0));
+const firstPositive = YEARS[expectedTotals.findIndex((t) => t > 0)];
+const forneyCovers = YEARS.find((_, i) => terrellPlan.byYear[i] && forneyPlan.byYear[i].contribution >= -terrellPlan.byYear[i].contribution);
+const kUSD = (n) => `${n < 0 ? '-' : ''}$${num(Math.abs(Math.round(n / 10) * 10))}K`;
+const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
+const buildOut = plan.length * ramp.buildOut;
+const age = (n) => ramp.byAge.find((a) => a.age === n);
+const failing = (a) => a.belowBreakevenShare + (100 - a.stillOpenShare);
+// Chart geometry: ages 0-5 across, $0-120M up.
+const W = 640, H = 260, L = 76, R = 36, T = 12, B = 32, YMAX = 120;
+const x = (a) => L + (a / 5) * (W - L - R);
+const y = (v) => T + (1 - v / YMAX) * (H - T - B);
+const line = (key) => path(key).map((v, a) => `${a ? 'L' : 'M'}${x(a).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+const band = `${line('p75')} ${path('p25').map((v, a) => [a, v]).reverse().map(([a, v]) => `L${x(a).toFixed(1)},${y(v).toFixed(1)}`).join(' ')} Z`;
 ---
 <section class="market-example" id="worked-example" aria-labelledby="market-example-heading">
   <div class="container">
     <p class="band-label">A worked example on public data</p>
     <h2 class="display-title section-title" id="market-example-heading">The biggest market isn't the best place for a community bank's next branch.</h2>
-    <p class="section-intro">Take {INSTITUTION.description}, looking for its first branch outside the county. Here is the method run on three real candidates: Collin County to the north, Ellis to the south, and Kaufman to the east. The bank is hypothetical. The public data is not, and anyone can check it.</p>
+    <p class="section-intro">Take {INSTITUTION.description}, planning its first five years of growth outside the county. Here is the method run on three real candidates: Collin County to the north, Ellis to the south, and Kaufman to the east. The bank is hypothetical. The public data is not, and anyone can check it.</p>
 
-    <ol class="market-steps" aria-label="The four steps">
+    <ol class="market-steps" aria-label="The five steps">
       <li><a href="#step-data">What the data shows</a></li>
       <li><a href="#step-pipeline">What's coming</a></li>
       <li><a href="#step-fair-access">CRA and fair access</a></li>
       <li><a href="#step-local">What local knowledge has to answer</a></li>
+      <li><a href="#step-plan">The five-year plan</a></li>
     </ol>
 
     <h3 class="market-step-title" id="step-data"><span>1</span>What the data shows</h3>
@@ -184,9 +223,78 @@ const mfi = kf.metroMedianFamilyIncome;
       <li><strong>Adding Kaufman changes our assessment area.</strong> What does compliance need to see in the plan before we file?</li>
     </ol>
 
+    <h3 class="market-step-title" id="step-plan"><span>5</span>The five-year plan</h3>
+    <p class="market-step-intro">The board isn't approving one branch. It is approving a sequence: where the bank goes, in what order, what each branch should hold and by when, and what the rest of the network carries while the new ones ramp. That starts with how new branches actually perform.</p>
+
+    <h4 class="plan-subtitle">How new branches ramp in Dallas-Fort Worth</h4>
+    <div class="plan-ramp">
+      <figure class="plan-chart">
+        <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ramp-chart-title">
+          <title id="ramp-chart-title">Deposits in new community-bank branches by year since opening: the median reaches ${ramp.byAge[2].median}M in year 3 and ${ramp.byAge[4].median}M in year 5; the bottom quarter is below ${ramp.byAge[4].p25}M in year 5.</title>
+          {[0, 40, 80, 120].map((v) => <g class="plan-grid"><line x1={L} x2={W - R} y1={y(v)} y2={y(v)} />{v > 0 && <text x={L - 8} y={y(v)} dy="0.35em">${v}M</text>}</g>)}
+          {[0, 1, 2, 3, 4, 5].map((a) => <text class="plan-axis" x={x(a)} y={H - 10}>{a === 0 ? 'Open' : `Year ${a}`}</text>)}
+          <path class="plan-band" d={band} />
+          <line class="plan-target" x1={L} x2={W - R} y1={y(ramp.target)} y2={y(ramp.target)} />
+          <line class="plan-breakeven" x1={L} x2={W - R} y1={y(ramp.breakeven)} y2={y(ramp.breakeven)} />
+          <text class="plan-line-label" x={L + 6} y={y(ramp.target)} dy="-0.45em">${ramp.target}M target</text>
+          <text class="plan-line-label" x={L + 6} y={y(ramp.breakeven)} dy="1.15em">${ramp.breakeven}M break-even</text>
+          <path class="plan-median" d={line('median')} />
+        </svg>
+        <figcaption>Line: the median branch. Shaded: the middle half. {ramp.branches} community-bank branches opened new in the metro from {ramp.opened[0]} to {ramp.opened[1]}, tracked every June; {ramp.relocationsExcluded} relocations excluded because they opened with deposits. {data.asOf.ramp}.</figcaption>
+      </figure>
+      <div class="market-table-wrap">
+        <table class="market-table plan-outcomes">
+          <caption class="sr-only">Outcomes for new community-bank branches at years 1, 3, and 5</caption>
+          <thead><tr><th scope="col">Share of branches</th><th scope="col">Year 1</th><th scope="col">Year 3</th><th scope="col">Year 5</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Closed</th>{[1, 3, 5].map((n) => <td>{pct(100 - age(n).stillOpenShare)}</td>)}</tr>
+            <tr><th scope="row">Open, below break-even</th>{[1, 3, 5].map((n) => <td>{pct(age(n).belowBreakevenShare)}</td>)}</tr>
+            <tr><th scope="row">Covering costs, below target</th>{[1, 3, 5].map((n) => <td>{pct(age(n).stillOpenShare - age(n).belowBreakevenShare - age(n).atTargetShare)}</td>)}</tr>
+            <tr><th scope="row">At ${ramp.target}M or more</th>{[1, 3, 5].map((n) => <td>{pct(age(n).atTargetShare)}</td>)}</tr>
+          </tbody>
+        </table>
+        <p class="market-table-note">Break-even is ${ramp.breakeven}M: a ${ramp.branchCost}K annual running cost (staff and occupancy) over a {ramp.depositSpread}% deposit spread. Published estimates put break-even at $25M to $40M and ${ramp.target}M as the level where a branch earns its target return (<a href="https://www.federalreserve.gov/econres/notes/feds-notes/size-and-survival-of-entrants-to-retail-banking-20230901.html" target="_blank" rel="noopener noreferrer">Federal Reserve, 2023</a>; <a href="https://www.americanbanker.com/news/the-more-things-change-bank-ceos-on-why-theyre-adding-branches" target="_blank" rel="noopener noreferrer">American Banker, April 2026</a>).</p>
+      </div>
+    </div>
+    <p class="plan-finding">At year five, {pct(failing(age(5)))} of new community-bank branches in the metro were closed or still below break-even. The plan below budgets for that instead of assuming every branch hits the median.</p>
+
+    <h4 class="plan-subtitle">The sequence</h4>
+    <ol class="plan-sequence">
+      <li><span class="plan-when">Year 1</span><p><strong>Forney, on US-80.</strong> The fastest household growth in the county, a hospital opening in 2027, and a school district past 20,000 students. Planned on the median ramp.</p></li>
+      <li><span class="plan-when">Year 2</span><p><strong>Terrell.</strong> The county's low- and moderate-income tracts, and Amazon hiring there from 2027. This is the CRA branch, so it is planned on the bottom-quarter ramp: it is placed for the community it serves, against an incumbent with {pct(incumbent.share)} of the county's deposits.</p></li>
+      <li><span class="plan-when">Year 3</span><p><strong>Midlothian, in Ellis County,</strong> if Forney is on plan (${path('median')[2]}M by the end of year 2). Ellis ranked second, and Medline and the school district bring payroll and households. Planned on the median ramp.</p></li>
+      <li><span class="plan-when">Year 5</span><p><strong>Review against the ramp.</strong> Each branch is measured against the curve it was planned on. A second Kaufman site is decided then, on actual results.</p></li>
+    </ol>
+
+    <h4 class="plan-subtitle">What the network carries</h4>
+    <div class="market-table-wrap">
+      <table class="market-table plan-network">
+        <caption class="sr-only">Operating contribution by branch and year under the plan</caption>
+        <thead><tr><th scope="col">Operating contribution</th>{YEARS.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
+        <tbody>
+          {expected.map((b) => (
+            <tr><th scope="row">{b.site}{b.ramp === 'p25' ? ' (CRA branch)' : ''}</th>{b.byYear.map((yr) => <td class:list={[{ 'is-negative': yr && yr.contribution < 0 }]}>{yr ? kUSD(yr.contribution) : ''}</td>)}</tr>
+          ))}
+          <tr class="plan-total"><th scope="row">Network</th>{expectedTotals.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{kUSD(t)}</td>)}</tr>
+          <tr><th scope="row">If every branch ramps like the bottom quarter</th>{downsideTotals.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{kUSD(t)}</td>)}</tr>
+        </tbody>
+      </table>
+      <p class="market-table-note">Deposit spread less running cost, on each year's average balance. Deposits only: loan income from a branch would improve every row. Before build-out of about ${ramp.buildOut}M a branch (<a href="https://www.americanbanker.com/news/the-more-things-change-bank-ceos-on-why-theyre-adding-branches" target="_blank" rel="noopener noreferrer">Bancography, via American Banker</a>).</p>
+    </div>
+    <div class="market-findings market-findings-two">
+      <div class="market-finding">
+        <h4>Terrell is the cost of the CRA commitment</h4>
+        <p>On its planned ramp, Terrell runs about {mUSD(terrellCost)} short over its first four years. Forney's surplus doesn't cover it until year {forneyCovers}. The board should approve that shortfall as the price of serving the county, by name and amount, rather than discover it later.</p>
+      </div>
+      <div class="market-finding">
+        <h4>The plan turns positive in year {firstPositive}, if the ramps hold</h4>
+        <p>The three branches need about {mUSD(buildOut * 1000)} to build and {mUSD(-sum(expectedTotals.slice(0, firstPositive - 1)))} of operating support before the network covers itself. If they all ramp like the bottom quarter, the network is still {kUSD(-downsideTotals[4])} a year short in year five. That is why the Midlothian branch waits for Forney's results.</p>
+      </div>
+    </div>
+
     <div class="market-recommendation">
-      <p class="band-label">The recommendation</p>
-      <p>On this evidence I'd put the branch in Kaufman County, in Forney on US-80, where the households are arriving: a hospital opens there in 2027 and the school district has passed 20,000 students. But I wouldn't take it to the board without a plan for Terrell. That is where the county's lower-income tracts are and where Amazon is hiring, and a Forney-only entry would leave them out. Before committing, I'd want the bank's lenders to tell me why {incumbent.bank} holds {pct(incumbent.share)} of the county's deposits, and what it would take for those customers to move.</p>
+      <p class="band-label">What goes to the board</p>
+      <p>Three branches over five years: Forney first, Terrell as the CRA branch, Midlothian only if Forney is on plan. {mUSD(buildOut * 1000)} to build, a named cost for Terrell, and a ramp each branch is measured against. Before committing, I'd want the bank's lenders to tell me why {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits, and what it would take for those customers to move.</p>
     </div>
   </div>
 </section>

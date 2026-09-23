@@ -3,6 +3,7 @@
     "deposits": "FDIC Summary of Deposits, June 30, 2026 (growth from June 30, 2021)",
     "population": "U.S. Census Bureau county population estimates, April 2020 to July 2025",
     "households": "U.S. Census Bureau American Community Survey, ACS 2024 1-year",
+    "ramp": "FDIC Summary of Deposits, June 2008 to June 2026, Dallas-Fort Worth metro",
     "fairAccess": "HMDA 2025 (CFPB) with FFIEC tract income and minority data; branches placed by the Census geocoder"
   },
   "notes": [
@@ -153,6 +154,76 @@
         "lmiPopulationShare": 9,
         "minorityPopulationShare": 9,
         "branches": 2
+      }
+    ]
+  },
+  "ramp": {
+    "branches": 146,
+    "relocationsExcluded": 17,
+    "opened": [
+      2009,
+      2023
+    ],
+    "target": 50,
+    "breakeven": 33,
+    "branchCost": 750,
+    "depositSpread": 2.25,
+    "buildOut": 3.5,
+    "byAge": [
+      {
+        "age": 1,
+        "branches": 146,
+        "reachedTargetShare": 26,
+        "stillOpenShare": 99,
+        "belowBreakevenShare": 66,
+        "atTargetShare": 26,
+        "p25": 5,
+        "median": 17,
+        "p75": 52
+      },
+      {
+        "age": 2,
+        "branches": 146,
+        "reachedTargetShare": 36,
+        "stillOpenShare": 95,
+        "belowBreakevenShare": 47,
+        "atTargetShare": 34,
+        "p25": 11,
+        "median": 33,
+        "p75": 69
+      },
+      {
+        "age": 3,
+        "branches": 146,
+        "reachedTargetShare": 41,
+        "stillOpenShare": 90,
+        "belowBreakevenShare": 38,
+        "atTargetShare": 38,
+        "p25": 16,
+        "median": 43,
+        "p75": 81
+      },
+      {
+        "age": 4,
+        "branches": 131,
+        "reachedTargetShare": 47,
+        "stillOpenShare": 87,
+        "belowBreakevenShare": 34,
+        "atTargetShare": 43,
+        "p25": 18,
+        "median": 47,
+        "p75": 102
+      },
+      {
+        "age": 5,
+        "branches": 111,
+        "reachedTargetShare": 51,
+        "stillOpenShare": 85,
+        "belowBreakevenShare": 28,
+        "atTargetShare": 44,
+        "p25": 24,
+        "median": 60,
+        "p75": 111
       }
     ]
   }
