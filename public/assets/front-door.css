@@ -1145,9 +1145,11 @@ figure.fd-stat {
 .fd-durbin-btn { font-size: 14px; }
 .fd-org-status { font-size: 12px; letter-spacing: 0.04em; }
 .fd-g-cac span { font-size: 12px; }
-.fd-tl-label { font-size: 16px; }
-.fd-tl-sub { font-size: 15px; }
-.fd-tl-marker-label { font-size: 14px; }
+.fd-tl-label { font-size: 13px; }
+.fd-tl-sub { font-size: 13px; }
+.fd-tl-callout { font-size: 18px; }
+.fd-tl-marker-label { font-size: 12px; }
+.fd-g-timeline svg { display: block; max-width: 100%; height: auto; overflow: visible; }
 .fd-sidenote .fd-note-more { font-size: 13px; padding: 3px 0; }
 
 /* The calculator follows the site's square corners and hard focus outline. */

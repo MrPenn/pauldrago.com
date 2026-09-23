@@ -257,12 +257,6 @@
     var endAge = parseInt(g2.getAttribute('data-end'), 10) || 40;
     var eventVal = parseFloat(g2.getAttribute('data-event')) || 973;
     var years = endAge - startAge;
-    var narrow = window.innerWidth < 760;
-    var W = narrow ? 440 : 760, H = narrow ? 340 : 330, padL = narrow ? 58 : 58, padR = 20, padT = 54, padB = 44;
-    var innerW = W - padL - padR, innerH = H - padT - padB;
-    var maxVal = perYear * years;
-    var slots = years + 1, slotW = innerW / slots, barW = slotW * 0.62;
-    var y = function (v) { return padT + innerH - (v / maxVal) * innerH; };
     var ns = 'http://www.w3.org/2000/svg';
     function el(name, attrs, text) {
       var e = document.createElementNS(ns, name);
@@ -270,41 +264,61 @@
       if (text != null) e.textContent = text;
       return e;
     }
-    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Checking contribution accumulating from age ' + startAge + ' to ' + (endAge - 1) + ', about ' + money(maxVal) + ' in total, beside a ' + money(eventVal) + ' mortgage at ' + endAge + '.' });
     g2.appendChild(h('p', 'fd-eyebrow', 'The fifteen-year wait'));
+    var maxVal = perYear * years;
+    var svg = null;
 
-    [0, 2000, 4000, 6000].forEach(function (v) {
-      if (v > maxVal) return;
-      svg.appendChild(el('line', { x1: padL, x2: W - padR, y1: y(v), y2: y(v), 'class': 'fd-tl-axis' }));
-      svg.appendChild(el('text', { x: padL - 10, y: y(v) + 4, 'text-anchor': 'end', 'class': 'fd-tl-label' }, money(v)));
-    });
-    for (var i = 0; i < years; i++) {
-      var val = perYear * (i + 1);
-      var x = padL + i * slotW + (slotW - barW) / 2;
-      var bar = el('rect', { x: x, y: y(val), width: barW, height: innerH - (y(val) - padT), 'class': 'fd-tl-bar' });
-      bar.style.transitionDelay = (reduceMotion ? 0 : i * 55) + 'ms';   // rises left to right, about 0.8s across
-      svg.appendChild(bar);
-      var age = startAge + i;
-      if ((age - startAge) % 5 === 0) {
-        svg.appendChild(el('text', { x: x + barW / 2, y: H - padB + 22, 'text-anchor': 'middle', 'class': 'fd-tl-label' + (age === startAge ? ' is-strong' : '') }, String(age)));
+    // Drawn at the width it is displayed, so one SVG unit is one CSS pixel and the type stays
+    // at its real size. The two callouts live in a band above the plot, clear of every bar.
+    function drawTimeline() {
+      var cs = getComputedStyle(g2);
+      var W = Math.max(300, Math.round(g2.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)));
+      var H = Math.round(Math.max(300, Math.min(380, W * 0.78)));
+      var padL = 54, padR = 8, padT = 78, padB = 52;
+      var innerW = W - padL - padR, innerH = H - padT - padB;
+      var slots = years + 1, slotW = innerW / slots, barW = Math.max(6, slotW * 0.62);
+      var y = function (v) { return padT + innerH - (v / maxVal) * innerH; };
+      var next = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'img', 'aria-label': 'Checking contribution accumulating from age ' + startAge + ' to ' + (endAge - 1) + ', about ' + money(maxVal) + ' in total, beside a ' + money(eventVal) + ' mortgage at ' + endAge + '.' });
+
+      [0, 2000, 4000, 6000].forEach(function (v) {
+        if (v > maxVal) return;
+        next.appendChild(el('line', { x1: padL, x2: W - padR, y1: y(v), y2: y(v), 'class': 'fd-tl-axis' }));
+        next.appendChild(el('text', { x: padL - 8, y: y(v) + 4, 'text-anchor': 'end', 'class': 'fd-tl-label' }, money(v)));
+      });
+      for (var i = 0; i < years; i++) {
+        var val = perYear * (i + 1);
+        var x = padL + i * slotW + (slotW - barW) / 2;
+        var bar = el('rect', { x: x, y: y(val), width: barW, height: innerH - (y(val) - padT), 'class': 'fd-tl-bar' });
+        bar.style.transitionDelay = (reduceMotion ? 0 : i * 55) + 'ms';   // rises left to right, about 0.8s across
+        next.appendChild(bar);
+        var age = startAge + i;
+        if ((age - startAge) % 5 === 0) {
+          next.appendChild(el('text', { x: x + barW / 2, y: padT + innerH + 20, 'text-anchor': 'middle', 'class': 'fd-tl-label' + (age === startAge ? ' is-strong' : '') }, String(age)));
+        }
       }
+      var xe = padL + years * slotW + (slotW - barW) / 2, xm = xe + barW / 2;
+      // the marker at 40 comes first: the wait, before anything has accumulated
+      next.appendChild(el('line', { x1: xm, x2: xm, y1: 50, y2: padT + innerH, 'class': 'fd-tl-marker' }));
+      next.appendChild(el('text', { x: W - padR, y: padT + innerH + 40, 'text-anchor': 'end', 'class': 'fd-tl-marker-label' }, 'Median first-time buyer'));
+      var ev = el('rect', { x: xe, y: y(eventVal), width: barW, height: innerH - (y(eventVal) - padT), 'class': 'fd-tl-event' });
+      ev.style.transitionDelay = (reduceMotion ? 0 : 380) + 'ms';   // a beat after the reader lands on the sentence
+      next.appendChild(ev);
+      next.appendChild(el('text', { x: xm, y: padT + innerH + 20, 'text-anchor': 'middle', 'class': 'fd-tl-label is-strong' }, String(endAge)));
+      // callout band: checking total top left, the mortgage top right above its marker
+      next.appendChild(el('text', { x: padL, y: 22, 'text-anchor': 'start', 'class': 'fd-tl-callout' }, money(maxVal) + ' of checking'));
+      next.appendChild(el('text', { x: padL, y: 42, 'text-anchor': 'start', 'class': 'fd-tl-sub' }, 'gross, at ' + money(perYear) + ' a year'));
+      next.appendChild(el('text', { x: W - padR, y: 22, 'text-anchor': 'end', 'class': 'fd-tl-callout is-brass' }, money(eventVal)));
+      next.appendChild(el('text', { x: W - padR, y: 42, 'text-anchor': 'end', 'class': 'fd-tl-sub is-brass' }, 'the mortgage'));
+      next.appendChild(el('line', { x1: padL, x2: W - padR, y1: padT + innerH, y2: padT + innerH, 'class': 'fd-tl-axis', style: 'stroke: var(--secondary)' }));
+      if (svg) g2.replaceChild(next, svg); else g2.appendChild(next);
+      svg = next;
     }
-    var xe = padL + years * slotW + (slotW - barW) / 2;
-    // the marker at 40 comes first: the wait, before anything has accumulated
-    svg.appendChild(el('line', { x1: xe + barW / 2, x2: xe + barW / 2, y1: padT - 18, y2: padT + innerH, 'class': 'fd-tl-marker' }));
-    svg.appendChild(el('text', { x: xe + barW / 2, y: padT - 26, 'text-anchor': 'end', 'class': 'fd-tl-marker-label' }, 'median first-time buyer'));
-    var ev = el('rect', { x: xe, y: y(eventVal), width: barW, height: innerH - (y(eventVal) - padT), 'class': 'fd-tl-event' });
-    ev.style.transitionDelay = (reduceMotion ? 0 : 380) + 'ms';   // a beat after the reader lands on the sentence
-    svg.appendChild(ev);
-    svg.appendChild(el('text', { x: xe + barW / 2, y: H - padB + 22, 'text-anchor': 'middle', 'class': 'fd-tl-label is-strong' }, String(endAge)));
-    // the checking total sits left of the peak, inside the chart; the mortgage label sits above its bar, flush right
-    var peakLeft = padL + (years - 1) * slotW + (slotW - barW) / 2 - 10;
-    svg.appendChild(el('text', { x: peakLeft, y: y(maxVal) + 8, 'text-anchor': 'end', 'class': 'fd-tl-callout' }, money(maxVal) + ' of checking'));
-    svg.appendChild(el('text', { x: peakLeft, y: y(maxVal) + 27, 'text-anchor': 'end', 'class': 'fd-tl-sub' }, 'gross, at ' + money(perYear) + ' a year'));
-    svg.appendChild(el('text', { x: W - padR, y: y(eventVal) - 30, 'text-anchor': 'end', 'class': 'fd-tl-callout is-brass' }, money(eventVal)));
-    svg.appendChild(el('text', { x: W - padR, y: y(eventVal) - 13, 'text-anchor': 'end', 'class': 'fd-tl-sub is-brass' }, 'the mortgage'));
-    svg.appendChild(el('line', { x1: padL, x2: W - padR, y1: padT + innerH, y2: padT + innerH, 'class': 'fd-tl-axis', style: 'stroke: var(--secondary)' }));
-    g2.appendChild(svg);
+    drawTimeline();
+    var tlWidth = g2.clientWidth, tlTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(tlTimer);
+      tlTimer = setTimeout(function () { if (g2.clientWidth !== tlWidth) { tlWidth = g2.clientWidth; drawTimeline(); } }, 150);
+    });
   }
 
   /* ---------- Sequence 3: twelve functions, one bank ---------- */
