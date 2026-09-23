@@ -235,8 +235,8 @@
 }
 .fd-accent { color: var(--brass); }
 
-/* Sources */
-.article-body section[data-footnotes] { margin-top: 8px; }
+/* Sources: the list stays in the document for the sidenotes and for print, but is not shown on screen */
+.article-body section[data-footnotes] { display: none; margin-top: 8px; }
 .article-body section[data-footnotes] .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
@@ -321,6 +321,7 @@
 }
 
 @media print {
+  .article-body section[data-footnotes] { display: block; }
   .fd-sidenote, .fd-note-inline, .trace-rail { display: none !important; }
   .fd-toggle-stage .fd-one { position: static; opacity: 1; transform: none; margin-top: 16px; }
   .fd-toggle-bar { display: none; }
@@ -642,5 +643,9 @@
   .fd-cell, .fd-g-seg, .fd-g-bar, .fd-g-row, .fd-g-cac, .fd-tl-bar, .fd-tl-event, .fd-org-box, .fd-one { transition: none !important; }
 }
 
-.fd-sidenote .fd-note-more { color: var(--brass); text-decoration: none; margin-left: 4px; white-space: nowrap; }
+.fd-sidenote .fd-note-more { color: var(--brass); background: none; border: 0; padding: 0; margin-left: 4px; font: inherit; font-size: 12px; cursor: pointer; white-space: nowrap; }
 .fd-sidenote .fd-note-more:hover { text-decoration: underline; }
+.fd-sidenote .fd-note-full { display: none; }
+.fd-sidenote.is-open .fd-note-full { display: inline; }
+.fd-sidenote.is-open .fd-note-brief, .fd-sidenote.is-open .fd-note-more { display: none; }
+.fd-sticky-notes .fd-sidenote.is-current.is-open { max-height: 600px; }

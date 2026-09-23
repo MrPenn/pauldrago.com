@@ -60,7 +60,7 @@
       '<div class="fd-legend-row"><span class="fd-swatch fd-swatch-fintech"></span><span class="fd-legend-num" data-count="44">0</span><span class="fd-legend-label">of every 100 new checking accounts opened in 2024 went to digital banks and fintechs</span></div>' +
       '<div class="fd-legend-row"><span class="fd-swatch fd-swatch-community"></span><span class="fd-legend-num" data-count="4">0</span><span class="fd-legend-label">went to community banks</span></div>' +
       '<div class="fd-legend-row"><span class="fd-swatch"></span><span class="fd-legend-num">52</span><span class="fd-legend-label">went to everyone else</span></div>');
-    var src = h('p', 'fd-opener-source', 'Cornerstone Advisors estimate, all ages. <a href="#user-content-fn-1">Source 1</a>');
+    var src = h('p', 'fd-opener-source', 'Cornerstone Advisors, <a href="https://www.crnrstone.com/hubfs/Cornerstone-Advisors-2025-Research-Recap_Beyond-the-Paycheck-Motel.pdf" target="_blank" rel="noopener">Beyond the Paycheck Motel</a>, 2025 research recap, Figure 6. New checking accounts across all ages; community banks defined as institutions under $100 billion in assets.');
     inner.appendChild(units); inner.appendChild(legend); inner.appendChild(src);
     opener.appendChild(inner);
     opener.removeAttribute('aria-hidden');
@@ -341,7 +341,9 @@
           var strong = li.querySelector('strong');
           var lead = strong ? '<strong>' + strong.textContent + '</strong> ' : '';
           if (strong) brief = brief.replace(strong.textContent, '').replace(/^\s+/, '');
-          aside.innerHTML = '<span class="fd-sidenote-num">' + num + '</span>' + lead + brief + ' <a class="fd-note-more" href="#' + id + '">Full note \u2193</a>';
+          var full = li.innerHTML;
+          aside.innerHTML = '<span class="fd-sidenote-num">' + num + '</span>' + lead + '<span class="fd-note-brief">' + brief + '</span><span class="fd-note-full">' + full.replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '') + '</span> <button type="button" class="fd-note-more">More</button>';
+          aside.querySelector('.fd-note-more').addEventListener('click', function () { aside.classList.add('is-open'); });
           // in a pinned sequence the note lives under the graphic and appears with its step
           aside.setAttribute('data-step', step.getAttribute('data-step'));
           seq.querySelector('.fd-sticky-notes').appendChild(aside);
