@@ -130,7 +130,7 @@ const SOURCES = {
           <div><dt>Still to earn back, end of year 5</dt><dd><span class="report-figure">{mUSD(model.cumulative[4])}</span><span class="report-figure-note">with the network returning {mUSD(model.operating[4])} a year</span></dd></div>
           <div><dt>New branches failing at year 5</dt><dd><span class="report-figure">{pct(failing(age(5)))}</span><span class="report-figure-note">closed or below operating break-even, Dallas-Fort Worth</span></dd></div>
         </dl>
-        <p class="brief-note">Net interest margin against running cost and build-out; fee income and head-office overhead left out. CRA and fair lending are a check, not a reason to pick a site: Kaufman passes, and Ellis passes with the lending commitment in decision 4 (<a href="#cra">appendix D</a>).</p>
+        <p class="brief-note">Fee income and head-office overhead are left out. CRA and fair lending are a check, not a reason to pick a site: Kaufman passes, and Ellis passes with the lending commitment in decision 4 (<a href="#cra">appendix D</a>).</p>
       </section>
 
       <section class="brief-block" aria-labelledby="decisions-h">
@@ -143,13 +143,24 @@ const SOURCES = {
         </ol>
       </section>
 
-      <section class="brief-block" aria-labelledby="change-h">
-        <h2 class="brief-h2" id="change-h">What would change it</h2>
-        <ul class="report-risks brief-risks">
-          <li><strong>Slow ramps.</strong> Only {pct(age(5).atTargetShare)} of new branches in the metro reach ${ramp.target}M by year 5. If all three ramp like the bottom quarter, operations are {mUSD(model.downside[4])} a year short in year 5; the {third.town} gate holds exposure to two branches until then.</li>
-          <li><strong>A different CRA outcome.</strong> If the proposal isn't finalized as written, or the bank is supervised by the Federal Reserve, a $2 billion bank is a large bank and Waxahachie moves ahead of {third.town}.</li>
-          <li><strong>{first.town} and {third.town} overlap.</strong> They are about {siteGap} miles apart. Site {third.town} southwest of town, toward the growth along the Dallas County line.</li>
-        </ul>
+
+      <section class="brief-block" id="economics-brief" aria-labelledby="econ-h">
+        <h2 class="brief-h2" id="econ-h">The economics</h2>
+        <div class="market-table-wrap">
+          <table class="market-table plan-network brief-econ">
+          <caption class="sr-only">Contribution by branch and year under the plan</caption>
+          <thead><tr><th scope="col">Contribution</th>{YEARS.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
+          <tbody>
+            {model.expected.map((b) => (
+              <tr><th scope="row">{b.site}</th>{b.byYear.map((yr) => <td class:list={[{ 'is-negative': yr && yr.contribution < 0 }]}>{yr ? tUSD(yr.contribution) : ''}</td>)}</tr>
+            ))}
+            <tr class="plan-total"><th scope="row">Network, operating</th>{model.operating.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
+            <tr><th scope="row">Build-out</th>{model.buildOut.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{t ? tUSD(t) : ''}</td>)}</tr>
+            <tr class="plan-total"><th scope="row">Cumulative, with build-out</th>{model.cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="brief-note">Each branch on the median Dallas-Fort Worth ramp, at a {ramp.nim}% net interest margin, less up to {costUSD(ramp.branchCost[1])} a year to run it. A branch covers its running cost at ${ramp.breakeven}M in deposits and pays back its build-out in four years at ${ramp.target}M (<a href="#economics">appendix E</a>).</p>
       </section>
 
       <div class="brief-page-two">
@@ -169,6 +180,15 @@ const SOURCES = {
               </tbody>
             </table>
           </div>
+        </section>
+
+        <section class="brief-block" aria-labelledby="change-h">
+          <h2 class="brief-h2" id="change-h">What would change it</h2>
+          <ul class="report-risks brief-risks">
+            <li><strong>Slow ramps.</strong> Only {pct(age(5).atTargetShare)} of new branches in the metro reach ${ramp.target}M by year 5. If all three ramp like the bottom quarter, operations are {mUSD(model.downside[4])} a year short in year 5; the {third.town} gate holds exposure to two branches until then.</li>
+            <li><strong>A different CRA outcome.</strong> If the proposal isn't finalized as written, or the bank is supervised by the Federal Reserve, a $2 billion bank is a large bank and Waxahachie moves ahead of {third.town}.</li>
+            <li><strong>{first.town} and {third.town} overlap.</strong> They are about {siteGap} miles apart. Site {third.town} southwest of town, toward the growth along the Dallas County line.</li>
+          </ul>
         </section>
 
         <nav class="brief-appendix" aria-label="Appendix">
@@ -298,25 +318,6 @@ const SOURCES = {
           <p class="market-table-note">A new branch has to earn back its build-out, about ${ramp.buildOut}M, which Bancography expects to recover in {ramp.paybackYears} years (<a href={SOURCES.ab.href} target="_blank" rel="noopener noreferrer">{SOURCES.ab.text}</a>), and its running cost, up to {costUSD(ramp.branchCost[1])} a year (<a href={SOURCES.be.href} target="_blank" rel="noopener noreferrer">{SOURCES.be.text}</a>; <a href={SOURCES.bam.href} target="_blank" rel="noopener noreferrer">{SOURCES.bam.text}</a>). At the community-bank net interest margin of {ramp.nim}% (<a href={SOURCES.qbp.href} target="_blank" rel="noopener noreferrer">{SOURCES.qbp.text}</a>), covering the running cost takes ${ramp.breakeven}M in deposits: operating break-even. Earning back ${ramp.buildOut}M plus {ramp.paybackYears} years of running cost within {ramp.paybackYears} years takes an average of ${ramp.payback}M: call it ${ramp.target}M, break-even with the build-out. That is also what the median new branch holds 15 years after opening (<a href={SOURCES.fed.href} target="_blank" rel="noopener noreferrer">{SOURCES.fed.text}</a>).</p>
         </div>
       </div>
-
-      <h3 class="report-h3">What the network carries</h3>
-      <div class="market-table-wrap">
-        <table class="market-table plan-network">
-          <caption class="sr-only">Contribution by branch and year under the plan</caption>
-          <thead><tr><th scope="col">Contribution</th>{YEARS.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
-          <tbody>
-            {model.expected.map((b) => (
-              <tr><th scope="row">{b.site}</th>{b.byYear.map((yr) => <td class:list={[{ 'is-negative': yr && yr.contribution < 0 }]}>{yr ? tUSD(yr.contribution) : ''}</td>)}</tr>
-            ))}
-            <tr class="plan-total"><th scope="row">Network, operating</th>{model.operating.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
-            <tr><th scope="row">Build-out</th>{model.buildOut.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{t ? tUSD(t) : ''}</td>)}</tr>
-            <tr class="plan-total"><th scope="row">Cumulative, with build-out</th>{model.cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
-            <tr><th scope="row">Operating, if every branch ramps like the bottom quarter</th>{model.downside.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
-          </tbody>
-        </table>
-        <p class="market-table-note">Each branch on the median ramp. Net interest margin on each year's average deposits, less {costUSD(ramp.branchCost[1])} a year in running cost, the high end of the published range. Build-out of ${ramp.buildOut}M a branch in the year it opens. Fee income and head-office overhead are left out.</p>
-      </div>
-      <p class="report-p">Operations turn positive in year {model.firstPositiveYear}; the build-out takes longer. Paying a branch back within four years takes an average of ${ramp.payback}M, and the median new branch averages about ${Math.round(model.medianFourYearAverage)}M over its first four because it starts from zero. The build-out is not earned back inside the plan's five years, and the board should see the plan as the longer investment it is.</p>
     </section>
 
     <section class="report-section report-appendix" id="risks" aria-labelledby="risks-h">
