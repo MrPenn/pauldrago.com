@@ -76,6 +76,10 @@ const jsonld = {
   ]
 };
 import OtherDecisions from '../components/OtherDecisions.astro';
+import MarketExample from '../components/MarketExample.astro';
+import marketData from '../data/dfw-markets.json';
+import { PRESETS, scoreMarkets } from '../data/market-scoring';
+const heroRanking = scoreMarkets(marketData.markets, PRESETS.full.weights);
 ---
 <Base {...meta} jsonld={jsonld}>
 <main id="main">
@@ -88,16 +92,14 @@ import OtherDecisions from '../components/OtherDecisions.astro';
           <p class="hero-subhead">Compare deposits, customer geography, branch economics, CRA implications, and fair-access risk before choosing a market.</p>
         </div>
         <figure class="decision-model" aria-labelledby="branch-model-title">
-          <p class="model-label">What you receive</p>
-          <p class="model-title" id="branch-model-title">One scorecard per market</p>
+          <p class="model-label">A worked example</p>
+          <p class="model-title" id="branch-model-title">Three Dallas counties, one branch</p>
           <dl class="score-table">
-            <div class="score-row"><dt class="score-name">Deposit opportunity</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 72%"></span></dd><dd class="score-value">72</dd></div>
-            <div class="score-row"><dt class="score-name">Customer geography</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 64%"></span></dd><dd class="score-value">64</dd></div>
-            <div class="score-row"><dt class="score-name">Branch economics</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 58%"></span></dd><dd class="score-value">58</dd></div>
-            <div class="score-row"><dt class="score-name">CRA and assessment area</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 81%"></span></dd><dd class="score-value">81</dd></div>
-            <div class="score-row"><dt class="score-name">Fair-access review</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 90%"></span></dd><dd class="score-value">90</dd></div>
+            {heroRanking.map((r) => (
+              <div class="score-row"><dt class="score-name">{r.county} County</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style={`width: ${r.score}%`}></span></dd><dd class="score-value">{r.score}</dd></div>
+            ))}
           </dl>
-          <figcaption class="model-note">Illustration, not client data. Each score traces to FDIC, NCUA, Census, and institution data, with the assumption behind it written down.</figcaption>
+          <figcaption class="model-note">Scored on public FDIC and Census data for a hypothetical $2 billion Dallas County bank. <a href="#worked-example">Change the weights yourself</a>.</figcaption>
         </figure>
       </div>
     </div>
@@ -115,6 +117,9 @@ import OtherDecisions from '../components/OtherDecisions.astro';
       </div>
     </div>
   </section>
+
+  <hr class="section-divider">
+  <MarketExample />
 
   <section class="compliance-section">
     <div class="container">

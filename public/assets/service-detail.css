@@ -560,3 +560,67 @@ button):focus-visible {
 .footprint-key.current { background: color-mix(in srgb, var(--paper) 8%, transparent); }
 .footprint-key.target { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 20%, transparent); }
 .footprint-key.overlap { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 55%, var(--paper) 10%); }
+
+/* ---------- Worked example: three Dallas-area counties ---------- */
+.market-example { padding: 84px 0; }
+.market-example .section-intro { margin-top: 24px; }
+
+.market-table-wrap { margin-top: 40px; max-width: 900px; }
+.market-table { width: 100%; border-collapse: collapse; font-size: 16px; line-height: 1.4; }
+.market-table th, .market-table td { padding: 12px 12px 12px 0; border-top: 1px solid var(--hairline); text-align: right; font-variant-numeric: tabular-nums; }
+.market-table thead th { border-top: 0; color: var(--paper); font-size: 15px; font-weight: 700; }
+.market-table tbody th { text-align: left; color: var(--secondary); font-weight: 500; }
+.market-table td { color: var(--paper); }
+.market-table td.is-best { color: var(--brass); font-weight: 700; }
+.market-table-note { max-width: 80ch; margin-top: 14px; color: var(--secondary); font-size: 13px; line-height: 1.55; }
+
+.market-scorecard {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 48px;
+  margin-top: 56px;
+  padding: 32px;
+  border: 1px solid var(--hairline);
+  background: var(--dark-navy);
+  box-shadow: 6px 6px 0 var(--paper);
+}
+.market-weights-title { color: var(--brass); font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
+.market-presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
+.market-preset { min-height: 36px; padding: 6px 12px; border: 1px solid var(--paper); background: transparent; color: var(--paper); font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; }
+.market-preset[aria-pressed="true"] { background: var(--paper); color: var(--ground); }
+.market-group { margin-top: 18px; padding: 0; border: 0; }
+.market-group legend { margin-bottom: 6px; color: var(--secondary); font-size: 13px; font-weight: 600; }
+.market-weight { display: grid; grid-template-columns: minmax(0, 1fr) 120px 20px; gap: 12px; align-items: center; min-height: 36px; }
+.market-weight-name { color: var(--paper); font-size: 15px; }
+.market-weight input { width: 100%; height: 28px; margin: 0; accent-color: var(--brass); }
+.market-weight input:disabled { opacity: 0.6; }
+.market-weight output { color: var(--paper); font-size: 14px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+
+.market-ranking-list { margin-top: 14px; padding: 0; list-style: none; }
+.market-rank { display: grid; grid-template-columns: 130px minmax(0, 1fr) 36px; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid var(--hairline); }
+.market-rank:first-child .market-rank-name { color: var(--brass); }
+.market-rank-name { color: var(--paper); font-size: 16px; font-weight: 700; }
+.market-rank-bar { height: 10px; background: var(--hairline); }
+.market-rank-bar span { display: block; height: 100%; background: var(--paper); transition: width 240ms cubic-bezier(0.22, 1, 0.36, 1); }
+.market-rank:first-child .market-rank-bar span { background: var(--brass); }
+.market-rank-score { color: var(--paper); font-size: 16px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.market-ranking-note { margin-top: 16px; color: var(--secondary); font-size: 14px; line-height: 1.55; }
+
+.market-findings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 56px; }
+.market-finding h3 { font-size: 18px; line-height: 1.3; }
+.market-finding p { margin-top: 10px; color: var(--secondary); font-size: 16px; line-height: 1.6; }
+.decision-model .model-note a { color: var(--paper); font-weight: 700; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+
+@media (prefers-reduced-motion: reduce) { .market-rank-bar span { transition: none; } }
+
+@media (max-width: 900px) {
+  .market-scorecard { grid-template-columns: 1fr; gap: 32px; padding: 22px; box-shadow: 3px 3px 0 var(--paper); }
+  .market-findings { grid-template-columns: 1fr; gap: 24px; }
+}
+@media (max-width: 640px) {
+  .market-example { padding: 56px 0; }
+  .market-table { font-size: 14px; }
+  .market-table th, .market-table td { padding: 10px 8px 10px 0; }
+  .market-weight { grid-template-columns: minmax(0, 1fr) 96px 18px; gap: 8px; }
+  .market-rank { grid-template-columns: 104px minmax(0, 1fr) 32px; }
+}

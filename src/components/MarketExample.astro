@@ -1,0 +1,148 @@
+---
+// Worked example for the branch-analysis page: the method run on three real Dallas-area counties.
+// Market figures come from src/data/dfw-markets.json (built by scripts/build-dfw-markets.py);
+// the bank is hypothetical and its customer counts are illustrative.
+import data from '../data/dfw-markets.json';
+import { CRITERIA, PRESETS, INSTITUTION, scoreMarkets } from '../data/market-scoring';
+
+const markets = data.markets;
+const by = Object.fromEntries(markets.map((m) => [m.county, m]));
+const { Collin, Ellis, Kaufman } = by;
+const mapView = scoreMarkets(markets, PRESETS.map.weights);
+const fullCase = scoreMarkets(markets, PRESETS.full.weights);
+const publicOnly = scoreMarkets(markets, { ...PRESETS.full.weights, customers: 0 });
+const holdsOnPublicData = publicOnly[0].county === fullCase[0].county;
+const money = (b) => `$${b.toFixed(1)}B`;
+const pct = (n) => `${Math.round(n)}%`;
+const k = (n) => `$${Math.round(n / 1000)}K`;
+const num = (n) => Math.round(n).toLocaleString('en-US');
+const incumbent = Kaufman.leaders[0];
+const shortName = (name) => name.replace(/, National Association$/, '').replace(/ Bank$/, '');
+const collinLeaders = Collin.leaders.map((l) => shortName(l.bank));
+const collinLeaderShare = Collin.leaders.reduce((sum, l) => sum + l.share, 0);
+const growthVsKaufman = (Collin.depositGrowth / Kaufman.deposits).toFixed(1);
+const rows = [
+  { label: 'Local deposits, June 2026', key: 'deposits', show: (m) => money(m.deposits) },
+  { label: 'Deposit growth, 2021 to 2026', key: 'depositGrowthPct', show: (m) => `+${pct(m.depositGrowthPct)}` },
+  { label: 'Population growth, 2020 to 2025', key: 'populationGrowthPct', show: (m) => `+${pct(m.populationGrowthPct)}` },
+  { label: 'Median household income', key: 'medianIncome', show: (m) => k(m.medianIncome) },
+  { label: 'Households per bank branch', key: 'householdsPerBranch', show: (m) => num(m.householdsPerBranch) },
+  { label: 'Deposits held by community banks', key: 'communityShare', show: (m) => pct(m.communityShare) },
+  { label: 'Typical community-bank branch', key: 'medianCommunityBranch', show: (m) => `$${m.medianCommunityBranch}M` },
+  { label: "Largest bank's share", key: 'leader', show: (m) => pct(m.leaders[0].share), noBest: true },
+];
+const best = (key) => Math.max(...markets.map((m) => m[key]));
+const groups = [...new Set(CRITERIA.map((c) => c.group))];
+---
+<section class="market-example" id="worked-example" aria-labelledby="market-example-heading">
+  <div class="container">
+    <p class="band-label">A worked example on public data</p>
+    <h2 class="display-title section-title" id="market-example-heading">The map says Collin. The branch economics say Kaufman.</h2>
+    <p class="section-intro">Take {INSTITUTION.description}, looking for its first branch outside the county. Here is the method run on three real candidates: Collin County to the north, Ellis to the south, and Kaufman to the east. The bank is hypothetical. The market numbers are not, and anyone can check them.</p>
+
+    <div class="market-table-wrap">
+      <table class="market-table">
+        <caption class="sr-only">Three Dallas-area counties compared on public deposit, population, and income data</caption>
+        <thead>
+          <tr><th scope="col"><span class="sr-only">Measure</span></th>{markets.map((m) => <th scope="col">{m.county}</th>)}</tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr>
+              <th scope="row">{r.label}</th>
+              {markets.map((m) => <td class:list={[{ 'is-best': !r.noBest && m[r.key] === best(r.key) }]}>{r.show(m)}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="market-table-note">Highlighted: the strongest of the three on each measure. {data.asOf.deposits}. {data.asOf.population}. {data.asOf.households}. {data.notes.join(' ')}</p>
+    </div>
+
+    <div class="market-scorecard" data-market-scorecard>
+      <div class="market-weights">
+        <p class="market-weights-title">Weight the criteria</p>
+        <div class="market-presets" role="group" aria-label="Weighting presets" hidden data-presets>
+          {Object.entries(PRESETS).map(([key, p]) => <button type="button" class="market-preset" data-preset={key} aria-pressed={key === 'full' ? 'true' : 'false'}>{p.label}</button>)}
+        </div>
+        {groups.map((g) => (
+          <fieldset class="market-group">
+            <legend>{g}</legend>
+            {CRITERIA.filter((c) => c.group === g).map((c) => (
+              <label class="market-weight">
+                <span class="market-weight-name">{c.label}</span>
+                <input type="range" min="0" max="5" step="1" value={PRESETS.full.weights[c.key]} data-weight={c.key} disabled />
+                <output data-weight-out={c.key}>{PRESETS.full.weights[c.key]}</output>
+              </label>
+            ))}
+          </fieldset>
+        ))}
+      </div>
+      <div class="market-ranking">
+        <p class="market-weights-title" id="market-ranking-title">Ranking</p>
+        <ol class="market-ranking-list" aria-labelledby="market-ranking-title" aria-live="polite" data-ranking>
+          {fullCase.map((r) => (
+            <li class="market-rank" data-county={r.county}>
+              <span class="market-rank-name">{r.county} County</span>
+              <span class="market-rank-bar" aria-hidden="true"><span style={`width: ${r.score}%`}></span></span>
+              <span class="market-rank-score">{r.score}</span>
+            </li>
+          ))}
+        </ol>
+        <p class="market-ranking-note">Each measure scores a county against the best of the three (best = 100); the ranking is the weighted average. Try the deposit-map weights: {mapView[0].county} leads with {mapView[0].score}. The full case puts {fullCase[0].county} first with {fullCase[0].score}.{holdsOnPublicData && ' Set "Your customers nearby" to zero and it still leads: the case rests on public data.'}</p>
+      </div>
+    </div>
+    <script type="application/json" id="market-data" set:html={JSON.stringify(markets)}></script>
+
+    <div class="market-findings">
+      <div class="market-finding">
+        <h3>Where the answer flipped</h3>
+        <p>Collin added {money(Collin.depositGrowth)} of deposits in five years, {growthVsKaufman} times Kaufman's entire deposit base. But community banks captured only {money(Collin.communityGrowth)} of it across {Collin.communityBranches} branches. {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of Collin between them, and a typical community-bank branch there holds ${Collin.medianCommunityBranch}M.</p>
+      </div>
+      <div class="market-finding">
+        <h3>Why Kaufman leads on the evidence</h3>
+        <p>Kaufman's population grew {pct(Kaufman.populationGrowthPct)} since 2020, the fastest of the three, and it has the most households per branch ({num(Kaufman.householdsPerBranch)}). Its residents bank locally: community banks hold {pct(Kaufman.communityShare)} of deposits, and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M, nearly three times Collin's.</p>
+      </div>
+      <div class="market-finding">
+        <h3>What could still change it</h3>
+        <p>Kaufman is a concentrated market: {incumbent.bank} holds {pct(incumbent.share)} of its deposits. A de novo branch ramps slowly against an incumbent like that, so the recommendation comes with a diligence question, not a verdict. The branch would also extend the bank's CRA assessment area beyond Dallas County, which is a question for compliance before it is a marketing one.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { CRITERIA, PRESETS, scoreMarkets } from '../data/market-scoring';
+
+  const root = document.querySelector('[data-market-scorecard]');
+  const dataEl = document.getElementById('market-data');
+  if (root && dataEl) {
+    const markets = JSON.parse(dataEl.textContent || '[]');
+    const inputs = [...root.querySelectorAll<HTMLInputElement>('[data-weight]')];
+    const outputs = Object.fromEntries([...root.querySelectorAll<HTMLOutputElement>('[data-weight-out]')].map((o) => [o.dataset.weightOut, o]));
+    const presetButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-preset]')];
+    const list = root.querySelector('[data-ranking]');
+    const items = Object.fromEntries([...root.querySelectorAll<HTMLElement>('[data-county]')].map((li) => [li.dataset.county, li]));
+
+    function render() {
+      const weights = Object.fromEntries(inputs.map((i) => [i.dataset.weight, Number(i.value)]));
+      inputs.forEach((i) => { outputs[i.dataset.weight].textContent = i.value; });
+      const ranked = scoreMarkets(markets, weights);
+      ranked.forEach((r) => {
+        const li = items[r.county];
+        li.querySelector<HTMLElement>('.market-rank-bar span').style.width = `${r.score}%`;
+        li.querySelector('.market-rank-score').textContent = String(r.score);
+        list.appendChild(li);
+      });
+      const match = Object.entries(PRESETS).find(([, p]) => CRITERIA.every((c) => (p.weights[c.key] || 0) === weights[c.key]));
+      presetButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.preset === match?.[0])));
+    }
+
+    inputs.forEach((i) => { i.disabled = false; i.addEventListener('input', render); });
+    presetButtons.forEach((b) => b.addEventListener('click', () => {
+      const w = PRESETS[b.dataset.preset].weights;
+      inputs.forEach((i) => { i.value = String(w[i.dataset.weight] || 0); });
+      render();
+    }));
+    root.querySelector('[data-presets]').hidden = false;
+  }
+</script>
