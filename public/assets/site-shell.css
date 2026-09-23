@@ -58,7 +58,7 @@ a {
   color: inherit;
 }
 
-:where(a, button, input):focus-visible {
+:where(a, button, input, summary):focus-visible {
   outline: 3px solid var(--paper);
   outline-offset: 4px;
 }
@@ -308,7 +308,7 @@ footer {
 
   .brand-subline {
     max-width: 145px;
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .services-link {

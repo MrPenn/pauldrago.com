@@ -66,7 +66,7 @@
 .glance-item-head h3 .privacy-icon { margin-top: 2px; }
 .glance-item-head a {
   flex: none;
-  padding-top: 3px;
+  padding: 3px 0 4px;
   color: var(--brass);
   font-size: 14px;
   font-weight: 700;
@@ -78,10 +78,22 @@
 .glance-item ul { padding-left: 20px; }
 .glance-item li + li { margin-top: 4px; }
 .glance-contact { padding-top: 24px; color: var(--secondary); font-size: 15px; }
+.glance-settings {
+  margin-top: 14px;
+  padding: 8px 14px;
+  border: 1px solid var(--brass);
+  background: transparent;
+  color: var(--brass);
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.glance-settings:hover { background: var(--brass); color: var(--on-brass); }
 .glance-contact a { color: var(--brass); }
 
 /* Two tracks, one per way information arrives; a ring marks each moment on a track. */
-.timeline { margin-top: 20px; --ring: 18px; --track: 76px; }
+.timeline { margin-top: 20px; --ring: 18px; --track: 80px; }
 .timeline-head { display: flex; }
 .timeline-key {
   display: flex;
@@ -89,8 +101,8 @@
   gap: 6px;
   align-items: center;
   width: var(--track);
-  padding: 0 6px;
-  font-size: 11px;
+  padding: 0 4px;
+  font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
   line-height: 1.2;
@@ -205,13 +217,14 @@
   font-size: 24px;
   line-height: 1.25;
 }
-.privacy-summary { margin-top: 12px; font-size: 18px; line-height: 1.6; }
+.privacy-summary { max-width: 58ch; margin-top: 12px; font-size: 18px; line-height: 1.6; text-wrap: pretty; }
 .privacy-section a { color: inherit; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 .privacy-section .footer-link-button { text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 
 .privacy-section details { margin-top: 16px; }
 .privacy-section summary {
   width: fit-content;
+  padding-block: 4px;
   color: var(--brass);
   font-size: 14px;
   font-weight: 700;
@@ -220,15 +233,33 @@
 }
 .privacy-section details[open] summary { margin-bottom: 12px; }
 .privacy-section details p,
-.privacy-section details ul { color: var(--secondary); font-size: 16px; line-height: 1.65; }
+.privacy-section details ul { max-width: 60ch; color: var(--secondary); font-size: 16px; line-height: 1.65; }
 .privacy-section details ul { padding-left: 20px; }
 .privacy-section details li + li,
 .privacy-section details p + ul,
 .privacy-section details ul + p,
 .privacy-section details p + p { margin-top: 10px; }
 .privacy-section details strong { color: var(--paper); }
+.privacy-section code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; color: var(--paper); }
+
+/* Commitments ledger: a table on wide screens, one block per row on phones */
+.ledger-wrap { margin-top: 20px; }
+.ledger { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.45; }
+.ledger th, .ledger td { padding: 12px 12px 12px 0; border-top: 1px solid var(--hairline); text-align: left; vertical-align: top; }
+.ledger thead th {
+  padding-top: 0;
+  border-top: 0;
+  color: var(--brass);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.ledger tbody th { width: 30%; color: var(--paper); font-weight: 600; }
+.ledger td { color: var(--secondary); }
 
 .privacy-credit {
+  max-width: 64ch;
   margin-top: 40px;
   padding-top: 20px;
   border-top: 1px solid var(--hairline);
@@ -245,7 +276,36 @@
   .glance-heading { padding: 28px 20px 0; }
   .glance-intro { padding: 0 20px; }
   .glance-columns { grid-template-columns: 1fr; padding: 8px 20px 28px; }
-  .glance-item-head { flex-direction: column; gap: 6px; }
-  .glance-item-head a { padding: 0 0 0 34px; }
-  .timeline { --track: 64px; }
+  .glance-item-head { flex-direction: column; gap: 2px; }
+  .glance-item-head a { padding: 4px 0 4px 34px; }
+  .timeline { --track: 88px; }
+  /* One column on phones, in the same order as the full notice. */
+  .glance-columns { display: flex; flex-direction: column; }
+  .glance-column { display: contents; }
+  .glance-when { order: 1; }
+  .glance-types { order: 2; }
+  .glance-why { order: 3; }
+  .glance-rights { order: 4; }
+  .glance-processors { order: 5; }
+  .glance-cookies { order: 6; }
+  .glance-contact { order: 7; }
+  .ledger thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .ledger, .ledger tbody, .ledger tr, .ledger th, .ledger td { display: block; width: auto; }
+  .ledger tr { padding: 14px 0; border-top: 1px solid var(--hairline); }
+  .ledger tbody th, .ledger td { padding: 2px 0; border-top: 0; }
+  .ledger tbody th { width: auto; margin-bottom: 6px; }
+  .ledger td::before { content: attr(data-label) ": "; color: var(--paper); font-weight: 600; }
+}
+
+/* In dark mode the ink colour is cream, which turns the offset shadow into a bright slab. */
+@media (prefers-color-scheme: dark) {
+  .glance { box-shadow: 6px 6px 0 var(--hairline); }
+}
+
+/* Printed or saved as PDF, the notice prints in full: every section open, navigation hidden. */
+@media print {
+  .privacy-section details::details-content { content-visibility: visible; display: contents; }
+  .privacy-section summary, .privacy-toc, .glance-cta, .glance-settings, .privacy-section .footer-link-button, #cc-main, header, footer, .trace-rail { display: none !important; }
+  .privacy-columns { display: block; }
+  .glance { box-shadow: none; }
 }
