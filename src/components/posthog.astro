@@ -1,7 +1,8 @@
 ---
 const apiKey = import.meta.env.PUBLIC_POSTHOG_PROJECT_TOKEN;
-const apiHost = import.meta.env.PUBLIC_POSTHOG_HOST;
 const isDevelopment = import.meta.env.DEV;
+// Production always goes through the /ingest Pages Function proxy; `astro dev` has no Functions, so it uses PUBLIC_POSTHOG_HOST.
+const apiHost = isDevelopment ? import.meta.env.PUBLIC_POSTHOG_HOST : '/ingest';
 ---
 <script is:inline define:vars={{ apiKey, apiHost, isDevelopment }}>
   if (!apiKey || !apiHost) {
