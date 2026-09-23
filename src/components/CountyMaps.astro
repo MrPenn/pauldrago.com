@@ -4,7 +4,7 @@
 // and a five-mile review area around each planned site. Built from src/data/dfw-map.json
 // (scripts/build-dfw-markets.py) as static SVG, so the page ships no map script.
 import mapData from '../data/dfw-map.json';
-import { PLAN } from '../data/branch-plan';
+import { PLAN, REVIEW_SITES } from '../data/branch-plan';
 
 // One color scale for both counties: quintiles of every tract's value.
 const values = mapData.counties.flatMap((c) => c.tracts.map((t) => t.purchasesPer1000)).filter((v) => v != null).sort((a, b) => a - b);
@@ -20,7 +20,7 @@ const bands = [0, 1, 2, 3, 4].map((i) => ({
 const diamond = (x, y, r) => `M${x},${y - r}L${x + r},${y}L${x},${y + r}L${x - r},${y}Z`;
 // Labels near the frame edge anchor inward so they aren't clipped.
 const anchor = (x, width) => (x < 70 ? 'start' : x > width - 70 ? 'end' : 'middle');
-const REVIEW = { Waxahachie: false, Midlothian: true }; // Midlothian is decided at the year 5 review
+const REVIEW = Object.fromEntries(REVIEW_SITES.map((site) => [site, true]));
 const planned = Object.fromEntries(PLAN.map((b, n) => [b.site, n + 1]));
 const maps = mapData.counties.map((c) => {
   const sites = c.towns
@@ -38,7 +38,7 @@ const maps = mapData.counties.map((c) => {
     {maps.map((m) => (
       <div class="county-map">
         <h3 class="county-map-name">{m.county} County</h3>
-        <p class="county-map-sub">{m.sites.filter((s) => !s.review).length} planned {m.sites.filter((s) => !s.review).length === 1 ? 'branch' : 'branches'}{m.sites.some((s) => s.review) && ', 1 at review'}; {m.branches.length} existing</p>
+        <p class="county-map-sub">{m.sites.filter((s) => !s.review).length} planned {m.sites.filter((s) => !s.review).length === 1 ? 'branch' : 'branches'}{m.sites.some((s) => s.review) && `, ${m.sites.filter((s) => s.review).length} at the year 5 review`}; {m.branches.length} existing</p>
         <svg viewBox={`-12 -12 ${m.width + 24} ${m.height + 24}`} role="img" aria-labelledby={`map-${m.id}-title`}>
           <title id={`map-${m.id}-title`}>{m.county} County census tracts shaded by home purchases per 1,000 residents, with {m.branches.length} existing branches and five-mile review areas around {m.sites.map((s) => s.town).join(' and ')}.</title>
           <defs>

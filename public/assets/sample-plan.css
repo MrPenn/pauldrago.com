@@ -52,6 +52,7 @@
 .report-decisions strong, .report-risks strong { color: var(--paper); }
 
 .tag { display: inline-block; margin: 2px 6px 2px 0; padding: 1px 8px; border: 1px solid var(--brass); color: var(--brass); font-size: 13px; font-weight: 700; line-height: 1.5; white-space: nowrap; }
+.tag-check { border-style: dashed; border-color: var(--secondary); color: var(--secondary); }
 .report-rules { max-width: 76ch; margin: 14px 0 0; padding: 0; list-style: none; }
 .report-rules li { padding: 6px 0; color: var(--secondary); font-size: 16px; line-height: 1.5; }
 

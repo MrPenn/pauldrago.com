@@ -1,6 +1,7 @@
 // The five-year branch plan behind the sample deliverable. Candidate towns are tagged by what a
-// branch there would do for the bank; the plan picks sites that carry two tags, and the economics
-// run each branch on the metro's measured new-branch ramp (src/data/dfw-markets.json, ramp).
+// branch there would do for the bank. Deposits and Business pick the sites; CRA is a check the
+// network has to pass, not a reason to pick one. The economics run each branch on the metro's
+// measured new-branch ramp (src/data/dfw-markets.json, ramp).
 
 export type Town = {
   town: string;
@@ -28,6 +29,7 @@ export const TAGS = [
 ] as const;
 
 export const tagsFor = (t: Town) => TAGS.filter((tag) => tag.test(t)).map((tag) => tag.key);
+export const PICKING_TAGS = ['deposits', 'business'];
 
 export type Ramp = {
   branchCost: number[];
@@ -39,9 +41,12 @@ export type Ramp = {
 // Each branch opens at the start of its plan year and follows a ramp from the metro data.
 export const PLAN = [
   { site: 'Forney', opens: 1, ramp: 'median' },
-  { site: 'Terrell', opens: 2, ramp: 'median' },
-  { site: 'Waxahachie', opens: 3, ramp: 'median' },
+  { site: 'Midlothian', opens: 2, ramp: 'median' },
+  { site: 'Crandall', opens: 3, ramp: 'median' },
 ] as const;
+
+// Decided at the year 5 review, on how the first three branches ramp.
+export const REVIEW_SITES = ['Terrell', 'Waxahachie'];
 
 export const YEARS = [1, 2, 3, 4, 5];
 

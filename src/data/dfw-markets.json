@@ -255,6 +255,23 @@
       "minorityPopulationShare": 9,
       "lmiTracts": 1,
       "lmiTractsWithoutBranch": 1
+    },
+    {
+      "town": "Crandall",
+      "county": "Kaufman",
+      "deposits": 138,
+      "depositGrowthPct": 73,
+      "branches": 1,
+      "depositsPerBranch": 138,
+      "communityShare": 100,
+      "jobs": 591,
+      "jobGrowthPct": 6,
+      "businesses": 91,
+      "businessGrowthPct": 2,
+      "lmiPopulationShare": 45,
+      "minorityPopulationShare": 45,
+      "lmiTracts": 1,
+      "lmiTractsWithoutBranch": 0
     }
   ],
   "ramp": {

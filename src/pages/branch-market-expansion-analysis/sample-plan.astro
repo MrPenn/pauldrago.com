@@ -7,8 +7,9 @@ import MarketTable from '../../components/MarketTable.astro';
 import CountyMaps from '../../components/CountyMaps.astro';
 import data from '../../data/dfw-markets.json';
 import signals from '../../data/dfw-signals.json';
+import mapData from '../../data/dfw-map.json';
 import { INSTITUTION, PRESETS, scoreMarkets } from '../../data/market-scoring';
-import { TAGS, PLAN, YEARS, tagsFor, planModel } from '../../data/branch-plan';
+import { TAGS, PLAN, REVIEW_SITES, PICKING_TAGS, YEARS, tagsFor, planModel } from '../../data/branch-plan';
 
 const SITE = 'https://pauldrago.com';
 const path = '/branch-market-expansion-analysis/sample-plan';
@@ -78,6 +79,14 @@ const gate = model.path('median')[2];
 const industryBreakeven = Math.round(ramp.branchCost[1] / ramp.nimIndustry / 10);
 const industryPayback = Math.round((ramp.buildOut * 1000 + ramp.paybackYears * ramp.branchCost[1]) / ramp.paybackYears / ramp.nimIndustry / 10);
 const firstTwoBuild = PLAN.filter((b) => b.opens <= 2).length * ramp.buildOut;
+const [first, second, third] = PLAN.map((b) => town(b.site));
+const tagList = (t) => tagsFor(t).map((k) => tagLabel[k]).join(' and ');
+const hottest = (county) => Math.max(...mapData.counties.find((c) => c.county === county).tracts.map((t) => t.purchasesPer1000 ?? 0));
+// Distance between the first and third sites, from the map's projected town points.
+const kaufmanMap = mapData.counties.find((c) => c.county === 'Kaufman');
+const pt = (name) => kaufmanMap.towns.find((t) => t.town === name);
+const siteGap = Math.round(Math.hypot(pt(first.town).x - pt(third.town).x, pt(first.town).y - pt(third.town).y) / kaufmanMap.milePx);
+const hottestAnywhere = Math.max(hottest('Kaufman'), hottest('Ellis'));
 
 const fairRows = [
   { label: 'People living in low- or moderate-income tracts', show: (f) => pct(f.lmiPopulationShare) },
@@ -127,7 +136,7 @@ const SOURCES = {
         <li><a href="#markets">Why Kaufman and Ellis</a></li>
         <li><a href="#sites">Why these towns</a></li>
         <li><a href="#pipeline">What's coming</a></li>
-        <li><a href="#cra">CRA and fair access</a></li>
+        <li><a href="#cra">CRA and fair lending</a></li>
         <li><a href="#economics">Economics</a></li>
         <li><a href="#risks">Risks and what would change the plan</a></li>
         <li><a href="#questions">Questions before the vote</a></li>
@@ -137,7 +146,7 @@ const SOURCES = {
 
     <section class="report-section" id="recommendation" aria-labelledby="recommendation-h">
       <h2 class="report-h2" id="recommendation-h"><span>1</span> Recommendation</h2>
-      <p class="report-lede">Open three branches over five years: Forney in year 1, Terrell in year 2, and Waxahachie in year 3 if Forney is on plan. Each site does two of the three jobs a branch can do for the bank: gather deposits, serve businesses, and meet the CRA obligations that come with a new county. Between them, the Kaufman County branches cover all three.</p>
+      <p class="report-lede">Open three branches over five years where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 if {first.town} is on plan. {first.town} and {second.town} are the only towns studied where deposits and jobs both grew past the thresholds; {third.town} has the fastest deposit growth in either county and one branch today. CRA and fair lending are checked, not used to pick: the Kaufman branches reach lower-income and majority-minority neighborhoods, and the Ellis branch does not, so the plan answers Ellis with a lending commitment.</p>
       <dl class="report-figures">
         <div><dt>Build-out</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">{PLAN.length} branches at about ${ramp.buildOut}M each</span></dd></div>
         <div><dt>Operations turn positive</dt><dd><span class="report-figure">Year {model.firstPositiveYear}</span><span class="report-figure-note">if each branch follows the median ramp</span></dd></div>
@@ -147,10 +156,10 @@ const SOURCES = {
       <p class="report-p report-small">Every figure counts net interest margin against running cost and build-out. Fee income and head-office overhead are left out.</p>
       <h3 class="report-h3">What the board is asked to decide</h3>
       <ol class="report-decisions">
-        <li><strong>Approve Forney and Terrell,</strong> {mUSD(firstTwoBuild * 1000)} of build-out, opening in years 1 and 2.</li>
-        <li><strong>Approve Waxahachie in principle,</strong> released only if Forney holds ${gate}M in deposits at the end of year 2, the median for a new branch at that age.</li>
-        <li><strong>Adopt the ramp as the measure.</strong> Each branch is reviewed every June against the curve it was planned on. Midlothian is decided at the year 5 review, on actual results.</li>
-        <li><strong>Direct compliance to prepare the assessment-area plans</strong> for Kaufman and Ellis before the first branch application.</li>
+        <li><strong>Approve {first.town} and {second.town},</strong> {mUSD(firstTwoBuild * 1000)} of build-out, opening in years 1 and 2.</li>
+        <li><strong>Approve {third.town} in principle,</strong> released only if {first.town} holds ${gate}M in deposits at the end of year 2, the median for a new branch at that age.</li>
+        <li><strong>Adopt the ramp as the measure.</strong> Each branch is reviewed every June against the curve it was planned on. {REVIEW_SITES.join(' and ')} are decided at the year 5 review, on actual results.</li>
+        <li><strong>Commit to lending in Ellis's lower-income tracts</strong> around Waxahachie and Ennis from year 2, and have compliance confirm how the final CRA rule applies to the bank's charter before the first application.</li>
       </ol>
     </section>
 
@@ -161,10 +170,10 @@ const SOURCES = {
           <caption class="sr-only">The branch sequence</caption>
           <thead><tr><th scope="col">Year</th><th scope="col">Site</th><th scope="col">What it does</th><th scope="col">Why here</th></tr></thead>
           <tbody>
-            <tr><td>1</td><th scope="row">Forney, on US-80</th><td>{planTowns[0].tags.map((t) => <span class="tag">{tagLabel[t]}</span>)}</td><td>Deposits in town up {pct(planTowns[0].depositGrowthPct)} since 2021 and jobs up {pct(planTowns[0].jobGrowthPct)} since 2019. A hospital opens in 2027.</td></tr>
-            <tr><td>2</td><th scope="row">Terrell</th><td>{planTowns[1].tags.map((t) => <span class="tag">{tagLabel[t]}</span>)}</td><td>All {planTowns[1].lmiTracts} tracts within five miles are low or moderate income. Amazon is hiring from 2027, and branches here average ${planTowns[1].depositsPerBranch}M, the most of any town studied.</td></tr>
-            <tr><td>3</td><th scope="row">Waxahachie</th><td>{planTowns[2].tags.map((t) => <span class="tag">{tagLabel[t]}</span>)}</td><td>The Ellis County seat: {depUSD(planTowns[2].deposits)} in deposits, up {pct(planTowns[2].depositGrowthPct)}, and {pct(planTowns[2].lmiPopulationShare)} of nearby residents in low- or moderate-income tracts. Opens only if Forney is on plan.</td></tr>
-            <tr><td>5</td><th scope="row">Review</th><td>All branches</td><td>Every branch measured against its ramp. Midlothian ({tagsFor(town('Midlothian')).map((t) => tagLabel[t]).join(' and ')}) is decided here.</td></tr>
+            <tr><td>1</td><th scope="row">{first.town}, on US-80</th><td>{tagsFor(first).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits in town up {pct(first.depositGrowthPct)} since 2021 and jobs up {pct(first.jobGrowthPct)} since 2019. A hospital opens in 2027.</td></tr>
+            <tr><td>2</td><th scope="row">{second.town}</th><td>{tagsFor(second).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits in town up {pct(second.depositGrowthPct)} and jobs up {pct(second.jobGrowthPct)}. Medline's distribution center is fully running in 2027, and a tract northwest of town has the highest home-purchase rate on either map ({Math.round(hottestAnywhere)} per 1,000 residents).</td></tr>
+            <tr><td>3</td><th scope="row">{third.town}</th><td>{tagsFor(third).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits in town up {pct(third.depositGrowthPct)}, the fastest of any town studied, held today in {third.branches === 1 ? 'one branch' : `${third.branches} branches`}. The large tract southwest of town, running to the Dallas County line, has Kaufman's highest home-purchase rate ({Math.round(hottest('Kaufman'))} per 1,000). Opens only if {first.town} is on plan.</td></tr>
+            <tr><td>5</td><th scope="row">Review</th><td>All branches</td><td>Every branch measured against its ramp. {REVIEW_SITES.map((r) => `${r} (${tagList(town(r))})`).join(' and ')} are decided here.</td></tr>
           </tbody>
         </table>
       </div>
@@ -178,9 +187,9 @@ const SOURCES = {
 
     <section class="report-section" id="sites" aria-labelledby="sites-h">
       <h2 class="report-h2" id="sites-h"><span>4</span> Why these towns</h2>
-      <p class="report-p">A branch earns its build-out fastest when it does more than one job. Each candidate town is tagged for the jobs the public data supports:</p>
+      <p class="report-p">Each candidate town is tagged for what a branch there would do. Deposits and Business pick the sites. CRA is shown as a check the network has to pass, not a reason to pick a site.</p>
       <ul class="report-rules">
-        {TAGS.map((t) => <li><span class="tag">{t.label}</span> {t.rule}.</li>)}
+        {TAGS.map((t) => <li><span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t.key) }]}>{t.label}</span> {t.rule}.</li>)}
       </ul>
       <div class="market-table-wrap">
         <table class="market-table report-towns">
@@ -195,7 +204,7 @@ const SOURCES = {
                 <td>${t.depositsPerBranch}M</td>
                 <td>{t.jobGrowthPct >= 0 ? '+' : ''}{pct(t.jobGrowthPct)}</td>
                 <td>{pct(t.lmiPopulationShare)}</td>
-                <td class="report-tags">{tagsFor(t).map((k) => <span class="tag">{tagLabel[k]}</span>)}</td>
+                <td class="report-tags">{tagsFor(t).map((k) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(k) }]}>{tagLabel[k]}</span>)}</td>
               </tr>
             ))}
           </tbody>
@@ -204,12 +213,12 @@ const SOURCES = {
       </div>
       <div class="market-findings market-findings-two">
         <div class="market-finding">
-          <h3>No town does all three</h3>
-          <p>Forney and Midlothian have the growth, but no one within five miles of either lives in a low- or moderate-income tract. Terrell has the need and the payroll, and deeper deposits per branch than anywhere else studied. Pairing Forney with Terrell covers all three in Kaufman.</p>
+          <h3>Two towns do both</h3>
+          <p>{first.town} and {second.town} are the only towns where deposits and jobs both grew past the thresholds. {first.town} goes first because the county's growth is arriving along US-80. {second.town} is the Ellis entry and has the strongest home-purchase activity on either map.</p>
         </div>
         <div class="market-finding">
-          <h3>Waxahachie before Midlothian</h3>
-          <p>Entering Ellis through Midlothian alone would put the bank's whole Ellis presence in better-off tracts, the pattern examiners look for. Waxahachie carries deposits and CRA, and it is the largest deposit market in the county. Ennis carries the same two tags on a smaller base.</p>
+          <h3>The third site is {third.town}</h3>
+          <p>No other town passes both thresholds, so the third site is the strongest on deposits. {third.town}'s deposits grew {pct(third.depositGrowthPct)} since 2021, the fastest of any town studied, and {third.branches === 1 ? 'one branch serves' : `${third.branches} branches serve`} the town today. Waxahachie also carries Deposits but has {town('Waxahachie').branches} branches competing for them. Terrell carries Business, with Amazon's payroll arriving. Both are decided at the year 5 review.</p>
         </div>
       </div>
     </section>
@@ -240,8 +249,8 @@ const SOURCES = {
     </section>
 
     <section class="report-section" id="cra" aria-labelledby="cra-h">
-      <h2 class="report-h2" id="cra-h"><span>6</span> CRA and fair access</h2>
-      <p class="report-p">Each new county becomes part of the bank's CRA assessment area, and where the branches sit inside it is a fair-lending question. Income levels follow the FFIEC bands: low is below 50% of the metro median family income (${num(Kaufman.fairAccess.metroMedianFamilyIncome)}), moderate is 50% to 80%.</p>
+      <h2 class="report-h2" id="cra-h"><span>6</span> CRA and fair lending</h2>
+      <p class="report-p">This plan assumes the rule the OCC and FDIC proposed on July 31, 2026 is final (<a href="https://www.fdic.gov/news/press-releases/2026/agencies-issue-joint-proposal-amending-community-reinvestment-act-rules" target="_blank" rel="noopener noreferrer">FDIC</a>; <a href="https://www.federalregister.gov/documents/2026/08/12/2026-16454/community-reinvestment-act-regulations" target="_blank" rel="noopener noreferrer">Federal Register, August 12, 2026</a>). It moves the large-bank line from $1.649 billion (<a href="https://www.federalreserve.gov/newsevents/pressreleases/bcreg20251230a.htm" target="_blank" rel="noopener noreferrer">2026 thresholds</a>) to $10 billion, so a $2 billion bank supervised by either agency is an intermediate bank: a tailored lending test and a community development test, with no separate test of where its branches sit. Assessment areas are still drawn around branches, so each county joins the bank's assessment area with its first branch there, and fair-lending review of branch and lending patterns applies at any size. The Federal Reserve did not join the proposal; a state member bank stays under today's large-bank rules until it acts. Income levels below follow the FFIEC bands: low is below 50% of the metro median family income (${num(Kaufman.fairAccess.metroMedianFamilyIncome)}), moderate is 50% to 80%.</p>
       <div class="market-table-wrap">
         <table class="market-table">
           <caption class="sr-only">CRA and fair-access measures for the three counties</caption>
@@ -252,7 +261,9 @@ const SOURCES = {
         </table>
         <p class="market-table-note">{data.asOf.fairAccess}. Home-purchase loans are owner-occupied originations by all lenders in {data.asOf.fairAccess.match(/HMDA (\d{4})/)?.[1]}.</p>
       </div>
-      <p class="report-p">In Kaufman, {Kaufman.fairAccess.lmiTractsWithoutBranch} of {Kaufman.fairAccess.lmiTracts} low- or moderate-income tracts have no branch, and home-purchase lending there ({pct(Kaufman.fairAccess.purchaseLoansInLmiShare)} of loans) runs below those tracts' share of owner-occupied homes ({pct(Kaufman.fairAccess.ownerHomesInLmiShare)}). Around Terrell, {town('Terrell').lmiTractsWithoutBranch} of the {town('Terrell').lmiTracts} low- or moderate-income tracts have no branch. The Terrell site should be in one of them, and the application should say so. In Ellis, {pct(town('Waxahachie').lmiPopulationShare)} of the people within five miles of Waxahachie live in low- or moderate-income tracts, {town('Waxahachie').lmiTractsWithoutBranch} of {town('Waxahachie').lmiTracts} of them without a branch.</p>
+      <h3 class="report-h3">The check</h3>
+      <p class="report-p">Kaufman passes. {pct(first.minorityPopulationShare)} of the people within five miles of {first.town} live in majority-minority tracts, and {pct(third.lmiPopulationShare)} of those near {third.town} live in low- or moderate-income tracts. Home-purchase lending in the county's low- or moderate-income tracts ({pct(Kaufman.fairAccess.purchaseLoansInLmiShare)} of loans) runs below those tracts' share of owner-occupied homes ({pct(Kaufman.fairAccess.ownerHomesInLmiShare)}), which leaves room for the lending test to show results.</p>
+      <p class="report-p">Ellis does not pass on branches alone. No one within five miles of {second.town} lives in a low- or moderate-income tract, and {pct(second.minorityPopulationShare)} live in majority-minority tracts. The plan answers that with lending: a mortgage and small-business lending commitment in the low- or moderate-income tracts around Waxahachie ({pct(town('Waxahachie').lmiPopulationShare)} of nearby residents) and Ennis ({pct(town('Ennis').lmiPopulationShare)}) from year 2, with Waxahachie at the year 5 review.</p>
     </section>
 
     <section class="report-section" id="economics" aria-labelledby="economics-h">
@@ -311,11 +322,12 @@ const SOURCES = {
     <section class="report-section" id="risks" aria-labelledby="risks-h">
       <h2 class="report-h2" id="risks-h"><span>8</span> Risks and what would change the plan</h2>
       <ul class="report-risks">
-        <li><strong>The branches ramp slowly.</strong> Only {pct(age(5).atTargetShare)} of new community-bank branches in the metro were at ${ramp.target}M, the four-year payback level, by year 5. If all three ramp like the bottom quarter, operations are still {mUSD(model.downside[4])} a year short in year 5. The Waxahachie gate limits that exposure to two branches until Forney proves out.</li>
-        <li><strong>The incumbent holds its customers.</strong> {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits, and community banks hold {pct(town('Terrell').communityShare)} of Terrell's. Entry depends on lenders who already know those customers.</li>
-        <li><strong>The pipeline slips.</strong> The Forney hospital (fall 2027) and the Terrell Amazon center (about August 2027) anchor the first two sites. A delay of a year moves each ramp by a year.</li>
+        <li><strong>The branches ramp slowly.</strong> Only {pct(age(5).atTargetShare)} of new community-bank branches in the metro were at ${ramp.target}M, the four-year payback level, by year 5. If all three ramp like the bottom quarter, operations are still {mUSD(model.downside[4])} a year short in year 5. The {third.town} gate limits that exposure to two branches until {first.town} proves out.</li>
+        <li><strong>The incumbent holds its customers.</strong> {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits, and the {third.branches === 1 ? 'one branch' : 'branches'} in {third.town} {third.branches === 1 ? 'belongs' : 'belong'} to a community bank. Entry depends on lenders who already know those customers.</li>
+        <li><strong>{first.town} and {third.town} compete with each other.</strong> They are about {siteGap} miles apart, and their five-mile review areas overlap. The {third.town} site should sit south and west of town, toward the growth along the Dallas County line, so the two draw on different households.</li>
+        <li><strong>The pipeline slips.</strong> The Forney hospital (fall 2027) and Medline's Midlothian distribution center (second quarter of 2027) anchor the first two sites. A delay of a year moves each ramp by a year.</li>
         <li><strong>Margins narrow.</strong> At the all-bank margin of {ramp.nimIndustry}% instead of {ramp.nim}%, operating break-even moves to ${industryBreakeven}M and the four-year payback to ${industryPayback}M.</li>
-        <li><strong>The CRA record doesn't follow.</strong> A branch in Terrell counts only if the lending and service follow it. The plan needs a lending and outreach commitment for those tracts, not just an address.</li>
+        <li><strong>The CRA rule lands differently.</strong> If the final rule changes, or the bank is supervised by the Federal Reserve, a $2 billion bank is a large bank, and the service test would grade the Ellis branch pattern. Waxahachie would then move ahead of {third.town}.</li>
       </ul>
     </section>
 
@@ -325,9 +337,10 @@ const SOURCES = {
       <ol class="local-questions">
         <li><strong>{incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits.</strong> Is that loyalty or habit, and who at our bank knows its customers?</li>
         <li><strong>Forney's growth is households.</strong> Do they bank near home or near work in Dallas, and does that call for a full branch or a smaller one with lenders?</li>
-        <li><strong>Amazon is hiring in Terrell from 2027.</strong> How do workers there bank today, and what would it take to serve them from day one?</li>
+        <li><strong>Medline and the Midlothian industrial parks bring payroll from 2027.</strong> Which employers need treasury and payroll services, and who banks them today?</li>
+        <li><strong>{third.town}'s growth is along the Dallas County line.</strong> Do those households bank in {third.town}, in Forney, or back in Dallas?</li>
         <li><strong>How many of our customers already live or work in Kaufman and Ellis?</strong> Our customer file answers this in an afternoon.</li>
-        <li><strong>Two new counties change our assessment area.</strong> What does compliance need to see before we file?</li>
+        <li><strong>Two new counties join our assessment area.</strong> Under the final rule, what does compliance need to see, and does our charter change the answer?</li>
       </ol>
     </section>
 
@@ -338,6 +351,7 @@ const SOURCES = {
         <li><a href="https://www.census.gov/programs-surveys/popest.html">Census Bureau population estimates</a> and the <a href="https://www.census.gov/programs-surveys/acs">American Community Survey</a>: population growth, households, and median household income.</li>
         <li><a href="https://www.census.gov/programs-surveys/cbp.html">Census ZIP Code Business Patterns</a>: establishments and employment by town, 2019 and 2023.</li>
         <li><a href="https://ffiec.cfpb.gov/data-browser/">HMDA data (CFPB)</a>: FFIEC tract income and minority data, and home-purchase lending by tract. Branches placed in tracts with the <a href="https://geocoding.geo.census.gov/">Census geocoder</a>.</li>
+        <li>CRA rules: <a href="https://www.fdic.gov/news/press-releases/2026/agencies-issue-joint-proposal-amending-community-reinvestment-act-rules">FDIC and OCC proposal, July 31, 2026</a>; <a href="https://www.federalregister.gov/documents/2026/08/12/2026-16454/community-reinvestment-act-regulations">Federal Register, August 12, 2026</a>; <a href="https://www.federalreserve.gov/newsevents/pressreleases/bcreg20251230a.htm">2026 asset-size thresholds</a>.</li>
         <li>Branch economics: <a href={SOURCES.qbp.href}>{SOURCES.qbp.text}</a>; <a href={SOURCES.ab.href}>{SOURCES.ab.text}</a>; <a href={SOURCES.be.href}>{SOURCES.be.text}</a>; <a href={SOURCES.bam.href}>{SOURCES.bam.text}</a>; <a href={SOURCES.fed.href}>{SOURCES.fed.text}</a>.</li>
       </ul>
       <p class="report-p report-small">{data.notes.join(' ')} Towns are measured by branch city (deposits), ZIP code (businesses), and census tracts within five miles of the town center (income). The tag thresholds are judgments, stated so they can be argued with. The bank and its customer counts are hypothetical. This plan supports a business decision; it is not legal advice, a fair-lending analysis, or a CRA compliance determination.</p>
