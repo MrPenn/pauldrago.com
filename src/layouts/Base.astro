@@ -1,4 +1,6 @@
 ---
+import PostHog from '../components/posthog.astro';
+
 const SITE = 'https://pauldrago.com';
 const BOOKING = 'https://cal.com/pauldrago/20-min-intro-call';
 const CAL_ATTRS = {
@@ -55,6 +57,7 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
 <link rel="stylesheet" href="/assets/site-shell.css">
 {stylesheets.map((href) => <link rel="stylesheet" href={href} />)}
 {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+<PostHog />
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
