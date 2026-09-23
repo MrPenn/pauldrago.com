@@ -375,7 +375,6 @@ input):focus-visible {
 
   .service-group-label.embedded {
     margin-top: 26px;
-    border-top: 1px solid var(--hairline);
   }
 
   .router-row {
@@ -770,12 +769,13 @@ input):focus-visible {
 }
 
   .no-list {
+    margin-top: 32px;
     border-top: 1px solid var(--hairline);
   }
 
   .no-list div {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(9rem, 1fr) 2fr;
     gap: 24px;
     padding: 18px 0;
     border-bottom: 1px solid var(--hairline);
@@ -804,6 +804,7 @@ input):focus-visible {
 }
 
   .call-note {
+    align-self: start;
     width: 100%;
     max-width: 280px;
     border: 1px solid var(--hairline);

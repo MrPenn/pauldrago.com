@@ -95,7 +95,10 @@
   .brief-options th, .brief-options td { padding: 2px 0 !important; border: 0 !important; }
   .report-cta { padding: 22px 20px; }
   .market-table-wrap:has(.report-towns, .plan-network) .market-table-note { position: sticky; left: 0; max-width: calc(100vw - 40px); }
-  .report-towns th:first-child, .plan-network th:first-child { position: sticky; left: 0; z-index: 1; max-width: 132px; background: var(--ground); box-shadow: 1px 0 0 var(--hairline); }
+  .report-towns th:first-child, .plan-network th:first-child, .brief-econ th:first-child, .brief-pace th:first-child { position: sticky; left: 0; z-index: 1; max-width: 132px; background: var(--ground); box-shadow: 1px 0 0 var(--hairline); }
+  .report-towns thead th, .plan-network thead th, .brief-pace thead th, .brief-econ thead th { white-space: nowrap; }
+  .brief-econ, .brief-pace { min-width: 560px; }
+  .market-table-wrap:has(.report-towns, .plan-network, .brief-econ, .brief-pace)::after { content: "Scroll for more \2192"; position: sticky; left: 0; display: block; margin-top: 6px; color: var(--secondary); font-size: 12px; }
 }
 
 /* The two-page brief */
@@ -110,6 +113,9 @@
 .brief-resolution { margin-top: 24px; padding: 14px 16px; border: 1px solid var(--paper); }
 .brief-resolution p:last-child { margin-top: 6px; color: var(--paper); font-size: 15px; line-height: 1.55; }
 .brief-resolution .brief-h2 { padding-top: 0; border-top: 0; }
+.brief-sign { display: flex; gap: 32px; margin-top: 18px; }
+.brief-sign span { flex: 1; padding-top: 22px; border-bottom: 1px solid var(--paper); color: var(--secondary); font-size: 13px; }
+.resolved { font-variant: small-caps; font-weight: 700; letter-spacing: 0.02em; }
 
 .report-brief { margin-top: 8px; }
 .brief-block { margin-top: 36px; }

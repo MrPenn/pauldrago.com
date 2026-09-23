@@ -91,11 +91,15 @@
     if (!cells) return;
     // The hundred boxes ship in the HTML; only build them if an older page lacks them.
     if (!cells.children.length) for (var i = 0; i < 100; i++) cells.appendChild(h('div', 'fd-cell'));
+    // The four ship filled; they only replay if the figure is still below the fold, so the
+    // reader never finds it empty.
+    if (reduceMotion || fig.getBoundingClientRect().top < window.innerHeight) return;
+    for (var k = 0; k < 4; k++) cells.children[44 + k].classList.remove('is-community');
     onEnter(fig, function () {
       for (var j = 0; j < 4; j++) {
-        (function (j) { setTimeout(function () { cells.children[44 + j].classList.add('is-community'); }, 700 + j * 420); })(j);
+        (function (j) { setTimeout(function () { cells.children[44 + j].classList.add('is-community'); }, 400 + j * 300); })(j);
       }
-    }, 0.6);
+    }, 0.3);
   });
 
   /* ---------- Stat callouts: a row of units, the share filled in brass ---------- */
@@ -229,7 +233,8 @@
     function setBar(o, sp, ic, total) {
       o.s.style.width = pct(sp); o.i.style.width = pct(ic);
       o.s.classList.toggle('is-labeled', sp > 0); o.i.classList.toggle('is-labeled', ic > 0);
-      o.v.textContent = money(total);
+      // The bar's total is the sum of the shown (rounded) parts, so it matches the ledger.
+      o.v.textContent = money(Math.round(sp) + Math.round(ic));
       fit(o.s, sp / scale); fit(o.i, ic / scale);
     }
     window.addEventListener('resize', function () { mathSeq.onStep(mathSeq.active || 0); });
