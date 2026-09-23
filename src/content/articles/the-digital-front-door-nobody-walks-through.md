@@ -1,7 +1,7 @@
 ---
 title: "The Digital Front Door Nobody Walks Through"
 description: "Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?"
-date: 2026-11-11
+date: 2026-09-23
 draft: true
 kicker: "Financial services"
 opener: "fd-grid"
