@@ -51,6 +51,9 @@ button):focus-visible {
   font-size: clamp(56px, 6.5vw, 96px);
 }
 
+.home-latest { margin: 18px 0 0; max-width: 58ch; font-size: 17px; line-height: 1.55; color: var(--secondary); }
+.home-latest a { color: var(--paper); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--brass); }
+.home-latest a:hover { color: var(--brass); }
 .home-intro {
   max-width: 700px;
   margin-top: 30px;

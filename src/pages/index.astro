@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+const latest = (await getCollection('articles', ({ data }) => !data.draft)).sort((a, b) => b.data.date - a.data.date)[0];
 const meta = {
   "title": "Paul Drago | Financial Services Advisor",
   "description": "Paul Drago advises banks and credit unions on marketing measurement, market decisions, and the operating work behind growth.",
@@ -43,7 +45,7 @@ const jsonld = {
       "url": "https://pauldrago.com/",
       "name": "Paul Drago",
       "description": "Paul Drago advises banks and credit unions on marketing measurement, market decisions, and the operating work behind growth.",
-      "dateModified": "2026-09-21",
+      "dateModified": "2026-09-23",
       "isPartOf": {"@id": "https://pauldrago.com/#website"},
       "mainEntity": {"@id": "https://pauldrago.com/#paul-drago"}
     }
@@ -56,6 +58,7 @@ const jsonld = {
     <div class="container">
       <h1 class="display-title home-title">I'm Paul Drago.</h1>
       <p class="home-intro">I advise banks and credit unions on marketing measurement, market decisions, and the operating work behind growth.</p>
+      {latest && <p class="home-latest">If you'd like to see how I think about financial services, read the most recent article I wrote: <a href={`/articles/${latest.id}`}>{latest.data.title}</a>.</p>}
 
       <nav class="link-groups" aria-label="Selected links">
         <section class="link-group" aria-labelledby="work-links">
