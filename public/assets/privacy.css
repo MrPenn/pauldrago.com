@@ -24,7 +24,6 @@
   margin-bottom: 80px;
   border: 1px solid var(--hairline);
   background: var(--dark-navy);
-  box-shadow: 6px 6px 0 var(--paper);
 }
 .glance-heading {
   padding: 40px 40px 0;
@@ -289,10 +288,6 @@
   .ledger td::before { content: attr(data-label) ": "; color: var(--paper); font-weight: 600; }
 }
 
-/* In dark mode the ink colour is cream, which turns the offset shadow into a bright slab. */
-@media (prefers-color-scheme: dark) {
-  .glance { box-shadow: 6px 6px 0 var(--hairline); }
-}
 
 /* Printed or saved as PDF, the notice prints in full: every section open, navigation hidden. */
 @media print {

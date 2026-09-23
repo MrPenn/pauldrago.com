@@ -25,10 +25,9 @@ input):focus-visible {
 
   .eyebrow {
     color: var(--secondary);
-    font-size: 14px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1.5;
   }
 
   .hero {
@@ -44,7 +43,6 @@ input):focus-visible {
     position: absolute;
     inset: 0;
     z-index: -2;
-    background-image: image-set(url('evidence-table.avif') type('image/avif'), url('evidence-table.png') type('image/png'));
     background-size: cover;
     background-position: center right;
     opacity: 0.72;
@@ -386,7 +384,7 @@ input):focus-visible {
   }
 
   @media (min-width: 920px) {.router-row {
-      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.25fr) 190px;
+      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.25fr) 240px;
       align-items: start;
       gap: 32px;
     }

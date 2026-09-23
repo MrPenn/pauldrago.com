@@ -201,7 +201,12 @@ header {
   font-weight: 700;
   text-decoration: none;
   padding: 12px 0 7px;
-  border-bottom: 2px solid var(--brass);
+  border-bottom: 2px solid transparent;
+}
+
+.header-link:hover,
+.header-link[aria-current="page"] {
+  border-bottom-color: var(--brass);
 }
 
 .btn {
@@ -210,7 +215,6 @@ header {
   border: 0;
   border-radius: 0;
   background: var(--brass);
-  box-shadow: 6px 6px 0 var(--paper);
   color: var(--on-brass);
   font-family: inherit;
   font-size: 16px;
@@ -219,17 +223,15 @@ header {
   text-decoration: none;
   text-transform: none;
   cursor: pointer;
-  transition: transform 100ms ease, box-shadow 100ms ease;
+  transition: background-color 120ms ease;
 }
 
 .btn:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 4px 4px 0 var(--paper);
+  background: color-mix(in srgb, var(--brass) 86%, #000);
 }
 
 .btn:active {
-  transform: translate(4px, 4px);
-  box-shadow: 2px 2px 0 var(--paper);
+  background: color-mix(in srgb, var(--brass) 74%, #000);
 }
 
 .section-divider {
@@ -341,7 +343,6 @@ footer {
   .btn {
     min-height: 44px;
     padding: 12px 14px;
-    box-shadow: 3px 3px 0 var(--paper);
     font-size: 13px;
     white-space: nowrap;
   }
@@ -455,3 +456,16 @@ footer {
   clip-path: inset(50%);
   white-space: nowrap;
 }
+
+/* Labels read as sentence-case titles, not tracked uppercase kickers. */
+:is(.model-label, .band-label, .offer-label, .sources-label, .input-list-title, .call-prep-title, .call-note-label,
+    .offer-badge, .artifact-kicker, .call-prep-kicker, .service-group-label, .other-decisions-label,
+    .article-index-heading, .privacy-toc-label, .visual-label, .fd-eyebrow, .market-weights-title, .calc-eyebrow) {
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+  font-size: 14px !important;
+}
+
+/* Heroes sit on the plain ground: no background photograph or wash. */
+.home-hero::before, .home-hero::after, .articles-hero::before, .articles-hero::after,
+.service-hero::before, .hero::before, .hero::after { content: none !important; display: none !important; }
