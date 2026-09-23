@@ -4,6 +4,7 @@
     "population": "U.S. Census Bureau county population estimates, April 2020 to July 2025",
     "households": "U.S. Census Bureau American Community Survey, ACS 2024 1-year",
     "ramp": "FDIC Summary of Deposits, June 2008 to June 2026, Dallas-Fort Worth metro",
+    "towns": "FDIC Summary of Deposits by branch city, 2021 to 2026; Census ZIP Code Business Patterns, 2019 to 2023; tracts within 5 miles of the town center",
     "fairAccess": "HMDA 2025 (CFPB) with FFIEC tract income and minority data; branches placed by the Census geocoder"
   },
   "notes": [
@@ -135,28 +136,120 @@
       }
     }
   ],
-  "towns": {
-    "Kaufman": [
-      {
-        "town": "Forney",
-        "lmiPopulationShare": 0,
-        "minorityPopulationShare": 56,
-        "branches": 8
-      },
-      {
-        "town": "Terrell",
-        "lmiPopulationShare": 100,
-        "minorityPopulationShare": 74,
-        "branches": 4
-      },
-      {
-        "town": "Kaufman",
-        "lmiPopulationShare": 9,
-        "minorityPopulationShare": 9,
-        "branches": 2
-      }
-    ]
-  },
+  "towns": [
+    {
+      "town": "Midlothian",
+      "county": "Ellis",
+      "deposits": 898,
+      "depositGrowthPct": 33,
+      "branches": 8,
+      "depositsPerBranch": 112,
+      "communityShare": 49,
+      "jobs": 12513,
+      "jobGrowthPct": 33,
+      "businesses": 952,
+      "businessGrowthPct": 26,
+      "lmiPopulationShare": 0,
+      "minorityPopulationShare": 5,
+      "lmiTracts": 0
+    },
+    {
+      "town": "Waxahachie",
+      "county": "Ellis",
+      "deposits": 1697,
+      "depositGrowthPct": 33,
+      "branches": 13,
+      "depositsPerBranch": 131,
+      "communityShare": 72,
+      "jobs": 21006,
+      "jobGrowthPct": 10,
+      "businesses": 1326,
+      "businessGrowthPct": 20,
+      "lmiPopulationShare": 39,
+      "minorityPopulationShare": 25,
+      "lmiTracts": 3
+    },
+    {
+      "town": "Red Oak",
+      "county": "Ellis",
+      "deposits": 466,
+      "depositGrowthPct": 1,
+      "branches": 6,
+      "depositsPerBranch": 78,
+      "communityShare": 45,
+      "jobs": 6506,
+      "jobGrowthPct": 3,
+      "businesses": 550,
+      "businessGrowthPct": 10,
+      "lmiPopulationShare": 0,
+      "minorityPopulationShare": 53,
+      "lmiTracts": 0
+    },
+    {
+      "town": "Ennis",
+      "county": "Ellis",
+      "deposits": 686,
+      "depositGrowthPct": 25,
+      "branches": 6,
+      "depositsPerBranch": 114,
+      "communityShare": 60,
+      "jobs": 9015,
+      "jobGrowthPct": 12,
+      "businesses": 615,
+      "businessGrowthPct": 11,
+      "lmiPopulationShare": 52,
+      "minorityPopulationShare": 52,
+      "lmiTracts": 2
+    },
+    {
+      "town": "Forney",
+      "county": "Kaufman",
+      "deposits": 1010,
+      "depositGrowthPct": 25,
+      "branches": 9,
+      "depositsPerBranch": 112,
+      "communityShare": 66,
+      "jobs": 12124,
+      "jobGrowthPct": 66,
+      "businesses": 952,
+      "businessGrowthPct": 36,
+      "lmiPopulationShare": 0,
+      "minorityPopulationShare": 56,
+      "lmiTracts": 0
+    },
+    {
+      "town": "Terrell",
+      "county": "Kaufman",
+      "deposits": 791,
+      "depositGrowthPct": 12,
+      "branches": 4,
+      "depositsPerBranch": 198,
+      "communityShare": 88,
+      "jobs": 14481,
+      "jobGrowthPct": 15,
+      "businesses": 767,
+      "businessGrowthPct": 8,
+      "lmiPopulationShare": 100,
+      "minorityPopulationShare": 74,
+      "lmiTracts": 4
+    },
+    {
+      "town": "Kaufman",
+      "county": "Kaufman",
+      "deposits": 541,
+      "depositGrowthPct": 21,
+      "branches": 3,
+      "depositsPerBranch": 180,
+      "communityShare": 69,
+      "jobs": 4723,
+      "jobGrowthPct": -4,
+      "businesses": 388,
+      "businessGrowthPct": 14,
+      "lmiPopulationShare": 9,
+      "minorityPopulationShare": 9,
+      "lmiTracts": 1
+    }
+  ],
   "ramp": {
     "branches": 146,
     "relocationsExcluded": 17,
@@ -172,6 +265,7 @@
       1000
     ],
     "nim": 3.81,
+    "nimIndustry": 3.32,
     "buildOut": 3.5,
     "paybackYears": 4,
     "payback": 49,

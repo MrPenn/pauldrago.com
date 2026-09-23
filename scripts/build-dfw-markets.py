@@ -9,6 +9,7 @@ Public sources only:
     review, plus home-purchase lending by tract
   - Census geocoder (branch tract) and Census tract gazetteer (tract locations)
   - FDIC Summary of Deposits history for the Dallas-Fort Worth metro, to measure how new branches ramp
+  - Census ZIP Code Business Patterns (establishments and employment by town)
 
 Re-run after FDIC publishes a new Summary of Deposits (each fall):
     python3 scripts/build-dfw-markets.py
@@ -22,20 +23,36 @@ import json
 import statistics
 import urllib.parse
 import urllib.request
+import zipfile
 from datetime import datetime
 from pathlib import Path
 
 SOD_YEAR, SOD_BASE_YEAR = 2026, 2021
 HMDA_YEAR = 2025
-# Towns inside the county the example recommends, for the where-in-the-county view (lat, lon).
-TOWNS = {'Kaufman': {'Forney': (32.748, -96.471), 'Terrell': (32.736, -96.275), 'Kaufman': (32.589, -96.309)}}
+# Candidate towns in the two counties the plan covers: town center (lat, lon) and the ZIP codes that
+# carry its business counts.
+TOWNS = {
+    'Kaufman': {
+        'Forney': ((32.748, -96.471), ['75126']),
+        'Terrell': ((32.736, -96.275), ['75160', '75161']),
+        'Kaufman': ((32.589, -96.309), ['75142']),
+    },
+    'Ellis': {
+        'Midlothian': ((32.482, -96.994), ['76065']),
+        'Waxahachie': ((32.386, -96.848), ['75165', '75167']),
+        'Red Oak': ((32.517, -96.804), ['75154']),
+        'Ennis': ((32.329, -96.625), ['75119']),
+    },
+}
 TOWN_RADIUS_MILES = 5
+ZBP_YEARS = (2019, 2023)  # Census ZIP Code Business Patterns, before and latest
 # New-branch ramp: community-bank branches opened in the metro in these years, tracked every June since.
 RAMP_MSA, RAMP_OPENED, RAMP_HISTORY_FROM = 19100, (2009, 2023), 2008
 RAMP_TARGET = 50_000  # $ thousands: break-even with build-out (see PAYBACK below); also the Fed's 15-year median branch
 # Branch economics, published figures only.
 BRANCH_COST = (250, 1000)  # $ thousands a year: Banking Exchange/Austin Associates (2012) floor; Bits About Money ceiling
 NIM = 3.81                 # percent: community-bank net interest margin, FDIC Quarterly Banking Profile, Q2 2026
+NIM_INDUSTRY = 3.32        # percent: all-bank net interest margin, same source, for the sensitivity check
 BUILD_OUT = 3.5            # $ millions: new freestanding branch (Bancography, via American Banker, April 2026)
 PAYBACK_YEARS = 4          # Bancography's break-even time frame, same source
 BREAKEVEN = round(BRANCH_COST[1] / NIM * 100)  # $ thousands of deposits that cover a year's running cost (high end)
@@ -163,7 +180,13 @@ def ramp():
         })
     return {'branches': len(paths), 'relocationsExcluded': relocations, 'opened': list(RAMP_OPENED), 'target': RAMP_TARGET // 1000,
             'breakeven': round(BREAKEVEN / 1e3), 'breakevenLow': round(BRANCH_COST[0] / NIM / 10), 'branchCost': list(BRANCH_COST),
-            'nim': NIM, 'buildOut': BUILD_OUT, 'paybackYears': PAYBACK_YEARS, 'payback': round(PAYBACK / 1e3), 'byAge': by_age}
+            'nim': NIM, 'nimIndustry': NIM_INDUSTRY, 'buildOut': BUILD_OUT, 'paybackYears': PAYBACK_YEARS, 'payback': round(PAYBACK / 1e3), 'byAge': by_age}
+
+
+def zbp(year):
+    raw = zipfile.ZipFile(io.BytesIO(get(f'https://www2.census.gov/programs-surveys/cbp/datasets/{year}/zbp{year % 100}totals.zip')))
+    text = raw.read(raw.namelist()[0]).decode('latin-1')
+    return {r['zip']: (int(r['est']), int(r['emp'])) for r in csv.DictReader(io.StringIO(text))}
 
 
 def miles(a, b):
@@ -188,7 +211,8 @@ acs = {gid[-3:]: v for gid, v in acs_raw['data'].items()}
 gaz_raw = get('https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_gaz_tracts_48.txt').decode('latin-1')
 tract_location = {r['GEOID']: (float(r['INTPTLAT']), float(r['INTPTLONG'].strip())) for r in csv.DictReader(io.StringIO(gaz_raw), delimiter='|')}
 
-markets, towns = [], {}
+business = {year: zbp(year) for year in ZBP_YEARS}
+markets, towns = [], []
 for name, fips in COUNTIES.items():
     now, then = local(sod(name, SOD_YEAR)), local(sod(name, SOD_BASE_YEAR))
     dep_now, dep_then = sum(r['DEPSUMBR'] for r in now), sum(r['DEPSUMBR'] for r in then)
@@ -237,14 +261,26 @@ for name, fips in COUNTIES.items():
         'ownerHomesInLmiShare': round(sum(tracts[t]['owner'] for t in lmi) / owners * 100, 1),
         'metroMedianFamilyIncome': metro_mfi,
     }
-    for town, point in TOWNS.get(name, {}).items():
+    for town, (point, zips) in TOWNS.get(name, {}).items():
         near = [t for t in tracts if t in tract_location and miles(tract_location[t], point) <= TOWN_RADIUS_MILES]
-        pop = sum(tracts[t]['population'] for t in near) or 1
-        towns.setdefault(name, []).append({
-            'town': town,
-            'lmiPopulationShare': round(sum(tracts[t]['population'] for t in near if t in lmi) / pop * 100),
-            'minorityPopulationShare': round(sum(tracts[t]['population'] for t in near if t in minority) / pop * 100),
-            'branches': sum(1 for t in branch_tracts if t in near),
+        residents = sum(tracts[t]['population'] for t in near) or 1
+        in_town_now = [r for r in now if r['CITYBR'] == town]
+        in_town_then = [r for r in then if r['CITYBR'] == town]
+        town_dep = sum(r['DEPSUMBR'] for r in in_town_now)
+        est = [sum(business[y].get(z, (0, 0))[0] for z in zips) for y in ZBP_YEARS]
+        emp = [sum(business[y].get(z, (0, 0))[1] for z in zips) for y in ZBP_YEARS]
+        towns.append({
+            'town': town, 'county': name,
+            'deposits': round(town_dep / 1e3),  # $ millions
+            'depositGrowthPct': round((town_dep / sum(r['DEPSUMBR'] for r in in_town_then) - 1) * 100),
+            'branches': len(in_town_now),
+            'depositsPerBranch': round(town_dep / len(in_town_now) / 1e3),
+            'communityShare': round(sum(r['DEPSUMBR'] for r in in_town_now if r['ASSET'] < COMMUNITY_ASSETS) / town_dep * 100),
+            'jobs': emp[1], 'jobGrowthPct': round((emp[1] / emp[0] - 1) * 100),
+            'businesses': est[1], 'businessGrowthPct': round((est[1] / est[0] - 1) * 100),
+            'lmiPopulationShare': round(sum(tracts[t]['population'] for t in near if t in lmi) / residents * 100),
+            'minorityPopulationShare': round(sum(tracts[t]['population'] for t in near if t in minority) / residents * 100),
+            'lmiTracts': sum(1 for t in near if t in lmi),
         })
 
 OUT.write_text(json.dumps({
@@ -253,6 +289,7 @@ OUT.write_text(json.dumps({
         'population': f'U.S. Census Bureau county population estimates, April 2020 to July {POP_VINTAGE}',
         'households': f'U.S. Census Bureau American Community Survey, {acs_release}',
         'ramp': f'FDIC Summary of Deposits, June {RAMP_HISTORY_FROM} to June {SOD_YEAR}, Dallas-Fort Worth metro',
+        'towns': f'FDIC Summary of Deposits by branch city, {SOD_BASE_YEAR} to {SOD_YEAR}; Census ZIP Code Business Patterns, {ZBP_YEARS[0]} to {ZBP_YEARS[1]}; tracts within {TOWN_RADIUS_MILES} miles of the town center',
         'fairAccess': f'HMDA {HMDA_YEAR} (CFPB) with FFIEC tract income and minority data; branches placed by the Census geocoder',
     },
     'notes': [

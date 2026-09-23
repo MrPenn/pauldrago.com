@@ -1,0 +1,39 @@
+---
+// The three-county comparison, shared by the branch-analysis page and its sample plan.
+// Figures come from src/data/dfw-markets.json (scripts/build-dfw-markets.py).
+import data from '../data/dfw-markets.json';
+
+const markets = data.markets;
+const money = (b) => `$${b.toFixed(1)}B`;
+const pct = (n) => `${Math.round(n)}%`;
+const k = (n) => `$${Math.round(n / 1000)}K`;
+const num = (n) => Math.round(n).toLocaleString('en-US');
+const rows = [
+  { label: 'Local deposits, June 2026', key: 'deposits', show: (m) => money(m.deposits) },
+  { label: 'Deposit growth, 2021 to 2026', key: 'depositGrowthPct', show: (m) => `+${pct(m.depositGrowthPct)}` },
+  { label: 'Population growth, 2020 to 2025', key: 'populationGrowthPct', show: (m) => `+${pct(m.populationGrowthPct)}` },
+  { label: 'Median household income', key: 'medianIncome', show: (m) => k(m.medianIncome) },
+  { label: 'Households per bank branch', key: 'householdsPerBranch', show: (m) => num(m.householdsPerBranch) },
+  { label: 'Deposits held by community banks', key: 'communityShare', show: (m) => pct(m.communityShare) },
+  { label: 'Typical community-bank branch', key: 'medianCommunityBranch', show: (m) => `$${m.medianCommunityBranch}M` },
+  { label: "Largest bank's share", key: 'leader', show: (m) => pct(m.leaders[0].share), noBest: true },
+];
+const best = (key) => Math.max(...markets.map((m) => m[key]));
+---
+<div class="market-table-wrap">
+  <table class="market-table">
+    <caption class="sr-only">Three Dallas-area counties compared on public deposit, population, and income data</caption>
+    <thead>
+      <tr><th scope="col"><span class="sr-only">Measure</span></th>{markets.map((m) => <th scope="col">{m.county}</th>)}</tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <th scope="row">{r.label}</th>
+          {markets.map((m) => <td class:list={[{ 'is-best': !r.noBest && m[r.key] === best(r.key) }]}>{r.show(m)}</td>)}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <p class="market-table-note">Highlighted: the strongest of the three on each measure. {data.asOf.deposits}. {data.asOf.population}. {data.asOf.households}. {data.notes.join(' ')}</p>
+</div>

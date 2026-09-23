@@ -18,7 +18,7 @@ Services are for U.S. banks and credit unions. Engagements are scoped on a 20-mi
 
 - [Services overview](${SITE}/financial-services): marketing measurement, branch and market analysis, acquisition footprint analysis, and fractional CMO leadership.
 - [Marketing Measurement Reset](${SITE}/marketing-measurement-reset): connects acquisition spend to retained accounts, funded balances, and board reporting in four to six weeks.
-- [Branch and Market Expansion Analysis](${SITE}/branch-market-expansion-analysis): compares markets on deposits, customer geography, branch economics, CRA context, and fair-access risk before a branch decision.
+- [Branch and Market Expansion Analysis](${SITE}/branch-market-expansion-analysis): compares markets on deposits, customer geography, branch economics, CRA context, and fair-access risk, and turns the result into a five-year branch plan. [Sample plan](${SITE}/branch-market-expansion-analysis/sample-plan) for a hypothetical Dallas bank on public data.
 - [Acquisition and Footprint Analysis](${SITE}/acquisition-footprint-analysis): separates what an acquisition target adds from branch overlap, attrition, and concentration risk.
 - [Fractional CMO for Regulated Financial Services](${SITE}/fractional-cmo-financial-services): senior marketing leadership on a monthly retainer, six-month minimum.
 

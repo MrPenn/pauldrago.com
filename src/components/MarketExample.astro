@@ -1,11 +1,11 @@
 ---
-// Worked example for the branch-analysis page, run on three real Dallas-area counties in five steps:
-// what the data shows, what is coming, CRA and fair access, what local knowledge has to answer, and the plan.
-// Market and fair-access figures come from src/data/dfw-markets.json (scripts/build-dfw-markets.py);
-// the pipeline signals from src/data/dfw-signals.json. The bank is hypothetical.
+// Worked example for the branch-analysis page: three real Dallas-area counties compared on public
+// data, with a scorecard readers can re-weight. The full analysis is the sample plan at
+// /branch-market-expansion-analysis/sample-plan. The bank is hypothetical.
+import MarketTable from './MarketTable.astro';
 import data from '../data/dfw-markets.json';
-import signals from '../data/dfw-signals.json';
 import { CRITERIA, PRESETS, INSTITUTION, scoreMarkets } from '../data/market-scoring';
+import { PLAN, planModel } from '../data/branch-plan';
 
 const markets = data.markets;
 const by = Object.fromEntries(markets.map((m) => [m.county, m]));
@@ -16,112 +16,24 @@ const publicOnly = scoreMarkets(markets, { ...PRESETS.full.weights, customers: 0
 const holdsOnPublicData = publicOnly[0].county === fullCase[0].county;
 const money = (b) => `$${b.toFixed(1)}B`;
 const pct = (n) => `${Math.round(n)}%`;
-const k = (n) => `$${Math.round(n / 1000)}K`;
 const num = (n) => Math.round(n).toLocaleString('en-US');
-const incumbent = Kaufman.leaders[0];
 const shortName = (name) => name.replace(/, National Association$/, '').replace(/ Bank$/, '');
 const collinLeaders = Collin.leaders.map((l) => shortName(l.bank));
 const collinLeaderShare = Collin.leaders.reduce((sum, l) => sum + l.share, 0);
 const growthVsKaufman = (Collin.depositGrowth / Kaufman.deposits).toFixed(1);
-const rows = [
-  { label: 'Local deposits, June 2026', key: 'deposits', show: (m) => money(m.deposits) },
-  { label: 'Deposit growth, 2021 to 2026', key: 'depositGrowthPct', show: (m) => `+${pct(m.depositGrowthPct)}` },
-  { label: 'Population growth, 2020 to 2025', key: 'populationGrowthPct', show: (m) => `+${pct(m.populationGrowthPct)}` },
-  { label: 'Median household income', key: 'medianIncome', show: (m) => k(m.medianIncome) },
-  { label: 'Households per bank branch', key: 'householdsPerBranch', show: (m) => num(m.householdsPerBranch) },
-  { label: 'Deposits held by community banks', key: 'communityShare', show: (m) => pct(m.communityShare) },
-  { label: 'Typical community-bank branch', key: 'medianCommunityBranch', show: (m) => `$${m.medianCommunityBranch}M` },
-  { label: "Largest bank's share", key: 'leader', show: (m) => pct(m.leaders[0].share), noBest: true },
-];
-const best = (key) => Math.max(...markets.map((m) => m[key]));
 const groups = [...new Set(CRITERIA.map((c) => c.group))];
-const fairRows = [
-  { label: 'People living in low- or moderate-income tracts', show: (f) => pct(f.lmiPopulationShare) },
-  { label: 'People living in majority-minority tracts', show: (f) => pct(f.minorityPopulationShare) },
-  { label: 'Low- or moderate-income tracts with no bank branch', show: (f) => `${f.lmiTractsWithoutBranch} of ${f.lmiTracts}` },
-  { label: 'Home-purchase loans in those tracts', show: (f) => pct(f.purchaseLoansInLmiShare) },
-  { label: "Those tracts' share of owner-occupied homes", show: (f) => pct(f.ownerHomesInLmiShare) },
-];
-const kf = Kaufman.fairAccess;
-const towns = data.towns.Kaufman;
-const forney = towns.find((t) => t.town === 'Forney');
-const terrell = towns.find((t) => t.town === 'Terrell');
-const mfi = kf.metroMedianFamilyIncome;
-
-// The five-year plan. Each branch follows the metro's new-branch ramp (median or bottom quarter);
-// it opens at the start of its plan year, and each year's contribution uses the average balance.
-const ramp = data.ramp;
-const path = (key) => [0, ...ramp.byAge.map((a) => a[key])];
-const contribution = (avgDeposits) => avgDeposits * ramp.nim * 10 - ramp.branchCost[1]; // $ thousands, high end of running cost
-const YEARS = [1, 2, 3, 4, 5];
-const plan = [
-  { site: 'Forney', county: 'Kaufman', opens: 1, ramp: 'median' },
-  { site: 'Terrell', county: 'Kaufman', opens: 2, ramp: 'p25' },
-  { site: 'Midlothian', county: 'Ellis', opens: 3, ramp: 'median' },
-];
-const model = (rampFor) => plan.map((b) => {
-  const d = path(rampFor(b));
-  return { ...b, byYear: YEARS.map((y) => { const age = y - b.opens + 1; return age < 1 ? null : { deposits: d[age], contribution: contribution((d[age - 1] + d[age]) / 2) }; }) };
-});
-const expected = model((b) => b.ramp);
-const downside = model(() => 'p25');
-const totals = (m) => YEARS.map((_, i) => m.reduce((sum, b) => sum + (b.byYear[i]?.contribution ?? 0), 0));
-const expectedTotals = totals(expected);
-const downsideTotals = totals(downside);
-const sum = (xs) => xs.reduce((a, b) => a + b, 0);
-const terrellPlan = expected.find((b) => b.site === 'Terrell');
-const forneyPlan = expected.find((b) => b.site === 'Forney');
-const terrellCost = -sum(terrellPlan.byYear.map((y) => y?.contribution ?? 0));
-const firstPositive = YEARS[expectedTotals.findIndex((t) => t > 0)];
-const forneyCovers = YEARS.find((_, i) => terrellPlan.byYear[i] && forneyPlan.byYear[i].contribution >= -terrellPlan.byYear[i].contribution);
-const tUSD = (n) => `${n < 0 ? '-' : ''}$${(Math.abs(n) / 1000).toFixed(Math.abs(n) < 1000 ? 2 : 1)}M`;
-const costUSD = (n) => (n >= 1000 ? `$${n / 1000}M` : `$${n}K`);
+const model = planModel(data.ramp);
+const sites = PLAN.map((b) => b.site);
 const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
-const buildOut = plan.length * ramp.buildOut;
-const age = (n) => ramp.byAge.find((a) => a.age === n);
-const buildByYear = YEARS.map((n) => -plan.filter((b) => b.opens === n).length * ramp.buildOut * 1000);
-const cumulative = YEARS.map((_, i) => sum(expectedTotals.slice(0, i + 1)) + sum(buildByYear.slice(0, i + 1)));
-const medianFourYearAverage = sum([1, 2, 3, 4].map((a) => (path('median')[a - 1] + path('median')[a]) / 2)) / 4;
-const failing = (a) => a.belowBreakevenShare + (100 - a.stillOpenShare);
-// Chart geometry: ages 0-5 across, $0-120M up.
-const W = 640, H = 260, L = 76, R = 36, T = 12, B = 32, YMAX = 120;
-const x = (a) => L + (a / 5) * (W - L - R);
-const y = (v) => T + (1 - v / YMAX) * (H - T - B);
-const line = (key) => path(key).map((v, a) => `${a ? 'L' : 'M'}${x(a).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
-const band = `${line('p75')} ${path('p25').map((v, a) => [a, v]).reverse().map(([a, v]) => `L${x(a).toFixed(1)},${y(v).toFixed(1)}`).join(' ')} Z`;
 ---
+
 <section class="market-example" id="worked-example" aria-labelledby="market-example-heading">
   <div class="container">
     <p class="band-label">A worked example on public data</p>
     <h2 class="display-title section-title" id="market-example-heading">The biggest market isn't the best place for a community bank to grow.</h2>
-    <p class="section-intro">Take {INSTITUTION.description}, planning its first five years of growth outside the county. Here is the method run on three real candidates: Collin County to the north, Ellis to the south, and Kaufman to the east. The bank is hypothetical. The public data is not, and anyone can check it.</p>
+    <p class="section-intro">Take {INSTITUTION.description}, planning its first five years of growth outside the county. Here is the first step of the method, run on three real candidates: Collin County to the north, Ellis to the south, and Kaufman to the east. The bank is hypothetical. The public data is not, and anyone can check it.</p>
 
-    <ol class="market-steps" aria-label="The five steps">
-      <li><a href="#step-data">What the data shows</a></li>
-      <li><a href="#step-pipeline">What's coming</a></li>
-      <li><a href="#step-fair-access">CRA and fair access</a></li>
-      <li><a href="#step-local">What local knowledge has to answer</a></li>
-      <li><a href="#step-plan">The five-year plan</a></li>
-    </ol>
-
-    <h3 class="market-step-title" id="step-data"><span>1</span>What the data shows</h3>
-    <div class="market-table-wrap">
-      <table class="market-table">
-        <caption class="sr-only">Three Dallas-area counties compared on public deposit, population, and income data</caption>
-        <thead>
-          <tr><th scope="col"><span class="sr-only">Measure</span></th>{markets.map((m) => <th scope="col">{m.county}</th>)}</tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => (
-            <tr>
-              <th scope="row">{r.label}</th>
-              {markets.map((m) => <td class:list={[{ 'is-best': !r.noBest && m[r.key] === best(r.key) }]}>{r.show(m)}</td>)}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <p class="market-table-note">Highlighted: the strongest of the three on each measure. {data.asOf.deposits}. {data.asOf.population}. {data.asOf.households}. {data.notes.join(' ')}</p>
-    </div>
+    <MarketTable />
     <div class="market-scorecard" data-market-scorecard>
       <div class="market-weights">
         <p class="market-weights-title">Weight the criteria</p>
@@ -159,148 +71,19 @@ const band = `${line('p75')} ${path('p25').map((v, a) => [a, v]).reverse().map((
 
     <div class="market-findings market-findings-two">
       <div class="market-finding">
-        <h4>Where the answer flipped</h4>
+        <h3>Where the answer flipped</h3>
         <p>Collin added {money(Collin.depositGrowth)} of deposits in five years, {growthVsKaufman} times Kaufman's entire deposit base. But community banks captured only {money(Collin.communityGrowth)} of it across {Collin.communityBranches} branches. {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of Collin between them, and a typical community-bank branch there holds ${Collin.medianCommunityBranch}M.</p>
       </div>
       <div class="market-finding">
-        <h4>Why Kaufman leads on the numbers</h4>
+        <h3>Why Kaufman leads on the numbers</h3>
         <p>Kaufman's population grew {pct(Kaufman.populationGrowthPct)} since 2020, the fastest of the three, and it has the most households per branch ({num(Kaufman.householdsPerBranch)}). Its residents bank locally: community banks hold {pct(Kaufman.communityShare)} of deposits, and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M, nearly three times Collin's.</p>
       </div>
     </div>
 
-    <h3 class="market-step-title" id="step-pipeline"><span>2</span>What's coming</h3>
-    <p class="market-step-intro">Announced and under-construction projects, checked against primary sources, as of {signals.asOf}. They don't change the scores; they test them, and they show where in each county the growth will land. Each is marked for what it brings a bank: households, payroll, or commercial activity.</p>
-    <div class="pipe-columns">
-      {Object.entries(signals.counties).map(([county, c]) => (
-        <section class="pipe-county" aria-labelledby={`signals-${county}`}>
-          <h4 id={`signals-${county}`}>{county}</h4>
-          <ul class="pipe-list">
-            {c.signals.map((sig) => (
-              <li class="pipe">
-                <p class="pipe-meta"><span class="pipe-brings">{sig.brings}</span><span>{sig.status}, {sig.when}</span></p>
-                <p class="pipe-title">{sig.title}</p>
-                <p class="pipe-detail">{sig.detail} <a href={sig.url} target="_blank" rel="noopener noreferrer">{sig.source}</a></p>
-              </li>
-            ))}
-          </ul>
-          <p class="pipe-watch"><strong>Watch:</strong> {c.watch}</p>
-          <p class="pipe-where"><strong>Where:</strong> {c.where}</p>
-        </section>
-      ))}
-    </div>
-    <p class="market-table-note">{signals.note}</p>
-
-    <h3 class="market-step-title" id="step-fair-access"><span>3</span>CRA and fair access</h3>
-    <p class="market-step-intro">A branch outside Dallas County adds that county to the bank's CRA assessment area, and where the branch sits inside it is a fair-lending question as much as a marketing one. Income levels follow the FFIEC bands examiners use: low is below 50% of the metro median family income (${num(mfi)}), moderate is 50% to 80%.</p>
-    <div class="market-table-wrap">
-      <table class="market-table">
-        <caption class="sr-only">CRA and fair-access measures for the three counties</caption>
-        <thead>
-          <tr><th scope="col"><span class="sr-only">Measure</span></th>{markets.map((m) => <th scope="col">{m.county}</th>)}</tr>
-        </thead>
-        <tbody>
-          {fairRows.map((r) => (
-            <tr><th scope="row">{r.label}</th>{markets.map((m) => <td>{r.show(m.fairAccess)}</td>)}</tr>
-          ))}
-        </tbody>
-      </table>
-      <p class="market-table-note">{data.asOf.fairAccess}. Home-purchase loans are owner-occupied originations by all lenders in 2025.</p>
-    </div>
-    <div class="market-findings market-findings-two">
-      <div class="market-finding">
-        <h4>Kaufman is the strongest CRA case</h4>
-        <p>A third of Kaufman's residents ({pct(kf.lmiPopulationShare)}) live in low- or moderate-income tracts, {kf.lmiTractsWithoutBranch} of its {kf.lmiTracts} such tracts have no branch, and home-purchase lending there ({pct(kf.purchaseLoansInLmiShare)} of loans) runs well below those tracts' share of owner-occupied homes ({pct(kf.ownerHomesInLmiShare)}). A bank that meets that need would have a real CRA record to show for the branch.</p>
-      </div>
-      <div class="market-finding">
-        <h4>Which is why the site matters</h4>
-        <p>The tracts within five miles of central Forney are middle and upper income ({pct(forney.lmiPopulationShare)} of residents in low- or moderate-income tracts). Around Terrell it is {pct(terrell.lmiPopulationShare)}, and {pct(terrell.minorityPopulationShare)} of residents live in majority-minority tracts. A bank that entered Kaufman through Forney alone would have its whole local presence in the county's better-off tracts. Examiners read that pattern closely, and it needs a documented answer before the branch application, not after.</p>
-      </div>
-    </div>
-
-    <h3 class="market-step-title" id="step-local"><span>4</span>What local knowledge has to answer</h3>
-    <p class="market-step-intro">None of this replaces the people who know the market. The bank's lenders, branch managers, and directors, and the local economic development office know things no dataset shows. The analysis is what makes that conversation useful: instead of anecdote against anecdote, each question below comes from the evidence, and the answers are written down next to it.</p>
-    <ol class="local-questions">
-      <li><strong>{incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits.</strong> Is that loyalty or habit, and who at our bank knows its customers?</li>
-      <li><strong>Forney is where the county is growing fastest.</strong> Do the new households bank near home or near work in Dallas, and does that call for a branch or for a lender on the ground?</li>
-      <li><strong>Terrell's tracts are lower income, and Amazon is hiring there from 2027.</strong> How do workers in Terrell bank today, and what would it take for us to serve them from day one?</li>
-      <li><strong>How many of our own customers already live or work east of Mesquite?</strong> Our customer file answers this in an afternoon.</li>
-      <li><strong>Adding Kaufman changes our assessment area.</strong> What does compliance need to see in the plan before we file?</li>
-    </ol>
-
-    <h3 class="market-step-title" id="step-plan"><span>5</span>The five-year plan</h3>
-    <p class="market-step-intro">The board isn't approving one branch. It is approving a sequence: where the bank goes, in what order, what each branch should hold and by when, and what the rest of the network carries while the new ones ramp. That starts with how new branches actually perform.</p>
-
-    <h4 class="plan-subtitle">How new branches ramp in Dallas-Fort Worth</h4>
-    <div class="plan-ramp">
-      <figure class="plan-chart">
-        <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ramp-chart-title">
-          <title id="ramp-chart-title">Deposits in new community-bank branches by year since opening, against the ${ramp.breakeven}M that covers running cost and the ${ramp.target}M break-even: the median reaches ${ramp.byAge[2].median}M in year 3 and ${ramp.byAge[4].median}M in year 5; the bottom quarter is below ${ramp.byAge[4].p25}M in year 5.</title>
-          {[0, 40, 80, 120].map((v) => <g class="plan-grid"><line x1={L} x2={W - R} y1={y(v)} y2={y(v)} />{v > 0 && <text x={L - 8} y={y(v)} dy="0.35em">${v}M</text>}</g>)}
-          {[0, 1, 2, 3, 4, 5].map((a) => <text class="plan-axis" x={x(a)} y={H - 10}>{a === 0 ? 'Open' : `Year ${a}`}</text>)}
-          <path class="plan-band" d={band} />
-          <line class="plan-target" x1={L} x2={W - R} y1={y(ramp.target)} y2={y(ramp.target)} />
-          <line class="plan-breakeven" x1={L} x2={W - R} y1={y(ramp.breakeven)} y2={y(ramp.breakeven)} />
-          <text class="plan-line-label" x={L + 6} y={y(ramp.target)} dy="-0.45em">${ramp.target}M break-even</text>
-          <text class="plan-line-label" x={L + 6} y={y(ramp.breakeven)} dy="1.15em">${ramp.breakeven}M covers running cost</text>
-          <path class="plan-median" d={line('median')} />
-        </svg>
-        <figcaption>Line: the median branch. Shaded: the middle half. {ramp.branches} community-bank branches opened new in the metro from {ramp.opened[0]} to {ramp.opened[1]}, tracked every June; {ramp.relocationsExcluded} relocations excluded because they opened with deposits. {data.asOf.ramp}.</figcaption>
-      </figure>
-      <div class="market-table-wrap">
-        <table class="market-table plan-outcomes">
-          <caption class="sr-only">Outcomes for new community-bank branches at years 1, 3, and 5</caption>
-          <thead><tr><th scope="col">Share of branches</th><th scope="col">Year 1</th><th scope="col">Year 3</th><th scope="col">Year 5</th></tr></thead>
-          <tbody>
-            <tr><th scope="row">Closed</th>{[1, 3, 5].map((n) => <td>{pct(100 - age(n).stillOpenShare)}</td>)}</tr>
-            <tr><th scope="row">Open, not covering running cost</th>{[1, 3, 5].map((n) => <td>{pct(age(n).belowBreakevenShare)}</td>)}</tr>
-            <tr><th scope="row">Covering running cost, below ${ramp.target}M</th>{[1, 3, 5].map((n) => <td>{pct(age(n).stillOpenShare - age(n).belowBreakevenShare - age(n).atTargetShare)}</td>)}</tr>
-            <tr><th scope="row">At break-even, ${ramp.target}M or more</th>{[1, 3, 5].map((n) => <td>{pct(age(n).atTargetShare)}</td>)}</tr>
-          </tbody>
-        </table>
-        <p class="market-table-note">A new branch has to earn back two things: its build-out, about ${ramp.buildOut}M, which Bancography expects to recover in {ramp.paybackYears} years (<a href="https://www.americanbanker.com/news/the-more-things-change-bank-ceos-on-why-theyre-adding-branches" target="_blank" rel="noopener noreferrer">American Banker, April 2026</a>), and its running cost, up to {costUSD(ramp.branchCost[1])} a year (<a href="https://www.bankingexchange.com/recent-articles/item/2079-workbook-time-to-close-underperforming-branches" target="_blank" rel="noopener noreferrer">Banking Exchange</a>; <a href="https://www.bitsaboutmoney.com/archive/branch-banking/" target="_blank" rel="noopener noreferrer">Bits About Money</a>). At the community-bank net interest margin of {ramp.nim}% (<a href="https://www.fdic.gov/quarterly-banking-profile/quarterly-banking-profile-2q-2026" target="_blank" rel="noopener noreferrer">FDIC, second quarter 2026</a>), covering the running cost takes ${ramp.breakeven}M in deposits. Earning back ${ramp.buildOut}M plus {ramp.paybackYears} years of running cost in {ramp.paybackYears} years takes an average of ${ramp.payback}M: call it ${ramp.target}M. That is also what the median new branch holds 15 years after opening (<a href="https://www.federalreserve.gov/econres/notes/feds-notes/size-and-survival-of-entrants-to-retail-banking-20230901.html" target="_blank" rel="noopener noreferrer">Federal Reserve, 2023</a>).</p>
-      </div>
-    </div>
-    <p class="plan-finding">At year five, {pct(failing(age(5)))} of new community-bank branches in the metro had closed or still weren't covering their running cost, and only {pct(age(5).atTargetShare)} were at break-even. The plan below budgets for that instead of assuming every branch hits the median.</p>
-
-    <h4 class="plan-subtitle">The sequence</h4>
-    <ol class="plan-sequence">
-      <li><span class="plan-when">Year 1</span><p><strong>Forney, on US-80.</strong> The fastest household growth in the county, a hospital opening in 2027, and a school district past 20,000 students. Planned on the median ramp.</p></li>
-      <li><span class="plan-when">Year 2</span><p><strong>Terrell.</strong> The county's low- and moderate-income tracts, and Amazon hiring there from 2027. This is the CRA branch, so it is planned on the bottom-quarter ramp: it is placed for the community it serves, against an incumbent with {pct(incumbent.share)} of the county's deposits.</p></li>
-      <li><span class="plan-when">Year 3</span><p><strong>Midlothian, in Ellis County,</strong> if Forney is on plan (${path('median')[2]}M by the end of year 2). Ellis ranked second, and Medline and the school district bring payroll and households. Planned on the median ramp.</p></li>
-      <li><span class="plan-when">Year 5</span><p><strong>Review against the ramp.</strong> Each branch is measured against the curve it was planned on. A second Kaufman site is decided then, on actual results.</p></li>
-    </ol>
-
-    <h4 class="plan-subtitle">What the network carries</h4>
-    <div class="market-table-wrap">
-      <table class="market-table plan-network">
-        <caption class="sr-only">Operating contribution by branch and year under the plan</caption>
-        <thead><tr><th scope="col">Contribution</th>{YEARS.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
-        <tbody>
-          {expected.map((b) => (
-            <tr><th scope="row">{b.site}{b.ramp === 'p25' ? ' (CRA branch)' : ''}</th>{b.byYear.map((yr) => <td class:list={[{ 'is-negative': yr && yr.contribution < 0 }]}>{yr ? tUSD(yr.contribution) : ''}</td>)}</tr>
-          ))}
-          <tr class="plan-total"><th scope="row">Network, operating</th>{expectedTotals.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
-          <tr><th scope="row">Build-out</th>{buildByYear.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{t ? tUSD(t) : ''}</td>)}</tr>
-          <tr class="plan-total"><th scope="row">Cumulative, with build-out</th>{cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
-          <tr><th scope="row">Operating, if every branch ramps like the bottom quarter</th>{downsideTotals.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
-        </tbody>
-      </table>
-      <p class="market-table-note">Net interest margin on each year's average deposits, less {costUSD(ramp.branchCost[1])} a year in running cost, the high end of the published range. Build-out of ${ramp.buildOut}M a branch in the year it opens. Fee income and head-office overhead are left out.</p>
-    </div>
-    <div class="market-findings market-findings-two">
-      <div class="market-finding">
-        <h4>Terrell is the cost of the CRA commitment</h4>
-        <p>On its planned ramp, Terrell doesn't cover its running cost in its four years in the plan: it runs about {mUSD(terrellCost)} short over its first four, on top of its ${ramp.buildOut}M build-out. Forney's surplus covers the running shortfall from year {forneyCovers}. The board should approve that cost as the price of serving the county, by name and amount, rather than discover it later.</p>
-      </div>
-      <div class="market-finding">
-        <h4>Operations turn positive in year {firstPositive}. The investment takes longer.</h4>
-        <p>By the end of year five the plan has {mUSD(-cumulative[4])} still to earn back, and the network is returning {mUSD(expectedTotals[4])} a year. Paying back in four years takes an average of ${ramp.payback}M; the median new branch averages about ${Math.round(medianFourYearAverage)}M over its first four, because it starts from zero. If every branch ramps like the bottom quarter, operations are still {mUSD(-downsideTotals[4])} a year short in year five. That is why Midlothian waits for Forney's results.</p>
-      </div>
-    </div>
-
     <div class="market-recommendation">
-      <p class="band-label">What goes to the board</p>
-      <p>Three branches over five years: Forney first, Terrell as the CRA branch, Midlothian only if Forney is on plan. {mUSD(buildOut * 1000)} to build, {mUSD(-cumulative[4])} still to earn back at the end of year five, a named cost for Terrell, and a ramp each branch is measured against. Before committing, I'd want the bank's lenders to tell me why {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits, and what it would take for those customers to move.</p>
+      <p class="band-label">The full analysis</p>
+      <p>The comparison is step one. The sample plan takes it to the board: three branches over five years ({sites.slice(0, -1).join(', ')}, and {sites.at(-1)}), each chosen because it does two of the three jobs a branch can do. It covers the CRA picture, how new branches in Dallas-Fort Worth actually ramp, and what the network carries: {mUSD(model.totalBuildOut * 1000)} of build-out, with {mUSD(-model.cumulative[4])} still to earn back at the end of year five.</p>
+      <p class="market-sample-link"><a href="/branch-market-expansion-analysis/sample-plan">Read the sample five-year plan</a></p>
     </div>
   </div>
 </section>
