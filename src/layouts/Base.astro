@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
 import PostHog from '../components/posthog.astro';
+import CookieConsent from '../components/CookieConsent.astro';
 
 const SITE = 'https://pauldrago.com';
 // Cache-buster: changes every build so browsers and the CDN fetch fresh scripts after a deploy.
@@ -151,6 +152,8 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
         <a href="/articles">Articles</a>
         <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
         <a href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="/privacy">Privacy</a>
+        <button type="button" class="footer-link-button" data-cc="show-preferencesModal">Cookie settings</button>
       </div>
     </div>
     <div class="footer-meta">
@@ -161,6 +164,7 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
 </footer>
 {scripts.map((src) => <script is:inline defer src={v(src)}></script>)}
 <script is:inline defer src={v('/assets/cal-booking.js')}></script>
+<CookieConsent />
 <Fragment set:html="<!--/email_off-->" />
 </body>
 </html>

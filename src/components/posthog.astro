@@ -20,6 +20,22 @@ const apiHost = isDevelopment ? import.meta.env.PUBLIC_POSTHOG_HOST : '/ingest';
     // or for the browser to go idle a second after load, so analytics stays out of the first render.
     // The snippet only creates its queueing methods inside init, so capture gets a queueing stub now.
     posthog.capture = posthog.capture || function () { posthog.push(['capture'].concat(Array.prototype.slice.call(arguments))); };
+    // Consent: until a visitor accepts analytics cookies, PostHog runs cookieless (no cookies or
+    // browser storage; visits are counted by a server-side hash). The cookie banner reports the
+    // visitor's choice through setAnalyticsConsent; accepting switches to normal cookie tracking.
+    let analyticsConsent = null;
+    function applyAnalyticsConsent(instance) {
+      const ph = instance || (posthog.__loaded ? posthog : null);
+      if (analyticsConsent === null || !ph) return;
+      const status = ph.get_explicit_consent_status();
+      if (analyticsConsent && status !== 'granted') ph.opt_in_capturing();
+      if (!analyticsConsent && status !== 'denied') ph.opt_out_capturing();
+    }
+    window.setAnalyticsConsent = (granted) => {
+      analyticsConsent = granted;
+      applyAnalyticsConsent();
+    };
+
     let posthogStarted = false;
     const interactionEvents = ['pointerdown', 'keydown', 'scroll', 'touchstart'];
     function startPostHog() {
@@ -29,12 +45,15 @@ const apiHost = isDevelopment ? import.meta.env.PUBLIC_POSTHOG_HOST : '/ingest';
       posthog.init(apiKey, {
         api_host: apiHost,
         ui_host: 'https://us.posthog.com',
+        cookieless_mode: 'on_reject',
+        opt_out_capturing_by_default: true,
         capture_exceptions: {
           capture_unhandled_errors: true,
           capture_unhandled_rejections: true,
           capture_console_errors: false,
         },
         enable_heatmaps: true,
+        loaded: applyAnalyticsConsent,
       });
     }
     interactionEvents.forEach((type) => window.addEventListener(type, startPostHog, { once: true, passive: true }));

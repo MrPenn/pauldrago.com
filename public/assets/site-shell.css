@@ -255,6 +255,20 @@ footer {
   color: var(--brass);
 }
 
+.footer-link-button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--paper);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.footer-link-button:hover {
+  color: var(--brass);
+}
+
 .footer-meta {
   margin-top: 34px;
   padding-top: 18px;
