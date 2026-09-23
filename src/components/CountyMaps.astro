@@ -39,7 +39,7 @@ const maps = mapData.counties.map((c) => {
       <div class="county-map">
         <h3 class="county-map-name">{m.county} County</h3>
         <p class="county-map-sub">{m.sites.filter((s) => !s.review).length} planned {m.sites.filter((s) => !s.review).length === 1 ? 'branch' : 'branches'}{m.sites.some((s) => s.review) && `, ${m.sites.filter((s) => s.review).length} at the year 5 review`}; {m.branches.length} existing</p>
-        <svg viewBox={`-12 -12 ${m.width + 24} ${m.height + 56}`} style={`--map-h: ${m.height + 56}`} role="img" aria-labelledby={`map-${m.id}-title`}>
+        <svg viewBox={`-12 -12 ${m.width + 24} ${m.height + 56}`} style={`--map-h: ${m.height + 56}; --mile: ${m.milePx}; --miles: ${((m.height + 56) / m.milePx).toFixed(2)}`} role="img" aria-labelledby={`map-${m.id}-title`}>
           <title id={`map-${m.id}-title`}>{m.county} County census tracts shaded by home purchases per 1,000 residents, with {m.branches.length} existing branches and five-mile review areas around {m.sites.map((s) => s.town).join(' and ')}.</title>
           <defs>
             <pattern id={`hatch-${m.id}`} width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">

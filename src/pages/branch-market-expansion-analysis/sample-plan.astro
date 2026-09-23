@@ -164,7 +164,7 @@ const SOURCES = {
           <table class="market-table brief-options">
             <caption class="sr-only">Options considered</caption>
             <tbody>
-              <tr class="is-plan"><th scope="row">The plan, recommended</th><td>{planPace.by10} branches; peak need {mUSD(-planPace.peak)}; pays back in year {planPace.paybackYear}; {mUSD(planPace.year10)} a year by year 10.</td></tr>
+              <tr class="is-plan"><th scope="row">The plan, recommended</th><td>{planPace.by10} branches; peak need {mUSD(-planPace.peak)} (build-out plus early losses); pays back in year {planPace.paybackYear}; {mUSD(planPace.year10)} a year by year 10.</td></tr>
               <tr><th scope="row">Faster</th><td>{fasterPace.by10} branches by year 3; peak need {mUSD(-fasterPace.peak)}; same payback year; {mUSD(fasterPace.year10)} a year by year 10. Not recommended: {mUSD(planPace.peak - fasterPace.peak)} more at risk while {pct(failing(age(5)))} of new branches fail.</td></tr>
               <tr><th scope="row">Loan production office first</th><td>Lenders in the market for less than a branch costs, but an office like this can't take deposits, and deposits are the case for going. Worth weighing for Terrell at the review.</td></tr>
               <tr><th scope="row">Acquisition</th><td>Several small banks already have branches in these counties. Buying one brings deposits on day one, at a premium; not modelled here, and it needs its own analysis.</td></tr>
@@ -228,6 +228,10 @@ const SOURCES = {
 
     <section class="report-section report-appendix" id="sites" aria-labelledby="sites-h">
       <h2 class="report-h2" id="sites-h"><span>B</span> Why these towns</h2>
+      <p class="report-p">Each candidate town is tagged for what a branch there would do. Deposits and Business pick the sites; the CRA tag, dashed, is the check the network has to pass (appendix D).</p>
+      <ul class="report-rules">
+        {TAGS.map((t) => <li><span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t.key) }]}>{t.label}</span> {t.rule}.</li>)}
+      </ul>
         <div class="appendix-plan">
           <h3 class="report-h3" id="plan">The sequence</h3>
           <div class="market-table-wrap">
@@ -243,10 +247,7 @@ const SOURCES = {
             </table>
           </div>
         </div>
-      <p class="report-p">Each candidate town is tagged for what a branch there would do. Deposits and Business pick the sites; the CRA tag, dashed, is the check the network has to pass (appendix D).</p>
-      <ul class="report-rules">
-        {TAGS.map((t) => <li><span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t.key) }]}>{t.label}</span> {t.rule}.</li>)}
-      </ul>
+
       <div class="market-table-wrap">
         <table class="market-table report-towns">
           <caption class="sr-only">Candidate towns in Kaufman and Ellis counties</caption>
@@ -329,7 +330,7 @@ const SOURCES = {
         <figure class="plan-chart">
           <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ramp-chart-title">
             <title id="ramp-chart-title">Deposits in new community-bank branches by year since opening, against the ${ramp.breakeven}M operating break-even and the ${ramp.target}M payback level: the median reaches ${age(3).median}M in year 3 and ${age(5).median}M in year 5.</title>
-            {[0, 40, 80, 120].map((v) => <g class="plan-grid"><line x1={L} x2={W - R} y1={y(v)} y2={y(v)} /><text x={L - 8} y={y(v)} dy="0.35em">{v ? `$${v}M` : '$0'}</text></g>)}
+            {[0, 40, 80, 120].map((v) => <g class="plan-grid"><line x1={L} x2={W - R} y1={y(v)} y2={y(v)} /><text x={L - 8} y={y(v)} dy={v ? '0.35em' : '-0.1em'}>{v ? `$${v}M` : '$0'}</text></g>)}
             {[0, 1, 2, 3, 4, 5].map((a) => <text class="plan-axis" x={x(a)} y={H - 10}>{a === 0 ? 'Open' : `Year ${a}`}</text>)}
             <path class="plan-band" d={band} />
             <line class="plan-target" x1={L} x2={W - R} y1={y(ramp.target)} y2={y(ramp.target)} />
@@ -392,16 +393,19 @@ const SOURCES = {
         <p class="market-table-note">Launch marketing is ${LAUNCH_MARKETING[0]}K in a branch's first year and ${LAUNCH_MARKETING[1]}K in its second. Published first-year budgets for a new branch run $50K to $150K (<a href="https://www.chatterbuzzmedia.com/blog/credit-union-new-branch-opening-playbook/" target="_blank" rel="noopener noreferrer">Chatter Buzz Media, 2026</a>), and a branch in a new market needs 18 to 24 months of marketing (<a href="http://bankingjournal.aba.com/2026/08/bank-marketings-essential-role-in-successful-branch-expansion/" target="_blank" rel="noopener noreferrer">ABA Banking Journal, August 2026</a>); the second-year figure is our assumption.</p>
       </div>
 
+      <div class="pace-block">
       <h3 class="report-h3">The faster pace is {mUSD(planPace.run.cumulative[1] - fasterPace.run.cumulative[1])} deeper in year 2 and {mUSD(fasterPace.run.cumulative[9] - planPace.run.cumulative[9])} ahead by year 10</h3>
+      <p class="market-table-note pace-note">Pre-tax. The plan: {planPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}. Faster: {fasterPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}.</p>
       <div class="market-table-wrap">
         <table class="market-table plan-network pace-table">
           <caption class="sr-only">Cumulative cash by year for two paces</caption>
-          <thead><tr><th scope="col">Cumulative</th>{HORIZON.map((n) => <th scope="col">Yr {n}</th>)}</tr></thead>
+          <thead><tr><th scope="col">Cumulative, $M</th>{HORIZON.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
           <tbody>
             {paces.map((p) => <tr><th scope="row">{p.label}</th>{p.run.cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{t < 0 ? `(${(Math.abs(t) / 1000).toFixed(1)})` : (t / 1000).toFixed(1)}</td>)}</tr>)}
           </tbody>
         </table>
-        <p class="market-table-note">$ millions, pre-tax. The plan: {planPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}. Faster: {fasterPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}.</p>
+        
+      </div>
       </div>
     </section>
 
@@ -426,13 +430,13 @@ const SOURCES = {
 
     <section class="report-section report-appendix" id="methods" aria-labelledby="methods-h">
       <h2 class="report-h2" id="methods-h"><span>G</span> Data and definitions</h2>
-      <ul class="report-sources">
+      <ol class="report-sources">
         <li><a href="https://banks.data.fdic.gov/bankfind-suite/SOD">FDIC Summary of Deposits</a>: branch deposits, 2008 to 2026.</li>
         <li><a href="https://www.census.gov/programs-surveys/popest.html">Census population estimates</a> and <a href="https://www.census.gov/programs-surveys/acs">American Community Survey</a>: population, households, income.</li>
         <li><a href="https://www.census.gov/programs-surveys/cbp.html">Census ZIP Code Business Patterns</a>: jobs by town, 2019 and 2023.</li>
         <li><a href="https://ffiec.cfpb.gov/data-browser/">HMDA</a>: tract income and minority data, and home-purchase lending, 2025.</li>
         <li><a href="https://www.fdic.gov/board/federal-register-notice-branch-final-rule.pdf">FDIC branch application rule</a>, effective February 27, 2026.</li>
-      </ul>
+      </ol>
       <p class="report-p report-small">{data.notes.join(' ')} Towns are measured by branch city for deposits, ZIP code for jobs, and census tracts within five miles of the town center for income. Tag thresholds are judgments, stated so they can be argued with. The bank and its capital, income, and hurdle rate are illustrative; this plan supports a business decision; it is not legal advice, a fair-lending analysis, or a CRA compliance determination.</p>
     </section>
 
