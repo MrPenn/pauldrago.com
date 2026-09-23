@@ -50,37 +50,114 @@ export const REVIEW_SITES = ['Terrell', 'Waxahachie'];
 
 export const YEARS = [1, 2, 3, 4, 5];
 
-export function planModel(ramp: Ramp) {
-  const path = (key: 'p25' | 'median' | 'p75') => [0, ...ramp.byAge.map((a) => a[key])];
+// Launch marketing per new branch, $ thousands, in its first and second year. Published first-year
+// budgets run $50K to $150K (Chatter Buzz Media, 2026); the plan uses the high end. New-market
+// branches need 18 to 24 months of marketing (ABA Banking Journal, August 2026), so the second year
+// carries half again. The second-year figure is our assumption.
+export const LAUNCH_MARKETING = [150, 75];
+
+// A faster pace: every town that carries Deposits or Business, opened within three years.
+export const AGGRESSIVE = [
+  { site: 'Forney', opens: 1 },
+  { site: 'Midlothian', opens: 1 },
+  { site: 'Crandall', opens: 2 },
+  { site: 'Waxahachie', opens: 2 },
+  { site: 'Terrell', opens: 3 },
+];
+
+// Self-funding: the bank funds the first two branches; after that a branch opens only when the
+// network's accumulated surplus covers its build-out. Queue in order of the plan, then the review sites.
+export const SELF_FUNDED_SEED = [{ site: 'Forney', opens: 1 }, { site: 'Midlothian', opens: 2 }];
+export const SELF_FUNDED_QUEUE = ['Crandall', 'Waxahachie', 'Terrell', 'Kaufman', 'Ennis'];
+
+type Site = { site: string; opens: number };
+const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
+
+export function branchEconomics(ramp: Ramp, rampKey: 'p25' | 'median' | 'p75' = 'median') {
+  // Deposits by age: the metro ramp to year 5, then held at the year-5 level (the Dallas-Fort Worth
+  // median is $60M at year 5 and $56M at year 7; the Fed puts the 15-year median near $50M).
+  const d = [0, ...ramp.byAge.map((a) => a[rampKey])];
+  const deposits = (age: number) => d[Math.min(age, d.length - 1)];
   // Margin on the year's average deposits, less the high end of published running cost ($ thousands).
-  const contribution = (avgDeposits: number) => avgDeposits * ramp.nim * 10 - ramp.branchCost[1];
-  const run = (rampFor: (b: (typeof PLAN)[number]) => 'p25' | 'median') => PLAN.map((b) => {
-    const d = path(rampFor(b));
-    return {
-      ...b,
-      byYear: YEARS.map((y) => {
-        const age = y - b.opens + 1;
-        return age < 1 ? null : { deposits: d[age], contribution: contribution((d[age - 1] + d[age]) / 2) };
-      }),
-    };
-  });
-  const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
-  const totals = (m: ReturnType<typeof run>) => YEARS.map((_, i) => sum(m.map((b) => b.byYear[i]?.contribution ?? 0)));
-  const expected = run((b) => b.ramp);
-  const downside = run(() => 'p25');
-  const operating = totals(expected);
-  const buildOut = YEARS.map((y) => -PLAN.filter((b) => b.opens === y).length * ramp.buildOut * 1000);
-  const cumulative = YEARS.map((_, i) => sum(operating.slice(0, i + 1)) + sum(buildOut.slice(0, i + 1)));
-  const median = path('median');
+  const operating = (age: number) => ((deposits(age - 1) + deposits(age)) / 2) * ramp.nim * 10 - ramp.branchCost[1];
+  const marketing = (age: number) => -(LAUNCH_MARKETING[age - 1] ?? 0);
+  return { deposits, operating, marketing };
+}
+
+export function runSites(ramp: Ramp, sites: Site[], years: number[], rampKey: 'p25' | 'median' = 'median') {
+  const e = branchEconomics(ramp, rampKey);
+  const branches = sites.map((b) => ({
+    ...b,
+    byYear: years.map((y) => {
+      const age = y - b.opens + 1;
+      return age < 1 ? null : { deposits: e.deposits(age), contribution: e.operating(age), marketing: e.marketing(age) };
+    }),
+  }));
+  const operating = years.map((_, i) => sum(branches.map((b) => b.byYear[i]?.contribution ?? 0)));
+  const marketing = years.map((_, i) => sum(branches.map((b) => b.byYear[i]?.marketing ?? 0)));
+  const buildOut = years.map((y) => -sites.filter((b) => b.opens === y).length * ramp.buildOut * 1000);
+  const cumulative = years.map((_, i) => sum(operating.slice(0, i + 1)) + sum(marketing.slice(0, i + 1)) + sum(buildOut.slice(0, i + 1)));
+  const deposits = years.map((_, i) => sum(branches.map((b) => b.byYear[i]?.deposits ?? 0)));
+  return { branches, operating, marketing, buildOut, cumulative, deposits };
+}
+
+export function planModel(ramp: Ramp) {
+  const run = runSites(ramp, [...PLAN], YEARS);
+  const median = [0, ...ramp.byAge.map((a) => a.median)];
   return {
-    path,
-    expected,
-    operating,
-    downside: totals(downside),
-    buildOut,
-    cumulative,
+    path: (key: 'p25' | 'median' | 'p75') => [0, ...ramp.byAge.map((a) => a[key])],
+    expected: run.branches,
+    operating: run.operating,
+    marketing: run.marketing,
+    downside: runSites(ramp, [...PLAN], YEARS, 'p25').operating,
+    buildOut: run.buildOut,
+    cumulative: run.cumulative,
     totalBuildOut: PLAN.length * ramp.buildOut,
-    firstPositiveYear: YEARS[operating.findIndex((t) => t > 0)],
+    totalMarketing: PLAN.length * sum(LAUNCH_MARKETING),
+    firstPositiveYear: YEARS[run.operating.findIndex((t) => t > 0)],
     medianFourYearAverage: sum([1, 2, 3, 4].map((a) => (median[a - 1] + median[a]) / 2)) / 4,
   };
+}
+
+// Three paces over ten years: the plan, the faster plan, and the self-funding plan.
+export const HORIZON = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+
+function selfFundedSites(ramp: Ramp) {
+  const sites: Site[] = [...SELF_FUNDED_SEED];
+  const queue = [...SELF_FUNDED_QUEUE];
+  let pool = 0;
+  for (const y of HORIZON) {
+    // Open as many queued branches as last year's accumulated surplus can build.
+    while (y > Math.max(...SELF_FUNDED_SEED.map((s) => s.opens)) && queue.length && pool >= ramp.buildOut * 1000) {
+      sites.push({ site: queue.shift()!, opens: y });
+      pool -= ramp.buildOut * 1000;
+    }
+    const r = runSites(ramp, sites, HORIZON);
+    pool += r.operating[y - 1] + r.marketing[y - 1];
+  }
+  return sites;
+}
+
+export function paceScenarios(ramp: Ramp) {
+  const summarize = (label: string, sites: Site[]) => {
+    const r = runSites(ramp, sites, HORIZON);
+    const payback = r.cumulative.findIndex((c, i) => c >= 0 && i > 0);
+    return {
+      label,
+      sites,
+      run: r,
+      by5: sites.filter((s) => s.opens <= 5).length,
+      by10: sites.length,
+      peak: Math.min(...r.cumulative),
+      peakYear: HORIZON[r.cumulative.indexOf(Math.min(...r.cumulative))],
+      paybackYear: payback === -1 ? null : HORIZON[payback],
+      year10: r.operating[9] + r.marketing[9],
+      deposits10: r.deposits[9],
+    };
+  };
+  return [
+    summarize('The plan', [...PLAN]),
+    summarize('Faster', AGGRESSIVE),
+    summarize('Self-funding', selfFundedSites(ramp)),
+  ];
 }

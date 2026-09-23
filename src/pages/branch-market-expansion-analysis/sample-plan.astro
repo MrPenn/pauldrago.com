@@ -9,7 +9,7 @@ import data from '../../data/dfw-markets.json';
 import signals from '../../data/dfw-signals.json';
 import mapData from '../../data/dfw-map.json';
 import { INSTITUTION, PRESETS, scoreMarkets } from '../../data/market-scoring';
-import { TAGS, PLAN, REVIEW_SITES, PICKING_TAGS, YEARS, tagsFor, planModel } from '../../data/branch-plan';
+import { TAGS, PLAN, REVIEW_SITES, PICKING_TAGS, YEARS, HORIZON, LAUNCH_MARKETING, tagsFor, planModel, paceScenarios, runSites } from '../../data/branch-plan';
 
 const SITE = 'https://pauldrago.com';
 const path = '/branch-market-expansion-analysis/sample-plan';
@@ -79,6 +79,10 @@ const gate = model.path('median')[2];
 const industryBreakeven = Math.round(ramp.branchCost[1] / ramp.nimIndustry / 10);
 const industryPayback = Math.round((ramp.buildOut * 1000 + ramp.paybackYears * ramp.branchCost[1]) / ramp.paybackYears / ramp.nimIndustry / 10);
 const firstTwoBuild = PLAN.filter((b) => b.opens <= 2).length * ramp.buildOut;
+const paces = paceScenarios(ramp);
+const [planPace, fasterPace] = paces;
+const bottomQuarter10 = (sites) => runSites(ramp, sites, HORIZON, 'p25').cumulative[HORIZON.length - 1];
+const launchTotal = LAUNCH_MARKETING.reduce((a, b) => a + b, 0);
 const [first, second, third] = PLAN.map((b) => town(b.site));
 // Distance between the first and third sites, from the map's projected town points.
 const kaufmanMap = mapData.counties.find((c) => c.county === 'Kaufman');
@@ -123,14 +127,13 @@ const SOURCES = {
     <section class="report-brief" aria-label="Two-page brief">
       <section class="brief-block" id="recommendation" aria-labelledby="recommendation-h">
         <h2 class="brief-h2" id="recommendation-h">Recommendation</h2>
-        <p class="report-lede">Open three branches over five years where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 once {first.town} is on plan. The network covers its running cost from year {model.firstPositiveYear}; the build-out takes longer to earn back.</p>
+        <p class="report-lede">Open three branches over five years where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 once {first.town} is on plan. The network covers its running cost from year {model.firstPositiveYear}; the build-out takes longer to earn back. CRA and fair lending are checked, not used to pick: Kaufman passes, and Ellis passes with decision 4 (<a href="#cra">appendix D</a>).</p>
         <dl class="report-figures">
-          <div><dt>Build-out</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">{PLAN.length} branches at about ${ramp.buildOut}M each</span></dd></div>
+          <div><dt>Build-out</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">{PLAN.length} branches at ${ramp.buildOut}M each, plus launch marketing</span></dd></div>
           <div><dt>Operations turn positive</dt><dd><span class="report-figure">Year {model.firstPositiveYear}</span><span class="report-figure-note">if each branch follows the median ramp</span></dd></div>
           <div><dt>Still to earn back, end of year 5</dt><dd><span class="report-figure">{mUSD(model.cumulative[4])}</span><span class="report-figure-note">with the network returning {mUSD(model.operating[4])} a year</span></dd></div>
           <div><dt>New branches failing at year 5</dt><dd><span class="report-figure">{pct(failing(age(5)))}</span><span class="report-figure-note">closed or below operating break-even, Dallas-Fort Worth</span></dd></div>
         </dl>
-        <p class="brief-note">Fee income and head-office overhead are left out. CRA and fair lending are a check, not a reason to pick a site: Kaufman passes, and Ellis passes with the lending commitment in decision 4 (<a href="#cra">appendix D</a>).</p>
       </section>
 
       <section class="brief-block" aria-labelledby="decisions-h">
@@ -148,19 +151,36 @@ const SOURCES = {
         <h2 class="brief-h2" id="econ-h">The economics</h2>
         <div class="market-table-wrap">
           <table class="market-table plan-network brief-econ">
-          <caption class="sr-only">Contribution by branch and year under the plan</caption>
-          <thead><tr><th scope="col">Contribution</th>{YEARS.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
-          <tbody>
-            {model.expected.map((b) => (
-              <tr><th scope="row">{b.site}</th>{b.byYear.map((yr) => <td class:list={[{ 'is-negative': yr && yr.contribution < 0 }]}>{yr ? tUSD(yr.contribution) : ''}</td>)}</tr>
-            ))}
-            <tr class="plan-total"><th scope="row">Network, operating</th>{model.operating.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
-            <tr><th scope="row">Build-out</th>{model.buildOut.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{t ? tUSD(t) : ''}</td>)}</tr>
-            <tr class="plan-total"><th scope="row">Cumulative, with build-out</th>{model.cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
-          </tbody>
-        </table>
+            <caption class="sr-only">Network contribution by year under the plan</caption>
+            <thead><tr><th scope="col">The plan</th>{YEARS.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
+            <tbody>
+              <tr><th scope="row">Branches, operating</th>{model.operating.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
+              <tr><th scope="row">Launch marketing</th>{model.marketing.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{t ? tUSD(t) : ''}</td>)}</tr>
+              <tr><th scope="row">Build-out</th>{model.buildOut.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{t ? tUSD(t) : ''}</td>)}</tr>
+              <tr class="plan-total"><th scope="row">Cumulative</th>{model.cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
+            </tbody>
+          </table>
         </div>
-        <p class="brief-note">Each branch on the median Dallas-Fort Worth ramp, at a {ramp.nim}% net interest margin, less up to {costUSD(ramp.branchCost[1])} a year to run it. A branch covers its running cost at ${ramp.breakeven}M in deposits and pays back its build-out in four years at ${ramp.target}M (<a href="#economics">appendix E</a>).</p>
+        <h3 class="brief-h3">How fast to go</h3>
+        <div class="market-table-wrap">
+          <table class="market-table brief-pace">
+            <caption class="sr-only">Three paces compared over ten years</caption>
+            <thead><tr><th scope="col">Over ten years</th><th scope="col">Branches</th><th scope="col">Peak capital</th><th scope="col">Pays back</th><th scope="col">Year 10 earnings</th><th scope="col">Deposits, year 10</th></tr></thead>
+            <tbody>
+              {paces.map((p) => (
+                <tr class:list={[{ 'is-plan': p.label === 'The plan' }]}>
+                  <th scope="row">{p.label}</th>
+                  <td>{p.by10}{p.by5 !== p.by10 ? ` (${p.by5} by year 5)` : ` by year ${Math.max(...p.sites.map((x) => x.opens))}`}</td>
+                  <td>{mUSD(-p.peak)}</td>
+                  <td>{p.paybackYear ? `Year ${p.paybackYear}` : 'After year 10'}</td>
+                  <td>{mUSD(p.year10)} a year</td>
+                  <td>${num(p.deposits10)}M</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="brief-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. Going faster doesn't delay payback; it puts {mUSD(planPace.peak - fasterPace.peak)} more at risk. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one): that is what the gates are for (<a href="#economics">appendix E</a>).</p>
       </section>
 
       <div class="brief-page-two">
@@ -317,6 +337,34 @@ const SOURCES = {
           </table>
           <p class="market-table-note">A new branch has to earn back its build-out, about ${ramp.buildOut}M, which Bancography expects to recover in {ramp.paybackYears} years (<a href={SOURCES.ab.href} target="_blank" rel="noopener noreferrer">{SOURCES.ab.text}</a>), and its running cost, up to {costUSD(ramp.branchCost[1])} a year (<a href={SOURCES.be.href} target="_blank" rel="noopener noreferrer">{SOURCES.be.text}</a>; <a href={SOURCES.bam.href} target="_blank" rel="noopener noreferrer">{SOURCES.bam.text}</a>). At the community-bank net interest margin of {ramp.nim}% (<a href={SOURCES.qbp.href} target="_blank" rel="noopener noreferrer">{SOURCES.qbp.text}</a>), covering the running cost takes ${ramp.breakeven}M in deposits: operating break-even. Earning back ${ramp.buildOut}M plus {ramp.paybackYears} years of running cost within {ramp.paybackYears} years takes an average of ${ramp.payback}M: call it ${ramp.target}M, break-even with the build-out. That is also what the median new branch holds 15 years after opening (<a href={SOURCES.fed.href} target="_blank" rel="noopener noreferrer">{SOURCES.fed.text}</a>).</p>
         </div>
+      </div>
+
+      <h3 class="report-h3">The plan, by branch</h3>
+      <div class="market-table-wrap">
+        <table class="market-table plan-network">
+          <caption class="sr-only">Operating contribution by branch and year under the plan</caption>
+          <thead><tr><th scope="col">Operating contribution</th>{YEARS.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
+          <tbody>
+            {model.expected.map((b) => (
+              <tr><th scope="row">{b.site}</th>{b.byYear.map((yr) => <td class:list={[{ 'is-negative': yr && yr.contribution < 0 }]}>{yr ? tUSD(yr.contribution) : ''}</td>)}</tr>
+            ))}
+            <tr class="plan-total"><th scope="row">Branches, operating</th>{model.operating.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
+            <tr><th scope="row">Operating, if every branch ramps like the bottom quarter</th>{model.downside.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
+          </tbody>
+        </table>
+        <p class="market-table-note">Launch marketing is ${LAUNCH_MARKETING[0]}K in a branch's first year and ${LAUNCH_MARKETING[1]}K in its second. Published first-year budgets for a new branch run $50K to $150K (<a href="https://www.chatterbuzzmedia.com/blog/credit-union-new-branch-opening-playbook/" target="_blank" rel="noopener noreferrer">Chatter Buzz Media, 2026</a>), and a branch in a new market needs 18 to 24 months of marketing (<a href="http://bankingjournal.aba.com/2026/08/bank-marketings-essential-role-in-successful-branch-expansion/" target="_blank" rel="noopener noreferrer">ABA Banking Journal, August 2026</a>); the second-year figure is our assumption.</p>
+      </div>
+
+      <h3 class="report-h3">Three paces, cumulative over ten years</h3>
+      <div class="market-table-wrap">
+        <table class="market-table plan-network pace-table">
+          <caption class="sr-only">Cumulative cash by year for three paces</caption>
+          <thead><tr><th scope="col">Cumulative</th>{HORIZON.map((n) => <th scope="col">Yr {n}</th>)}</tr></thead>
+          <tbody>
+            {paces.map((p) => <tr><th scope="row">{p.label}</th>{p.run.cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{(t < 0 ? '-' : '') + (Math.abs(t) / 1000).toFixed(1)}</td>)}</tr>)}
+          </tbody>
+        </table>
+        <p class="market-table-note">$ millions, pre-tax. The plan: {planPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}. Faster: {fasterPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}. Self-funding: the bank funds {paces[2].sites.slice(0, 2).map((x) => x.site).join(' and ')}; after that a branch opens only when the network's accumulated earnings cover its ${ramp.buildOut}M build-out, which brings {paces[2].sites.slice(2).map((x) => `${x.site} in year ${x.opens}`).join(' and ')}. A branch takes about six years to earn back its build-out, so self-funding adds a branch every few years, not every year.</p>
       </div>
     </section>
 
