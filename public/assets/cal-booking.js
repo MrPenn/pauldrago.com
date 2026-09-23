@@ -51,6 +51,13 @@ Cal.ns['20-min-intro-call']('ui', {
   layout: 'month_view'
 });
 
+Cal.ns['20-min-intro-call']('on', {
+  action: 'bookingSuccessfulV2',
+  callback: function () {
+    window.posthog?.capture('booking_completed', { event_type: '20-min-intro-call' });
+  }
+});
+
 document.addEventListener('click', function (event) {
   const trigger = event.target.closest('[data-cal-link]');
 
@@ -60,6 +67,10 @@ document.addEventListener('click', function (event) {
 
   event.preventDefault();
   event.stopImmediatePropagation();
+
+  window.posthog?.capture('booking_cta_clicked', {
+    cta_location: trigger.closest('header') ? 'header' : trigger.classList.contains('btn-small') ? 'article_author' : 'page_content'
+  });
 
   let config = {};
   try {
@@ -80,6 +91,7 @@ document.addEventListener('click', function (event) {
   window.setTimeout(function () {
     const modal = document.querySelector('cal-modal-box');
     if (!modal || modal.getAttribute('state') === 'loading') {
+      window.posthog?.capture('booking_fallback_redirect');
       window.location.assign(trigger.href);
     }
   }, 8000);

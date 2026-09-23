@@ -46,10 +46,17 @@ function updateCohortCalc() {
       if (elBridge) elBridge.textContent = fmt(perSurvivor);
     }
 
+    let hasTrackedCalculatorUse = false;
     ['calc-input-accounts', 'calc-input-cost', 'calc-input-closed'].forEach(id => {
       const el = document.getElementById(id);
       if (el) {
-        el.addEventListener('input', updateCohortCalc);
+        el.addEventListener('input', () => {
+          updateCohortCalc();
+          if (!hasTrackedCalculatorUse) {
+            window.posthog?.capture('measurement_calculator_used');
+            hasTrackedCalculatorUse = true;
+          }
+        });
       }
     });
     window.addEventListener('DOMContentLoaded', updateCohortCalc);
