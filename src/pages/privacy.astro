@@ -108,6 +108,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
             <ul>
               <li>Visits are counted without cookies by default</li>
               <li>Analytics cookies are used only if you accept them</li>
+              <li>Your browser's Global Privacy Control signal is honoured</li>
               <li>No advertising cookies, ever</li>
             </ul>
           </div>
@@ -220,7 +221,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           <details>
             <summary>More detail</summary>
             <ul>
-              <li><strong>Cookies:</strong> use <button type="button" class="footer-link-button" data-cc="show-preferencesModal">Cookie settings</button> (also in the footer of every page), or block cookies in your browser.</li>
+              <li><strong>Cookies:</strong> use <button type="button" class="footer-link-button" data-cc="show-preferencesModal">Cookie settings</button> (also in the footer of every page), turn on Global Privacy Control in your browser, or block cookies in your browser.</li>
               <li><strong>Access, correction, and deletion:</strong> email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> and I will respond within 30 days.</li>
               <li><strong>Objection and portability:</strong> depending on where you live, you may also object to processing or ask for a copy of your data in a portable format.</li>
               <li><strong>Complaints:</strong> if you are in the UK or EU and are unhappy with how your data is handled, you can complain to your local data protection authority.</li>
@@ -282,6 +283,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
               <li><strong>cc_cookie</strong> and <strong>__ph_opt_in_out_*</strong> (strictly necessary): remember your cookie choice.</li>
               <li><strong>ph_*</strong> (analytics, only if you accept): PostHog's visitor and session identifiers.</li>
             </ul>
+            <p><strong>Browser privacy signals.</strong> If your browser sends a <a href="https://globalprivacycontrol.org" target="_blank" rel="noopener noreferrer">Global Privacy Control</a> signal, it is treated as declining analytics cookies and you are not asked. Browsers' older "Do Not Track" setting has no agreed standard, so the site relies on your cookie choice instead. The site does not allow third parties to track you across other websites.</p>
             <p>Change your choice at any time with <button type="button" class="footer-link-button" data-cc="show-preferencesModal">Cookie settings</button>.</p>
           </details>
         </section>
