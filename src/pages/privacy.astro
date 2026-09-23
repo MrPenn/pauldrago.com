@@ -14,7 +14,18 @@ const icons = {
   'users': '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
   'cookie': '<path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/>',
   'mail': '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+  'monitor': '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>',
+  'hand': '<path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
 };
+
+// When information is collected: each situation, and whether you give it, the site collects it, or both.
+const moments = [
+  { label: 'You read any page on this site', give: false, auto: true },
+  { label: 'You accept analytics cookies', give: false, auto: true },
+  { label: 'You book a call', give: true, auto: false },
+  { label: 'You email me', give: true, auto: false },
+];
+const how = (m) => [m.give && 'you give it', m.auto && 'collected automatically'].filter(Boolean).join(' and ');
 
 // The full notice, in order. The contents list and section headings are built from this.
 const sections = [
@@ -46,59 +57,102 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
   <div class="container">
     <header class="privacy-header">
       <h1 class="display-title privacy-title">Privacy notice.</h1>
-      <p class="privacy-intro">Hello. I'm Paul Drago, and this is my site. Here is how it handles your information, first at a glance and then in full.</p>
+      <p class="privacy-intro">How this site handles your information, first at a glance and then in full.</p>
       <p class="privacy-updated">Last updated <time datetime="2026-09-23">September 23, 2026</time></p>
     </header>
 
-    <section class="privacy-glance" aria-labelledby="glance-heading">
-      <h2 class="privacy-glance-heading" id="glance-heading">Your privacy at a glance</h2>
-      <div class="glance-grid">
-        <div class="glance-card">
-          <h3 class="glance-title"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['database']} />What is collected</h3>
-          <ul>
-            <li>How pages on this site are used</li>
-            <li>Details you enter when booking a call</li>
-            <li>Emails you send me</li>
-          </ul>
-          <a class="glance-more" href="#types">Tell me more</a>
+    <section class="glance" aria-labelledby="glance-heading">
+      <h2 class="glance-heading" id="glance-heading">Your privacy at a glance</h2>
+      <p class="glance-intro">Hello. This site is run by Glass Vase, LLC, Paul Drago's advisory company. Here's a summary of how your information is handled and your privacy respected.</p>
+      <div class="glance-columns">
+        <div class="glance-column">
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['database']} />What is collected</h3>
+              <a href="#types">Tell me why</a>
+            </div>
+            <ul>
+              <li>How pages on this site are used</li>
+              <li>Details you enter when booking a call</li>
+              <li>Emails you send me</li>
+            </ul>
+          </div>
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['target']} />How it is used</h3>
+              <a href="#why">How exactly?</a>
+            </div>
+            <ul>
+              <li>To see which writing is useful and improve the site</li>
+              <li>To arrange and hold meetings you book</li>
+              <li>To reply to you</li>
+            </ul>
+          </div>
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['users']} />Services that process it</h3>
+              <a href="#processors">What do they do?</a>
+            </div>
+            <p>These services help run the site by processing information on its behalf:</p>
+            <ul>
+              <li>Analytics: PostHog</li>
+              <li>Scheduling: Cal.com</li>
+              <li>Hosting: Cloudflare</li>
+            </ul>
+          </div>
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['cookie']} />Cookies</h3>
+              <a href="#cookies">How can I choose?</a>
+            </div>
+            <ul>
+              <li>Visits are counted without cookies by default</li>
+              <li>Analytics cookies are used only if you accept them</li>
+              <li>No advertising cookies, ever</li>
+            </ul>
+          </div>
         </div>
-        <div class="glance-card">
-          <h3 class="glance-title"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['target']} />How it is used</h3>
-          <ul>
-            <li>To see which writing is useful and improve the site</li>
-            <li>To arrange and hold meetings you book</li>
-            <li>To reply to you</li>
-          </ul>
-          <a class="glance-more" href="#why">How exactly?</a>
-        </div>
-        <div class="glance-card">
-          <h3 class="glance-title"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['users']} />Services that process it</h3>
-          <ul>
-            <li>Analytics: PostHog</li>
-            <li>Scheduling: Cal.com</li>
-            <li>Hosting: Cloudflare</li>
-          </ul>
-          <a class="glance-more" href="#processors">What do they do?</a>
-        </div>
-        <div class="glance-card">
-          <h3 class="glance-title"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['cookie']} />Cookies</h3>
-          <ul>
-            <li>Visits are counted without cookies by default</li>
-            <li>Analytics cookies only if you accept them</li>
-            <li>No advertising cookies, ever</li>
-          </ul>
-          <a class="glance-more" href="#cookies">How can I choose?</a>
-        </div>
-        <div class="glance-card">
-          <h3 class="glance-title"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['sliders-horizontal']} />Your choices</h3>
-          <ul>
-            <li>Change cookie choices at any time</li>
-            <li>Ask what is held about you, or have it deleted</li>
-            <li>Your information is never sold</li>
-          </ul>
-          <a class="glance-more" href="#rights">What are my rights?</a>
+
+        <div class="glance-column">
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['eye']} />When information is collected</h3>
+              <a href="#when">Am I included?</a>
+            </div>
+            <p>Information comes from people who visit this site, book a call, or write to me, when...</p>
+            <div class="timeline">
+              <div class="timeline-head" aria-hidden="true">
+                <span class="timeline-key timeline-key-give"><svg class="privacy-icon" viewBox="0 0 24 24" set:html={icons['user-round']} />Data you give</span>
+                <span class="timeline-key timeline-key-auto"><svg class="privacy-icon" viewBox="0 0 24 24" set:html={icons['monitor']} />Data collected</span>
+              </div>
+              <ul class="timeline-rows">
+                {moments.map((m) => (
+                  <li class="timeline-row">
+                    <span class:list={['timeline-track', 'timeline-track-give', { 'is-on': m.give }]} aria-hidden="true"></span>
+                    <span class:list={['timeline-track', 'timeline-track-auto', { 'is-on': m.auto }]} aria-hidden="true"></span>
+                    <span class="timeline-label">{m.label}<span class="sr-only">: {how(m)}</span></span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['hand']} />Know your rights</h3>
+              <a href="#rights">What can I do?</a>
+            </div>
+            <ul>
+              <li>Change your cookie choice at any time</li>
+              <li>Ask what information is held about you</li>
+              <li>Have it corrected or deleted</li>
+              <li>Take a copy of it with you</li>
+              <li>Complain about how it is handled</li>
+            </ul>
+          </div>
+          <p class="glance-contact">Any concerns about your privacy? Email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>.</p>
         </div>
       </div>
+      <a class="glance-cta" href="#role">Read the full notice <span>(no legalese, promise)</span></a>
     </section>
 
     <div class="privacy-columns">
@@ -122,15 +176,13 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
         <section class="privacy-section" id="when" aria-labelledby="when-heading">
           <h2 id="when-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.when.icon]} />{section.when.title}</h2>
           <p class="privacy-summary">Some information you give me directly. Some is collected automatically as you use the site.</p>
-          <div class="data-scheme">
-            <p class="data-scheme-key"><span class="data-tag data-tag-give">You give</span><span class="data-tag data-tag-auto">Collected automatically</span></p>
-            <ul class="data-scheme-list">
-              <li>You read any page on this site <span class="data-tag data-tag-auto">Collected automatically</span></li>
-              <li>You accept analytics cookies <span class="data-tag data-tag-auto">Collected automatically</span></li>
-              <li>You book a call <span class="data-tag data-tag-give">You give</span></li>
-              <li>You email me <span class="data-tag data-tag-give">You give</span></li>
+          <details>
+            <summary>More detail</summary>
+            <ul>
+              {moments.map((m) => <li><strong>{m.label}:</strong> {how(m)}.</li>)}
             </ul>
-          </div>
+            <p>If you only read the site and decline analytics cookies, all that is collected is an anonymous visit count.</p>
+          </details>
         </section>
 
         <section class="privacy-section" id="types" aria-labelledby="types-heading">

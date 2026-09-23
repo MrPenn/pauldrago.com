@@ -19,46 +19,145 @@
   stroke-linejoin: round;
 }
 
-/* At a glance */
-.privacy-glance { margin-bottom: 80px; }
-.privacy-glance-heading,
-.privacy-toc-label {
-  color: var(--brass);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-.glance-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 16px;
-  margin-top: 18px;
-}
-.glance-card {
-  display: flex;
-  flex-direction: column;
-  padding: 24px;
+/* At a glance: a two-column summary, after Juro's privacy summary pattern */
+.glance {
+  margin-bottom: 80px;
   border: 1px solid var(--hairline);
   background: var(--dark-navy);
+  box-shadow: 6px 6px 0 var(--paper);
 }
-.glance-title {
+.glance-heading {
+  padding: 40px 40px 0;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: clamp(28px, 3.4vw, 40px);
+  line-height: 1.1;
+  text-align: center;
+}
+.glance-intro {
+  max-width: 64ch;
+  margin: 14px auto 0;
+  padding: 0 40px;
+  color: var(--secondary);
+  text-align: center;
+}
+.glance-columns {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 56px;
+  padding: 16px 40px 40px;
+}
+.glance-item {
+  padding: 24px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.glance-item-head {
   display: flex;
-  gap: 10px;
-  align-items: center;
-  font-size: 18px;
+  gap: 16px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+.glance-item-head h3 {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  font-size: 20px;
   line-height: 1.3;
 }
-.glance-card ul { margin: 14px 0 18px; padding-left: 18px; color: var(--secondary); font-size: 15px; line-height: 1.5; }
-.glance-card li + li { margin-top: 6px; }
-.glance-more {
-  margin-top: auto;
-  color: var(--paper);
+.glance-item-head h3 .privacy-icon { margin-top: 2px; }
+.glance-item-head a {
+  flex: none;
+  padding-top: 3px;
+  color: var(--brass);
   font-size: 14px;
   font-weight: 700;
-  text-decoration: underline;
-  text-decoration-color: var(--brass);
-  text-underline-offset: 4px;
+  text-decoration: none;
+}
+.glance-item-head a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.glance-item p,
+.glance-item ul { margin-top: 12px; color: var(--secondary); font-size: 16px; line-height: 1.55; }
+.glance-item ul { padding-left: 20px; }
+.glance-item li + li { margin-top: 4px; }
+.glance-contact { padding-top: 24px; color: var(--secondary); font-size: 15px; }
+.glance-contact a { color: var(--brass); }
+
+/* Two tracks, one per way information arrives; a ring marks each moment on a track. */
+.timeline { margin-top: 20px; --ring: 18px; --track: 76px; }
+.timeline-head { display: flex; }
+.timeline-key {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
+  width: var(--track);
+  padding: 0 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-align: center;
+  text-transform: uppercase;
+}
+.timeline-key .privacy-icon { width: 24px; height: 24px; }
+.timeline-key-give { color: var(--brass); }
+.timeline-key-give .privacy-icon { stroke: var(--brass); }
+.timeline-key-auto { color: var(--paper); }
+.timeline-key-auto .privacy-icon { stroke: var(--paper); }
+.timeline-rows { margin-top: 8px !important; padding: 0 !important; list-style: none; }
+.timeline-row {
+  display: grid;
+  grid-template-columns: var(--track) var(--track) 1fr;
+  align-items: center;
+  min-height: 44px;
+  margin: 0 !important;
+}
+.timeline-track { position: relative; align-self: stretch; }
+.timeline-track::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  transform: translateX(-50%);
+}
+.timeline-track-give::before { background: var(--brass); }
+.timeline-track-auto::before { background: var(--paper); }
+.timeline-track.is-on::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--ring);
+  height: var(--ring);
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  background: var(--dark-navy);
+  transform: translate(-50%, -50%);
+}
+.timeline-track-give.is-on::after { color: var(--brass); }
+.timeline-track-auto.is-on::after { color: var(--paper); }
+.timeline-label { padding: 8px 0 8px 12px; color: var(--paper); font-size: 16px; line-height: 1.35; }
+
+.glance-cta {
+  display: block;
+  padding: 20px 24px;
+  background: var(--brass);
+  color: var(--on-brass);
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  text-decoration: none;
+}
+.glance-cta span { display: block; font-size: 14px; font-weight: 500; }
+.glance-cta:hover { background: var(--paper); color: var(--ground); }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
 }
 
 /* In full */
@@ -67,6 +166,13 @@
   grid-template-columns: 240px minmax(0, 1fr);
   gap: 56px;
   align-items: start;
+}
+.privacy-toc-label {
+  color: var(--brass);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .privacy-toc {
   position: sticky;
@@ -122,32 +228,6 @@
 .privacy-section details p + p { margin-top: 10px; }
 .privacy-section details strong { color: var(--paper); }
 
-/* When information is collected: each situation tagged by how the data arrives */
-.data-scheme { margin-top: 20px; padding: 20px; border: 1px solid var(--hairline); background: var(--dark-navy); }
-.data-scheme-key { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-.data-scheme-list { list-style: none; }
-.data-scheme-list li {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 16px;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-top: 1px solid var(--hairline);
-  font-size: 16px;
-}
-.data-tag {
-  padding: 2px 10px;
-  border: 1px solid currentColor;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.data-tag-give { color: var(--brass); }
-.data-tag-auto { color: var(--secondary); }
-
 .privacy-credit {
   margin-top: 40px;
   padding-top: 20px;
@@ -162,4 +242,10 @@
   .privacy-columns { grid-template-columns: 1fr; gap: 32px; }
   .privacy-toc { position: static; }
   .privacy-toc ol { columns: 2; column-gap: 16px; }
+  .glance-heading { padding: 28px 20px 0; }
+  .glance-intro { padding: 0 20px; }
+  .glance-columns { grid-template-columns: 1fr; padding: 8px 20px 28px; }
+  .glance-item-head { flex-direction: column; gap: 6px; }
+  .glance-item-head a { padding: 0 0 0 34px; }
+  .timeline { --track: 64px; }
 }
