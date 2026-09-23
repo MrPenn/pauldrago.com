@@ -44,8 +44,8 @@ const sections = [
 ];
 // The commitments ledger: every kind of information in one row, for readers doing a vendor review.
 const ledger = [
-  { what: 'Anonymous visit counts: pages viewed, referring site, device, approximate location', why: 'See which pages are read', basis: 'Legitimate interest', kept: 'Up to 7 years', who: 'PostHog' },
-  { what: 'Analytics cookies, heatmaps, and session recordings', why: 'Understand how pages are used and fix what gets in the way', basis: 'Your consent', kept: 'Recordings 30 days; events up to 7 years', who: 'PostHog' },
+  { what: 'Anonymous visit counts: pages viewed, referring site, device and browser', why: 'See which pages are read', basis: 'Legitimate interest', kept: 'Up to 7 years', who: 'PostHog' },
+  { what: 'Analytics cookies, approximate location (city and country), heatmaps, and session recordings', why: 'Understand how pages are used and fix what gets in the way', basis: 'Your consent', kept: 'Recordings 30 days; events up to 7 years', who: 'PostHog' },
   { what: 'Booking details: name, email, time, notes', why: 'Arrange and hold the call you asked for', basis: 'Steps you asked me to take', kept: 'While we are in touch, then as ordinary business records', who: 'Cal.com' },
   { what: 'Emails you send me', why: 'Reply and continue the conversation', basis: 'Legitimate interest', kept: 'While we are in touch, then as ordinary business records', who: 'Apple iCloud Mail' },
   { what: 'Technical request data such as IP address', why: 'Deliver the site and protect it from abuse', basis: 'Legitimate interest', kept: "Under Cloudflare's own retention", who: 'Cloudflare' },
@@ -227,8 +227,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           <details>
             <summary>More detail<span class="sr-only"> about {section.types.title.toLowerCase()}</span></summary>
             <ul>
-              <li><strong>Site usage:</strong> pages viewed, links and buttons clicked, how far a page is scrolled, the site that referred you, and your device, browser, and approximate location derived from your IP address.</li>
-              <li><strong>With analytics cookies accepted:</strong> an identifier that recognizes a return visit, heatmaps of where people click, and session recordings of how pages are used. Text typed into form fields is masked in recordings.</li>
+              <li><strong>Site usage:</strong> pages viewed, links and buttons clicked, how far a page is scrolled, the site that referred you, and your device and browser.</li>
+              <li><strong>With analytics cookies accepted:</strong> an identifier that recognizes a return visit, your approximate location (city and country), heatmaps of where people click, and session recordings of how pages are used. Text typed into form fields is masked in recordings.</li>
+              <li><strong>IP addresses:</strong> PostHog uses your IP address only to work out that approximate location, then discards it. No IP address is stored with analytics data.</li>
               <li><strong>Bookings:</strong> your name, email address, the time you choose, and any notes you add.</li>
               <li><strong>Email:</strong> your address and whatever your message contains.</li>
             </ul>
@@ -269,7 +270,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           <p class="privacy-summary">Everything travels over encrypted connections, and the site collects as little as it can.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.security.title.toLowerCase()}</span></summary>
-            <p>The site is served only over HTTPS. Analytics requests go through pauldrago.com rather than directly to a third party, and cookies are not set until you allow them. No system is perfectly secure. The services listed below each run their own security programs.</p>
+            <p>The site is served only over HTTPS. Analytics requests go through pauldrago.com rather than directly to a third party, IP addresses are discarded before analytics data is stored, and cookies are not set until you allow them. No system is perfectly secure. The services listed below each run their own security programs.</p>
           </details>
         </section>
 
@@ -288,7 +289,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           <details>
             <summary>More detail<span class="sr-only"> about {section.retention.title.toLowerCase()}</span></summary>
             <ul>
-              <li><strong>Analytics:</strong> events are kept for up to seven years, the retention limit of this site's PostHog plan. Session recordings are deleted automatically after 30 days.</li>
+              <li><strong>Analytics:</strong> events are kept for up to seven years, the retention limit of this site's PostHog plan. They are stored without IP addresses and are never linked to your name or email. Session recordings are deleted automatically after 30 days.</li>
               <li><strong>Your cookie choice:</strong> remembered for six months, then you are asked again.</li>
               <li><strong>Bookings and email:</strong> kept while we're in touch and for as long as ordinary business records require, then deleted.</li>
             </ul>
