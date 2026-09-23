@@ -38,6 +38,13 @@ Digital account opening answered a real question: can I open this account from m
 
 Removing that friction leaves a different question. Why would I open this account from my phone?
 
+<figure class="fd-img" data-fd="illo">
+<picture>
+<source srcset="/assets/front-door.webp" type="image/webp">
+<img src="/assets/front-door.jpg" width="1200" height="679" loading="lazy" alt="A grand bank entrance with its doors standing open and velvet ropes slack. Footprints on the sidewalk walk past the steps.">
+</picture>
+</figure>
+
 Those sound similar. Strategically, they are not close. One is about access; the other is about preference. A bank can solve the first without making much progress on the second.
 
 <blockquote class="fd-pq"><p>Removing a reason to choose someone else is not the same as creating a reason to choose you.</p></blockquote>
@@ -58,6 +65,13 @@ Both things can be true and still leave the competitive question unanswered. In 
 A five-star review might mean the customer checked a balance, deposited a check and moved $200 without anything breaking. Those are real accomplishments. They are also a long way from evidence that somebody would switch banks to get the experience. App-store ratings can become retention metrics masquerading as competitive metrics.
 
 The benchmarking problem runs deeper than the rating. Inside the bank, the comparison is a checklist: mobile deposit, card controls, digital payments, account opening. Feature parity achieved. But a customer does not limit the comparison to other community banks. Their phone also contains products that make complicated tasks feel simple, explain what happens next and recover gracefully when something goes wrong.
+
+<figure class="fd-img fd-img-tall" data-fd="illo">
+<picture>
+<source srcset="/assets/app-grid.webp" type="image/webp">
+<img src="/assets/app-grid.jpg" width="1200" height="1899" loading="lazy" alt="A phone home screen of bright brass app icons. One pale tile in the middle carries a bank column and four and a half stars.">
+</picture>
+</figure>
 
 Your benchmark should not stop at the bank across town. It should include the best financial experience on your customer's phone. Good enough is a dangerous place to be when the customer knows what excellent feels like.
 
@@ -82,6 +96,13 @@ Strip away the campaign and have the conversation with a 25-year-old deciding wh
 <blockquote class="fd-pq"><p>A relationship bank should have something meaningful to offer when the customer has $500, not only when the customer needs $500,000.</p></blockquote>
 
 None of those advantages has to be false for the pitch to fail. They are distant. And behind the pitch sits an assumption the bank rarely says out loud: the younger customer is a small balance to tolerate until a mortgage or business loan makes the relationship worth having.
+
+<figure class="fd-img" data-fd="illo">
+<picture>
+<source srcset="/assets/jar-and-key.webp" type="image/webp">
+<img src="/assets/jar-and-key.jpg" width="1200" height="399" loading="lazy" alt="A long desk. At one end a small jar of coins labeled $2,000; at the other, a brass house key as long as the desk.">
+</picture>
+</figure>
 
 ### What the customer is worth
 
@@ -258,9 +279,11 @@ Digital can deliver a respectable app while Retail provides excellent branch ser
     <div class="fd-org-box"><span class="fd-org-name">Compliance</span><span class="fd-org-owns">sets the boundaries</span><span class="fd-org-status">on target</span></div>
   </div>
   <div class="fd-one">
-    <div class="fd-one-box"><span class="fd-one-name">The bank</span><span class="fd-one-sub">one logo, one app, one card, one phone number</span><span class="fd-one-status">nobody’s number</span></div>
+    <picture>
+      <source srcset="/assets/one-coat.webp" type="image/webp">
+      <img src="/assets/one-coat.jpg" width="1200" height="1399" loading="lazy" alt="One long overcoat with a bank crest, many arms doing different things, and twelve pairs of legs in twelve kinds of shoes beneath the hem.">
+    </picture>
   </div>
-</div>
 </div>
 </section>
 
@@ -282,6 +305,13 @@ In March 2024 research published in *The Power of Primacy*, financial institutio
 <blockquote class="fd-pq"><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>
 
 Marketing meets its application target and Digital meets its adoption target while a third of the new customers never make the bank part of their everyday financial lives. The departmental scorecards register the symptoms without explaining the cause.
+
+<figure class="fd-img fd-img-tall" data-fd="illo">
+<picture>
+<source srcset="/assets/gauges.webp" type="image/webp">
+<img src="/assets/gauges.jpg" width="1200" height="1882" loading="lazy" alt="Twelve gauges on a wall, every needle in the green. Below them, an exit door standing open.">
+</picture>
+</figure>
 
 Someone needs to ask the larger question: what should banking with us feel like for this customer? Not just the application, the branch visit or the checking account. The bank.
 
@@ -309,7 +339,7 @@ The photography gets younger. The palette gets brighter. Someone wants TikTok. T
 <figure class="fd-illo" data-fd="illo">
 <picture>
 <source srcset="/assets/bank-hoodie.webp" type="image/webp">
-<img src="/assets/bank-hoodie.jpg" width="1200" height="1207" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a brass hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">
+<img src="/assets/bank-hoodie.jpg" width="1200" height="1209" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a brass hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">
 </picture>
 </figure>
 
@@ -356,8 +386,11 @@ Getting there requires more than a rebrand or a new box on the organizational ch
 
 Community banks have built digital front doors. The question is no longer simply whether a 25-year-old can get in. It is whether anyone inside the building is responsible for what they find when they do.
 
-<figure class="fd-figure fd-wide fd-grid-close" data-fd="grid-empty" aria-hidden="true">
-  <div class="fd-grid-cells"></div>
+<figure class="fd-img" data-fd="illo">
+<picture>
+<source srcset="/assets/corridor.webp" type="image/webp">
+<img src="/assets/corridor.jpg" width="1200" height="712" loading="lazy" alt="Looking down a long corridor from the open front door: twelve closed office doors with nameplates, and at the far end an empty chair under a spotlight.">
+</picture>
 </figure>
 
 ## About the numbers
