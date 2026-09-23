@@ -173,6 +173,8 @@
     ],
     "nim": 3.81,
     "buildOut": 3.5,
+    "paybackYears": 4,
+    "payback": 49,
     "byAge": [
       {
         "age": 1,

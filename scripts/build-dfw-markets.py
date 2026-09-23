@@ -32,12 +32,15 @@ TOWNS = {'Kaufman': {'Forney': (32.748, -96.471), 'Terrell': (32.736, -96.275), 
 TOWN_RADIUS_MILES = 5
 # New-branch ramp: community-bank branches opened in the metro in these years, tracked every June since.
 RAMP_MSA, RAMP_OPENED, RAMP_HISTORY_FROM = 19100, (2009, 2023), 2008
-RAMP_TARGET = 50_000  # $ thousands: what the median new branch holds 15 years after opening (Federal Reserve, 2023)
+RAMP_TARGET = 50_000  # $ thousands: break-even with build-out (see PAYBACK below); also the Fed's 15-year median branch
 # Branch economics, published figures only.
 BRANCH_COST = (250, 1000)  # $ thousands a year: Banking Exchange/Austin Associates (2012) floor; Bits About Money ceiling
 NIM = 3.81                 # percent: community-bank net interest margin, FDIC Quarterly Banking Profile, Q2 2026
 BUILD_OUT = 3.5            # $ millions: new freestanding branch (Bancography, via American Banker, April 2026)
-BREAKEVEN = round(BRANCH_COST[1] / NIM * 100)  # $ thousands of deposits, at the high end of running cost
+PAYBACK_YEARS = 4          # Bancography's break-even time frame, same source
+BREAKEVEN = round(BRANCH_COST[1] / NIM * 100)  # $ thousands of deposits that cover a year's running cost (high end)
+# Average deposits that pay back the build-out and running cost within PAYBACK_YEARS.
+PAYBACK = round((BUILD_OUT * 1000 + PAYBACK_YEARS * BRANCH_COST[1]) / PAYBACK_YEARS / NIM * 100)  # $ thousands
 POP_VINTAGE = 2025
 COUNTIES = {'Collin': '085', 'Ellis': '139', 'Kaufman': '257'}
 # A single branch holding more than this is treated as booked (headquarters or corporate) rather than local.
@@ -160,7 +163,7 @@ def ramp():
         })
     return {'branches': len(paths), 'relocationsExcluded': relocations, 'opened': list(RAMP_OPENED), 'target': RAMP_TARGET // 1000,
             'breakeven': round(BREAKEVEN / 1e3), 'breakevenLow': round(BRANCH_COST[0] / NIM / 10), 'branchCost': list(BRANCH_COST),
-            'nim': NIM, 'buildOut': BUILD_OUT, 'byAge': by_age}
+            'nim': NIM, 'buildOut': BUILD_OUT, 'paybackYears': PAYBACK_YEARS, 'payback': round(PAYBACK / 1e3), 'byAge': by_age}
 
 
 def miles(a, b):

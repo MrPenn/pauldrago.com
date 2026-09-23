@@ -74,11 +74,14 @@ const forneyPlan = expected.find((b) => b.site === 'Forney');
 const terrellCost = -sum(terrellPlan.byYear.map((y) => y?.contribution ?? 0));
 const firstPositive = YEARS[expectedTotals.findIndex((t) => t > 0)];
 const forneyCovers = YEARS.find((_, i) => terrellPlan.byYear[i] && forneyPlan.byYear[i].contribution >= -terrellPlan.byYear[i].contribution);
-const kUSD = (n) => `${n < 0 ? '-' : ''}$${num(Math.abs(Math.round(n / 10) * 10))}K`;
+const tUSD = (n) => `${n < 0 ? '-' : ''}$${(Math.abs(n) / 1000).toFixed(Math.abs(n) < 1000 ? 2 : 1)}M`;
 const costUSD = (n) => (n >= 1000 ? `$${n / 1000}M` : `$${n}K`);
 const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
 const buildOut = plan.length * ramp.buildOut;
 const age = (n) => ramp.byAge.find((a) => a.age === n);
+const buildByYear = YEARS.map((n) => -plan.filter((b) => b.opens === n).length * ramp.buildOut * 1000);
+const cumulative = YEARS.map((_, i) => sum(expectedTotals.slice(0, i + 1)) + sum(buildByYear.slice(0, i + 1)));
+const medianFourYearAverage = sum([1, 2, 3, 4].map((a) => (path('median')[a - 1] + path('median')[a]) / 2)) / 4;
 const failing = (a) => a.belowBreakevenShare + (100 - a.stillOpenShare);
 // Chart geometry: ages 0-5 across, $0-120M up.
 const W = 640, H = 260, L = 76, R = 36, T = 12, B = 32, YMAX = 120;
@@ -231,14 +234,14 @@ const band = `${line('p75')} ${path('p25').map((v, a) => [a, v]).reverse().map((
     <div class="plan-ramp">
       <figure class="plan-chart">
         <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ramp-chart-title">
-          <title id="ramp-chart-title">Deposits in new community-bank branches by year since opening: the median reaches ${ramp.byAge[2].median}M in year 3 and ${ramp.byAge[4].median}M in year 5; the bottom quarter is below ${ramp.byAge[4].p25}M in year 5.</title>
+          <title id="ramp-chart-title">Deposits in new community-bank branches by year since opening, against the ${ramp.breakeven}M that covers running cost and the ${ramp.target}M break-even: the median reaches ${ramp.byAge[2].median}M in year 3 and ${ramp.byAge[4].median}M in year 5; the bottom quarter is below ${ramp.byAge[4].p25}M in year 5.</title>
           {[0, 40, 80, 120].map((v) => <g class="plan-grid"><line x1={L} x2={W - R} y1={y(v)} y2={y(v)} />{v > 0 && <text x={L - 8} y={y(v)} dy="0.35em">${v}M</text>}</g>)}
           {[0, 1, 2, 3, 4, 5].map((a) => <text class="plan-axis" x={x(a)} y={H - 10}>{a === 0 ? 'Open' : `Year ${a}`}</text>)}
           <path class="plan-band" d={band} />
           <line class="plan-target" x1={L} x2={W - R} y1={y(ramp.target)} y2={y(ramp.target)} />
           <line class="plan-breakeven" x1={L} x2={W - R} y1={y(ramp.breakeven)} y2={y(ramp.breakeven)} />
-          <text class="plan-line-label" x={L + 6} y={y(ramp.target)} dy="-0.45em">${ramp.target}M target</text>
-          <text class="plan-line-label" x={L + 6} y={y(ramp.breakeven)} dy="1.15em">${ramp.breakeven}M break-even</text>
+          <text class="plan-line-label" x={L + 6} y={y(ramp.target)} dy="-0.45em">${ramp.target}M break-even</text>
+          <text class="plan-line-label" x={L + 6} y={y(ramp.breakeven)} dy="1.15em">${ramp.breakeven}M covers running cost</text>
           <path class="plan-median" d={line('median')} />
         </svg>
         <figcaption>Line: the median branch. Shaded: the middle half. {ramp.branches} community-bank branches opened new in the metro from {ramp.opened[0]} to {ramp.opened[1]}, tracked every June; {ramp.relocationsExcluded} relocations excluded because they opened with deposits. {data.asOf.ramp}.</figcaption>
@@ -249,15 +252,15 @@ const band = `${line('p75')} ${path('p25').map((v, a) => [a, v]).reverse().map((
           <thead><tr><th scope="col">Share of branches</th><th scope="col">Year 1</th><th scope="col">Year 3</th><th scope="col">Year 5</th></tr></thead>
           <tbody>
             <tr><th scope="row">Closed</th>{[1, 3, 5].map((n) => <td>{pct(100 - age(n).stillOpenShare)}</td>)}</tr>
-            <tr><th scope="row">Open, below break-even</th>{[1, 3, 5].map((n) => <td>{pct(age(n).belowBreakevenShare)}</td>)}</tr>
-            <tr><th scope="row">Covering costs, below target</th>{[1, 3, 5].map((n) => <td>{pct(age(n).stillOpenShare - age(n).belowBreakevenShare - age(n).atTargetShare)}</td>)}</tr>
-            <tr><th scope="row">At ${ramp.target}M or more</th>{[1, 3, 5].map((n) => <td>{pct(age(n).atTargetShare)}</td>)}</tr>
+            <tr><th scope="row">Open, not covering running cost</th>{[1, 3, 5].map((n) => <td>{pct(age(n).belowBreakevenShare)}</td>)}</tr>
+            <tr><th scope="row">Covering running cost, below ${ramp.target}M</th>{[1, 3, 5].map((n) => <td>{pct(age(n).stillOpenShare - age(n).belowBreakevenShare - age(n).atTargetShare)}</td>)}</tr>
+            <tr><th scope="row">At break-even, ${ramp.target}M or more</th>{[1, 3, 5].map((n) => <td>{pct(age(n).atTargetShare)}</td>)}</tr>
           </tbody>
         </table>
-        <p class="market-table-note">Break-even is where the margin on a branch's deposits covers its running cost: {costUSD(ramp.branchCost[0])} to {costUSD(ramp.branchCost[1])} a year (<a href="https://www.bankingexchange.com/recent-articles/item/2079-workbook-time-to-close-underperforming-branches" target="_blank" rel="noopener noreferrer">Banking Exchange</a>; <a href="https://www.bitsaboutmoney.com/archive/branch-banking/" target="_blank" rel="noopener noreferrer">Bits About Money</a>) over the community-bank net interest margin of {ramp.nim}% (<a href="https://www.fdic.gov/quarterly-banking-profile/quarterly-banking-profile-2q-2026" target="_blank" rel="noopener noreferrer">FDIC, second quarter 2026</a>). That is ${ramp.breakevenLow}M to ${ramp.breakeven}M; the plan uses ${ramp.breakeven}M. The Federal Reserve draws a similar line: the median unsuccessful new branch doesn't reach $25M within ten years. The ${ramp.target}M target is what the median new branch holds 15 years after opening (<a href="https://www.federalreserve.gov/econres/notes/feds-notes/size-and-survival-of-entrants-to-retail-banking-20230901.html" target="_blank" rel="noopener noreferrer">Federal Reserve, 2023</a>).</p>
+        <p class="market-table-note">A new branch has to earn back two things: its build-out, about ${ramp.buildOut}M, which Bancography expects to recover in {ramp.paybackYears} years (<a href="https://www.americanbanker.com/news/the-more-things-change-bank-ceos-on-why-theyre-adding-branches" target="_blank" rel="noopener noreferrer">American Banker, April 2026</a>), and its running cost, up to {costUSD(ramp.branchCost[1])} a year (<a href="https://www.bankingexchange.com/recent-articles/item/2079-workbook-time-to-close-underperforming-branches" target="_blank" rel="noopener noreferrer">Banking Exchange</a>; <a href="https://www.bitsaboutmoney.com/archive/branch-banking/" target="_blank" rel="noopener noreferrer">Bits About Money</a>). At the community-bank net interest margin of {ramp.nim}% (<a href="https://www.fdic.gov/quarterly-banking-profile/quarterly-banking-profile-2q-2026" target="_blank" rel="noopener noreferrer">FDIC, second quarter 2026</a>), covering the running cost takes ${ramp.breakeven}M in deposits. Earning back ${ramp.buildOut}M plus {ramp.paybackYears} years of running cost in {ramp.paybackYears} years takes an average of ${ramp.payback}M: call it ${ramp.target}M. That is also what the median new branch holds 15 years after opening (<a href="https://www.federalreserve.gov/econres/notes/feds-notes/size-and-survival-of-entrants-to-retail-banking-20230901.html" target="_blank" rel="noopener noreferrer">Federal Reserve, 2023</a>).</p>
       </div>
     </div>
-    <p class="plan-finding">At year five, {pct(failing(age(5)))} of new community-bank branches in the metro were closed or still below break-even. The plan below budgets for that instead of assuming every branch hits the median.</p>
+    <p class="plan-finding">At year five, {pct(failing(age(5)))} of new community-bank branches in the metro had closed or still weren't covering their running cost, and only {pct(age(5).atTargetShare)} were at break-even. The plan below budgets for that instead of assuming every branch hits the median.</p>
 
     <h4 class="plan-subtitle">The sequence</h4>
     <ol class="plan-sequence">
@@ -271,31 +274,33 @@ const band = `${line('p75')} ${path('p25').map((v, a) => [a, v]).reverse().map((
     <div class="market-table-wrap">
       <table class="market-table plan-network">
         <caption class="sr-only">Operating contribution by branch and year under the plan</caption>
-        <thead><tr><th scope="col">Operating contribution</th>{YEARS.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
+        <thead><tr><th scope="col">Contribution</th>{YEARS.map((n) => <th scope="col">Year {n}</th>)}</tr></thead>
         <tbody>
           {expected.map((b) => (
-            <tr><th scope="row">{b.site}{b.ramp === 'p25' ? ' (CRA branch)' : ''}</th>{b.byYear.map((yr) => <td class:list={[{ 'is-negative': yr && yr.contribution < 0 }]}>{yr ? kUSD(yr.contribution) : ''}</td>)}</tr>
+            <tr><th scope="row">{b.site}{b.ramp === 'p25' ? ' (CRA branch)' : ''}</th>{b.byYear.map((yr) => <td class:list={[{ 'is-negative': yr && yr.contribution < 0 }]}>{yr ? tUSD(yr.contribution) : ''}</td>)}</tr>
           ))}
-          <tr class="plan-total"><th scope="row">Network</th>{expectedTotals.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{kUSD(t)}</td>)}</tr>
-          <tr><th scope="row">If every branch ramps like the bottom quarter</th>{downsideTotals.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{kUSD(t)}</td>)}</tr>
+          <tr class="plan-total"><th scope="row">Network, operating</th>{expectedTotals.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
+          <tr><th scope="row">Build-out</th>{buildByYear.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{t ? tUSD(t) : ''}</td>)}</tr>
+          <tr class="plan-total"><th scope="row">Cumulative, with build-out</th>{cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
+          <tr><th scope="row">Operating, if every branch ramps like the bottom quarter</th>{downsideTotals.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{tUSD(t)}</td>)}</tr>
         </tbody>
       </table>
-      <p class="market-table-note">Net interest margin on each year's average deposits, less {costUSD(ramp.branchCost[1])} a year in running cost, the high end of the published range. Fee income and head-office overhead are left out. Before build-out of about ${ramp.buildOut}M a branch, which Bancography expects to take four years to break even (<a href="https://www.americanbanker.com/news/the-more-things-change-bank-ceos-on-why-theyre-adding-branches" target="_blank" rel="noopener noreferrer">American Banker, April 2026</a>).</p>
+      <p class="market-table-note">Net interest margin on each year's average deposits, less {costUSD(ramp.branchCost[1])} a year in running cost, the high end of the published range. Build-out of ${ramp.buildOut}M a branch in the year it opens. Fee income and head-office overhead are left out.</p>
     </div>
     <div class="market-findings market-findings-two">
       <div class="market-finding">
         <h4>Terrell is the cost of the CRA commitment</h4>
-        <p>On its planned ramp, Terrell runs about {mUSD(terrellCost)} short over its first four years. Forney's surplus doesn't cover it until year {forneyCovers}. The board should approve that shortfall as the price of serving the county, by name and amount, rather than discover it later.</p>
+        <p>On its planned ramp, Terrell doesn't cover its running cost in its four years in the plan: it runs about {mUSD(terrellCost)} short over its first four, on top of its ${ramp.buildOut}M build-out. Forney's surplus covers the running shortfall from year {forneyCovers}. The board should approve that cost as the price of serving the county, by name and amount, rather than discover it later.</p>
       </div>
       <div class="market-finding">
-        <h4>The plan turns positive in year {firstPositive}, if the ramps hold</h4>
-        <p>The three branches need about {mUSD(buildOut * 1000)} to build and {mUSD(-sum(expectedTotals.slice(0, firstPositive - 1)))} of operating support before the network covers itself. If they all ramp like the bottom quarter, the network is still {kUSD(-downsideTotals[4])} a year short in year five. That is why the Midlothian branch waits for Forney's results.</p>
+        <h4>Operations turn positive in year {firstPositive}. The investment takes longer.</h4>
+        <p>By the end of year five the plan has {mUSD(-cumulative[4])} still to earn back, and the network is returning {mUSD(expectedTotals[4])} a year. Paying back in four years takes an average of ${ramp.payback}M; the median new branch averages about ${Math.round(medianFourYearAverage)}M over its first four, because it starts from zero. If every branch ramps like the bottom quarter, operations are still {mUSD(-downsideTotals[4])} a year short in year five. That is why Midlothian waits for Forney's results.</p>
       </div>
     </div>
 
     <div class="market-recommendation">
       <p class="band-label">What goes to the board</p>
-      <p>Three branches over five years: Forney first, Terrell as the CRA branch, Midlothian only if Forney is on plan. {mUSD(buildOut * 1000)} to build, a named cost for Terrell, and a ramp each branch is measured against. Before committing, I'd want the bank's lenders to tell me why {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits, and what it would take for those customers to move.</p>
+      <p>Three branches over five years: Forney first, Terrell as the CRA branch, Midlothian only if Forney is on plan. {mUSD(buildOut * 1000)} to build, {mUSD(-cumulative[4])} still to earn back at the end of year five, a named cost for Terrell, and a ramp each branch is measured against. Before committing, I'd want the bank's lenders to tell me why {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits, and what it would take for those customers to move.</p>
     </div>
   </div>
 </section>
