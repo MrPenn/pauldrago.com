@@ -70,8 +70,9 @@
     inner.appendChild(units); inner.appendChild(legend); inner.appendChild(src);
     opener.appendChild(inner);
     opener.removeAttribute('aria-hidden');
-    opener.setAttribute('role', 'img');
+    opener.setAttribute('role', 'figure');
     opener.setAttribute('aria-label', 'Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks.');
+    units.setAttribute('aria-hidden', 'true');
 
     var cells = units.children;
     var per = reduceMotion ? 0 : 16;           // the brass fill runs left to right in about 0.7s
@@ -224,11 +225,20 @@
     ex.i.style.left = pct(spread); cov.i.style.left = pct(spread);
     cac.style.left = pct(CAC);
 
+    function fit(seg, share) {
+      // a label only shows when the segment is wide enough to hold it
+      var lab = seg.querySelector('.fd-g-seg-label');
+      if (!lab) return;
+      var track = seg.parentNode.getBoundingClientRect().width;
+      seg.classList.toggle('is-tight', share * track < lab.scrollWidth + 18);
+    }
     function setBar(o, sp, ic, total) {
       o.s.style.width = pct(sp); o.i.style.width = pct(ic);
       o.s.classList.toggle('is-labeled', sp > 0); o.i.classList.toggle('is-labeled', ic > 0);
       o.v.textContent = money(total);
+      fit(o.s, sp / scale); fit(o.i, ic / scale);
     }
+    window.addEventListener('resize', function () { mathSeq.onStep(mathSeq.active || 0); });
     mathSeq.onStep = function (n) {
       // 1: the balance alone. 2: spread. 3: interchange stacks on. 4: the acquisition line drops in, already beaten. 5: the same customer over $10B.
       barEx.classList.toggle('is-shown', n >= 2);

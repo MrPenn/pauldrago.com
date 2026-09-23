@@ -33,6 +33,7 @@ const jsonld = {
     sameAs: [AUTHOR.linkedin],
   },
   publisher: { '@id': AUTHOR.id },
+  ...(article.data.ogImage ? { image: `https://pauldrago.com${article.data.ogImage}` } : {}),
 };
 ---
 <Base
@@ -42,6 +43,10 @@ const jsonld = {
   variant="articles"
   subline="Articles"
   ogType="article"
+  ogImage={article.data.ogImage ? `https://pauldrago.com${article.data.ogImage}` : undefined}
+  ogImageAlt={article.data.ogImageAlt}
+  published={iso(article.data.date)}
+  modified={iso(article.data.updated ?? article.data.date)}
   footerNote="Writing on marketing measurement, markets, and accountable growth."
   stylesheets={['/assets/personal-site.css', ...article.data.stylesheets]}
   scripts={article.data.scripts}

@@ -21,6 +21,8 @@ const {
   scripts = [],
   lastUpdated = '2026-09-22',
   jsonld = null,
+  published = null,
+  modified = null,
 } = Astro.props;
 const canonical = SITE + (path === '/' ? '/' : path);
 const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
@@ -41,6 +43,9 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
 <meta property="og:url" content={canonical}>
 <meta property="og:image" content={ogImage}>
 <meta property="og:image:alt" content={ogImageAlt}>
+{ogType === 'article' && published && <meta property="article:published_time" content={published} />}
+{ogType === 'article' && modified && <meta property="article:modified_time" content={modified} />}
+{ogType === 'article' && <meta property="article:author" content="https://pauldrago.com/" />}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content={title}>
 <meta name="twitter:description" content={description}>

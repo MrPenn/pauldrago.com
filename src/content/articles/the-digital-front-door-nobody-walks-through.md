@@ -5,6 +5,8 @@ date: 2026-09-23
 draft: true
 kicker: "Financial services"
 opener: "fd-grid"
+ogImage: "/assets/front-door-social.png"
+ogImageAlt: "Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks."
 stylesheets: ["/assets/front-door.css"]
 scripts: ["/assets/front-door.js"]
 ---
