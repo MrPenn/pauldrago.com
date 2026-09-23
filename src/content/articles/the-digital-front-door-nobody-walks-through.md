@@ -12,11 +12,11 @@ scripts: ["/assets/front-door.js"]
 <aside class="fd-brief" aria-label="The short version">
 <p class="fd-eyebrow">The short version</p>
 <ol>
-<li>Community banks built the digital front door. In 2024 they still took 4 of every 100 new checking accounts.</li>
-<li>A 25-year-old with the median balance is worth a little over $400 a year to a community bank before any loan, and covers a typical acquisition cost inside the first year.</li>
-<li>The mortgage the bank is waiting for arrives at 40. The industry earned $973 per loan on it last quarter.</li>
-<li>Chime feels like one product. A community bank is twelve functions wearing one logo, and nobody owns the whole.</li>
-<li>The fix is three decisions, not a reorg: one owner, a scorecard that measures the relationship, one journey run as a product for a quarter.</li>
+<li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li>
+<li>The customer they lost is worth having now. A 25-year-old with the median balance earns a community bank a little over $400 a year before any loan, and covers a typical acquisition cost inside the first year.</li>
+<li>The bank’s pitch waits for the mortgage anyway. The median first-time buyer is 40, and the industry earned $973 per loan when it finally arrived.</li>
+<li>Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year.</li>
+<li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li>
 </ol>
 </aside>
 
@@ -309,7 +309,7 @@ Local employers, merchants and community relationships strengthen the propositio
 
 ## Somebody has to own the whole bank
 
-<p class="fd-deck">Three decisions, no reorg.</p>
+<p class="fd-deck">Where to start.</p>
 
 Community banks do not need to copy Chime's palette, vocabulary or roadmap. The lesson is coherence: product, brand and experience that reinforce each other.
 
