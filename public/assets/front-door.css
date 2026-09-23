@@ -1098,3 +1098,17 @@ figure.fd-stat {
 }
 /* timeline labels keep a ground-coloured halo so they stay legible over the bars */
 .fd-tl-callout, .fd-tl-sub, .fd-tl-marker-label { paint-order: stroke fill; stroke: var(--ground); stroke-width: 5px; stroke-linejoin: round; }
+/* calculator: one row of five on wide screens, labels bottom-aligned so the boxes line up */
+.fd-field-label { display: flex; align-items: flex-end; min-height: 2.7em; line-height: 1.35; }
+.fd-field-src { min-height: 0; }
+@media (min-width: 761px) {
+  .fd-calc-inputs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .fd-calc { width: calc(min(1060px, 100vw) - 64px); }
+  .fd-calc-inputs { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 18px 20px; }
+  .fd-calc-lede { max-width: 62ch; }
+}
+@media (max-width: 760px) {
+  .fd-field-label { min-height: 0; }
+}
