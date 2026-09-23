@@ -1156,3 +1156,8 @@ figure.fd-stat {
 
 /* Without JavaScript the reveal never runs, so images start visible. */
 @media (scripting: none) { .fd-img img, .fd-illo img { opacity: 1; transform: none; } }
+
+/* Closing grid without JavaScript: the four community-bank boxes are simply filled. */
+@media (scripting: none) {
+  .fd-grid-close .fd-cell:nth-child(n+45):nth-child(-n+48) { background: var(--paper); border-color: var(--paper); }
+}

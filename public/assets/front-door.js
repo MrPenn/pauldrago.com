@@ -89,7 +89,8 @@
   document.querySelectorAll('[data-fd="grid-empty"]').forEach(function (fig) {
     var cells = fig.querySelector('.fd-grid-cells');
     if (!cells) return;
-    for (var i = 0; i < 100; i++) cells.appendChild(h('div', 'fd-cell'));
+    // The hundred boxes ship in the HTML; only build them if an older page lacks them.
+    if (!cells.children.length) for (var i = 0; i < 100; i++) cells.appendChild(h('div', 'fd-cell'));
     onEnter(fig, function () {
       for (var j = 0; j < 4; j++) {
         (function (j) { setTimeout(function () { cells.children[44 + j].classList.add('is-community'); }, 700 + j * 420); })(j);
