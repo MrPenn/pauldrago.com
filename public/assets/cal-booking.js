@@ -1,4 +1,4 @@
-(function (C, A, L) {
+(function (C, L) {
   const push = function (api, args) {
     api.q.push(args);
   };
@@ -8,11 +8,9 @@
     const cal = C.Cal;
     const args = arguments;
 
-    if (!cal.loaded) {
+    if (!cal.ns) {
       cal.ns = {};
       cal.q = cal.q || [];
-      document.head.appendChild(document.createElement('script')).src = A;
-      cal.loaded = true;
     }
 
     if (args[0] === L) {
@@ -34,7 +32,22 @@
 
     push(cal, args);
   };
-})(window, 'https://app.cal.com/embed/embed.js', 'init');
+})(window, 'init');
+
+// The embed script is fetched on demand instead of on page load; queued setup calls replay once it runs.
+let calEmbedLoaded = null;
+function loadCalEmbed() {
+  if (!calEmbedLoaded) {
+    calEmbedLoaded = new Promise(function (resolve) {
+      const script = document.createElement('script');
+      script.src = 'https://app.cal.com/embed/embed.js';
+      script.onload = resolve;
+      script.onerror = resolve;
+      document.head.appendChild(script);
+    });
+  }
+  return calEmbedLoaded;
+}
 
 Cal('init', '20-min-intro-call', { origin: 'https://app.cal.com' });
 Cal.config = Cal.config || {};
@@ -58,6 +71,19 @@ Cal.ns['20-min-intro-call']('on', {
   }
 });
 
+// Fetch the embed when a visitor shows intent, or once the page has been idle for a few seconds.
+['pointerover', 'focusin', 'touchstart'].forEach(function (type) {
+  document.addEventListener(type, function onIntent(event) {
+    if (event.target.closest && event.target.closest('[data-cal-link]')) {
+      document.removeEventListener(type, onIntent, true);
+      loadCalEmbed();
+    }
+  }, true);
+});
+window.addEventListener('load', function () {
+  setTimeout(function () { (window.requestIdleCallback || setTimeout)(loadCalEmbed); }, 4000);
+}, { once: true });
+
 document.addEventListener('click', function (event) {
   const trigger = event.target.closest('[data-cal-link]');
 
@@ -80,12 +106,15 @@ document.addEventListener('click', function (event) {
   }
 
   const namespace = trigger.dataset.calNamespace;
-  const cal = namespace && Cal.ns[namespace] ? Cal.ns[namespace] : Cal;
 
-  cal('modal', {
-    calLink: trigger.dataset.calLink,
-    calOrigin: 'https://app.cal.com',
-    config: config
+  // A modal queued before the embed finishes loading is dropped, so open it only once the script has run.
+  loadCalEmbed().then(function () {
+    const cal = namespace && Cal.ns[namespace] ? Cal.ns[namespace] : Cal;
+    cal('modal', {
+      calLink: trigger.dataset.calLink,
+      calOrigin: 'https://app.cal.com',
+      config: config
+    });
   });
 
   window.setTimeout(function () {

@@ -76,7 +76,7 @@ button):focus-visible {
 
 .model-title {
   margin-top: 14px;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 27px;
   line-height: 1.08;
   text-transform: uppercase;
@@ -221,6 +221,9 @@ button):focus-visible {
   border-bottom: 1px solid var(--hairline);
 }
 
+/* Darker brass so the small label keeps 4.5:1 contrast on the light panel. */
+.compliance-section .band-label { color: color-mix(in srgb, var(--brass) 85%, black); }
+
 .section-title {
   max-width: 900px;
   font-size: clamp(36px, 4.5vw, 58px);
@@ -251,7 +254,7 @@ button):focus-visible {
 }
 
 .signal-title {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 20px;
   line-height: 1.1;
   text-transform: uppercase;
@@ -284,7 +287,7 @@ button):focus-visible {
 }
 
 .deliverable-title {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 21px;
   line-height: 1.1;
   text-transform: uppercase;
@@ -314,7 +317,7 @@ button):focus-visible {
 
 .offer-title {
   margin-top: 18px;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: clamp(34px, 4.4vw, 60px);
   line-height: 1;
   text-transform: uppercase;
@@ -344,7 +347,7 @@ button):focus-visible {
 
 .produces-copy {
   margin-top: 10px;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: clamp(22px, 2.7vw, 34px);
   line-height: 1.15;
   text-transform: uppercase;

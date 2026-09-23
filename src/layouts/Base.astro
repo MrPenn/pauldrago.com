@@ -1,8 +1,10 @@
 ---
+import { readFileSync } from 'node:fs';
+import { join, posix } from 'node:path';
 import PostHog from '../components/posthog.astro';
 
 const SITE = 'https://pauldrago.com';
-// Cache-buster: changes every build so browsers and the CDN fetch fresh CSS and JS after a deploy.
+// Cache-buster: changes every build so browsers and the CDN fetch fresh scripts after a deploy.
 const ASSET_V = Date.now().toString(36);
 const v = (href) => `${href}?v=${ASSET_V}`;
 const BOOKING = 'https://cal.com/pauldrago/20-min-intro-call';
@@ -29,6 +31,11 @@ const {
   published = null,
   modified = null,
 } = Astro.props;
+// Stylesheets are small, so they are inlined to keep them off the critical path.
+// Relative url() references are rewritten to absolute paths so they still resolve from any page.
+const inlineCss = (href) => readFileSync(join(process.cwd(), 'public', href), 'utf8')
+  .replace(/url\((['"]?)(?![a-z]+:|\/)/gi, `url($1${posix.dirname(href)}/`);
+const css = ['/assets/site-shell.css', ...stylesheets].map(inlineCss).join('\n');
 const canonical = SITE + (path === '/' ? '/' : path);
 const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 ---
@@ -59,15 +66,24 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="alternate" type="application/rss+xml" title="Paul Drago, articles" href="/rss.xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=IBM+Plex+Sans:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href={v('/assets/site-shell.css')}>
-{stylesheets.map((href) => <link rel="stylesheet" href={v(href)} />)}
+<link rel="preload" href="/fonts/archivo-black-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/ibm-plex-sans-latin.woff2" as="font" type="font/woff2" crossorigin>
+<style is:inline>
+@font-face { font-family: 'Archivo Black'; font-style: normal; font-weight: 400; font-display: swap; src: url(/fonts/archivo-black-latin.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 400 700; font-display: swap; src: url(/fonts/ibm-plex-sans-latin.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif 4'; font-style: normal; font-weight: 400 600; font-display: swap; src: url(/fonts/source-serif-4-latin.woff2) format('woff2'); }
+@font-face { font-family: 'Source Serif 4'; font-style: italic; font-weight: 400; font-display: swap; src: url(/fonts/source-serif-4-italic-latin.woff2) format('woff2'); }
+/* Fallbacks sized to match the web fonts' metrics so the swap does not shift layout. */
+@font-face { font-family: 'Archivo Black Fallback'; src: local('Arial Bold'), local('Arial-BoldMT'), local('Liberation Sans Bold'); size-adjust: 113.47%; ascent-override: 77.38%; descent-override: 18.51%; line-gap-override: 0%; }
+@font-face { font-family: 'IBM Plex Sans Fallback'; src: local('Arial'), local('ArialMT'), local('Liberation Sans'); size-adjust: 97%; ascent-override: 105.67%; descent-override: 28.35%; line-gap-override: 0%; }
+@font-face { font-family: 'Source Serif 4 Fallback'; src: local('Times New Roman'), local('TimesNewRomanPSMT'), local('Liberation Serif'); size-adjust: 103.47%; ascent-override: 100.13%; descent-override: 32.38%; line-gap-override: 0%; }
+</style>
+<style is:inline set:html={css}></style>
 {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
 <PostHog />
 </head>
 <body>
+<Fragment set:html="<!--email_off-->" />
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div>
 
@@ -143,7 +159,8 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
     </div>
   </div>
 </footer>
-{scripts.map((src) => <script is:inline src={v(src)}></script>)}
-<script is:inline src={v('/assets/cal-booking.js')}></script>
+{scripts.map((src) => <script is:inline defer src={v(src)}></script>)}
+<script is:inline defer src={v('/assets/cal-booking.js')}></script>
+<Fragment set:html="<!--/email_off-->" />
 </body>
 </html>

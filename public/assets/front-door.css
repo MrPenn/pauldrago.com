@@ -58,7 +58,7 @@
   margin: 44px 0 44px;
   padding-top: 20px;
   border-top: 4px solid var(--brass);
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: clamp(22px, 2.6vw, 30px);
   line-height: 1.1;
   text-transform: uppercase;
@@ -111,7 +111,7 @@
   position: absolute;
   left: 0;
   top: 22px;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 34px;
   line-height: 1;
   color: var(--brass);
@@ -119,7 +119,7 @@
 .fd-decisions strong {
   display: block;
   margin-bottom: 8px;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-weight: 400;
   font-size: 20px;
   line-height: 1.15;
@@ -153,7 +153,7 @@
   outline: 0;
   background: transparent;
   color: var(--paper);
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;
   font-size: 18px;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -173,7 +173,7 @@
   border: 1px solid var(--hairline);
   background: transparent;
   color: var(--paper);
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -226,7 +226,7 @@
 .fd-ledger-label { font-size: 15px; line-height: 1.35; }
 .fd-ledger-src { display: block; color: var(--secondary); font-size: 12px; }
 .fd-ledger-value {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 26px;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -371,7 +371,7 @@
 .fd-swatch-fintech { background: var(--brass); border-color: var(--brass); }
 .fd-swatch-community { background: var(--paper); border-color: var(--paper); }
 .fd-legend-num {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: clamp(30px, 3.4vw, 44px);
   line-height: 0.95;
   font-variant-numeric: tabular-nums;
@@ -472,7 +472,7 @@
 .fd-g-math .fd-g-eyebrow { margin: 0 0 16px; }
 .fd-g-balance { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
 .fd-g-balance .num {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: clamp(38px, 4.2vw, 56px);
   line-height: 0.95;
   font-variant-numeric: tabular-nums;
@@ -486,7 +486,7 @@
 .fd-g-bar-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
 .fd-g-bar-name { color: var(--secondary); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
 .fd-g-bar-val {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 22px;
   line-height: 1;
   font-variant-numeric: tabular-nums;
@@ -549,7 +549,7 @@
 .fd-g-row.is-shown { opacity: 1; transform: none; }
 .fd-g-row-label { font-size: 14px; color: var(--paper); }
 .fd-g-row-label small { display: block; color: var(--secondary); font-size: 12px; }
-.fd-g-row-val { font-family: 'Archivo Black', sans-serif; font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.fd-g-row-val { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .fd-g-row.is-total { border-top: 2px solid var(--paper); }
 .fd-g-row.is-total .fd-g-row-val { color: var(--brass); }
 .fd-g-payback { margin-top: 12px; color: var(--paper); font-size: 14px; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease) 300ms; }
@@ -561,13 +561,13 @@
 .fd-tl-bar { fill: var(--paper); opacity: 0.85; transform-origin: bottom; transform: scaleY(0); transition: transform var(--fd-base) var(--fd-ease); }
 .fd-tl-event { fill: var(--brass); transform-origin: bottom; transform: scaleY(0); transition: transform var(--fd-slow) var(--fd-ease); }
 .fd-tl-axis { stroke: var(--hairline); stroke-width: 1; }
-.fd-tl-label { fill: var(--secondary); font-family: 'IBM Plex Sans', sans-serif; font-size: 14px; }
+.fd-tl-label { fill: var(--secondary); font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; font-size: 14px; }
 .fd-tl-label.is-strong { fill: var(--paper); font-weight: 700; }
-.fd-tl-callout { fill: var(--paper); font-family: 'IBM Plex Sans', sans-serif; font-size: 16px; font-weight: 700; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
+.fd-tl-callout { fill: var(--paper); font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; font-size: 16px; font-weight: 700; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
 .fd-tl-callout.is-brass { fill: var(--brass); }
-.fd-tl-sub { fill: var(--secondary); font-family: 'IBM Plex Sans', sans-serif; font-size: 13px; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
+.fd-tl-sub { fill: var(--secondary); font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; font-size: 13px; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
 .fd-tl-marker { stroke: var(--brass); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
-.fd-tl-marker-label { fill: var(--brass); font-family: 'IBM Plex Sans', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
+.fd-tl-marker-label { fill: var(--brass); font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
 .fd-g-timeline[data-step="1"] .fd-tl-marker,
 .fd-g-timeline[data-step="1"] .fd-tl-marker-label,
 .fd-g-timeline[data-step="2"] .fd-tl-marker,
@@ -619,7 +619,7 @@
 }
 .fd-g-org[data-step="2"] .fd-one { opacity: 1; transform: scale(1); transition-delay: 520ms; }
 
-.fd-one-name { display: block; font-family: 'Archivo Black', sans-serif; font-size: clamp(30px, 4vw, 48px); line-height: 1; text-transform: uppercase; }
+.fd-one-name { display: block; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(30px, 4vw, 48px); line-height: 1; text-transform: uppercase; }
 .fd-one-sub { display: block; margin-top: 12px; color: var(--secondary); font-size: 14px; }
 .fd-one-status { display: block; margin-top: 18px; color: var(--brass); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; }
 .fd-one-status::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border: 1px solid var(--brass); border-radius: 50%; }
@@ -673,7 +673,7 @@
   position: absolute;
   left: 0;
   top: 1px;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 15px;
   color: var(--brass);
 }
@@ -696,7 +696,7 @@
   border-bottom: 1px solid var(--hairline);
 }
 .fd-stat-num {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: clamp(38px, 4.2vw, 56px);
   line-height: 0.95;
   font-variant-numeric: tabular-nums;
@@ -713,7 +713,7 @@
 .fd-lede::first-letter {
   float: left;
   margin: 6px 12px 0 0;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 78px;
   line-height: 0.78;
   color: var(--brass);
@@ -724,7 +724,7 @@
   content: counter(sec, upper-roman);
   display: block;
   margin-bottom: 10px;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 17px;
   font-weight: 700;
   letter-spacing: 0.14em;
@@ -734,7 +734,7 @@
 .article-body h2.fd-colophon::before { content: none; }
 .article-body h3 {
   margin: 44px 0 14px;
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;
   font-size: 13px;
   font-weight: 700;
   letter-spacing: 0.12em;
@@ -745,7 +745,7 @@
   margin: 36px 0 !important;
   padding-top: 16px;
   border-top: 2px solid var(--brass);
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 20px;
   line-height: 1.2;
   text-transform: uppercase;
@@ -774,23 +774,23 @@
    ============================================================ */
 .article-body {
   max-width: 62ch;
-  font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, 'Times New Roman', serif;
   font-size: 19.5px;
   line-height: 1.55;
 }
 .article-body p { font-variant-numeric: oldstyle-nums proportional-nums; }
-.article-intro { font-family: 'Source Serif 4', Georgia, serif; font-size: 22px; }
+.article-intro { font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 22px; }
 .fd-lede { font-size: 22px; line-height: 1.5; }
 .fd-lede::first-letter { font-size: 84px; line-height: 0.8; margin-top: 8px; }
 .article-body h2 { font-size: clamp(24px, 2.4vw, 29px); line-height: 1.12; }
 .fd-deck {
-  font-family: 'Source Serif 4', Georgia, serif;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-style: italic;
   font-size: 19px;
   line-height: 1.45;
   color: var(--secondary);
 }
-.fd-brief li { font-family: 'Source Serif 4', Georgia, serif; font-size: 17px; }
+.fd-brief li { font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 17px; }
 .fd-dialogue p { font-size: 18px; }
 .fd-decisions li { font-size: 18.5px; }
 
@@ -798,7 +798,7 @@
 .fd-figure, .fd-graphic, .fd-calc, .fd-stat, .fd-sidenote, .fd-note-inline, .fd-sticky-notes,
 .fd-opener-inner, .fd-eyebrow, .fd-who, .fd-field, .fd-ledger, .fd-org, .fd-one-sub, .fd-one-status,
 .fd-g-bar-name, .fd-g-row-label, .fd-g-balance .sub, .fd-g-payback, figcaption, .fd-calc-lede, .fd-durbin {
-  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 .fd-stat-label { font-size: 14px; }
 
@@ -814,7 +814,7 @@
 .fd-pq p {
   margin: 0;
   max-width: 30ch;
-  font-family: 'Source Serif 4', Georgia, serif;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-style: italic;
   font-weight: 400;
   font-size: clamp(24px, 2.6vw, 30px);
@@ -827,7 +827,7 @@
   position: absolute;
   left: -0.62em;
   top: -0.12em;
-  font-family: 'Source Serif 4', Georgia, serif;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-size: clamp(64px, 6vw, 84px);
   line-height: 1;
   color: var(--brass);
@@ -836,7 +836,7 @@
 .fd-pull {
   border-top: 0;
   padding-top: 0;
-  font-family: 'Source Serif 4', Georgia, serif;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-style: italic;
   font-weight: 400;
   text-transform: none;
@@ -858,7 +858,7 @@
 .article-body .fd-pq { border-left: 0; padding-left: 0; opacity: 1; }
 .article-body .fd-pq::before { font-size: 132px; top: -0.22em; left: -0.55em; font-weight: 600; }
 .article-body h2::before {
-  font-family: 'Source Serif 4', Georgia, serif;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.14em;
@@ -878,13 +878,13 @@ figure.fd-stat {
 }
 .fd-stat-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: baseline; }
 .fd-stat .fd-stat-num {
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: clamp(48px, 5vw, 68px);
   line-height: 0.9;
   color: var(--paper);
 }
 .fd-stat .fd-stat-label {
-  font-family: 'Source Serif 4', Georgia, serif;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-size: 19px;
   line-height: 1.4;
   color: var(--paper);
@@ -902,7 +902,7 @@ figure.fd-stat {
 .fd-stat .fd-stat-src {
   margin-top: 12px;
   color: var(--secondary);
-  font-family: 'IBM Plex Sans', sans-serif;
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;
   font-size: 12px;
   line-height: 1.4;
   max-width: none;
@@ -939,7 +939,7 @@ figure.fd-stat {
 /* subheads join the decks' voice instead of adding more uppercase labels */
 .article-body h3 {
   margin: 44px 0 14px;
-  font-family: 'Source Serif 4', Georgia, serif;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-style: italic;
   font-weight: 400;
   font-size: 21px;
@@ -983,7 +983,7 @@ figure.fd-stat {
 .fd-calc .fd-eyebrow { margin-bottom: 8px; }
 .fd-calc-title {
   margin: 0 0 8px;
-  font-family: 'Archivo Black', sans-serif;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
   font-size: 26px;
   line-height: 1.1;
   text-transform: uppercase;
@@ -1125,7 +1125,7 @@ figure.fd-stat {
 .fd-g-org[data-step="2"] .fd-org-cap[data-for="2"] { display: block; }
 .fd-one { flex-direction: column; justify-content: flex-start; top: 56px; }
 .fd-g-org { min-height: 540px; }
-.fd-one-cap { margin: 14px 0 0; max-width: 34ch; color: var(--secondary); font-family: 'Source Serif 4', Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.4; text-align: center; }
+.fd-one-cap { margin: 14px 0 0; max-width: 34ch; color: var(--secondary); font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.4; text-align: center; }
 .fd-one img { max-height: 380px; }
 @media (min-width: 1180px) {
   .fd-scrolly[data-scrolly="org"] .fd-step:first-child { min-height: 92vh; }
@@ -1139,7 +1139,7 @@ figure.fd-stat {
 @media (max-width: 760px) { .fd-one img { max-height: 200px; } .fd-one-cap { font-size: 13px; margin-top: 8px; } }
 
 /* Closing line: what to do with the model */
-.article-body .fd-cta { margin: 36px 0 0; padding: 22px 0 0; border-top: 1px solid var(--hairline); font-family: 'Source Serif 4', Georgia, serif; font-size: 19px; line-height: 1.5; max-width: 60ch; }
+.article-body .fd-cta { margin: 36px 0 0; padding: 22px 0 0; border-top: 1px solid var(--hairline); font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 19px; line-height: 1.5; max-width: 60ch; }
 .article-body .fd-cta a { color: var(--brass); text-decoration: none; border-bottom: 2px solid var(--brass); font-weight: 600; }
 .article-body .fd-cta a:hover { color: var(--paper); }
 
