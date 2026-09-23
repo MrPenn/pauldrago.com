@@ -230,7 +230,6 @@ button):focus-visible {
 }
 
 /* Supporting sections: sentence case, so the display voice is kept for the headline sections. */
-.section-title-plain { max-width: 34ch; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.2; text-wrap: balance; }
 .section-link { color: var(--paper); font-weight: 700; text-decoration: underline; text-decoration-color: var(--brass); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .section-link::after { content: " \2192"; color: var(--brass); }
 .call-prep-copy { margin-top: 10px; color: var(--secondary); font-size: 16px; line-height: 1.55; }
@@ -253,8 +252,8 @@ button):focus-visible {
 
 .signal {
   display: grid;
-  grid-template-columns: minmax(210px, 0.45fr) minmax(0, 1fr);
-  gap: 44px;
+  grid-template-columns: minmax(230px, 0.75fr) minmax(0, 1.25fr);
+  gap: 30px;
   padding: 22px 0;
   border-bottom: 1px solid var(--hairline);
 }
@@ -423,12 +422,16 @@ button):focus-visible {
 }
 
 .call-prep ul {
-  margin: 18px 0 24px;
-  padding-left: 20px;
+  margin: 14px 0 24px;
+  padding: 0;
+  list-style: none;
   color: var(--secondary);
 }
 
-.call-prep li + li { margin-top: 9px; }
+.call-prep li { padding: 9px 0; border-top: 1px solid var(--hairline); }
+.call-prep li:last-child { border-bottom: 1px solid var(--hairline); }
+.call-prep .btn { margin-top: 20px; }
+.call-prep ul + .btn { margin-top: 0; }
 
 .sources-section {
   padding-top: 48px;

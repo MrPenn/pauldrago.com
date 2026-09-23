@@ -469,3 +469,7 @@ footer {
 /* Heroes sit on the plain ground: no background photograph or wash. */
 .home-hero::before, .home-hero::after, .articles-hero::before, .articles-hero::after,
 .service-hero::before, .hero::before, .hero::after { content: none !important; display: none !important; }
+
+/* Supporting section headings on service pages: calm, sentence case. The display face is kept
+   for the page title, the featured section and the closing call. */
+h2.section-title-plain { max-width: 34ch; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.2; letter-spacing: 0; text-transform: none; text-wrap: balance; }

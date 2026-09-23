@@ -135,6 +135,7 @@ const SOURCES = {
       <p class="report-meta">Prepared by Paul Drago, Glass Vase, LLC, for the board of {INSTITUTION.description}. Reviewed by the CFO, chief credit officer, CRA and fair-lending officer, and chief risk officer. Data as of {signals.asOf}. Supports a business decision; not legal advice or a CRA determination.</p>
     </div>
 
+    <p class="brief-label">Board brief, two pages</p>
     <section class="report-brief" aria-label="Two-page brief">
       <section class="brief-block" id="recommendation" aria-labelledby="ask-h">
         <h2 class="brief-h2" id="ask-h">The board is asked to approve</h2>
@@ -213,15 +214,11 @@ const SOURCES = {
           <p><span class="resolved">Resolved,</span> that the board approves branches in {first.town} and {second.town} with capital spending of up to {mUSD(firstTwoBuild * 1000)} and launch marketing of up to ${num(2 * launchTotal)}K; approves a branch in {third.town} in principle, to be released by the board if the {first.town} branch holds ${gate}M in deposits at the end of its second year; and authorizes management to file the required applications.</p>
           <p class="brief-sign"><span>Secretary</span><span>Date</span></p>
         </div>
-
-        <nav class="brief-appendix" aria-label="Appendix">
-          <p><strong>Appendix:</strong> <a href="#markets">A. Why Kaufman and Ellis</a>, <a href="#sites">B. Why these towns</a>, <a href="#pipeline">C. What's coming</a>, <a href="#cra">D. CRA and fair lending</a>, <a href="#economics">E. Economics</a>, <a href="#risks">F. Other risks and questions</a>, <a href="#methods">G. Data and definitions</a>.</p>
-        </nav>
       </div>
     </section>
 
 
-    <div class="appendix-divider" aria-hidden="true"><span>Appendix</span></div>
+    <div class="appendix-open"><h2 class="appendix-title">Appendix</h2><p class="report-p">The evidence behind the brief, section by section.</p><nav class="appendix-index" aria-label="Appendix sections"><a href="#markets">A. Why Kaufman and Ellis</a><a href="#sites">B. Why these towns</a><a href="#pipeline">C. What's coming</a><a href="#cra">D. CRA and fair lending</a><a href="#economics">E. Economics</a><a href="#risks">F. Other risks and questions</a><a href="#methods">G. Data and definitions</a></nav></div>
 
     <section class="report-section report-appendix" id="markets" aria-labelledby="markets-h">
       <h2 class="report-h2" id="markets-h"><span>A</span> Why Kaufman and Ellis</h2>

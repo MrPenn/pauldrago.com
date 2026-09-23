@@ -139,8 +139,12 @@
 .brief-risks li { padding: 7px 0; font-size: 15px; }
 .brief-appendix { margin-top: 28px; padding: 14px 16px; border: 1px solid var(--hairline); color: var(--secondary); font-size: 14px; line-height: 1.7; }
 .brief-appendix strong { color: var(--paper); }
-.appendix-divider { display: flex; gap: 16px; align-items: center; margin-top: 88px; color: var(--secondary); font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
-.appendix-divider::before, .appendix-divider::after { content: ""; flex: 1; border-top: 2px solid var(--paper); }
+.brief-label { margin-top: 28px; color: var(--secondary); font-size: 14px; font-weight: 700; }
+.appendix-open { margin-top: 96px; padding-top: 28px; border-top: 3px solid var(--paper); }
+.appendix-title { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(30px, 4vw, 44px); line-height: 1; text-transform: uppercase; }
+.appendix-index { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 16px; }
+.appendix-index a { padding: 4px 0; color: var(--paper); font-size: 15px; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--hairline); }
+.appendix-index a:hover { border-bottom-color: var(--brass); }
 .report-appendix:first-of-type { margin-top: 32px; }
 
 /* Criteria columns: an X where the town meets the criterion. */
@@ -267,7 +271,7 @@
     @bottom-left { content: "Five-year branch plan \00B7  Board, October 2026 \00B7  Confidential"; font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
     @bottom-right { content: counter(page) " of " counter(pages); font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
   }
-  header, footer, .trace-rail, .skip-link, .sample-banner, .report-cta, #cc-main, .appendix-divider, .brief-appendix, .county-maps-head p, .county-maps-note, .county-map-sub { display: none !important; }
+  header, footer, .trace-rail, .skip-link, .sample-banner, .report-cta, #cc-main, .appendix-open, .brief-label, .county-maps-head p, .county-maps-note, .county-map-sub { display: none !important; }
   :root { --paper: #000; --secondary: #333; --hairline: #bbb; --brass: #8a2f14; --dark-navy: #fff; --ground: #fff; }
   body { background: #fff !important; font-size: 9.5pt; }
   .sample-plan { padding: 0; }

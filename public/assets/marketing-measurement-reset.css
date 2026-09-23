@@ -664,12 +664,14 @@ input):focus-visible {
       order: 1;
     }
 }
+  /* On phones the heading comes first, then what to bring. */
   @media (max-width: 859px) {.closing-photo-col {
-      order: 1;
-    }
-    .closing-text-col {
       order: 2;
     }
+    .closing-text-col {
+      order: 1;
+    }
+    .call-prep-panel { max-width: none; }
 }
   .call-prep-panel {
     width: 100%;
@@ -821,3 +823,8 @@ input):focus-visible {
   .section-a-row { grid-template-columns: 1fr; }
   .section-a-figure { font-size: 30px; }
 }
+
+/* Same heading ladder as the other service pages: the title outranks the section headings. */
+.hero-section .headline-96 { font-size: clamp(40px, 5vw, 64px); }
+.headline-84 { font-size: clamp(32px, 4.2vw, 52px); }
+@media (max-width: 700px) { .headline-84 { font-size: 30px; } .hero-section .headline-96 { font-size: 34px; } }
