@@ -4,16 +4,56 @@
   padding: 0;
 }
 
+/* Two themes, one set of names. "paper" is always the ink colour and "ground"
+   the page colour, whichever theme is on; "brass" is the single accent. Light
+   is the default and the system preference picks dark; data-theme on <html>
+   overrides either way (set by the header toggle, remembered per browser). */
 :root {
+  --ground: #F1F2F4;
+  --dark-navy: #FFFFFF;
+  --panel: #E7E9ED;
+  --panel-2: #DDE0E6;
+  --paper: #0A192F;
+  --secondary: #4B5568;
+  --brass: #D9552B;
+  --on-brass: #FFFFFF;
+  --hairline: #C9CED6;
+  --hairline-light: #2A3448;
+  --shadow: color-mix(in srgb, var(--ground) 16%, transparent);
+  --ok: #1F8A5B;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #0A192F;
+    --dark-navy: #081220;
+    --panel: #0E203A;
+    --panel-2: #102846;
+    --paper: #F4F0EA;
+    --secondary: #A9B0C0;
+    --brass: #E8734A;
+    --on-brass: #081220;
+    --hairline: #2A3448;
+    --hairline-light: #D5CEBF;
+    --shadow: color-mix(in srgb, var(--dark-navy) 90%, transparent);
+    --ok: #4CC38A;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
   --ground: #0A192F;
   --dark-navy: #081220;
   --panel: #0E203A;
   --panel-2: #102846;
   --paper: #F4F0EA;
   --secondary: #A9B0C0;
-  --brass: #E0A938;
+  --brass: #E8734A;
+  --on-brass: #081220;
   --hairline: #2A3448;
   --hairline-light: #D5CEBF;
+  --shadow: color-mix(in srgb, var(--dark-navy) 90%, transparent);
+  --ok: #4CC38A;
+  color-scheme: dark;
 }
 
 html {
@@ -24,7 +64,7 @@ body {
   overflow-x: hidden;
   background: var(--ground);
   color: var(--paper);
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   font-size: 17px;
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
@@ -53,7 +93,7 @@ a {
   z-index: 100;
   padding: 10px 14px;
   background: var(--paper);
-  color: var(--dark-navy);
+  color: var(--ground);
   font-weight: 700;
   transform: translateY(-160%);
 }
@@ -69,7 +109,7 @@ a {
   z-index: 20;
   width: 2px;
   height: 100vh;
-  background: rgba(224, 169, 56, 0.12);
+  background: color-mix(in srgb, var(--brass) 12%, transparent);
   pointer-events: none;
 }
 
@@ -161,7 +201,7 @@ header {
   border-radius: 0;
   background: var(--brass);
   box-shadow: 6px 6px 0 var(--paper);
-  color: var(--dark-navy);
+  color: var(--on-brass);
   font-family: inherit;
   font-size: 16px;
   font-weight: 700;
@@ -313,4 +353,29 @@ footer {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Theme toggle */
+.header-end { display: flex; align-items: center; gap: 22px; }
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--hairline);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--paper);
+  cursor: pointer;
+  transition: border-color 200ms ease, color 200ms ease;
+}
+.theme-toggle:hover { border-color: var(--brass); color: var(--brass); }
+.theme-toggle .theme-toggle-sun { display: none; }
+.theme-toggle[data-on="dark"] .theme-toggle-sun { display: block; }
+.theme-toggle[data-on="dark"] .theme-toggle-moon { display: none; }
+@media (max-width: 700px) {
+  .header-end { gap: 14px; }
+  .theme-toggle { width: 36px; height: 36px; }
 }

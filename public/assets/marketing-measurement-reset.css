@@ -179,7 +179,7 @@ input):focus-visible {
     border: none;
     outline: none;
     color: var(--paper);
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 18px;
     font-weight: 600;
     padding: 0;
@@ -222,7 +222,7 @@ input):focus-visible {
     justify-content: space-between;
     align-items: center;
     padding: 16px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-top: 1px solid color-mix(in srgb, var(--paper) 15%, transparent);
     gap: 16px;
   }
   .calc-ledger-label {
@@ -268,7 +268,7 @@ input):focus-visible {
   }
   .calc-callout-text {
     font-size: 15px;
-    color: rgba(244, 240, 234, 0.9);
+    color: color-mix(in srgb, var(--paper) 90%, transparent);
     line-height: 1.5;
     margin-bottom: 24px;
   }
@@ -276,8 +276,8 @@ input):focus-visible {
     display: inline-block;
     padding: 14px 26px;
     background-color: var(--brass);
-    color: var(--dark-navy);
-    font-family: 'Inter', sans-serif;
+    color: var(--on-brass);
+    font-family: 'IBM Plex Sans', sans-serif;
     font-weight: 700;
     font-size: 14px;
     letter-spacing: 0;
@@ -296,7 +296,7 @@ input):focus-visible {
     padding: 96px 0 104px;
   }
   .bridge-line {
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 22px;
     color: var(--paper);
     margin-top: 28px;
@@ -328,7 +328,7 @@ input):focus-visible {
     letter-spacing: 0;
   }
   .section-a-label {
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 16px;
     color: var(--paper);
     line-height: 1.45;
@@ -344,7 +344,7 @@ input):focus-visible {
     padding: 96px 0 104px;
   }
   .section-b-statement {
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 24px;
     color: var(--paper);
     max-width: 900px;
@@ -353,7 +353,7 @@ input):focus-visible {
     margin-bottom: 20px;
   }
   .section-b-subline {
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 18px;
     color: var(--secondary);
     line-height: 1.5;
@@ -469,7 +469,7 @@ input):focus-visible {
     flex-direction: column;
   }
   .section-c-line-item {
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 17px;
     line-height: 1.55;
     color: var(--paper);
@@ -542,7 +542,7 @@ input):focus-visible {
   .artifact-preview {
     width: 100%;
     border: 1px solid var(--hairline);
-    background: #0d1d35;
+    background: var(--panel);
     margin-bottom: 12px;
   }
   .artifact-head {
@@ -576,7 +576,7 @@ input):focus-visible {
     gap: 20px;
     align-items: center;
     padding: 13px 20px;
-    border-bottom: 1px solid rgba(42, 52, 72, 0.8);
+    border-bottom: 1px solid var(--hairline);
   }
   .artifact-row:last-of-type {
     border-bottom: 0;
@@ -616,12 +616,12 @@ input):focus-visible {
     }
 }
   .section-d-cta-note {
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     font-size: 16px;
     color: var(--paper);
   }
   .section-d-not-sold {
-    font-family: 'Inter', sans-serif;
+    font-family: 'IBM Plex Sans', sans-serif;
     color: var(--secondary);
     font-size: 15px;
     line-height: 1.5;
@@ -669,8 +669,8 @@ input):focus-visible {
   .call-prep-panel {
     width: 100%;
     max-width: 280px;
-    border: 1px solid rgba(224, 169, 56, 0.7);
-    background: rgba(224, 169, 56, 0.05);
+    border: 1px solid color-mix(in srgb, var(--brass) 70%, transparent);
+    background: color-mix(in srgb, var(--brass) 5%, transparent);
     padding: 24px;
   }
   .call-prep-kicker {
@@ -701,7 +701,7 @@ input):focus-visible {
   .sources-section {
     padding: 48px 0;
     border-top: 1px solid var(--hairline);
-    background-color: rgba(8, 18, 32, 0.35);
+    background-color: color-mix(in srgb, var(--dark-navy) 35%, transparent);
   }
   .sources-list {
     list-style: none;
@@ -749,14 +749,14 @@ input):focus-visible {
   .calc-source-carry { margin-bottom: 10px; }
   .calc-callout-text { margin-bottom: 16px; }
   /* Calculator as an interactive element */
-  .calc-container { border: 1px solid rgba(224,169,56,0.55); padding: 22px 22px 18px; background: rgba(255,255,255,0.02); }
+  .calc-container { border: 1px solid color-mix(in srgb, var(--brass) 55%, transparent); padding: 22px 22px 18px; background: color-mix(in srgb, var(--paper) 2%, transparent); }
   .calc-input-wrapper { border: 2px solid var(--brass); background: var(--dark-navy); padding: 8px 12px; cursor: text; transition: background .12s, box-shadow .12s; }
   .calc-input-wrapper:hover { background: var(--panel); }
-  .calc-input-wrapper:focus-within { background: var(--panel-2); box-shadow: 0 0 0 3px rgba(224,169,56,0.28); }
+  .calc-input-wrapper:focus-within { background: var(--panel-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brass) 28%, transparent); }
   .calc-input { font-size: 22px; font-weight: 700; cursor: text; caret-color: var(--brass); }
   .calc-field-affix { font-size: 20px; }
   .calc-field-label { color: var(--paper); min-height: 2.7em; display: flex; align-items: flex-end; }
-  .calc-ledger { background: rgba(224,169,56,0.06); padding: 2px 14px; border-left: 3px solid var(--brass); }
+  .calc-ledger { background: color-mix(in srgb, var(--brass) 6%, transparent); padding: 2px 14px; border-left: 3px solid var(--brass); }
   .calc-output-sentence,
 .calc-source-carry,
 .calc-callout-text { padding-left: 14px; }

@@ -26,7 +26,7 @@ button):focus-visible {
   inset: 0;
   z-index: -2;
   background-image:
-    linear-gradient(90deg, rgba(10, 25, 47, 1) 0%, rgba(10, 25, 47, 0.97) 42%, rgba(10, 25, 47, 0.68) 100%),
+    linear-gradient(90deg, color-mix(in srgb, var(--ground) 100%, transparent) 0%, color-mix(in srgb, var(--ground) 97%, transparent) 42%, color-mix(in srgb, var(--ground) 68%, transparent) 100%),
     image-set(url('evidence-table.avif') type('image/avif'), url('evidence-table.png') type('image/png'));
   background-position: center;
   background-size: cover;
@@ -38,7 +38,7 @@ button):focus-visible {
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: linear-gradient(180deg, rgba(8, 18, 32, 0.06), rgba(8, 18, 32, 0.42));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--dark-navy) 6%, transparent), color-mix(in srgb, var(--dark-navy) 42%, transparent));
 }
 
 .home-hero {
@@ -63,8 +63,8 @@ button):focus-visible {
   grid-template-columns: 1.25fr 0.8fr 0.8fr;
   gap: 0;
   margin-top: 58px;
-  border-top: 1px solid rgba(244, 240, 234, 0.38);
-  border-bottom: 1px solid rgba(244, 240, 234, 0.38);
+  border-top: 1px solid color-mix(in srgb, var(--paper) 38%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--paper) 38%, transparent);
 }
 
 .link-group {
@@ -76,7 +76,7 @@ button):focus-visible {
 }
 
 .link-group + .link-group {
-  border-left: 1px solid rgba(244, 240, 234, 0.2);
+  border-left: 1px solid color-mix(in srgb, var(--paper) 20%, transparent);
 }
 
 .link-group-title {
@@ -96,7 +96,7 @@ button):focus-visible {
   align-items: start;
   padding: 17px 0;
   text-decoration: none;
-  border-top: 1px solid rgba(244, 240, 234, 0.14);
+  border-top: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
 }
 
 .plain-link-icon {
@@ -208,7 +208,7 @@ button):focus-visible {
   .home-hero::before,
 .articles-hero::before {
     background-image:
-      linear-gradient(180deg, rgba(10, 25, 47, 0.9) 0%, rgba(10, 25, 47, 0.96) 70%, rgba(10, 25, 47, 1) 100%),
+      linear-gradient(180deg, color-mix(in srgb, var(--ground) 90%, transparent) 0%, color-mix(in srgb, var(--ground) 96%, transparent) 70%, color-mix(in srgb, var(--ground) 100%, transparent) 100%),
       image-set(url('evidence-table.avif') type('image/avif'), url('evidence-table.png') type('image/png'));
     background-position: 70% center;
   }
@@ -235,7 +235,7 @@ button):focus-visible {
   }
 
   .link-group + .link-group {
-    border-top: 1px solid rgba(244, 240, 234, 0.2);
+    border-top: 1px solid color-mix(in srgb, var(--paper) 20%, transparent);
   }
 
   .articles-hero {
@@ -257,8 +257,8 @@ button):focus-visible {
 
 /* Article index list and article pages */
 .article-list { list-style: none; margin: 0; padding: 0; }
-.article-list-item { padding: 28px 0; border-top: 1px solid var(--rule, rgba(255,255,255,0.14)); }
-.article-list-item:last-child { border-bottom: 1px solid var(--rule, rgba(255,255,255,0.14)); }
+.article-list-item { padding: 28px 0; border-top: 1px solid var(--rule, color-mix(in srgb, var(--paper) 14%, transparent)); }
+.article-list-item:last-child { border-bottom: 1px solid var(--rule, color-mix(in srgb, var(--paper) 14%, transparent)); }
 .article-list-date { display: block; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.7; margin-bottom: 8px; }
 .article-list-title { font-family: 'Archivo Black', sans-serif; font-size: clamp(22px, 2.4vw, 30px); line-height: 1.15; text-decoration: none; color: inherit; }
 .article-list-title:hover { text-decoration: underline; text-underline-offset: 4px; }

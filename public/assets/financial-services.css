@@ -57,8 +57,8 @@ input):focus-visible {
     inset: 0;
     z-index: -1;
     background:
-      linear-gradient(90deg, rgba(10, 25, 47, 0.99) 0%, rgba(10, 25, 47, 0.94) 36%, rgba(10, 25, 47, 0.34) 72%, rgba(10, 25, 47, 0.52) 100%),
-      linear-gradient(180deg, rgba(10, 25, 47, 0.72) 0%, rgba(10, 25, 47, 0.5) 60%, var(--ground) 100%);
+      linear-gradient(90deg, color-mix(in srgb, var(--ground) 99%, transparent) 0%, color-mix(in srgb, var(--ground) 94%, transparent) 36%, color-mix(in srgb, var(--ground) 34%, transparent) 72%, color-mix(in srgb, var(--ground) 52%, transparent) 100%),
+      linear-gradient(180deg, color-mix(in srgb, var(--ground) 72%, transparent) 0%, color-mix(in srgb, var(--ground) 50%, transparent) 60%, var(--ground) 100%);
   }
 
   .hero-layout {
@@ -120,8 +120,8 @@ input):focus-visible {
   }
 
   .brief-panel {
-    border: 1px solid rgba(224, 169, 56, 0.6);
-    background: rgba(8, 18, 32, 0.82);
+    border: 1px solid color-mix(in srgb, var(--brass) 60%, transparent);
+    background: color-mix(in srgb, var(--dark-navy) 82%, transparent);
     padding: 24px;
     backdrop-filter: blur(4px);
   }
@@ -188,16 +188,16 @@ input):focus-visible {
 
   .board-block {
     height: 28px;
-    background: rgba(244, 240, 234, 0.12);
-    border: 1px solid rgba(244, 240, 234, 0.12);
+    background: color-mix(in srgb, var(--paper) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 620ms cubic-bezier(.2, .8, .2, 1);
   }
 
   .board-block.brass {
-    background: rgba(224, 169, 56, 0.3);
-    border-color: rgba(224, 169, 56, 0.8);
+    background: color-mix(in srgb, var(--brass) 30%, transparent);
+    border-color: color-mix(in srgb, var(--brass) 80%, transparent);
   }
 
   .board-map {
@@ -208,13 +208,13 @@ input):focus-visible {
 
   .board-cell {
     height: 13px;
-    background: rgba(244, 240, 234, 0.1);
+    background: color-mix(in srgb, var(--paper) 10%, transparent);
     opacity: 0.38;
     transition: opacity 420ms ease, background-color 420ms ease;
   }
 
   .board-cell.live {
-    background: rgba(224, 169, 56, 0.52);
+    background: color-mix(in srgb, var(--brass) 52%, transparent);
   }
 
   .board-overlap {
@@ -228,7 +228,7 @@ input):focus-visible {
     width: 56px;
     height: 56px;
     border: 2px solid var(--paper);
-    background: rgba(244, 240, 234, 0.07);
+    background: color-mix(in srgb, var(--paper) 7%, transparent);
     transform: translateX(-8px);
     opacity: 0.45;
     transition: transform 720ms cubic-bezier(.2, .8, .2, 1), opacity 520ms ease;
@@ -237,7 +237,7 @@ input):focus-visible {
   .board-circle.two {
     left: 36px;
     border-color: var(--brass);
-    background: rgba(224, 169, 56, 0.18);
+    background: color-mix(in srgb, var(--brass) 18%, transparent);
   }
 
   .board-cadence {
@@ -249,15 +249,15 @@ input):focus-visible {
 
   .board-tick {
     min-height: 20px;
-    background: rgba(244, 240, 234, 0.12);
-    border-top: 3px solid rgba(244, 240, 234, 0.65);
+    background: color-mix(in srgb, var(--paper) 12%, transparent);
+    border-top: 3px solid color-mix(in srgb, var(--paper) 65%, transparent);
     transform: scaleY(0.35);
     transform-origin: bottom;
     transition: transform 680ms cubic-bezier(.2, .8, .2, 1);
   }
 
   .board-tick.live {
-    background: rgba(224, 169, 56, 0.22);
+    background: color-mix(in srgb, var(--brass) 22%, transparent);
     border-color: var(--brass);
   }
 
@@ -279,7 +279,7 @@ input):focus-visible {
     position: sticky;
     top: 0;
     z-index: 5;
-    background: rgba(10, 25, 47, 0.96);
+    background: color-mix(in srgb, var(--ground) 96%, transparent);
     border-top: 1px solid var(--hairline);
     border-bottom: 1px solid var(--hairline);
     backdrop-filter: blur(10px);
@@ -335,7 +335,7 @@ input):focus-visible {
 
   .decision-nav a:hover {
     color: var(--brass);
-    background: rgba(224, 169, 56, 0.06);
+    background: color-mix(in srgb, var(--brass) 6%, transparent);
   }
 
   section {
@@ -447,7 +447,7 @@ input):focus-visible {
   .router-visual {
     min-height: 148px;
     border: 1px solid var(--hairline);
-    background: rgba(255, 255, 255, 0.025);
+    background: color-mix(in srgb, var(--paper) 2.5%, transparent);
     padding: 16px;
     overflow: hidden;
     transition: border-color 420ms ease, background-color 420ms ease;
@@ -479,7 +479,7 @@ input):focus-visible {
 
   .flow-track {
     height: 10px;
-    background: rgba(244, 240, 234, 0.1);
+    background: color-mix(in srgb, var(--paper) 10%, transparent);
   }
 
   .flow-fill {
@@ -509,15 +509,15 @@ input):focus-visible {
 
   .market-cell {
     aspect-ratio: 1;
-    background: rgba(244, 240, 234, 0.08);
-    border: 1px solid rgba(244, 240, 234, 0.08);
+    background: color-mix(in srgb, var(--paper) 8%, transparent);
+    border: 1px solid color-mix(in srgb, var(--paper) 8%, transparent);
     opacity: 0.42;
     transition: opacity 360ms ease, background-color 360ms ease, border-color 360ms ease;
   }
 
   .market-cell.live {
-    background: rgba(224, 169, 56, 0.36);
-    border-color: rgba(224, 169, 56, 0.7);
+    background: color-mix(in srgb, var(--brass) 36%, transparent);
+    border-color: color-mix(in srgb, var(--brass) 70%, transparent);
   }
 
   .market-cell.branch {
@@ -535,7 +535,7 @@ input):focus-visible {
     width: 94px;
     height: 94px;
     border: 2px solid var(--paper);
-    background: rgba(244, 240, 234, 0.07);
+    background: color-mix(in srgb, var(--paper) 7%, transparent);
     transform: translateX(-18px);
     opacity: 0.5;
     transition: transform 720ms cubic-bezier(.2, .8, .2, 1), opacity 480ms ease;
@@ -544,7 +544,7 @@ input):focus-visible {
   .overlap-circle.target {
     left: 52px;
     border-color: var(--brass);
-    background: rgba(224, 169, 56, 0.15);
+    background: color-mix(in srgb, var(--brass) 15%, transparent);
   }
 
   .overlap-note {
@@ -566,7 +566,7 @@ input):focus-visible {
   }
 
   .cadence-bar {
-    background: rgba(244, 240, 234, 0.13);
+    background: color-mix(in srgb, var(--paper) 13%, transparent);
     border-top: 3px solid var(--paper);
     min-height: 34px;
     transform: scaleY(0.35);
@@ -575,7 +575,7 @@ input):focus-visible {
   }
 
   .cadence-bar.live {
-    background: rgba(224, 169, 56, 0.2);
+    background: color-mix(in srgb, var(--brass) 20%, transparent);
     border-color: var(--brass);
   }
 
@@ -591,8 +591,8 @@ input):focus-visible {
   }
 
   .router-row.is-visible .router-visual {
-    border-color: rgba(224, 169, 56, 0.45);
-    background: rgba(224, 169, 56, 0.035);
+    border-color: color-mix(in srgb, var(--brass) 45%, transparent);
+    background: color-mix(in srgb, var(--brass) 3.5%, transparent);
   }
 
   .router-row.is-visible .flow-fill {
@@ -631,7 +631,7 @@ input):focus-visible {
 
   .model-schematic {
     border: 1px solid var(--hairline);
-    background: rgba(255, 255, 255, 0.025);
+    background: color-mix(in srgb, var(--paper) 2.5%, transparent);
     padding: 18px;
     margin-bottom: 24px;
   }
@@ -665,16 +665,16 @@ input):focus-visible {
 
   .schematic-block {
     height: 24px;
-    background: rgba(244, 240, 234, 0.13);
-    border: 1px solid rgba(244, 240, 234, 0.14);
+    background: color-mix(in srgb, var(--paper) 13%, transparent);
+    border: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 720ms cubic-bezier(.2, .8, .2, 1);
   }
 
   .schematic-block.brass {
-    background: rgba(224, 169, 56, 0.28);
-    border-color: rgba(224, 169, 56, 0.72);
+    background: color-mix(in srgb, var(--brass) 28%, transparent);
+    border-color: color-mix(in srgb, var(--brass) 72%, transparent);
   }
 
   .model-schematic.is-visible .schematic-block {
@@ -807,7 +807,7 @@ input):focus-visible {
     width: 100%;
     max-width: 280px;
     border: 1px solid var(--hairline);
-    background-color: rgba(255, 255, 255, 0.025);
+    background-color: color-mix(in srgb, var(--paper) 2.5%, transparent);
     padding: 24px;
   }
 

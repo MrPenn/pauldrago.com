@@ -26,7 +26,7 @@ button):focus-visible {
   inset: 0;
   z-index: -2;
   background-image:
-    linear-gradient(90deg, rgba(10, 25, 47, 1) 0%, rgba(10, 25, 47, 0.96) 50%, rgba(10, 25, 47, 0.72) 100%),
+    linear-gradient(90deg, color-mix(in srgb, var(--ground) 100%, transparent) 0%, color-mix(in srgb, var(--ground) 96%, transparent) 50%, color-mix(in srgb, var(--ground) 72%, transparent) 100%),
     image-set(url('evidence-table.avif') type('image/avif'), url('evidence-table.png') type('image/png'));
   background-position: center;
   background-size: cover;
@@ -58,8 +58,8 @@ button):focus-visible {
 }
 
 .decision-model {
-  background: rgba(8, 18, 32, 0.94);
-  border: 1px solid rgba(224, 169, 56, 0.82);
+  background: color-mix(in srgb, var(--dark-navy) 94%, transparent);
+  border: 1px solid color-mix(in srgb, var(--brass) 82%, transparent);
   padding: 28px;
 }
 
@@ -142,12 +142,12 @@ button):focus-visible {
 
 .footprint-circle.current {
   left: calc(50% - 120px);
-  background: rgba(244, 240, 234, 0.08);
+  background: color-mix(in srgb, var(--paper) 8%, transparent);
 }
 
 .footprint-circle.target {
   left: calc(50% - 30px);
-  background: rgba(224, 169, 56, 0.2);
+  background: color-mix(in srgb, var(--brass) 20%, transparent);
   border-color: var(--brass);
 }
 
@@ -479,7 +479,7 @@ button):focus-visible {
 
   .service-hero::before {
     background-image:
-      linear-gradient(180deg, rgba(10, 25, 47, 0.9) 0%, rgba(10, 25, 47, 0.98) 74%, rgba(10, 25, 47, 1) 100%),
+      linear-gradient(180deg, color-mix(in srgb, var(--ground) 90%, transparent) 0%, color-mix(in srgb, var(--ground) 98%, transparent) 74%, color-mix(in srgb, var(--ground) 100%, transparent) 100%),
       image-set(url('evidence-table.avif') type('image/avif'), url('evidence-table.png') type('image/png'));
     background-position: 72% center;
   }
