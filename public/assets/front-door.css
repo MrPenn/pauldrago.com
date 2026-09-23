@@ -401,7 +401,8 @@
   transition: opacity var(--fd-base) var(--fd-ease);
   opacity: 0.38;
 }
-.fd-step > p { margin: 0; max-width: 46ch; }
+.fd-step > p { margin: 0; max-width: 50ch; }
+.fd-step > p + p { margin-top: 18px; }
 .fd-step.is-active { opacity: 1; }
 .fd-step:first-child { padding-top: 2vh; min-height: 48vh; }
 .fd-step:last-child { padding-bottom: 6vh; min-height: 48vh; }
@@ -442,8 +443,8 @@
   .fd-scrolly {
     width: calc(min(1240px, 100vw) - 64px);
     display: grid;
-    grid-template-columns: minmax(0, 46ch) minmax(380px, 1fr);
-    column-gap: 72px;
+    grid-template-columns: minmax(0, 50ch) minmax(360px, 1fr);
+    column-gap: 80px;
     align-items: start;
   }
   .fd-sticky { padding-left: 0; }

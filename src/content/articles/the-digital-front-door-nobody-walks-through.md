@@ -111,6 +111,9 @@ Call it a little over $400 a year from a primary checking account alone, before 
 
 So the 25-year-old with $5,400 and a paycheck is not a bet on the future. That customer is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. Lending is upside. It was never the business case.
 
+</div>
+<div class="fd-step" data-step="6">
+
 Chime’s partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank’s assets below $10 billion for the foreseeable future.[^8] The exemption is not the community bank’s secret. Using it on purpose would be.
 
 </div>
