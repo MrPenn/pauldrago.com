@@ -122,7 +122,7 @@
 .map-radius { fill: color-mix(in srgb, var(--paper) 6%, transparent); stroke: var(--paper); stroke-width: 2.5; }
 .map-radius.is-review { fill: none; stroke-width: 2; stroke-dasharray: 7 6; }
 .map-branch { fill: var(--paper); stroke: var(--ground); stroke-width: 1.5; }
-.map-branch.is-large { fill: var(--ground); stroke: var(--paper); stroke-width: 2; }
+.map-branch.is-large { fill: var(--ground); stroke: var(--paper); stroke-width: 2.5; stroke-linejoin: miter; }
 .map-site circle { fill: var(--brass); stroke: var(--ground); stroke-width: 3; }
 .map-site.is-review circle { fill: var(--ground); stroke: var(--paper); stroke-width: 2; stroke-dasharray: 4 3; }
 .map-site text { fill: #fff; font-size: 16px; font-weight: 700; text-anchor: middle; }

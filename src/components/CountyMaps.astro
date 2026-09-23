@@ -16,6 +16,8 @@ const bands = [0, 1, 2, 3, 4].map((i) => ({
   label: i === 0 ? `Under ${round(cuts[0])}` : i === 4 ? `${round(cuts[3])} or more` : `${round(cuts[i - 1])} to ${round(cuts[i])}`,
 }));
 
+// Larger banks' branches are diamonds, community banks' are dots: shape, not just fill, tells them apart.
+const diamond = (x, y, r) => `M${x},${y - r}L${x + r},${y}L${x},${y + r}L${x - r},${y}Z`;
 // Labels near the frame edge anchor inward so they aren't clipped.
 const anchor = (x, width) => (x < 70 ? 'start' : x > width - 70 ? 'end' : 'middle');
 const REVIEW = { Waxahachie: false, Midlothian: true }; // Midlothian is decided at the year 5 review
@@ -56,7 +58,9 @@ const maps = mapData.counties.map((c) => {
             {m.sites.map((s) => <circle cx={s.x} cy={s.y} r={s.r} class:list={['map-radius', { 'is-review': s.review }]} />)}
           </g>
           <g class="map-branches">
-            {m.branches.map((b) => <circle cx={b.x} cy={b.y} r="4.5" class:list={['map-branch', { 'is-large': !b.community }]} />)}
+            {m.branches.map((b) => b.community
+              ? <circle cx={b.x} cy={b.y} r="4.5" class="map-branch" />
+              : <path d={diamond(b.x, b.y, 7)} class="map-branch is-large" />)}
           </g>
           {m.towns.map((t) => {
             const site = m.sites.find((s) => s.town === t.town);
@@ -84,7 +88,7 @@ const maps = mapData.counties.map((c) => {
     <ul class="legend-keys">
       <li><svg viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" class="legend-hatch-bg" /><path d="M-2,6 L6,-2 M-2,14 L14,-2 M-2,22 L22,-2 M6,22 L22,6 M14,22 L22,14" class="map-hatch-line" /></svg>Low- or moderate-income tract</li>
       <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5" class="map-branch" /></svg>Community-bank branch</li>
-      <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5" class="map-branch is-large" /></svg>Branch of a bank over $10 billion</li>
+      <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d={diamond(10, 10, 7)} class="map-branch is-large" /></svg>Branch of a bank over $10 billion</li>
       <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" class="map-radius" /></svg>Five-mile review area, planned branch</li>
       <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" class="map-radius is-review" /></svg>Five-mile review area, year 5 review</li>
     </ul>
