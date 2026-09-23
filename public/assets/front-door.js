@@ -62,6 +62,8 @@
     // The markup is rendered at build time (FrontDoorOpener.astro); this only animates it.
     var units = opener.querySelector('.fd-opener-units');
     var legend = opener.querySelector('.fd-opener-legend');
+    // The figures ship in the HTML; zero them only when there is an animation to run.
+    if (!reduceMotion) legend.querySelectorAll('[data-count]').forEach(function (n) { n.textContent = '0'; });
 
     var cells = units.children;
     var per = reduceMotion ? 0 : 16;           // the brass fill runs left to right in about 0.7s
@@ -186,6 +188,8 @@
     var BAL = 5400, NIM = 0.0381, TXN = 34.6, IC_EX = 0.51, IC_COV = 0.23, CAC = 350;
     var spread = BAL * NIM, icEx = TXN * 12 * IC_EX, icCov = TXN * 12 * IC_COV;
     var totalEx = spread + icEx, totalCov = spread + icCov;
+    // Totals shown on screen are the sum of the rounded parts, so the ledger always adds up.
+    var shownEx = Math.round(spread) + Math.round(icEx);
     var scale = Math.max(totalEx, CAC) * 1.12;
     var pct = function (v) { return (v / scale * 100).toFixed(2) + '%'; };
     var months = Math.ceil(CAC / (totalEx / 12));
@@ -201,7 +205,7 @@
       '<div class="fd-g-ledger">' +
         '<div class="fd-g-row" data-row="spread"><span class="fd-g-row-label">Deposit spread<small>' + money(BAL) + ' × 3.81% net interest margin</small></span><span class="fd-g-row-val">' + money(spread) + '</span></div>' +
         '<div class="fd-g-row" data-row="ic"><span class="fd-g-row-label">Interchange, gross<small>34.6 transactions a month × 12 × $0.51</small></span><span class="fd-g-row-val">' + money(icEx) + '</span></div>' +
-        '<div class="fd-g-row is-total" data-row="total"><span class="fd-g-row-label">A year of checking, before any loan</span><span class="fd-g-row-val">' + money(totalEx) + '</span></div>' +
+        '<div class="fd-g-row is-total" data-row="total"><span class="fd-g-row-label">A year of checking, before any loan</span><span class="fd-g-row-val">' + money(shownEx) + '</span></div>' +
       '</div>' +
       '<p class="fd-g-payback">Against a <strong>' + money(CAC) + '</strong> acquisition cost, that pays back in <strong>' + months + ' months</strong>.</p>';
 
@@ -342,7 +346,8 @@
       var bal = num(inBal), nim = num(inNim) / 100, txn = num(inTxn), ic = num(inIc), cacv = num(inCac);
       var sp = bal * nim, inter = txn * 12 * ic, total = sp + inter;
       var m = total > 0 ? Math.ceil(cacv / (total / 12)) : 0;
-      outSpread.textContent = money(sp); outIc.textContent = money(inter); outTotal.textContent = money(total);
+      // The displayed total is the sum of the displayed parts, so the ledger always adds up.
+      outSpread.textContent = money(sp); outIc.textContent = money(inter); outTotal.textContent = money(Math.round(sp) + Math.round(inter));
       outMonths.textContent = total > 0 ? (m <= 12 ? m + (m === 1 ? ' month' : ' months') : (m / 12).toFixed(1) + ' years') : '—';
       var sc = Math.max(total, cacv) * 1.12 || 1;
       var wS = sp / sc * 100, wI = inter / sc * 100;
@@ -366,17 +371,19 @@
     });
     if (reset) reset.addEventListener('click', function () {
       inputs.forEach(function (el, i) { el.value = defaults[i]; });
-      calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { b.classList.toggle('is-on', b.getAttribute('data-ic') === defaults[3]); });
+      calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { setPressed(b, b.getAttribute('data-ic') === defaults[3]); });
       afterEdit();
     });
+    function setPressed(b, on) { b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
     calc.querySelectorAll('.fd-durbin-btn').forEach(function (btn) {
+      setPressed(btn, btn.classList.contains('is-on'));
       btn.addEventListener('click', function () {
-        calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { b.classList.remove('is-on'); });
-        btn.classList.add('is-on'); inIc.value = btn.getAttribute('data-ic'); afterEdit();
+        calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { setPressed(b, b === btn); });
+        inIc.value = btn.getAttribute('data-ic'); afterEdit();
       });
     });
     inIc.addEventListener('input', function () {
-      calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { b.classList.toggle('is-on', parseFloat(b.getAttribute('data-ic')) === parseFloat(inIc.value)); });
+      calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { setPressed(b, parseFloat(b.getAttribute('data-ic')) === parseFloat(inIc.value)); });
     });
     var key = h('div', 'fd-bar-key', '<span class="k-spread">Deposit spread</span><span class="k-ic">Interchange</span>');
     calc.querySelector('.fd-bar').appendChild(key);
@@ -426,8 +433,13 @@
           var lead = strong ? '<strong>' + strong.textContent + '</strong> ' : '';
           if (strong) brief = brief.replace(strong.textContent, '').replace(/^\s+/, '');
           var full = li.innerHTML;
-          aside.innerHTML = '<span class="fd-sidenote-num">' + num + '</span>' + lead + '<span class="fd-note-brief">' + brief + '</span><span class="fd-note-full">' + full.replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '') + '</span> <button type="button" class="fd-note-more">Full note</button>';
-          aside.querySelector('.fd-note-more').addEventListener('click', function () { aside.classList.add('is-open'); });
+          aside.innerHTML = '<span class="fd-sidenote-num">' + num + '</span>' + lead + '<span class="fd-note-brief">' + brief + '</span><span class="fd-note-full">' + full.replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '') + '</span> <button type="button" class="fd-note-more" aria-expanded="false">Full note</button>';
+          var more = aside.querySelector('.fd-note-more');
+          more.addEventListener('click', function () {
+            var open = aside.classList.toggle('is-open');
+            more.setAttribute('aria-expanded', open ? 'true' : 'false');
+            more.textContent = open ? 'Shorter note' : 'Full note';
+          });
           // in a pinned sequence the note lives under the graphic and appears with its step
           aside.setAttribute('data-step', step.getAttribute('data-step'));
           seq.querySelector('.fd-sticky-notes').appendChild(aside);

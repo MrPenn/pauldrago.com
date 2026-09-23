@@ -182,8 +182,8 @@ Chime’s partner banks are small enough to have the exemption too, and it is mo
   <div class="fd-ledger">
     <div class="fd-ledger-row"><span class="fd-ledger-label">Deposit spread <span class="fd-ledger-src">balance × NIM</span></span><span class="fd-ledger-value" id="fd-out-spread">$206</span></div>
     <div class="fd-ledger-row"><span class="fd-ledger-label">Interchange, gross <span class="fd-ledger-src">transactions × 12 × fee</span></span><span class="fd-ledger-value" id="fd-out-ic">$212</span></div>
-    <div class="fd-ledger-row fd-ledger-total"><span class="fd-ledger-label">A year of checking, before any loan</span><span class="fd-ledger-value fd-accent" id="fd-out-total">$418</span></div>
-    <div class="fd-ledger-row"><span class="fd-ledger-label">Payback on the acquisition cost</span><span class="fd-ledger-value" id="fd-out-months">11 months</span></div>
+    <div class="fd-ledger-row fd-ledger-total"><span class="fd-ledger-label">A year of checking, before any loan</span><span class="fd-ledger-value fd-accent" id="fd-out-total" aria-live="polite">$418</span></div>
+    <div class="fd-ledger-row"><span class="fd-ledger-label">Payback on the acquisition cost</span><span class="fd-ledger-value" id="fd-out-months" aria-live="polite">11 months</span></div>
   </div>
   <figcaption>Gross figures, before servicing, fraud and network costs. Switch the interchange regime to see what the same customer is worth at a bank over $10 billion.</figcaption>
 </figure>
@@ -256,7 +256,7 @@ A community bank can have more to offer and still make the customer do more work
 
 Walk inside the community bank. Marketing owns the brand, Digital owns the app, Retail owns the branches and Deposit Product owns checking. Cards manages debit; Consumer Lending and Mortgage have their own businesses. Operations handles servicing, IT manages vendors, Finance evaluates pricing and margin, and Risk and Compliance establish the boundaries.
 
-I owned the first of those boxes for seven and a half years. Nothing about the box was wrong. It just could not see the customer whole, and neither could any of the others.
+I owned the first of those boxes for eight years. Nothing about the box was wrong. It just could not see the customer whole, and neither could any of the others.
 
 There is nothing wrong with specialization. A complicated financial institution needs it. The problem appears when the organizational model becomes the customer experience.
 
@@ -413,7 +413,7 @@ Community banks have built digital front doors. The question is no longer simply
 Sources sit beside the passages they support, or open beneath them on a phone. Research and product descriptions checked September 22, 2026. The organizational diagnosis, proposed scorecard and customer journey are analysis and recommendations; the cited surveys support the figures, and the conclusions are mine. The customer journey described above is a proposition to design and test, not a claim that every bank already has the necessary capabilities, and the survey findings cited do not make every younger customer identical. The $400-a-year figure is gross: it is spread on the median balance plus interchange at exempt rates, before servicing, fraud and network costs, which vary by bank and which a bank's own numbers should replace.
 
 
-<p class="fd-cta">I run this model with a bank's own numbers in about a week, and the conversation that follows is usually the interesting part. If you want that, <a href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}'>book twenty minutes</a>.</p>
+<p class="fd-cta">I run this model with a bank's own numbers in about a week, and the conversation that follows is usually the interesting part. If you want that, <a href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"}'>book twenty minutes</a>.</p>
 
 [^1]: **Cornerstone Advisors.** Beyond the Paycheck Motel: Strategic Imperatives for Community Banking, a recap of 2025 research, pp. 17-18, Figure 6. Reports the 2024 estimates of 44% for digital banks/fintechs and 4% for community banks. These are shares of new checking accounts across age groups, not Gen Z-only figures, Chime market share, primary relationships or profitability. The chart defines community banks as institutions below $100 billion in assets, not by the FDIC's community-bank definition. [Read the Cornerstone report](https://www.crnrstone.com/hubfs/Cornerstone-Advisors-2025-Research-Recap_Beyond-the-Paycheck-Motel.pdf)
 [^2]: **American Bankers Association / Morning Consult.** 2025 Preferred Banking Methods. Online survey conducted October 1-6, 2025, with a weighted sample of 4,403 U.S. adults. Supports the Gen Z most-used-channel figures of 63% mobile and 3% branches, and the 95% favorable digital-experience rating. Most-used banking channel is not the same as preferred account-opening channel. The 95% figure is not an app-store rating. [Read the ABA findings](https://www.aba.com/news-research/analysis-guides/preferred-banking-methods)

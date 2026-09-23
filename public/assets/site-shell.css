@@ -103,6 +103,29 @@ a {
   background: var(--brass);
 }
 
+/* Reading progress without a scroll listener where the browser supports scroll timelines. */
+@supports (animation-timeline: scroll()) {
+  .trace-fill {
+    height: 100%;
+    transform-origin: top;
+    transform: scaleY(0);
+    animation: trace-progress linear both;
+    animation-timeline: scroll(root);
+  }
+
+  @keyframes trace-progress {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+}
+
+/* Elsewhere only pages with a script can fill the rail, so pages without one hide it. */
+@supports not (animation-timeline: scroll()) {
+  .no-trace-script .trace-rail {
+    display: none;
+  }
+}
+
 .display-title,
 .brand-name,
 .footer-brand {
@@ -114,6 +137,9 @@ a {
   color: var(--paper);
   line-height: 0.95;
   letter-spacing: 0;
+  /* Long single words never get clipped on narrow screens. */
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .accent {
@@ -311,9 +337,6 @@ footer {
     font-size: 11px;
   }
 
-  .services-link {
-    display: none;
-  }
 
   .btn {
     min-height: 44px;
@@ -353,3 +376,72 @@ footer {
   }
 }
 
+
+/* Other decisions: sibling services at the end of each product page */
+.other-decisions {
+  padding: 56px 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.other-decisions-label {
+  color: var(--brass);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.other-decisions-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0 32px;
+  margin-top: 18px;
+  list-style: none;
+}
+
+.other-decisions-list a {
+  display: block;
+  height: 100%;
+  padding: 18px 0;
+  border-top: 2px solid var(--paper);
+  color: inherit;
+  text-decoration: none;
+}
+
+.other-decisions-name {
+  display: block;
+  color: var(--paper);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.other-decisions-question {
+  display: block;
+  margin-top: 6px;
+  color: var(--secondary);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.other-decisions-list a:hover .other-decisions-name {
+  color: var(--brass);
+}
+
+.other-decisions-all {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 4px 0;
+  color: var(--paper);
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--brass);
+  text-underline-offset: 4px;
+}
+
+@media (max-width: 760px) {
+  .other-decisions-list {
+    grid-template-columns: 1fr;
+  }
+}

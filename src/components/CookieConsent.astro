@@ -24,9 +24,11 @@
     setTimeout(() => (window.requestIdleCallback || setTimeout)(startConsent), 1000);
   }, { once: true });
 
-  // A "Cookie settings" click before the banner has loaded loads it, then opens the preferences.
+  // "Cookie settings" links open the preferences. The library wires up page links once it has
+  // loaded, but not a click that comes before that, nor the button in its own banner footer.
   document.addEventListener('click', (event) => {
-    if (ready || !(event.target instanceof Element) || !event.target.closest('[data-cc="show-preferencesModal"]')) return;
+    const trigger = event.target instanceof Element && event.target.closest('[data-cc="show-preferencesModal"]');
+    if (!trigger || (ready && !trigger.closest('#cc-main'))) return;
     startConsent().then(() => import('vanilla-cookieconsent')).then((CookieConsent) => CookieConsent.showPreferences());
   });
 
@@ -72,7 +74,11 @@
     --cc-footer-color: var(--secondary);
     --cc-footer-border-color: var(--hairline);
   }
-  #cc-main .cm { border: 1px solid var(--hairline); box-shadow: 6px 6px 0 var(--paper); }`;
+  #cc-main .cm { border-top: 2px solid var(--paper); box-shadow: none; }
+  /* The library stacks buttons on phones with !important; Accept and Decline share one row instead. */
+  #cc-main .cm .cm__btn-group { flex-direction: row !important; gap: 8px; }
+  #cc-main .cm .cm__btn-group .cm__btn { flex: 1 !important; min-height: 44px; margin: 0 !important; }
+  #cc-main .cm__footer button { padding: 4px 0; border: 0; background: none; color: var(--cc-link-color); font: inherit; font-weight: 600; text-decoration: underline; cursor: pointer; }`;
     const style = document.createElement('style');
     style.textContent = baseCss + theme;
     document.head.appendChild(style);
@@ -83,11 +89,11 @@
     const gpc = navigator.globalPrivacyControl === true;
 
     CookieConsent.run({
-      autoShow: !gpc,
+      autoShow: false,
       onConsent: reportConsent,
       onChange: reportConsent,
       guiOptions: {
-        consentModal: { layout: 'box inline', position: 'bottom left', equalWeightButtons: true },
+        consentModal: { layout: 'bar inline', position: 'bottom', equalWeightButtons: true },
         preferencesModal: { layout: 'box', equalWeightButtons: true },
       },
       categories: {
@@ -100,11 +106,10 @@
           en: {
             consentModal: {
               title: 'Cookies',
-              description: 'This site counts visits without cookies. With your permission, it also uses analytics cookies to understand how pages are read and improve them. Nothing is sold or used for advertising.',
+              description: 'Visits are counted without cookies. With your permission, analytics cookies help improve these pages. Nothing is sold or used for ads.',
               acceptAllBtn: 'Accept',
               acceptNecessaryBtn: 'Decline',
-              showPreferencesBtn: 'Manage preferences',
-              footer: '<a href="/privacy">Privacy notice</a>',
+              footer: '<a href="/privacy">Privacy notice</a><button type="button" data-cc="show-preferencesModal">Manage preferences</button>',
             },
             preferencesModal: {
               title: 'Cookie preferences',
@@ -137,6 +142,13 @@
       },
     });
     if (gpc && !CookieConsent.validConsent()) CookieConsent.acceptCategory([]);
+    // The library moves focus to the banner when it opens; give it back if the visitor
+    // was already somewhere on the page, so keyboard users don't lose their place.
+    if (!gpc && !CookieConsent.validConsent()) {
+      const previous = document.activeElement;
+      CookieConsent.show();
+      if (previous && previous !== document.body) setTimeout(() => previous.focus({ preventScroll: true }), 150);
+    }
     ready = true;
   }
 </script>

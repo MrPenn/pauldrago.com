@@ -24,6 +24,7 @@ const jsonld = {
   robots={articles.length ? '' : 'noindex,follow'}
   footerNote="Writing on marketing measurement, markets, and accountable growth."
   stylesheets={['/assets/personal-site.css']}
+  lastUpdated={articles.length ? iso(articles[0].data.updated ?? articles[0].data.date) : undefined}
   jsonld={jsonld}
 >
 <main id="main">

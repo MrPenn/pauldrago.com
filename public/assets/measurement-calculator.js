@@ -14,9 +14,11 @@ function updateCohortCalc() {
       const closedSpend = Math.round(accounts * closedRate) * cost;
       const yearOneOfDay90Survivors = 0.41 / 0.55;
       const survivors = Math.round(accounts * (1 - closedRate) * yearOneOfDay90Survivors);
-      const perSurvivor = survivors > 0 ? Math.round(spend / survivors) : 0;
+      const perSurvivor = survivors > 0 ? Math.round(spend / survivors) : null;
       
       const fmt = (n) => '$' + Math.round(n).toLocaleString('en-US');
+      // When every account closes there is no surviving account to divide by.
+      const fmtPer = (n) => n === null ? 'n/a' : fmt(n);
       const fmtNum = (n) => Math.round(n).toLocaleString('en-US');
       
       const elSpend = document.getElementById('calc-spend');
@@ -28,8 +30,8 @@ function updateCohortCalc() {
       if (elSpend) elSpend.textContent = fmt(spend);
       if (elClosedSpend) elClosedSpend.textContent = fmt(closedSpend);
       if (elSurvivors) elSurvivors.textContent = fmtNum(survivors);
-      if (elPerSurvivor) elPerSurvivor.textContent = fmt(perSurvivor);
-      if (elHole) elHole.textContent = fmt(perSurvivor);
+      if (elPerSurvivor) elPerSurvivor.textContent = fmtPer(perSurvivor);
+      if (elHole) elHole.textContent = fmtPer(perSurvivor);
       const elReported = document.getElementById('calc-reported');
       if (elReported) elReported.textContent = fmt(cost);
 
@@ -43,8 +45,21 @@ function updateCohortCalc() {
       if (artifactYear1) artifactYear1.textContent = fmtNum(survivors);
       
       const elBridge = document.getElementById('bridge-hole');
-      if (elBridge) elBridge.textContent = fmt(perSurvivor);
+      if (elBridge) elBridge.textContent = fmtPer(perSurvivor);
     }
+
+    // On leaving a field, show the value the calculation actually used.
+    const limits = { 'calc-input-accounts': [0, Infinity], 'calc-input-cost': [0, Infinity], 'calc-input-closed': [0, 100] };
+    Object.keys(limits).forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('change', () => {
+        const [min, max] = limits[id];
+        const value = parseFloat(el.value);
+        el.value = String(Math.min(max, Math.max(min, isFinite(value) ? value : 0)));
+        updateCohortCalc();
+      });
+    });
 
     let hasTrackedCalculatorUse = false;
     ['calc-input-accounts', 'calc-input-cost', 'calc-input-closed'].forEach(id => {

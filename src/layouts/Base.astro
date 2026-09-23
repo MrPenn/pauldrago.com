@@ -12,7 +12,7 @@ const BOOKING = 'https://cal.com/pauldrago/20-min-intro-call';
 const CAL_ATTRS = {
   'data-cal-link': 'pauldrago/20-min-intro-call',
   'data-cal-namespace': '20-min-intro-call',
-  'data-cal-config': '{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}',
+  'data-cal-config': '{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"}',
 };
 const {
   title,
@@ -83,7 +83,7 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
 {jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
 <PostHog />
 </head>
-<body>
+<body class:list={[{ 'no-trace-script': scripts.length === 0 }]}>
 <Fragment set:html="<!--email_off-->" />
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div>
@@ -91,51 +91,23 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
 <header>
   <div class="container">
     <div class="header-inner">
-      {variant === 'home' && (
-        <>
-          <div class="brand-group">
-            <div class="brand-name">Paul Drago</div>
-            <div class="brand-subline">{subline}</div>
-          </div>
-          <a class="header-link" href="/financial-services">Financial services</a>
-        </>
+      {variant === 'home' ? (
+        <span class="brand-group">
+          <span class="brand-name">Paul Drago</span>
+          <span class="brand-subline">{subline}</span>
+        </span>
+      ) : (
+        <a class="brand-home" href="/">
+          <span class="brand-group">
+            <span class="brand-name">Paul Drago</span>
+            <span class="brand-subline">{subline}</span>
+          </span>
+        </a>
       )}
-      {variant === 'services' && (
-        <>
-          <a class="brand-home" href="/" aria-label="Paul Drago home">
-            <div class="brand-group">
-              <div class="brand-name">Paul Drago</div>
-              <div class="brand-subline">{subline}</div>
-            </div>
-          </a>
-          <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
-        </>
-      )}
-      {variant === 'product' && (
-        <>
-          <a class="brand-home" href="/financial-services" aria-label="Paul Drago financial services">
-            <div class="brand-group">
-              <div class="brand-name">Paul Drago</div>
-              <div class="brand-subline">{subline}</div>
-            </div>
-          </a>
-          <nav class="header-actions" aria-label="Primary">
-            <a class="services-link" href="/financial-services">Financial services</a>
-            <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
-          </nav>
-        </>
-      )}
-      {variant === 'articles' && (
-        <>
-          <a class="brand-home" href="/">
-            <span class="brand-group">
-              <span class="brand-name">Paul Drago</span>
-              <span class="brand-subline">{subline}</span>
-            </span>
-          </a>
-          <a class="header-link" href="/">Home</a>
-        </>
-      )}
+      <nav class="header-actions" aria-label="Primary">
+        {variant !== 'services' && <a class="services-link" href="/financial-services">Services</a>}
+        <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
+      </nav>
     </div>
   </div>
 </header>
@@ -148,7 +120,7 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
       <div class="footer-brand">Paul Drago</div>
       <div class="footer-links">
         <a href="/">Home</a>
-        <a href="/financial-services">Financial services</a>
+        <a href="/financial-services">Services</a>
         <a href="/articles">Articles</a>
         <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
         <a href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a>

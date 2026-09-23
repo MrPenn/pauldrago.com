@@ -752,7 +752,7 @@ input):focus-visible {
   .calc-container { border: 1px solid color-mix(in srgb, var(--brass) 55%, transparent); padding: 22px 22px 18px; background: color-mix(in srgb, var(--paper) 2%, transparent); }
   .calc-input-wrapper { border: 2px solid var(--brass); background: var(--dark-navy); padding: 8px 12px; cursor: text; transition: background .12s, box-shadow .12s; }
   .calc-input-wrapper:hover { background: var(--panel); }
-  .calc-input-wrapper:focus-within { background: var(--panel-2); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brass) 28%, transparent); }
+  .calc-input-wrapper:focus-within { background: var(--panel-2); outline: 3px solid var(--paper); outline-offset: 2px; }
   .calc-input { font-size: 22px; font-weight: 700; cursor: text; caret-color: var(--brass); }
   .calc-field-affix { font-size: 20px; }
   .calc-field-label { color: var(--paper); min-height: 2.7em; display: flex; align-items: flex-end; }
@@ -787,4 +787,32 @@ input):focus-visible {
     }
     .artifact-row { grid-template-columns: 1fr; gap: 4px; }
     .artifact-value { text-align: left; }
+}
+
+/* Reading measure: keep running text near 65-75 characters a line. */
+.section-b-subline { max-width: 62ch; }
+
+/* The evidence as a sourced ledger, not a row of hero numbers. */
+.section-a-ledger { max-width: 860px; margin: 36px 0 0; }
+.section-a-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 220px) minmax(0, 1fr);
+  gap: 8px 32px;
+  align-items: baseline;
+  padding: 22px 0;
+  border-top: 1px solid var(--hairline);
+}
+.section-a-row:last-child { border-bottom: 1px solid var(--hairline); }
+.section-a-figure {
+  color: var(--paper);
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: 34px;
+  line-height: 1;
+}
+.section-a-vs { color: var(--secondary); font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; font-size: 17px; font-weight: 700; }
+.section-a-text { margin: 0; max-width: 58ch; color: var(--paper); font-size: 18px; line-height: 1.55; }
+.section-a-cite { display: block; margin-top: 6px; color: var(--secondary); font-size: 14px; }
+@media (max-width: 640px) {
+  .section-a-row { grid-template-columns: 1fr; }
+  .section-a-figure { font-size: 30px; }
 }

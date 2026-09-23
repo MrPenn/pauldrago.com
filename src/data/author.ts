@@ -10,6 +10,6 @@ export const AUTHOR = {
   calAttrs: {
     'data-cal-link': 'pauldrago/20-min-intro-call',
     'data-cal-namespace': '20-min-intro-call',
-    'data-cal-config': '{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}',
+    'data-cal-config': '{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"}',
   },
 };

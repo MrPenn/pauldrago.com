@@ -221,8 +221,10 @@ button):focus-visible {
   border-bottom: 1px solid var(--hairline);
 }
 
-/* Darker brass so the small label keeps 4.5:1 contrast on the light panel. */
-.compliance-section .band-label { color: color-mix(in srgb, var(--brass) 85%, black); }
+/* Darker brass so the small label keeps 4.5:1 contrast on the light panel; dark mode keeps the lifted brass. */
+@media (prefers-color-scheme: light) {
+  .compliance-section .band-label { color: color-mix(in srgb, var(--brass) 85%, black); }
+}
 
 .section-title {
   max-width: 900px;
@@ -487,9 +489,9 @@ button):focus-visible {
     background-position: 72% center;
   }
 
-  .hero-title { font-size: 44px; }
+  .hero-title { font-size: clamp(32px, 11vw, 44px); }
   .hero-subhead { font-size: 18px; }
-  .section-title { font-size: 32px; }
+  .section-title { font-size: clamp(24px, 7.8vw, 32px); }
   .decision-model { padding: 20px; }
   .model-title { font-size: 22px; }
 
@@ -528,3 +530,33 @@ button):focus-visible {
   .footprint-circle.current { left: calc(50% - 104px); }
   .footprint-circle.target { left: calc(50% - 24px); }
 }
+
+/* Reading measure: keep running text near 65-75 characters a line. */
+.section-intro { max-width: 62ch; }
+.signal-copy, .deliverable-copy { max-width: 68ch; }
+.sources-note { max-width: 80ch; }
+
+/* Hero with an output diagram beside it (branch and acquisition pages) */
+.hero-grid-with-model { gap: 40px; }
+.hero-grid-with-model .decision-model { margin: 0; }
+@media (min-width: 1040px) {
+  .hero-grid-with-model {
+    grid-template-columns: minmax(0, 1.4fr) minmax(340px, 0.9fr);
+    gap: 56px;
+  }
+}
+.score-table { margin-bottom: 0; }
+.score-row dd { margin: 0; }
+.score-fill { display: block; }
+.score-name { font-size: 14px; }
+.score-value { font-size: 13px; }
+.model-note { font-size: 13px; }
+.overlap-stage { height: 190px; }
+.footprint-circle { top: 20px; }
+.footprint-legend { margin-top: 16px; list-style: none; color: var(--secondary); font-size: 14px; line-height: 1.5; }
+.footprint-legend li { display: grid; grid-template-columns: 16px minmax(0, 1fr); gap: 10px; padding: 6px 0; }
+.footprint-legend strong { color: var(--paper); }
+.footprint-key { width: 14px; height: 14px; margin-top: 4px; border: 2px solid var(--paper); border-radius: 50%; }
+.footprint-key.current { background: color-mix(in srgb, var(--paper) 8%, transparent); }
+.footprint-key.target { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 20%, transparent); }
+.footprint-key.overlap { border-color: var(--brass); background: color-mix(in srgb, var(--brass) 55%, var(--paper) 10%); }

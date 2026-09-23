@@ -54,10 +54,14 @@ Cal.config = Cal.config || {};
 Cal.config.forwardQueryParams = true;
 
 Cal.ns['20-min-intro-call']('ui', {
-  theme: 'light',
+  // Follows the visitor's light or dark setting, like the rest of the site.
+  theme: 'auto',
   cssVarsPerTheme: {
     light: {
       'cal-brand': '#0A192F'
+    },
+    dark: {
+      'cal-brand': '#E8734A'
     }
   },
   hideEventTypeDetails: false,

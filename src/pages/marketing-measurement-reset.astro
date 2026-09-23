@@ -17,7 +17,7 @@ const meta = {
   "scripts": [
     "/assets/measurement-calculator.js"
   ],
-  "lastUpdated": "2026-09-22"
+  "lastUpdated": "2026-09-23"
 };
 const jsonld = {
   "@context": "https://schema.org",
@@ -72,6 +72,7 @@ const jsonld = {
     }
   ]
 };
+import OtherDecisions from '../components/OtherDecisions.astro';
 ---
 <Base {...meta} jsonld={jsonld}>
 <main id="main">
@@ -103,25 +104,25 @@ const jsonld = {
 <div class="calc-field-group">
 <label class="calc-field-label" for="calc-input-accounts">Accounts opened last year</label>
 <div class="calc-input-wrapper">
-<input class="calc-input" id="calc-input-accounts" min="0" type="number" value="1000"/>
+<input class="calc-input" id="calc-input-accounts" min="0" type="number" inputmode="numeric" value="1000" aria-describedby="calc-src-accounts"/>
 </div>
-<div class="calc-field-source">Your number</div>
+<div class="calc-field-source" id="calc-src-accounts">Your number</div>
 </div>
 <div class="calc-field-group">
 <label class="calc-field-label" for="calc-input-cost">Cost to acquire each</label>
 <div class="calc-input-wrapper">
 <span class="calc-field-affix leading">$</span>
-<input class="calc-input" id="calc-input-cost" min="0" type="number" value="300"/>
+<input class="calc-input" id="calc-input-cost" min="0" type="number" inputmode="decimal" value="300" aria-describedby="calc-src-cost"/>
 </div>
-<div class="calc-field-source">Assumed. Fintel Connect, September 2026: $75 to $400+</div>
+<div class="calc-field-source" id="calc-src-cost">Assumed. Fintel Connect, September 2026: $75 to $400+</div>
 </div>
 <div class="calc-field-group">
 <label class="calc-field-label" for="calc-input-closed">Closed within 90 days</label>
 <div class="calc-input-wrapper">
-<input class="calc-input" id="calc-input-closed" max="100" min="0" type="number" value="45"/>
+<input class="calc-input" id="calc-input-closed" max="100" min="0" type="number" inputmode="decimal" value="45" aria-describedby="calc-src-closed"/>
 <span class="calc-field-affix trailing">%</span>
 </div>
-<div class="calc-field-source">Curinos SalesScape, 2022</div>
+<div class="calc-field-source" id="calc-src-closed">Curinos SalesScape, 2022</div>
 </div>
 </div>
 <div class="calc-ledger">
@@ -144,7 +145,7 @@ const jsonld = {
 </div>
 <div class="calc-ledger-row">
 <div class="calc-ledger-label">Acquisition spend per surviving account</div>
-<span class="calc-ledger-value accent" id="calc-per-survivor">$732</span>
+<span class="calc-ledger-value accent" id="calc-per-survivor" aria-live="polite">$732</span>
 </div>
 </div>
 <div class="calc-compare">
@@ -159,7 +160,7 @@ const jsonld = {
           </div>
 <p class="calc-assumption">Illustration only. The one-year estimate preserves the relationship between Curinos' published 90-day and one-year retention benchmarks. Client reporting uses the institution's actual cohort data and agreed definitions.</p>
 <div>
-<a class="calc-cta-btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"&#125;'>Book a call</a>
+<a class="calc-cta-btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
 </div>
 </div>
 </div>
@@ -171,21 +172,16 @@ const jsonld = {
 <div class="container">
 <h2 class="display-title headline-84">The account-opening report stops too early.</h2>
 <p class="bridge-line">The opening report shows volume. It does not show which accounts stayed open, which ones funded, what balances remained, or what acquisition spend is still attached to them ninety days later.</p>
-<div class="section-a-grid">
-<div class="section-a-item">
-<div class="section-a-number">45%</div>
-<div class="section-a-label">of accounts opened online close within three months</div>
+<dl class="section-a-ledger">
+<div class="section-a-row">
+<dt class="section-a-figure">45% <span class="section-a-vs">vs 4%</span></dt>
+<dd class="section-a-text">of accounts opened online close within three months, against 4% of accounts opened in a branch. <span class="section-a-cite">Curinos SalesScape, 2022</span></dd>
 </div>
-<div class="section-a-item">
-<div class="section-a-number">4%</div>
-<div class="section-a-label">of accounts opened in a branch</div>
+<div class="section-a-row">
+<dt class="section-a-figure">6 in 10</dt>
+<dd class="section-a-text">marketing executives say their core or CRM system cannot measure return. <span class="section-a-cite">Cornerstone Advisors, April 2026, survey of 126 executives</span></dd>
 </div>
-<div class="section-a-item">
-<div class="section-a-number">6 in 10</div>
-<div class="section-a-label">marketing executives say their core or CRM system cannot measure return</div>
-</div>
-</div>
-<div class="section-a-source">Curinos SalesScape, 2022. Cornerstone Advisors, April 2026, survey of 126 executives.</div>
+</dl>
 </div>
 </section>
 <hr class="section-divider"/>
@@ -268,15 +264,16 @@ const jsonld = {
 </div>
 </div>
 <div class="section-d-cta-row">
-<a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"&#125;'>Book a call</a>
+<a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
 </div>
 <div class="section-d-not-sold">
-        Outside this project: brand creative, campaign production, events, hands-on paid media, branch-site modeling, and acquisition analysis. Those services are listed on the main financial-services page.
+        Outside this project: brand creative, campaign production, events, hands-on paid media, branch-site modeling, and acquisition analysis. Those services are listed on the <a href="/financial-services">services page</a>.
       </div>
 </div>
 </section>
 <hr class="section-divider"/>
 <!-- CLOSING BAND -->
+  <OtherDecisions current="/marketing-measurement-reset" />
 <section class="closing-band-section" id="the-call">
 <div class="container">
 <div class="closing-band-grid">
@@ -285,7 +282,7 @@ const jsonld = {
 <p class="body-copy closing-copy-lead">
           I will trace where the reporting line stops and what it would take to connect spend to retained, funded value. If the fix is small, I will say so.
         </p>
-<a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"&#125;'>Book a call</a>
+<a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
 </div>
 <div class="closing-photo-col">
 <aside class="call-prep-panel" aria-label="What to bring to the call">
