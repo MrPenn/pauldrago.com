@@ -127,12 +127,12 @@ const SOURCES = {
     <section class="report-brief" aria-label="Two-page brief">
       <section class="brief-block" id="recommendation" aria-labelledby="recommendation-h">
         <h2 class="brief-h2" id="recommendation-h">Recommendation</h2>
-        <p class="report-lede">Open three branches over five years where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 once {first.town} is on plan. The network covers its running cost from year {model.firstPositiveYear} and earns back the build-out in year {planPace.paybackYear}. Kaufman meets the plan's CRA test as sited; Ellis meets it with the lending commitment in decision 4 (<a href="#cra">appendix D</a>).</p>
+        <p class="report-lede">Open three branches where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 once {first.town} is on plan. The network covers its running cost from year {model.firstPositiveYear} and earns back the build-out in year {planPace.paybackYear}. In Kaufman, the planned branches reach low- or moderate-income and majority-minority neighborhoods; in Ellis, Midlothian doesn't, so decision 4 commits lending there (<a href="#cra">appendix D</a>).</p>
         <dl class="report-figures">
           <div><dt>Build-out</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">{PLAN.length} branches at ${ramp.buildOut}M each, plus launch marketing</span></dd></div>
           <div><dt>Covers its running cost</dt><dd><span class="report-figure">Year {model.firstPositiveYear}</span><span class="report-figure-note">the network, if each branch follows the median ramp</span></dd></div>
           <div><dt>Still to earn back, end of year 5</dt><dd><span class="report-figure">{mUSD(model.cumulative[4])}</span><span class="report-figure-note">with the network returning {mUSD(model.operating[4])} a year</span></dd></div>
-          <div><dt>New branches failing at year 5</dt><dd><span class="report-figure">{pct(failing(age(5)))}</span><span class="report-figure-note">closed or not yet covering running cost, Dallas-Fort Worth</span></dd></div>
+          <div><dt>New branches failing at year 5</dt><dd><span class="report-figure">{pct(failing(age(5)))}</span><span class="report-figure-note">closed or not yet covering running cost</span></dd></div>
         </dl>
       </section>
 
