@@ -4,6 +4,7 @@ description: "Community banks have branches, lenders and local relationships. So
 date: 2026-11-11
 draft: true
 kicker: "Financial services"
+opener: "fd-grid"
 stylesheets: ["/assets/front-door.css"]
 scripts: ["/assets/front-door.js"]
 ---
@@ -14,17 +15,6 @@ Banks responded with platform contracts, implementation projects and new digital
 
 Cornerstone Advisors estimates that digital banks and fintechs captured 44% of new checking accounts opened in 2024, while community banks captured 4%. Those figures cover consumers of all ages, not Gen Z alone.[^1] Separately, the American Bankers Association's 2025 survey found that 63% of Gen Z respondents used mobile banking most often, compared with 3% who primarily used branches.[^2]
 
-<figure class="fd-figure fd-wide" id="fd-grid" data-fd="grid" data-fintech="44" data-community="4" aria-label="Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks.">
-  <div class="fd-grid-wrap">
-    <div class="fd-grid-cells" aria-hidden="true"></div>
-    <div class="fd-grid-legend">
-      <div class="fd-legend-row"><span class="fd-swatch fd-swatch-fintech"></span><span class="fd-legend-num" data-count="44">0</span><span class="fd-legend-label">of every 100 new checking accounts went to digital banks and fintechs</span></div>
-      <div class="fd-legend-row"><span class="fd-swatch fd-swatch-community"></span><span class="fd-legend-num" data-count="4">0</span><span class="fd-legend-label">went to community banks</span></div>
-      <div class="fd-legend-row"><span class="fd-swatch fd-swatch-rest"></span><span class="fd-legend-num">52</span><span class="fd-legend-label">went to everyone else</span></div>
-    </div>
-  </div>
-  <figcaption>New checking accounts opened in 2024, by type of institution. Cornerstone Advisors estimate, all ages.<a href="#user-content-fn-1" class="fd-figref" aria-label="Source 1">1</a></figcaption>
-</figure>
 
 The industry got the channel right. What it missed was the reason for choosing the bank.
 
@@ -67,12 +57,44 @@ Strip away the campaign and have the conversation with a 25-year-old deciding wh
 
 None of those advantages has to be false for the pitch to fail. They are distant. And behind the pitch sits an assumption the bank rarely says out loud: the younger customer is a small balance to tolerate until a mortgage or business loan makes the relationship worth having.
 
-The public numbers do not support that. The Fed's Survey of Consumer Finances puts the median transaction account balance for households under 35 at $5,400.[^3] Community banks earned a 3.81% net interest margin in the second quarter of 2026,[^4] which makes that balance worth a little over $200 a year in spread before the customer does anything else. Then the debit card. Banks under $10 billion in assets are exempt from the Durbin interchange cap, and the Fed's Regulation II data shows exempt issuers earning an average of $0.51 per debit transaction against $0.23 for covered banks.[^5] At the 34.6 transactions a month PULSE measured for an active debit card,[^6] that is roughly another $200 a year. Call it a little over $400 a year from a primary checking account alone, before a single loan. That covers a typical checking acquisition cost of around $350 in the first year.[^7]
+<section class="fd-scrolly" data-fd="scrolly" data-scrolly="math" aria-label="What one primary checking customer is worth in a year">
+<div class="fd-steps">
+<div class="fd-step" data-step="1">
+
+The public numbers do not support that. The Fed’s Survey of Consumer Finances puts the median transaction account balance for households under 35 at $5,400.[^3]
+
+</div>
+<div class="fd-step" data-step="2">
+
+Community banks earned a 3.81% net interest margin in the second quarter of 2026,[^4] which makes that balance worth a little over $200 a year in spread before the customer does anything else.
+
+</div>
+<div class="fd-step" data-step="3">
+
+Then the debit card. Banks under $10 billion in assets are exempt from the Durbin interchange cap, and the Fed’s Regulation II data shows exempt issuers earning an average of $0.51 per debit transaction against $0.23 for covered banks.[^5] At the 34.6 transactions a month PULSE measured for an active debit card,[^6] that is roughly another $200 a year.
+
+</div>
+<div class="fd-step" data-step="4">
+
+Call it a little over $400 a year from a primary checking account alone, before a single loan. That covers a typical checking acquisition cost of around $350 in the first year.[^7]
+
+</div>
+<div class="fd-step" data-step="5">
+
+So the 25-year-old with $5,400 and a paycheck is not a bet on the future. That customer is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. (Chime’s partner banks are small enough to have it too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank’s assets below $10 billion for the foreseeable future.[^8] The exemption is not the community bank’s secret. Using it on purpose would be.) Lending is upside. It was never the business case.
+
+</div>
+</div>
+<div class="fd-sticky">
+<div class="fd-graphic fd-g-math" data-step="0"></div>
+<div class="fd-sticky-notes"></div>
+</div>
+</section>
 
 <figure class="fd-figure fd-wide fd-calc" id="fd-calc" data-fd="calc">
   <div class="fd-calc-head">
-    <p class="fd-eyebrow">What one primary checking customer is worth in a year</p>
-    <p class="fd-calc-lede">The defaults are the public figures above. Put in your own.</p>
+    <p class="fd-eyebrow">Now your numbers</p>
+    <p class="fd-calc-lede">The defaults are the public figures above. Replace them with your bank’s.</p>
   </div>
   <div class="fd-calc-inputs">
     <label class="fd-field"><span class="fd-field-label">Average balance</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-balance" type="number" inputmode="decimal" value="5400" min="0" step="100"></span><span class="fd-field-src">SCF median, under 35</span></label>
@@ -103,13 +125,34 @@ The public numbers do not support that. The Fed's Survey of Consumer Finances pu
 
 So the 25-year-old with $5,400 and a paycheck is not a bet on the future. That customer is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. (Chime's partner banks are small enough to have it too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank's assets below $10 billion for the foreseeable future.[^8] The exemption is not the community bank's secret. Using it on purpose would be.) Lending is upside. It was never the business case.
 
-Which makes the standard pitch worse than distant. The median first-time homebuyer is now 40 years old.[^9] A bank that tells a 25-year-old "we'll be there when you buy a house" is proposing a fifteen-year wait, and when that mortgage finally arrives, independent mortgage banks earned $973 per loan on it in the second quarter of 2026.[^10] Banks are deferring a customer worth $400 a year for a decade so they can compete on rate, against Rocket, for a $973 event.
+<section class="fd-scrolly" data-fd="scrolly" data-scrolly="timeline" aria-label="The fifteen-year wait">
+<div class="fd-steps">
+<div class="fd-step" data-step="1">
 
-<figure class="fd-figure fd-wide" id="fd-timeline" data-fd="timeline" data-per-year="400" data-start="25" data-end="40" data-event="973">
-  <p class="fd-eyebrow">The fifteen-year wait</p>
-  <div class="fd-timeline-svg"></div>
-  <figcaption>What the checking relationship contributes each year from 25 to the median first-time home purchase at 40, at a little over $400 a year gross, against what the industry earned on the mortgage when it arrived. If the bank keeps the customer.<a href="#user-content-fn-9" class="fd-figref" aria-label="Sources 9 and 10">9–10</a></figcaption>
-</figure>
+Which makes the standard pitch worse than distant. The median first-time homebuyer is now 40 years old.[^9]
+
+</div>
+<div class="fd-step" data-step="2">
+
+A bank that tells a 25-year-old “we’ll be there when you buy a house” is proposing a fifteen-year wait.
+
+</div>
+<div class="fd-step" data-step="3">
+
+And when that mortgage finally arrives, independent mortgage banks earned $973 per loan on it in the second quarter of 2026.[^10]
+
+</div>
+<div class="fd-step" data-step="4">
+
+Banks are deferring a customer worth $400 a year for a decade so they can compete on rate, against Rocket, for a $973 event.
+
+</div>
+</div>
+<div class="fd-sticky">
+<div class="fd-graphic fd-g-timeline" data-step="0" data-per-year="400" data-start="25" data-end="40" data-event="973"></div>
+<div class="fd-sticky-notes"></div>
+</div>
+</section>
 
 Those figures describe a customer the bank keeps. Before calling younger customers unprofitable, a bank should be able to say what it actually measured. Are they receiving their paychecks here, using the debit card and building savings, or did they open accounts that never became part of their financial lives?
 
@@ -141,36 +184,41 @@ Walk inside the community bank. Marketing owns the brand, Digital owns the app, 
 
 There is nothing wrong with specialization. A complicated financial institution needs it. The problem appears when the organizational model becomes the customer experience.
 
+<section class="fd-scrolly" data-fd="scrolly" data-scrolly="org" aria-label="Twelve functions, one bank">
+<div class="fd-steps">
+<div class="fd-step" data-step="1">
+
 Digital can deliver a respectable app while Retail provides excellent branch service. Marketing can run an effective campaign, Deposit Product can price competitive checking and Lending can meet its production goals. Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.
+
+</div>
+<div class="fd-step" data-step="2">
 
 <p class="fd-pull">The customer experiences one bank while the organization manages twelve functions.</p>
 
-<figure class="fd-figure fd-wide" id="fd-toggle" data-fd="toggle">
-  <div class="fd-toggle-bar" role="tablist" aria-label="Two views of the same bank">
-    <button type="button" role="tab" class="fd-toggle-btn is-on" aria-selected="true" data-view="bank">What the bank manages</button>
-    <button type="button" role="tab" class="fd-toggle-btn" aria-selected="false" data-view="customer">What the customer experiences</button>
+</div>
+</div>
+<div class="fd-sticky">
+<div class="fd-graphic fd-g-org" data-step="0">
+  <div class="fd-org">
+    <div class="fd-org-box"><span class="fd-org-name">Marketing</span><span class="fd-org-owns">owns the brand</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Digital</span><span class="fd-org-owns">owns the app</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Retail</span><span class="fd-org-owns">owns the branches</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Deposit Product</span><span class="fd-org-owns">owns checking</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Cards</span><span class="fd-org-owns">manages debit</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Consumer Lending</span><span class="fd-org-owns">owns loans</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Mortgage</span><span class="fd-org-owns">owns mortgages</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Operations</span><span class="fd-org-owns">handles servicing</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">IT</span><span class="fd-org-owns">manages vendors</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Finance</span><span class="fd-org-owns">pricing and margin</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Risk</span><span class="fd-org-owns">sets the limits</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Compliance</span><span class="fd-org-owns">sets the boundaries</span><span class="fd-org-status">on target</span></div>
   </div>
-  <div class="fd-toggle-stage" data-view="bank">
-    <div class="fd-org">
-      <div class="fd-org-box"><span class="fd-org-name">Marketing</span><span class="fd-org-owns">owns the brand</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Digital</span><span class="fd-org-owns">owns the app</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Retail</span><span class="fd-org-owns">owns the branches</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Deposit Product</span><span class="fd-org-owns">owns checking</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Cards</span><span class="fd-org-owns">manages debit</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Consumer Lending</span><span class="fd-org-owns">owns loans</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Mortgage</span><span class="fd-org-owns">owns mortgages</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Operations</span><span class="fd-org-owns">handles servicing</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">IT</span><span class="fd-org-owns">manages vendors</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Finance</span><span class="fd-org-owns">pricing and margin</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Risk</span><span class="fd-org-owns">sets the limits</span><span class="fd-org-status">on target</span></div>
-      <div class="fd-org-box"><span class="fd-org-name">Compliance</span><span class="fd-org-owns">sets the boundaries</span><span class="fd-org-status">on target</span></div>
-    </div>
-    <div class="fd-one">
-      <div class="fd-one-box"><span class="fd-one-name">The bank</span><span class="fd-one-sub">one logo, one app, one card, one phone number</span><span class="fd-one-status">nobody’s number</span></div>
-    </div>
+  <div class="fd-one">
+    <div class="fd-one-box"><span class="fd-one-name">The bank</span><span class="fd-one-sub">one logo, one app, one card, one phone number</span><span class="fd-one-status">nobody’s number</span></div>
   </div>
-  <figcaption>Every dashboard can be green and the proposition can still be mediocre, because no scorecard measures the whole.</figcaption>
-</figure>
+</div>
+</div>
+</section>
 
 The comparison with Chime is not how many features each institution has. It is whether those features add up to one recognizable promise. A bank with dozens of levers has no advantage if nobody can pull them together.
 

@@ -41,6 +41,7 @@ const jsonld = {
   <main id="main">
     <article class="article">
       <div class="container">
+        {article.data.opener && <div class="article-opener" data-opener={article.data.opener} aria-hidden="true"></div>}
         <header class="article-header">
           <p class="article-kicker"><a href="/articles">Articles</a>{article.data.kicker && <span class="article-kicker-sep" aria-hidden="true"> / </span>}{article.data.kicker && <span>{article.data.kicker}</span>}</p>
           <h1 class="display-title article-title">{article.data.title}</h1>
