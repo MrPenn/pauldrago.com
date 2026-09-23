@@ -65,11 +65,6 @@ export const AGGRESSIVE = [
   { site: 'Terrell', opens: 3 },
 ];
 
-// Self-funding: the bank funds the first two branches; after that a branch opens only when the
-// network's accumulated surplus covers its build-out. Queue in order of the plan, then the review sites.
-export const SELF_FUNDED_SEED = [{ site: 'Forney', opens: 1 }, { site: 'Midlothian', opens: 2 }];
-export const SELF_FUNDED_QUEUE = ['Crandall', 'Waxahachie', 'Terrell', 'Kaufman', 'Ennis'];
-
 type Site = { site: string; opens: number };
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0);
 
@@ -119,24 +114,8 @@ export function planModel(ramp: Ramp) {
   };
 }
 
-// Three paces over ten years: the plan, the faster plan, and the self-funding plan.
+// Two paces over ten years: the plan and the faster plan.
 export const HORIZON = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
-function selfFundedSites(ramp: Ramp) {
-  const sites: Site[] = [...SELF_FUNDED_SEED];
-  const queue = [...SELF_FUNDED_QUEUE];
-  let pool = 0;
-  for (const y of HORIZON) {
-    // Open as many queued branches as last year's accumulated surplus can build.
-    while (y > Math.max(...SELF_FUNDED_SEED.map((s) => s.opens)) && queue.length && pool >= ramp.buildOut * 1000) {
-      sites.push({ site: queue.shift()!, opens: y });
-      pool -= ramp.buildOut * 1000;
-    }
-    const r = runSites(ramp, sites, HORIZON);
-    pool += r.operating[y - 1] + r.marketing[y - 1];
-  }
-  return sites;
-}
 
 export function paceScenarios(ramp: Ramp) {
   const summarize = (label: string, sites: Site[]) => {
@@ -158,6 +137,5 @@ export function paceScenarios(ramp: Ramp) {
   return [
     summarize('The plan', [...PLAN]),
     summarize('Faster', AGGRESSIVE),
-    summarize('Self-funding', selfFundedSites(ramp)),
   ];
 }

@@ -164,7 +164,7 @@ const SOURCES = {
         <h3 class="brief-h3">How fast to go</h3>
         <div class="market-table-wrap">
           <table class="market-table brief-pace">
-            <caption class="sr-only">Three paces compared over ten years</caption>
+            <caption class="sr-only">Two paces compared over ten years</caption>
             <thead><tr><th scope="col">Over ten years</th><th scope="col">Branches</th><th scope="col">Peak capital</th><th scope="col">Pays back</th><th scope="col">Year 10 earnings</th><th scope="col">Deposits, year 10</th></tr></thead>
             <tbody>
               {paces.map((p) => (
@@ -355,16 +355,16 @@ const SOURCES = {
         <p class="market-table-note">Launch marketing is ${LAUNCH_MARKETING[0]}K in a branch's first year and ${LAUNCH_MARKETING[1]}K in its second. Published first-year budgets for a new branch run $50K to $150K (<a href="https://www.chatterbuzzmedia.com/blog/credit-union-new-branch-opening-playbook/" target="_blank" rel="noopener noreferrer">Chatter Buzz Media, 2026</a>), and a branch in a new market needs 18 to 24 months of marketing (<a href="http://bankingjournal.aba.com/2026/08/bank-marketings-essential-role-in-successful-branch-expansion/" target="_blank" rel="noopener noreferrer">ABA Banking Journal, August 2026</a>); the second-year figure is our assumption.</p>
       </div>
 
-      <h3 class="report-h3">Three paces, cumulative over ten years</h3>
+      <h3 class="report-h3">Two paces, cumulative over ten years</h3>
       <div class="market-table-wrap">
         <table class="market-table plan-network pace-table">
-          <caption class="sr-only">Cumulative cash by year for three paces</caption>
+          <caption class="sr-only">Cumulative cash by year for two paces</caption>
           <thead><tr><th scope="col">Cumulative</th>{HORIZON.map((n) => <th scope="col">Yr {n}</th>)}</tr></thead>
           <tbody>
             {paces.map((p) => <tr><th scope="row">{p.label}</th>{p.run.cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{(t < 0 ? '-' : '') + (Math.abs(t) / 1000).toFixed(1)}</td>)}</tr>)}
           </tbody>
         </table>
-        <p class="market-table-note">$ millions, pre-tax. The plan: {planPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}. Faster: {fasterPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}. Self-funding: the bank funds {paces[2].sites.slice(0, 2).map((x) => x.site).join(' and ')}; after that a branch opens only when the network's accumulated earnings cover its ${ramp.buildOut}M build-out, which brings {paces[2].sites.slice(2).map((x) => `${x.site} in year ${x.opens}`).join(' and ')}. A branch takes about six years to earn back its build-out, so self-funding adds a branch every few years, not every year.</p>
+        <p class="market-table-note">$ millions, pre-tax. The plan: {planPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}. Faster: {fasterPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}.</p>
       </div>
     </section>
 
