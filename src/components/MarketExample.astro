@@ -114,7 +114,7 @@ const mfi = kf.metroMedianFamilyIncome;
     </div>
     <script type="application/json" id="market-data" set:html={JSON.stringify(markets)}></script>
 
-    <div class="market-findings">
+    <div class="market-findings market-findings-two">
       <div class="market-finding">
         <h4>Where the answer flipped</h4>
         <p>Collin added {money(Collin.depositGrowth)} of deposits in five years, {growthVsKaufman} times Kaufman's entire deposit base. But community banks captured only {money(Collin.communityGrowth)} of it across {Collin.communityBranches} branches. {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of Collin between them, and a typical community-bank branch there holds ${Collin.medianCommunityBranch}M.</p>
@@ -122,10 +122,6 @@ const mfi = kf.metroMedianFamilyIncome;
       <div class="market-finding">
         <h4>Why Kaufman leads on the numbers</h4>
         <p>Kaufman's population grew {pct(Kaufman.populationGrowthPct)} since 2020, the fastest of the three, and it has the most households per branch ({num(Kaufman.householdsPerBranch)}). Its residents bank locally: community banks hold {pct(Kaufman.communityShare)} of deposits, and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M, nearly three times Collin's.</p>
-      </div>
-      <div class="market-finding">
-        <h4>What the numbers can't tell you</h4>
-        <p>The data describes the last five years. It says nothing about what is being built, whether the bank can meet the county's credit needs, or why {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits. The next three steps take those in turn.</p>
       </div>
     </div>
 
