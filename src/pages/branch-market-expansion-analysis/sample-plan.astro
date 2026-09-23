@@ -71,7 +71,8 @@ const num = (n) => Math.round(n).toLocaleString('en-US');
 const money = (b) => `$${b.toFixed(1)}B`;
 const depUSD = (m) => (m >= 1000 ? `$${(m / 1000).toFixed(1)}B` : `$${m}M`);
 const mUSD = (n) => `$${(Math.abs(n) / 1000).toFixed(1)}M`;
-const tUSD = (n) => `${n < 0 ? '-' : ''}$${(Math.abs(n) / 1000).toFixed(Math.abs(n) < 1000 ? 2 : 1)}M`;
+// Negatives in parentheses, the accounting convention.
+const tUSD = (n) => { const v = `$${(Math.abs(n) / 1000).toFixed(Math.abs(n) < 1000 ? 2 : 1)}M`; return n < 0 ? `(${v})` : v; };
 const costUSD = (n) => (n >= 1000 ? `$${n / 1000}M` : `$${n}K`);
 const age = (n) => ramp.byAge.find((a) => a.age === n);
 const failing = (a) => a.belowBreakevenShare + (100 - a.stillOpenShare);
@@ -126,9 +127,9 @@ const SOURCES = {
     <p class="sample-banner">Sample deliverable. The bank is hypothetical; every market figure comes from public data and can be checked. <a href="/branch-market-expansion-analysis">About this analysis</a></p>
 
     <div class="report-cover">
-      <p class="report-status"><strong>For decision</strong><span>Board meeting, October 2026</span><span>Owner: Chief Banking Officer</span></p>
+      <p class="report-status"><strong>For decision</strong><span>Confidential, board use only</span><span>Board meeting, October 2026</span><span>Owner: Chief Banking Officer</span></p>
       <h1 class="display-title report-title">Five-year branch plan: Kaufman and Ellis counties</h1>
-      <p class="report-meta">Prepared by Paul Drago, Glass Vase, LLC, for the board of {INSTITUTION.description}. Reviewed by the CFO, chief credit officer, CRA and fair-lending officer, and chief risk officer. Data as of {signals.asOf}.</p>
+      <p class="report-meta">Prepared by Paul Drago, Glass Vase, LLC, for the board of {INSTITUTION.description}. Reviewed by the CFO, chief credit officer, CRA and fair-lending officer, and chief risk officer. Data as of {signals.asOf}. Supports a business decision; not legal advice or a CRA determination.</p>
     </div>
 
     <section class="report-brief" aria-label="Two-page brief">
@@ -137,9 +138,9 @@ const SOURCES = {
         <p class="report-lede">{mUSD(firstTwoBuild * 1000)} to open branches in {first.town} (year 1) and {second.town} (year 2), with ${num(2 * launchTotal)}K of launch marketing, and {third.town} in principle for year 3 if {first.town} holds ${gate}M in deposits at the end of year 2.</p>
         <p class="report-p brief-why">These are the towns where deposits and business are both growing and community banks still win deposits, which is the strategic plan's case for growing outside Dallas County. The network covers its running cost from year {model.firstPositiveYear} and earns back the build-out in year {planPace.paybackYear}. In Kaufman, the branches reach low- or moderate-income and majority-minority neighborhoods; in Ellis, Midlothian doesn't, so the plan commits lending there.</p>
         <dl class="report-figures">
-          <div><dt>Capital</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">build-out, {share(model.totalBuildOut * 1000, BANK.tier1)} of Tier 1 capital; peak need {mUSD(-planPace.peak)} in year {planPace.peakYear}</span></dd></div>
+          <div><dt>Capital</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">{mUSD(firstTwoBuild * 1000)} now, {mUSD((model.totalBuildOut - firstTwoBuild) * 1000)} for {third.town} at the gate; {share(model.totalBuildOut * 1000, BANK.tier1)} of Tier 1 capital</span></dd></div>
           <div><dt>Earnings</dt><dd><span class="report-figure">{tUSD(worstEarnings)}</span><span class="report-figure-note">pre-tax in year {worstEarningsYear}, the worst year ({share(worstEarnings, BANK.pretaxIncome)} of pre-tax income); positive from year {model.firstPositiveYear}</span></dd></div>
-          <div><dt>Return</dt><dd><span class="report-figure">{Math.round(planReturn.irr * 100)}% IRR</span><span class="report-figure-note">NPV {mUSD(planReturn.npv)} at a {Math.round(BANK.hurdle * 100)}% hurdle if year-10 earnings continue; about even on ten years alone</span></dd></div>
+          <div><dt>Return</dt><dd><span class="report-figure">{Math.round(planReturn.irr * 100)}% IRR</span><span class="report-figure-note">ten years plus continuing year-10 earnings; NPV {mUSD(planReturn.npv)} at a {Math.round(BANK.hurdle * 100)}% hurdle</span></dd></div>
           <div><dt>Payback</dt><dd><span class="report-figure">Year {planPace.paybackYear}</span><span class="report-figure-note">cumulative, including build-out and marketing</span></dd></div>
         </dl>
         <div class="market-table-wrap">
@@ -154,7 +155,7 @@ const SOURCES = {
             </tbody>
           </table>
         </div>
-        <p class="brief-note">Pre-tax, on the median Dallas-Fort Worth ramp for new branches at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each; fee income and overhead left out. Liquidity: the build-out is paid from cash, and the branches add about ${num(planPace.deposits10)}M of deposits by year 10. Capital and income are illustrative for a $2 billion bank: ${num(BANK.tier1 / 1000)}M of Tier 1 capital and ${num(BANK.pretaxIncome / 1000)}M of pre-tax income (<a href="#economics">appendix E</a>).</p>
+        <p class="brief-note">Pre-tax, on the median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch; fee income and overhead left out. The build-out is paid from cash; the branches add about ${num(planPace.deposits10)}M of deposits by year 10. Tier 1 capital (${num(BANK.tier1 / 1000)}M) and pre-tax income (${num(BANK.pretaxIncome / 1000)}M) are illustrative (<a href="#economics">appendix E</a>).</p>
       </section>
 
       <section class="brief-block" aria-labelledby="options-h">
@@ -173,6 +174,11 @@ const SOURCES = {
         </div>
       </section>
 
+
+      <section class="brief-block" aria-labelledby="reg-h">
+        <h2 class="brief-h2" id="reg-h">Regulatory path</h2>
+        <p class="report-p brief-p">Each branch needs a regulator's approval. Since February 27, 2026, the FDIC expedites branch applications from well-capitalized banks rated 1 or 2 with a Satisfactory CRA rating, without public notice; the OCC can waive notice for banks rated Satisfactory. File for {first.town} once the site is under contract.</p>
+      </section>
 
       <div class="brief-page-two">
         <CountyMaps />
@@ -198,14 +204,11 @@ const SOURCES = {
         </section>
 
 
-        <section class="brief-block" aria-labelledby="reg-h">
-          <h2 class="brief-h2" id="reg-h">Regulatory path</h2>
-          <p class="report-p brief-p">Each branch needs a regulator's approval. Since February 27, 2026, the FDIC expedites branch applications from well-capitalized banks rated 1 or 2 with a Satisfactory CRA rating, without public notice; the OCC can waive notice for banks rated Satisfactory. File for {first.town} once the site is under contract.</p>
-        </section>
 
         <div class="brief-resolution">
           <p class="brief-h2">Draft resolution</p>
-          <p>Resolved, that the board approves branches in {first.town} and {second.town} with capital spending of up to {mUSD(firstTwoBuild * 1000)} and launch marketing of up to ${num(2 * launchTotal)}K; approves a branch in {third.town} in principle, to be released by the board if the {first.town} branch holds ${gate}M in deposits at the end of its second year; and authorizes management to file the required applications.</p>
+          <p><span class="resolved">Resolved,</span> that the board approves branches in {first.town} and {second.town} with capital spending of up to {mUSD(firstTwoBuild * 1000)} and launch marketing of up to ${num(2 * launchTotal)}K; approves a branch in {third.town} in principle, to be released by the board if the {first.town} branch holds ${gate}M in deposits at the end of its second year; and authorizes management to file the required applications.</p>
+          <p class="brief-sign"><span>Secretary</span><span>Date</span></p>
         </div>
 
         <nav class="brief-appendix" aria-label="Appendix">
@@ -326,7 +329,7 @@ const SOURCES = {
         <figure class="plan-chart">
           <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ramp-chart-title">
             <title id="ramp-chart-title">Deposits in new community-bank branches by year since opening, against the ${ramp.breakeven}M operating break-even and the ${ramp.target}M payback level: the median reaches ${age(3).median}M in year 3 and ${age(5).median}M in year 5.</title>
-            {[0, 40, 80, 120].map((v) => <g class="plan-grid"><line x1={L} x2={W - R} y1={y(v)} y2={y(v)} />{v > 0 && <text x={L - 8} y={y(v)} dy="0.35em">${v}M</text>}</g>)}
+            {[0, 40, 80, 120].map((v) => <g class="plan-grid"><line x1={L} x2={W - R} y1={y(v)} y2={y(v)} /><text x={L - 8} y={y(v)} dy="0.35em">{v ? `$${v}M` : '$0'}</text></g>)}
             {[0, 1, 2, 3, 4, 5].map((a) => <text class="plan-axis" x={x(a)} y={H - 10}>{a === 0 ? 'Open' : `Year ${a}`}</text>)}
             <path class="plan-band" d={band} />
             <line class="plan-target" x1={L} x2={W - R} y1={y(ramp.target)} y2={y(ramp.target)} />
@@ -371,7 +374,7 @@ const SOURCES = {
             </tbody>
           </table>
         </div>
-        <p class="market-table-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one); the {third.town} gate and the year 5 review limit that exposure (<a href="#economics">appendix E</a>).</p>
+        <p class="market-table-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one); the {third.town} gate and the year 5 review limit that exposure.</p>
 
       <h3 class="report-h3">A branch turns positive in its third year and earns about {mUSD(model.expected[0].byYear[4].contribution)} a year by its fifth</h3>
       <div class="market-table-wrap">
@@ -395,7 +398,7 @@ const SOURCES = {
           <caption class="sr-only">Cumulative cash by year for two paces</caption>
           <thead><tr><th scope="col">Cumulative</th>{HORIZON.map((n) => <th scope="col">Yr {n}</th>)}</tr></thead>
           <tbody>
-            {paces.map((p) => <tr><th scope="row">{p.label}</th>{p.run.cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{(t < 0 ? '-' : '') + (Math.abs(t) / 1000).toFixed(1)}</td>)}</tr>)}
+            {paces.map((p) => <tr><th scope="row">{p.label}</th>{p.run.cumulative.map((t) => <td class:list={[{ 'is-negative': t < 0 }]}>{t < 0 ? `(${(Math.abs(t) / 1000).toFixed(1)})` : (t / 1000).toFixed(1)}</td>)}</tr>)}
           </tbody>
         </table>
         <p class="market-table-note">$ millions, pre-tax. The plan: {planPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}. Faster: {fasterPace.sites.map((x) => `${x.site} (year ${x.opens})`).join(', ')}.</p>
@@ -425,11 +428,12 @@ const SOURCES = {
       <h2 class="report-h2" id="methods-h"><span>G</span> Data and definitions</h2>
       <ul class="report-sources">
         <li><a href="https://banks.data.fdic.gov/bankfind-suite/SOD">FDIC Summary of Deposits</a>: branch deposits, 2008 to 2026.</li>
-        <li><a href="https://www.census.gov/programs-surveys/popest.html">Census population estimates</a>, the <a href="https://www.census.gov/programs-surveys/acs">American Community Survey</a>, and <a href="https://www.census.gov/programs-surveys/cbp.html">ZIP Code Business Patterns</a>: population, households, income, and jobs.</li>
+        <li><a href="https://www.census.gov/programs-surveys/popest.html">Census population estimates</a> and <a href="https://www.census.gov/programs-surveys/acs">American Community Survey</a>: population, households, income.</li>
+        <li><a href="https://www.census.gov/programs-surveys/cbp.html">Census ZIP Code Business Patterns</a>: jobs by town, 2019 and 2023.</li>
         <li><a href="https://ffiec.cfpb.gov/data-browser/">HMDA</a>: tract income and minority data, and home-purchase lending, 2025.</li>
-        <li><a href="https://www.fdic.gov/board/federal-register-notice-branch-final-rule.pdf">FDIC branch application rule, effective February 27, 2026</a>.</li>
+        <li><a href="https://www.fdic.gov/board/federal-register-notice-branch-final-rule.pdf">FDIC branch application rule</a>, effective February 27, 2026.</li>
       </ul>
-      <p class="report-p report-small">{data.notes.join(' ')} Towns are measured by branch city for deposits, ZIP code for jobs, and census tracts within five miles of the town center for income. The tag thresholds are judgments, stated so they can be argued with. The bank, its capital, income, and hurdle rate are illustrative. This plan supports a business decision; it is not legal advice, a fair-lending analysis, or a CRA compliance determination.</p>
+      <p class="report-p report-small">{data.notes.join(' ')} Towns are measured by branch city for deposits, ZIP code for jobs, and census tracts within five miles of the town center for income. Tag thresholds are judgments, stated so they can be argued with. The bank and its capital, income, and hurdle rate are illustrative; this plan supports a business decision; it is not legal advice, a fair-lending analysis, or a CRA compliance determination.</p>
     </section>
 
     <aside class="report-cta">

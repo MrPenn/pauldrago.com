@@ -39,7 +39,7 @@ const maps = mapData.counties.map((c) => {
       <div class="county-map">
         <h3 class="county-map-name">{m.county} County</h3>
         <p class="county-map-sub">{m.sites.filter((s) => !s.review).length} planned {m.sites.filter((s) => !s.review).length === 1 ? 'branch' : 'branches'}{m.sites.some((s) => s.review) && `, ${m.sites.filter((s) => s.review).length} at the year 5 review`}; {m.branches.length} existing</p>
-        <svg viewBox={`-12 -12 ${m.width + 24} ${m.height + 24}`} role="img" aria-labelledby={`map-${m.id}-title`}>
+        <svg viewBox={`-12 -12 ${m.width + 24} ${m.height + 56}`} style={`--map-h: ${m.height + 56}`} role="img" aria-labelledby={`map-${m.id}-title`}>
           <title id={`map-${m.id}-title`}>{m.county} County census tracts shaded by home purchases per 1,000 residents, with {m.branches.length} existing branches and five-mile review areas around {m.sites.map((s) => s.town).join(' and ')}.</title>
           <defs>
             <pattern id={`hatch-${m.id}`} width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -56,6 +56,11 @@ const maps = mapData.counties.map((c) => {
           <path d={m.outline} class="map-outline" />
           <g clip-path={`url(#clip-${m.id})`}>
             {m.sites.map((s) => <circle cx={s.x} cy={s.y} r={s.r} class:list={['map-radius', { 'is-review': s.review }]} />)}
+          </g>
+          <g class="map-scale" transform={`translate(${m.width - mapData.radiusMiles * m.milePx}, ${m.height + 36})`}>
+            <line x1="0" x2={mapData.radiusMiles * m.milePx} y1="0" y2="0" />
+            <line x1="0" x2="0" y1="-6" y2="6" /><line x1={mapData.radiusMiles * m.milePx} x2={mapData.radiusMiles * m.milePx} y1="-6" y2="6" />
+            <text x={mapData.radiusMiles * m.milePx / 2} y="-10">{mapData.radiusMiles} miles</text>
           </g>
           <g class="map-branches">
             {m.branches.map((b) => b.community

@@ -144,11 +144,11 @@
 .county-map-sub { margin-top: 2px; color: var(--secondary); font-size: 14px; }
 .county-map svg { display: block; width: 100%; height: auto; margin-top: 10px; }
 .map-band--1 { fill: var(--hairline); }
-.map-band-0 { fill: color-mix(in srgb, var(--brass) 7%, var(--ground)); }
-.map-band-1 { fill: color-mix(in srgb, var(--brass) 20%, var(--ground)); }
-.map-band-2 { fill: color-mix(in srgb, var(--brass) 36%, var(--ground)); }
-.map-band-3 { fill: color-mix(in srgb, var(--brass) 55%, var(--ground)); }
-.map-band-4 { fill: color-mix(in srgb, var(--brass) 80%, var(--ground)); }
+.map-band-0 { fill: color-mix(in srgb, var(--brass) 3%, var(--ground)); }
+.map-band-1 { fill: color-mix(in srgb, var(--brass) 22%, var(--ground)); }
+.map-band-2 { fill: color-mix(in srgb, var(--brass) 40%, var(--ground)); }
+.map-band-3 { fill: color-mix(in srgb, var(--brass) 60%, var(--ground)); }
+.map-band-4 { fill: color-mix(in srgb, var(--brass) 85%, var(--ground)); }
 .map-tracts path { stroke: var(--ground); stroke-width: 1; stroke-linejoin: round; }
 .map-lmi { stroke: none; }
 .map-hatch-line { stroke: var(--paper); stroke-width: 1.4; stroke-opacity: 0.55; }
@@ -163,16 +163,18 @@
 .map-site.is-review text { fill: var(--paper); }
 .map-site .map-site-label, .map-town { fill: var(--paper); font-size: 17px; font-weight: 700; paint-order: stroke; stroke: var(--ground); stroke-width: 5px; stroke-linejoin: round; }
 .map-town { font-size: 15px; font-weight: 600; fill: var(--secondary); }
+.map-scale line { stroke: var(--paper); stroke-width: 2; }
+.map-scale text { fill: var(--secondary); font-size: 14px; text-anchor: middle; }
 .county-maps-legend { display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: flex-start; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--hairline); }
 .legend-title { color: var(--paper); font-size: 13px; font-weight: 700; }
 .legend-scale { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 0 0; padding: 0; list-style: none; }
 .legend-scale li, .legend-keys li { display: flex; gap: 8px; align-items: center; color: var(--secondary); font-size: 13px; }
 .legend-swatch { display: inline-block; width: 22px; height: 14px; }
-.legend-swatch.map-band-0 { background: color-mix(in srgb, var(--brass) 7%, var(--ground)); box-shadow: inset 0 0 0 1px var(--hairline); }
-.legend-swatch.map-band-1 { background: color-mix(in srgb, var(--brass) 20%, var(--ground)); }
-.legend-swatch.map-band-2 { background: color-mix(in srgb, var(--brass) 36%, var(--ground)); }
-.legend-swatch.map-band-3 { background: color-mix(in srgb, var(--brass) 55%, var(--ground)); }
-.legend-swatch.map-band-4 { background: color-mix(in srgb, var(--brass) 80%, var(--ground)); }
+.legend-swatch.map-band-0 { background: color-mix(in srgb, var(--brass) 3%, var(--ground)); box-shadow: inset 0 0 0 1px var(--hairline); }
+.legend-swatch.map-band-1 { background: color-mix(in srgb, var(--brass) 22%, var(--ground)); }
+.legend-swatch.map-band-2 { background: color-mix(in srgb, var(--brass) 40%, var(--ground)); }
+.legend-swatch.map-band-3 { background: color-mix(in srgb, var(--brass) 60%, var(--ground)); }
+.legend-swatch.map-band-4 { background: color-mix(in srgb, var(--brass) 85%, var(--ground)); }
 .legend-keys { display: grid; grid-template-columns: repeat(2, auto); gap: 6px 24px; margin: 0; padding: 0; list-style: none; }
 .legend-keys svg { width: 20px; height: 20px; flex: none; overflow: hidden; }
 .legend-hatch-bg { fill: var(--ground); stroke: var(--hairline); }
@@ -239,89 +241,99 @@
 }
 
 /* A board packet: black on white, no site chrome, sections kept together where they fit. */
+/* A board pack: letter pages, folios and a running footer, black and white, six type sizes
+   (22 title, 18 figures, 13 section, 11 lede, 9.5 body, 8.5 tables and notes). */
 @media print {
-  @page { size: letter; margin: 0.55in; }
-  header, footer, .trace-rail, .skip-link, .sample-banner, .report-cta, #cc-main, .appendix-divider, .brief-appendix { display: none !important; }
+  @page {
+    size: letter;
+    margin: 0.55in 0.6in 0.7in;
+    @bottom-left { content: "Five-year branch plan \00B7  Board, October 2026 \00B7  Confidential"; font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
+    @bottom-right { content: counter(page) " of " counter(pages); font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
+  }
+  header, footer, .trace-rail, .skip-link, .sample-banner, .report-cta, #cc-main, .appendix-divider, .brief-appendix, .county-maps-head p, .county-maps-note, .county-map-sub { display: none !important; }
   :root { --paper: #000; --secondary: #333; --hairline: #bbb; --brass: #8a2f14; --dark-navy: #fff; --ground: #fff; }
-  body { background: #fff !important; font-size: 11pt; }
+  body { background: #fff !important; font-size: 9.5pt; }
   .sample-plan { padding: 0; }
   .sample-plan .container { max-width: none; padding: 0; }
-  .report-cover { margin-top: 0; padding-bottom: 10px; }
-  .report-title { font-size: 21pt; max-width: none; }
-  .report-meta { font-size: 9.5pt; margin-top: 6px; }
-  .brief-block { margin-top: 12px; }
-  .brief-h2 { padding-top: 8px; }
-  .report-lede { font-size: 12.5pt; line-height: 1.45; max-width: none; }
-  .report-figure { font-size: 20pt; }
-  .report-figures div { padding: 10px 12px 10px 0; }
-  .report-brief .report-decisions li { font-size: 10pt; padding: 2px 0 2px 4px; line-height: 1.4; }
-  .brief-note { font-size: 9pt; }
-  .brief-page-two { break-before: page; margin-top: 0; }
-  .report-status { font-size: 8.5pt; margin-bottom: 6px; }
-  .report-status strong { font-size: 8.5pt; }
-  .brief-why { font-size: 9.5pt; margin-top: 4px; line-height: 1.45; }
-  .brief-p { font-size: 9pt; margin-top: 3px; line-height: 1.45; }
-  .brief-options { font-size: 8.5pt !important; }
-  .brief-options th, .brief-options td { padding-top: 3px !important; padding-bottom: 3px !important; }
-  .brief-options th { width: 1.55in; }
-  .brief-resolution { margin-top: 8px; padding: 6px 10px; break-inside: avoid; }
-  .brief-resolution p:last-child { font-size: 9pt; margin-top: 2px; line-height: 1.4; }
-  .brief-econ, .brief-econ thead th, .brief-pace, .brief-pace thead th { font-size: 8.5pt !important; min-width: 0; }
-  .brief-pace th, .brief-pace td { padding-top: 3px !important; padding-bottom: 3px !important; }
-  .brief-h3 { margin-top: 6px; font-size: 9.5pt; }
-  .pace-table { min-width: 0; font-size: 8pt !important; }
-  #economics-brief .brief-note { margin-top: 4px; }
-  .report-lede { font-size: 12pt !important; }
-  .report-figures div { padding-top: 6px !important; padding-bottom: 6px !important; }
+  a { color: inherit !important; text-decoration: none !important; }
+
+  /* Type scale */
+  .report-title { font-size: 22pt; max-width: none; }
   .report-figure { font-size: 18pt !important; }
-  .brief-econ th, .brief-econ td { padding-top: 3px !important; padding-bottom: 3px !important; }
-  #economics-brief .market-table-wrap { margin-top: 6px; }
-  #economics-brief { break-inside: avoid; }
-  .county-maps-head p, .county-maps-note { display: none; }
-  .county-maps-note { margin-top: 4px; }
-  .brief-page-two .county-maps { margin-top: 0; }
-  .county-maps-head p, .county-maps-note { font-size: 8.5pt; }
-  .county-maps-grid { grid-template-columns: 1fr 1fr !important; gap: 18px; margin-top: 8px; }
-  .county-map-name { font-size: 11pt; }
-  .county-map-sub { font-size: 8.5pt; }
-  .county-maps-title { font-size: 14pt; }
-  .report-figures { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
-  .report-figures div:nth-child(3) { padding-left: 12px !important; border-left: 1px solid var(--hairline) !important; }
+  .county-maps-title, .report-appendix .report-h2 { font-size: 13pt !important; }
+  .report-lede { font-size: 11pt !important; line-height: 1.4; max-width: none; }
+  .report-meta, .brief-why, .brief-p, .brief-note, .report-status, .report-status strong,
+  .report-brief .report-decisions li, .brief-risks li, .brief-resolution p,
+  .report-appendix .report-p, .report-appendix .report-rules li, .report-appendix .local-questions li, .report-appendix .report-risks li,
+  .report-appendix .market-finding p, .report-appendix .pipe-detail, .report-appendix .pipe-watch, .report-appendix .pipe-title { font-size: 9.5pt !important; line-height: 1.42; }
+  .market-table, .market-table th, .market-table td, .market-table thead th, .market-table-note, figcaption,
+  .report-figure-note, .report-figures dt, .legend-scale li, .legend-keys li, .legend-title, .tag, .pipe-meta, .report-sources li, .county-map-name, .brief-h2, .brief-h3, .report-appendix .report-h3 { font-size: 8.5pt !important; }
+  .brief-h2, .brief-h3, .report-appendix .report-h3, .county-map-name, .legend-title { font-weight: 700; }
+
+  /* Cover and brief */
+  .report-cover { margin-top: 0; padding-bottom: 8px; }
+  .report-status { margin-bottom: 6px; }
+  .report-meta { margin-top: 4px; }
+  .brief-block { margin-top: 10px; }
+  .brief-h2 { padding-top: 6px; }
+  .brief-why, .brief-p, .brief-note { margin-top: 3px; max-width: none !important; }
+  .report-figures { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; margin-top: 10px; }
+  .report-figures div { padding: 6px 10px 6px 0 !important; }
+  .report-figures div:nth-child(3) { padding-left: 10px !important; border-left: 1px solid var(--hairline) !important; }
   .report-figures div:nth-child(n + 3) { border-top: 0 !important; }
-  .report-figure-note { font-size: 8pt; }
-  .legend-keys { grid-template-columns: repeat(3, auto) !important; gap: 4px 18px; }
-  .tag { font-size: 8pt; padding: 0 5px; }
-  .county-map svg { max-height: 2.0in; width: auto; max-width: 100%; margin-top: 2px; }
-  .county-maps-legend { margin-top: 8px; padding-top: 8px; gap: 8px 24px; }
-  .legend-scale li, .legend-keys li { font-size: 8pt; }
-  .report-brief .report-plan-table td, .report-brief .report-plan-table th { font-size: 8.5pt; padding-top: 3px; padding-bottom: 3px; }
-  .report-brief .report-plan-table thead th { font-size: 8.5pt; }
-  .brief-risks li { font-size: 9pt; padding: 2px 0; line-height: 1.4; }
-  .report-brief .report-risks { margin-top: 4px; }
-  .county-maps-grid { margin-top: 4px !important; }
-  .county-map-sub { display: none; }
-  .brief-appendix { font-size: 8.5pt; margin-top: 10px; padding: 8px 10px; }
-  .report-appendix { break-before: page; margin-top: 0; }
-  .report-appendix ~ .report-appendix { break-before: auto; margin-top: 24px; }
-  #pipeline { break-before: page !important; margin-top: 0; }
-  .pipe-county h3 { break-after: avoid; }
-  .report-appendix .report-h2 { font-size: 15pt; padding-top: 10px; }
-  .report-appendix .report-h3 { font-size: 12pt; margin-top: 16px; }
-  .report-appendix .report-p, .report-appendix .report-rules li, .report-appendix .local-questions li, .report-appendix .report-risks li, .report-appendix .market-finding p, .report-appendix .pipe-detail, .report-appendix .pipe-watch { font-size: 9.5pt; line-height: 1.45; }
-  .report-appendix .market-table { font-size: 9pt; }
-  .report-appendix .market-table th, .report-appendix .market-table td { padding-top: 4px; padding-bottom: 4px; }
-  .report-appendix .market-table-note, .report-appendix figcaption { font-size: 8pt; }
-  .report-appendix .market-table-wrap, .report-appendix .market-findings { margin-top: 12px; }
-  .report-appendix .pipe { padding: 6px 0; }
+  .report-brief .report-decisions, .report-brief .report-risks { max-width: none; margin-top: 3px; }
+  .report-brief .report-decisions li, .brief-risks li { padding-top: 2px; padding-bottom: 2px; }
+  .market-table th, .market-table td { padding-top: 3px !important; padding-bottom: 3px !important; }
+  .brief-econ, .brief-pace, .pace-table, .report-towns, .plan-network { min-width: 0; }
+  #economics-brief .market-table-wrap { margin-top: 4px; }
+  #economics-brief .brief-note { margin-top: 3px; }
+  .brief-options th { width: 1.5in; }
+  .brief-page-two { break-before: page; margin-top: 0; }
+  .brief-resolution { margin-top: 8px; padding: 6px 10px; break-inside: avoid; }
+  .brief-resolution p:last-child, .brief-resolution p { margin-top: 2px; }
+  .brief-sign { display: flex !important; gap: 0.4in; margin-top: 10px !important; }
+  .brief-sign span { flex: 1; padding-top: 14px; border-bottom: 1px solid #000; font-size: 8.5pt; color: #444; }
+
+  /* Maps: same printed height, so both counties are at the same scale; labels sized to print at 8.5pt */
+  .brief-page-two .county-maps { margin-top: 0; }
+  .county-maps-grid { grid-template-columns: auto auto !important; justify-content: space-between; gap: 18px; margin-top: 4px !important; }
+  .county-map svg { height: 2.55in; width: auto; max-width: 100%; margin-top: 2px; }
+  .county-map svg text { font-size: calc(var(--map-h) * 0.046px) !important; stroke-width: calc(var(--map-h) * 0.014px) !important; }
+  .map-site circle { r: calc(var(--map-h) * 0.026px); }
+  .county-maps-legend { margin-top: 6px; padding-top: 6px; gap: 6px 24px; }
+  .legend-keys { grid-template-columns: repeat(3, auto) !important; gap: 3px 18px; }
+
+  /* Tags print as text, not pills */
+  .tag { border: 0; padding: 0; margin-right: 8px; font-weight: 700; font-variant: small-caps; letter-spacing: 0.03em; }
+  .tag-check { text-decoration: underline dotted; text-underline-offset: 2px; }
+  .pipe-brings { border: 0; padding: 0; font-weight: 700; font-variant: small-caps; letter-spacing: 0.03em; }
+  .report-rules { break-inside: avoid; }
+  #pipeline { break-inside: avoid; }
+  .report-appendix .local-questions li, .report-appendix .report-risks li { padding-top: 3px; padding-bottom: 3px; }
+  .report-appendix .local-questions { margin-top: 6px; }
+  .report-sources { margin-top: 6px; }
+  .report-sources li { padding: 1px 0 !important; }
+  #methods .report-small { margin-top: 6px; }
+  .report-appendix .market-findings { gap: 12px; }
+  .report-appendix .market-finding h3 { font-size: 9.5pt; }
+  .plan-ramp figure, .plan-ramp .market-table-wrap { break-inside: auto; }
+
+  /* Appendix: one heading style, letters in the display face; sections flow */
+  .report-appendix { margin-top: 20px; }
+  #markets { break-before: page; margin-top: 0; }
+  .report-appendix .report-h2 { display: block; padding-top: 8px; font-family: "IBM Plex Sans", sans-serif; font-weight: 700; text-transform: none; }
+  .report-appendix .report-h2 span { margin-right: 8px; font-family: "Archivo Black", sans-serif; }
+  .report-appendix .report-h3 { margin-top: 12px; }
+  .report-appendix .market-table-wrap, .report-appendix .market-findings { margin-top: 8px; }
+  .report-appendix .pipe { padding: 5px 0; }
   .pipe-columns.report-pipe { display: block !important; }
-  .report-pipe .pipe-county + .pipe-county { margin-top: 14px; }
-  .report-appendix .pipe-title { font-size: 10pt; }
-  .plan-ramp { grid-template-columns: 1fr 1fr !important; gap: 20px; }
-  .report-h2, .report-h3 { break-after: avoid; }
-  .report-figures, table, figure:not(.county-maps), .county-map, .market-finding, .pipe, .report-risks li { break-inside: avoid; }
+  .report-pipe .pipe-county + .pipe-county { margin-top: 12px; }
+  .plan-ramp { grid-template-columns: 1fr 1fr !important; gap: 18px; }
+  .plan-grid text, .plan-axis, .plan-line-label { font-size: 21px !important; }
   .sample-plan .market-table-wrap { overflow: visible; }
-  .report-towns, .plan-network { min-width: 0; }
-  a { color: inherit !important; }
-  .report-appendix .report-sources li { font-size: 8.5pt; padding: 2px 0; line-height: 1.4; }
-  .report-sources a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8pt; word-break: break-all; }
+  .report-sources a::after { content: " \2014  " attr(href); font-size: 8pt; color: #444; }
+
+  /* Keep things together */
+  .report-h2, .report-h3, .pipe-county h3, .report-rules { break-after: avoid; }
+  .report-figures, table, figure:not(.county-maps), .county-map, .market-finding, .pipe, .report-risks li, #economics-brief { break-inside: avoid; }
 }
