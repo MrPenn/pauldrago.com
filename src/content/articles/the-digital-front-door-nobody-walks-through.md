@@ -151,12 +151,13 @@ Chime’s partner banks are small enough to have the exemption too, and it is mo
     <p class="fd-calc-lede">The defaults are the public figures above. Replace them with your bank’s.</p>
   </div>
   <div class="fd-calc-inputs">
-    <label class="fd-field"><span class="fd-field-label">Average balance</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-balance" type="number" inputmode="decimal" value="5400" min="0" step="100"></span><span class="fd-field-src">SCF median, under 35</span></label>
+    <label class="fd-field"><span class="fd-field-label">Average checking balance</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-balance" type="number" inputmode="decimal" value="5400" min="0" step="100"></span><span class="fd-field-src">SCF median, under 35</span></label>
     <label class="fd-field"><span class="fd-field-label">Net interest margin</span><span class="fd-input-wrap"><input class="fd-input" id="fd-in-nim" type="number" inputmode="decimal" value="3.81" min="0" max="15" step="0.01"><span class="fd-affix">%</span></span><span class="fd-field-src">FDIC, community banks, Q2 2026</span></label>
     <label class="fd-field"><span class="fd-field-label">Debit transactions a month</span><span class="fd-input-wrap"><input class="fd-input" id="fd-in-txn" type="number" inputmode="decimal" value="34.6" min="0" step="0.1"></span><span class="fd-field-src">PULSE, active cards</span></label>
     <label class="fd-field"><span class="fd-field-label">Interchange per transaction</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-ic" type="number" inputmode="decimal" value="0.51" min="0" step="0.01"></span><span class="fd-field-src">Fed Reg II, exempt issuers</span></label>
-    <label class="fd-field"><span class="fd-field-label">Cost to acquire the account</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-cac" type="number" inputmode="decimal" value="350" min="0" step="10"></span><span class="fd-field-src">Digital Onboarding, 2021</span></label>
+    <label class="fd-field"><span class="fd-field-label">Cost to acquire one account</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-cac" type="number" inputmode="decimal" value="350" min="0" step="10"></span><span class="fd-field-src">Digital Onboarding, 2021</span></label>
   </div>
+  <p class="fd-field-label fd-durbin-label">Interchange regime</p>
   <div class="fd-durbin" role="group" aria-label="Interchange regime">
     <button type="button" class="fd-durbin-btn is-on" data-ic="0.51">Under $10B, exempt ($0.51)</button>
     <button type="button" class="fd-durbin-btn" data-ic="0.23">Over $10B, capped ($0.23)</button>
@@ -172,12 +173,11 @@ Chime’s partner banks are small enough to have the exemption too, and it is mo
     <div class="fd-ledger-row"><span class="fd-ledger-label">Deposit spread <span class="fd-ledger-src">balance × NIM</span></span><span class="fd-ledger-value" id="fd-out-spread">$206</span></div>
     <div class="fd-ledger-row"><span class="fd-ledger-label">Interchange, gross <span class="fd-ledger-src">transactions × 12 × fee</span></span><span class="fd-ledger-value" id="fd-out-ic">$212</span></div>
     <div class="fd-ledger-row fd-ledger-total"><span class="fd-ledger-label">A year of checking, before any loan</span><span class="fd-ledger-value fd-accent" id="fd-out-total">$418</span></div>
-    <div class="fd-ledger-row"><span class="fd-ledger-label">Months to cover the acquisition cost</span><span class="fd-ledger-value" id="fd-out-months">10</span></div>
+    <div class="fd-ledger-row"><span class="fd-ledger-label">Payback on the acquisition cost</span><span class="fd-ledger-value" id="fd-out-months">11 months</span></div>
   </div>
   <figcaption>Gross figures, before servicing, fraud and network costs. Change the interchange regime to see what the same customer is worth at a bank over $10 billion.</figcaption>
 </figure>
 
-So the 25-year-old with $5,400 and a paycheck is not a bet on the future. That customer is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. (Chime's partner banks are small enough to have it too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank's assets below $10 billion for the foreseeable future.[^8] The exemption is not the community bank's secret. Using it on purpose would be.) Lending is upside. It was never the business case.
 
 ### The fifteen-year wait
 
@@ -395,7 +395,7 @@ Community banks have built digital front doors. The question is no longer simply
 
 ## About the numbers
 
-Sources sit beside the passages they support. Research and product descriptions checked September 22, 2026. The organizational diagnosis, proposed scorecard and customer journey are analysis and recommendations, not findings directly established by the cited surveys. The customer journey described above is a proposition to design and test, not a claim that every bank already has the necessary capabilities, and the survey findings cited do not make every younger customer identical. The $400-a-year figure is gross: it is spread on the median balance plus interchange at exempt rates, before servicing, fraud and network costs, which vary by bank and which a bank's own numbers should replace.
+Sources sit beside the passages they support, or open beneath them on a phone. Research and product descriptions checked September 22, 2026. The organizational diagnosis, proposed scorecard and customer journey are analysis and recommendations, not findings directly established by the cited surveys. The customer journey described above is a proposition to design and test, not a claim that every bank already has the necessary capabilities, and the survey findings cited do not make every younger customer identical. The $400-a-year figure is gross: it is spread on the median balance plus interchange at exempt rates, before servicing, fraud and network costs, which vary by bank and which a bank's own numbers should replace.
 
 [^1]: **Cornerstone Advisors.** Beyond the Paycheck Motel: Strategic Imperatives for Community Banking, a recap of 2025 research, pp. 17-18, Figure 6. Reports the 2024 estimates of 44% for digital banks/fintechs and 4% for community banks. These are shares of new checking accounts across age groups, not Gen Z-only figures, Chime market share, primary relationships or profitability. The chart defines community banks as institutions below $100 billion in assets, not by the FDIC's community-bank definition. [Read the Cornerstone report](https://www.crnrstone.com/hubfs/Cornerstone-Advisors-2025-Research-Recap_Beyond-the-Paycheck-Motel.pdf)
 [^2]: **American Bankers Association / Morning Consult.** 2025 Preferred Banking Methods. Online survey conducted October 1-6, 2025, with a weighted sample of 4,403 U.S. adults. Supports the Gen Z most-used-channel figures of 63% mobile and 3% branches, and the 95% favorable digital-experience rating. Most-used banking channel is not the same as preferred account-opening channel. The 95% figure is not an app-store rating. [Read the ABA findings](https://www.aba.com/news-research/analysis-guides/preferred-banking-methods)

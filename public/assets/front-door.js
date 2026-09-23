@@ -313,7 +313,7 @@
       var sp = bal * nim, inter = txn * 12 * ic, total = sp + inter;
       var m = total > 0 ? Math.ceil(cacv / (total / 12)) : 0;
       outSpread.textContent = money(sp); outIc.textContent = money(inter); outTotal.textContent = money(total);
-      outMonths.textContent = total > 0 ? (m <= 12 ? String(m) : (m / 12).toFixed(1) + ' years') : '—';
+      outMonths.textContent = total > 0 ? (m <= 12 ? m + (m === 1 ? ' month' : ' months') : (m / 12).toFixed(1) + ' years') : '—';
       var sc = Math.max(total, cacv) * 1.12 || 1;
       var wS = sp / sc * 100, wI = inter / sc * 100;
       barSpread.style.width = wS + '%'; barIc.style.left = wS + '%'; barIc.style.width = wI + '%'; barCac.style.left = (cacv / sc * 100) + '%';
@@ -376,7 +376,7 @@
           var lead = strong ? '<strong>' + strong.textContent + '</strong> ' : '';
           if (strong) brief = brief.replace(strong.textContent, '').replace(/^\s+/, '');
           var full = li.innerHTML;
-          aside.innerHTML = '<span class="fd-sidenote-num">' + num + '</span>' + lead + '<span class="fd-note-brief">' + brief + '</span><span class="fd-note-full">' + full.replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '') + '</span> <button type="button" class="fd-note-more">More</button>';
+          aside.innerHTML = '<span class="fd-sidenote-num">' + num + '</span>' + lead + '<span class="fd-note-brief">' + brief + '</span><span class="fd-note-full">' + full.replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '') + '</span> <button type="button" class="fd-note-more">Full note</button>';
           aside.querySelector('.fd-note-more').addEventListener('click', function () { aside.classList.add('is-open'); });
           // in a pinned sequence the note lives under the graphic and appears with its step
           aside.setAttribute('data-step', step.getAttribute('data-step'));

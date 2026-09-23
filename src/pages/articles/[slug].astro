@@ -46,7 +46,7 @@ const jsonld = {
           <p class="article-kicker"><a href="/articles">Articles</a>{article.data.kicker && <span class="article-kicker-sep" aria-hidden="true"> / </span>}{article.data.kicker && <span>{article.data.kicker}</span>}</p>
           <h1 class="display-title article-title">{article.data.title}</h1>
           <p class="article-intro">{article.data.description}</p>
-          <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time><span class="article-meta-sep" aria-hidden="true"> · </span><span>{minutes} minute read</span></p>
+          <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time><span class="article-meta-sep" aria-hidden="true"> · </span><span>{minutes}-minute read</span></p>
         </header>
         <div class="article-body">
           <Content />
