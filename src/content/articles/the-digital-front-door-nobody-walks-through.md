@@ -32,7 +32,7 @@ The industry got the channel right. What it missed was the reason for choosing t
 
 ## A digital front door is not a reason to enter
 
-<p class="fd-deck">Access was the problem the industry solved. Preference is the one it did not.</p>
+<p class="fd-deck">The industry solved access. Preference is still open.</p>
 
 Digital account opening answered a real question: can I open this account from my phone? A bank that required paperwork, signatures and a branch visit was putting obvious friction between itself and people accustomed to doing things from a screen.
 
@@ -60,7 +60,7 @@ Ask a community bank executive about the mobile experience and the answer is usu
 
 <figure class="fd-stat" data-fd="stat" data-value="19" data-of="20"><div class="fd-stat-head"><span class="fd-stat-num">95%</span><span class="fd-stat-label">of consumers rate their bank’s online and mobile experience good, very good or excellent.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">ABA and Morning Consult, 2025 Preferred Banking Methods survey, 4,403 U.S. adults.</figcaption></figure>
 
-Both things can be true and still leave the competitive question unanswered. In the ABA survey, 95% of consumers rated their bank's online and mobile experience as good, very good or excellent.[^2] When nearly everyone's customers say the same thing, "ours works fine" is not a competitive position.
+Both things can be true and still leave the competitive question unanswered. In the ABA survey, nearly everyone rated their bank's online and mobile experience as good, very good or excellent.[^2] When nearly everyone's customers say the same thing, "ours works fine" is not a competitive position.
 
 A five-star review might mean the customer checked a balance, deposited a check and moved $200 without anything breaking. Those are real accomplishments. They are also a long way from evidence that somebody would switch banks to get the experience. App-store ratings can become retention metrics masquerading as competitive metrics.
 
@@ -300,7 +300,7 @@ No individual executive needs to be making a bad decision. The failure happens b
 
 <figure class="fd-stat" data-fd="stat" data-value="34" data-of="100"><div class="fd-stat-head"><span class="fd-stat-num">34%</span><span class="fd-stat-label">of activated new checking customers went inactive or left within their first year, by the institutions’ own estimate.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">Digital Banking Report for Pinwheel, The Power of Primacy, March 2024.</figcaption></figure>
 
-In March 2024 research published in *The Power of Primacy*, financial institutions estimated that 34% of activated new customers became inactive or churned within their first year. The report also presented an estimated direct-deposit penetration rate of 55%.[^11] These were institution-reported estimates, not an audit of individual account histories. They are useful here because they distinguish an account opened from a relationship established.
+In March 2024 research published in *The Power of Primacy*, financial institutions estimated that a third of activated new customers became inactive or churned within their first year. The report also presented an estimated direct-deposit penetration rate of 55%.[^11] These were institution-reported estimates, not an audit of individual account histories. They are useful here because they distinguish an account opened from a relationship established.
 
 <blockquote class="fd-pq"><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>
 
@@ -345,7 +345,7 @@ The photography gets younger. The palette gets brighter. Someone wants TikTok. T
 
 The problem was never age. A bank should not be embarrassed that it has existed for a century. Longevity signals stability, and stability matters when someone is deciding where to send a paycheck. The problem is confusing looking young with understanding someone who is young.
 
-Modern is not the same as young. Authentic is not the same as casual. Customer-centric does not mean putting younger customers in the ads.
+Modern is not the same as young. Customer-centric does not mean putting younger customers in the ads.
 
 
 ## What if the bank actually used all of its advantages?
