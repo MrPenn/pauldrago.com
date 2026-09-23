@@ -142,3 +142,20 @@ export function paceScenarios(ramp: Ramp) {
     summarize('Faster', AGGRESSIVE),
   ];
 }
+
+// The hypothetical bank's own figures, for the brief's capital, earnings, and return lines. These are
+// illustrative inputs, labelled as such wherever they appear.
+export const BANK = { tier1: 200_000, pretaxIncome: 25_000, hurdle: 0.1 }; // $ thousands; hurdle is pre-tax
+
+// Pre-tax return on a pace over the ten-year horizon: yearly cash (operating, marketing, build-out)
+// plus a terminal value of year-10 earnings held flat, discounted at the hurdle rate.
+export function returns(run: ReturnType<typeof runSites>, rate = BANK.hurdle) {
+  const flows = run.operating.map((o, i) => o + run.marketing[i] + run.buildOut[i]);
+  const last = run.operating[run.operating.length - 1];
+  const withTerminal = flows.map((f, i) => (i === flows.length - 1 ? f + last / rate : f));
+  const npvAt = (r: number) => withTerminal.reduce((s, f, i) => s + f / (1 + r) ** (i + 1), 0);
+  let lo = -0.5, hi = 1;
+  for (let k = 0; k < 100; k++) { const mid = (lo + hi) / 2; if (npvAt(mid) > 0) lo = mid; else hi = mid; }
+  const npv10 = flows.reduce((s, f, i) => s + f / (1 + rate) ** (i + 1), 0);
+  return { npv: npvAt(rate), irr: (lo + hi) / 2, npv10 };
+}

@@ -9,7 +9,7 @@ import data from '../../data/dfw-markets.json';
 import signals from '../../data/dfw-signals.json';
 import mapData from '../../data/dfw-map.json';
 import { INSTITUTION, PRESETS, scoreMarkets } from '../../data/market-scoring';
-import { TAGS, PLAN, REVIEW_SITES, PICKING_TAGS, YEARS, HORIZON, LAUNCH_MARKETING, tagsFor, planModel, paceScenarios, runSites } from '../../data/branch-plan';
+import { TAGS, PLAN, REVIEW_SITES, PICKING_TAGS, YEARS, HORIZON, LAUNCH_MARKETING, BANK, tagsFor, planModel, paceScenarios, runSites, returns } from '../../data/branch-plan';
 
 const SITE = 'https://pauldrago.com';
 const path = '/branch-market-expansion-analysis/sample-plan';
@@ -83,6 +83,12 @@ const paces = paceScenarios(ramp);
 const [planPace, fasterPace] = paces;
 const bottomQuarter10 = (sites) => runSites(ramp, sites, HORIZON, 'p25').cumulative[HORIZON.length - 1];
 const launchTotal = LAUNCH_MARKETING.reduce((a, b) => a + b, 0);
+const planReturn = returns(planPace.run);
+const earningsEffect = model.operating.map((o, i) => o + model.marketing[i]);
+const worstEarnings = Math.min(...earningsEffect);
+const worstEarningsYear = YEARS[earningsEffect.indexOf(worstEarnings)];
+const share = (v, base) => `${((Math.abs(v) / base) * 100).toFixed(1)}%`;
+const exitAge = 4;
 const [first, second, third] = PLAN.map((b) => town(b.site));
 // Distance between the first and third sites, from the map's projected town points.
 const kaufmanMap = mapData.counties.find((c) => c.county === 'Kaufman');
@@ -120,35 +126,22 @@ const SOURCES = {
     <p class="sample-banner">Sample deliverable. The bank is hypothetical; every market figure comes from public data and can be checked. <a href="/branch-market-expansion-analysis">About this analysis</a></p>
 
     <div class="report-cover">
+      <p class="report-status"><strong>For decision</strong><span>Board meeting, October 2026</span><span>Owner: Chief Banking Officer</span></p>
       <h1 class="display-title report-title">Five-year branch plan: Kaufman and Ellis counties</h1>
-      <p class="report-meta">Prepared for the board of {INSTITUTION.description}. Prepared by Paul Drago, Glass Vase, LLC. Data as of {signals.asOf}.</p>
+      <p class="report-meta">Prepared by Paul Drago, Glass Vase, LLC, for the board of {INSTITUTION.description}. Reviewed by the CFO, chief credit officer, CRA and fair-lending officer, and chief risk officer. Data as of {signals.asOf}.</p>
     </div>
 
     <section class="report-brief" aria-label="Two-page brief">
-      <section class="brief-block" id="recommendation" aria-labelledby="recommendation-h">
-        <h2 class="brief-h2" id="recommendation-h">Recommendation</h2>
-        <p class="report-lede">Open three branches where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 once {first.town} is on plan. The network covers its running cost from year {model.firstPositiveYear} and earns back the build-out in year {planPace.paybackYear}. In Kaufman, the planned branches reach low- or moderate-income and majority-minority neighborhoods; in Ellis, Midlothian doesn't, so decision 4 commits lending there (<a href="#cra">appendix D</a>).</p>
+      <section class="brief-block" id="recommendation" aria-labelledby="ask-h">
+        <h2 class="brief-h2" id="ask-h">The board is asked to approve</h2>
+        <p class="report-lede">{mUSD(firstTwoBuild * 1000)} to open branches in {first.town} (year 1) and {second.town} (year 2), with ${num(2 * launchTotal)}K of launch marketing, and {third.town} in principle for year 3 if {first.town} holds ${gate}M in deposits at the end of year 2.</p>
+        <p class="report-p brief-why">These are the towns where deposits and business are both growing and community banks still win deposits, which is the strategic plan's case for growing outside Dallas County. The network covers its running cost from year {model.firstPositiveYear} and earns back the build-out in year {planPace.paybackYear}. In Kaufman, the branches reach low- or moderate-income and majority-minority neighborhoods; in Ellis, Midlothian doesn't, so the plan commits lending there.</p>
         <dl class="report-figures">
-          <div><dt>Build-out</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">{PLAN.length} branches at ${ramp.buildOut}M each, plus launch marketing</span></dd></div>
-          <div><dt>Covers its running cost</dt><dd><span class="report-figure">Year {model.firstPositiveYear}</span><span class="report-figure-note">the network, if each branch follows the median ramp</span></dd></div>
-          <div><dt>Still to earn back, end of year 5</dt><dd><span class="report-figure">{mUSD(model.cumulative[4])}</span><span class="report-figure-note">with the network returning {mUSD(model.operating[4])} a year</span></dd></div>
-          <div><dt>New branches failing at year 5</dt><dd><span class="report-figure">{pct(failing(age(5)))}</span><span class="report-figure-note">closed or not yet covering running cost</span></dd></div>
+          <div><dt>Capital</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">build-out, {share(model.totalBuildOut * 1000, BANK.tier1)} of Tier 1 capital; peak need {mUSD(-planPace.peak)} in year {planPace.peakYear}</span></dd></div>
+          <div><dt>Earnings</dt><dd><span class="report-figure">{tUSD(worstEarnings)}</span><span class="report-figure-note">pre-tax in year {worstEarningsYear}, the worst year ({share(worstEarnings, BANK.pretaxIncome)} of pre-tax income); positive from year {model.firstPositiveYear}</span></dd></div>
+          <div><dt>Return</dt><dd><span class="report-figure">{Math.round(planReturn.irr * 100)}% IRR</span><span class="report-figure-note">NPV {mUSD(planReturn.npv)} at a {Math.round(BANK.hurdle * 100)}% hurdle if year-10 earnings continue; about even on ten years alone</span></dd></div>
+          <div><dt>Payback</dt><dd><span class="report-figure">Year {planPace.paybackYear}</span><span class="report-figure-note">cumulative, including build-out and marketing</span></dd></div>
         </dl>
-      </section>
-
-      <section class="brief-block" aria-labelledby="decisions-h">
-        <h2 class="brief-h2" id="decisions-h">The board is asked to</h2>
-        <ol class="report-decisions">
-          <li><strong>Approve {first.town} and {second.town}:</strong> {mUSD(firstTwoBuild * 1000)} of build-out, opening in years 1 and 2.</li>
-          <li><strong>Approve {third.town} in principle,</strong> released if {first.town} holds ${gate}M at the end of year 2, the median for a branch that age.</li>
-          <li><strong>Measure each branch every June</strong> against its planned ramp, and decide {REVIEW_SITES.join(' and ')} at the year 5 review.</li>
-          <li><strong>Commit to lending in low- or moderate-income tracts</strong> around Waxahachie and Ennis from year 2, and confirm how the final CRA rule applies to our charter.</li>
-        </ol>
-      </section>
-
-
-      <section class="brief-block" id="economics-brief" aria-labelledby="econ-h">
-        <h2 class="brief-h2" id="econ-h">The economics</h2>
         <div class="market-table-wrap">
           <table class="market-table plan-network brief-econ">
             <caption class="sr-only">Network contribution by year under the plan</caption>
@@ -161,33 +154,79 @@ const SOURCES = {
             </tbody>
           </table>
         </div>
-        <h3 class="brief-h3">Going faster pays back in the same year and puts {mUSD(planPace.peak - fasterPace.peak)} more at risk</h3>
+        <p class="brief-note">Pre-tax, on the median Dallas-Fort Worth ramp for new branches at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each; fee income and overhead left out. Liquidity: the build-out is paid from cash, and the branches add about ${num(planPace.deposits10)}M of deposits by year 10. Capital and income are illustrative for a $2 billion bank: ${num(BANK.tier1 / 1000)}M of Tier 1 capital and ${num(BANK.pretaxIncome / 1000)}M of pre-tax income (<a href="#economics">appendix E</a>).</p>
+      </section>
+
+      <section class="brief-block" aria-labelledby="options-h">
+        <h2 class="brief-h2" id="options-h">Options considered</h2>
         <div class="market-table-wrap">
-          <table class="market-table brief-pace">
-            <caption class="sr-only">Two paces compared over ten years</caption>
-            <thead><tr><th scope="col">Over ten years</th><th scope="col">Branches</th><th scope="col">Peak capital</th><th scope="col">Pays back</th><th scope="col">Year 10 earnings</th><th scope="col">Deposits, year 10</th></tr></thead>
+          <table class="market-table brief-options">
+            <caption class="sr-only">Options considered</caption>
             <tbody>
-              {paces.map((p) => (
-                <tr class:list={[{ 'is-plan': p.label === 'The plan' }]}>
-                  <th scope="row">{p.label}</th>
-                  <td>{p.by10}{p.by5 !== p.by10 ? ` (${p.by5} by year 5)` : ` by year ${Math.max(...p.sites.map((x) => x.opens))}`}</td>
-                  <td>{mUSD(-p.peak)}</td>
-                  <td>{p.paybackYear ? `Year ${p.paybackYear}` : 'After year 10'}</td>
-                  <td>{mUSD(p.year10)} a year</td>
-                  <td>${num(p.deposits10)}M</td>
-                </tr>
-              ))}
+              <tr class="is-plan"><th scope="row">The plan, recommended</th><td>{planPace.by10} branches; peak need {mUSD(-planPace.peak)}; pays back in year {planPace.paybackYear}; {mUSD(planPace.year10)} a year by year 10.</td></tr>
+              <tr><th scope="row">Faster</th><td>{fasterPace.by10} branches by year 3; peak need {mUSD(-fasterPace.peak)}; same payback year; {mUSD(fasterPace.year10)} a year by year 10. Not recommended: {mUSD(planPace.peak - fasterPace.peak)} more at risk while {pct(failing(age(5)))} of new branches fail.</td></tr>
+              <tr><th scope="row">Loan production office first</th><td>Lenders in the market for less than a branch costs, but an office like this can't take deposits, and deposits are the case for going. Worth weighing for Terrell at the review.</td></tr>
+              <tr><th scope="row">Acquisition</th><td>Several small banks already have branches in these counties. Buying one brings deposits on day one, at a premium; not modelled here, and it needs its own analysis.</td></tr>
+              <tr><th scope="row">Do nothing</th><td>No capital at risk, while deposits in the two counties grew {pct(Kaufman.depositGrowthPct)} and {pct(Ellis.depositGrowthPct)} over five years without the bank.</td></tr>
             </tbody>
           </table>
         </div>
-        <p class="brief-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one); the {third.town} gate and the year 5 review limit that exposure (<a href="#economics">appendix E</a>).</p>
       </section>
+
 
       <div class="brief-page-two">
         <CountyMaps />
 
-        <section class="brief-block" id="plan" aria-labelledby="plan-h">
-          <h2 class="brief-h2" id="plan-h">The plan</h2>
+        <section class="brief-block" aria-labelledby="gates-h">
+          <h2 class="brief-h2" id="gates-h">Gates, reporting and exit</h2>
+          <ul class="report-risks brief-risks">
+            <li><strong>Gate.</strong> {third.town} is released only if {first.town} holds ${gate}M in deposits at the end of year 2.</li>
+            <li><strong>Reporting.</strong> Each branch against its planned ramp every June. {REVIEW_SITES.join(' and ')} are decided at the year 5 review, on actual results.</li>
+            <li><strong>Exit.</strong> A branch below ${ramp.breakeven}M, where it covers its running cost, at the end of year {exitAge} comes back to the board with a consolidate-or-continue recommendation.</li>
+          </ul>
+        </section>
+
+        <section class="brief-block" aria-labelledby="risks-brief-h">
+          <h2 class="brief-h2" id="risks-brief-h">Risks and how they are handled</h2>
+          <ul class="report-risks brief-risks">
+            <li><strong>Slow ramps.</strong> {pct(failing(age(5)))} of new branches in the metro were closed or not covering running cost at year 5. If all three ramp like the bottom quarter, the plan never pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10). Handled by the gate and the exit rule.</li>
+            <li><strong>The incumbent.</strong> {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits{third.largestBank === incumbent.bank ? ` and ${pct(third.largestBankShare)} of ${third.town}'s` : ''}. Handled by hiring lenders who know its customers before {third.town} opens.</li>
+            <li><strong>{first.town} and {third.town} overlap.</strong> They are about {siteGap} miles apart. Handled by siting {third.town} southwest of town, toward the growth.</li>
+            <li><strong>Fair lending in Ellis.</strong> No one within five miles of {second.town} lives in a low- or moderate-income tract. Handled by the lending commitment around Waxahachie and Ennis from year 2.</li>
+            <li><strong>The CRA rule.</strong> The plan assumes the OCC and FDIC proposal is final. If it isn't, or the bank is supervised by the Federal Reserve, a $2 billion bank stays a large bank and Waxahachie moves ahead of {third.town}.</li>
+          </ul>
+        </section>
+
+
+        <section class="brief-block" aria-labelledby="reg-h">
+          <h2 class="brief-h2" id="reg-h">Regulatory path</h2>
+          <p class="report-p brief-p">Each branch needs a regulator's approval. Since February 27, 2026, the FDIC expedites branch applications from well-capitalized banks rated 1 or 2 with a Satisfactory CRA rating, without public notice; the OCC can waive notice for banks rated Satisfactory. File for {first.town} once the site is under contract.</p>
+        </section>
+
+        <div class="brief-resolution">
+          <p class="brief-h2">Draft resolution</p>
+          <p>Resolved, that the board approves branches in {first.town} and {second.town} with capital spending of up to {mUSD(firstTwoBuild * 1000)} and launch marketing of up to ${num(2 * launchTotal)}K; approves a branch in {third.town} in principle, to be released by the board if the {first.town} branch holds ${gate}M in deposits at the end of its second year; and authorizes management to file the required applications.</p>
+        </div>
+
+        <nav class="brief-appendix" aria-label="Appendix">
+          <p><strong>Appendix:</strong> <a href="#markets">A. Why Kaufman and Ellis</a>, <a href="#sites">B. Why these towns</a>, <a href="#pipeline">C. What's coming</a>, <a href="#cra">D. CRA and fair lending</a>, <a href="#economics">E. Economics</a>, <a href="#risks">F. Other risks and questions</a>, <a href="#methods">G. Methods and sources</a>.</p>
+        </nav>
+      </div>
+    </section>
+
+
+    <div class="appendix-divider" aria-hidden="true"><span>Appendix</span></div>
+
+    <section class="report-section report-appendix" id="markets" aria-labelledby="markets-h">
+      <h2 class="report-h2" id="markets-h"><span>A</span> Why Kaufman and Ellis</h2>
+      <p class="report-p">Weighted on deposit size, income, and deposit growth, {mapView[0].county} ranks first. Weighted on where the market is going and who wins its deposits, the order is {fullCase.map((r) => `${r.county} (${r.score})`).join(', ')}. Collin is the bigger prize, but it is the largest banks' market: {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of it, and community banks captured {money(Collin.communityGrowth)} of its {money(Collin.depositGrowth)} deposit growth since 2021. In Kaufman, community banks hold {pct(Kaufman.communityShare)} of deposits and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M. In Ellis, {pct(Ellis.communityShare)}.</p>
+      <MarketTable />
+    </section>
+
+    <section class="report-section report-appendix" id="sites" aria-labelledby="sites-h">
+      <h2 class="report-h2" id="sites-h"><span>B</span> Why these towns</h2>
+        <div class="appendix-plan">
+          <h3 class="report-h3" id="plan">The sequence</h3>
           <div class="market-table-wrap">
             <table class="market-table report-plan-table">
               <caption class="sr-only">The branch sequence</caption>
@@ -200,33 +239,7 @@ const SOURCES = {
               </tbody>
             </table>
           </div>
-        </section>
-
-        <section class="brief-block" aria-labelledby="change-h">
-          <h2 class="brief-h2" id="change-h">What would change it</h2>
-          <ul class="report-risks brief-risks">
-            <li><strong>Slow ramps.</strong> Only {pct(age(5).atTargetShare)} of new branches in the metro hold ${ramp.target}M at year 5. If {first.town} misses ${gate}M at year 2, the {third.town} gate stops the plan at two branches.</li>
-            <li><strong>A different CRA outcome.</strong> If the proposal isn't finalized as written, or the bank is supervised by the Federal Reserve, a $2 billion bank is a large bank and Waxahachie moves ahead of {third.town}.</li>
-            <li><strong>{first.town} and {third.town} overlap.</strong> They are about {siteGap} miles apart. Site {third.town} southwest of town, toward the growth along the Dallas County line.</li>
-          </ul>
-        </section>
-
-        <nav class="brief-appendix" aria-label="Appendix">
-          <p><strong>Appendix:</strong> <a href="#markets">A. Why Kaufman and Ellis</a>, <a href="#sites">B. Why these towns</a>, <a href="#pipeline">C. What's coming</a>, <a href="#cra">D. CRA and fair lending</a>, <a href="#economics">E. Economics</a>, <a href="#risks">F. Other risks and questions</a>, <a href="#methods">G. Methods and sources</a>.</p>
-        </nav>
-      </div>
-    </section>
-
-    <div class="appendix-divider" aria-hidden="true"><span>Appendix</span></div>
-
-    <section class="report-section report-appendix" id="markets" aria-labelledby="markets-h">
-      <h2 class="report-h2" id="markets-h"><span>A</span> Why Kaufman and Ellis</h2>
-      <p class="report-p">Weighted on deposit size, income, and deposit growth, {mapView[0].county} ranks first. Weighted on where the market is going and who wins its deposits, the order is {fullCase.map((r) => `${r.county} (${r.score})`).join(', ')}. Collin is the bigger prize, but it is the largest banks' market: {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of it, and community banks captured {money(Collin.communityGrowth)} of its {money(Collin.depositGrowth)} deposit growth since 2021. In Kaufman, community banks hold {pct(Kaufman.communityShare)} of deposits and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M. In Ellis, {pct(Ellis.communityShare)}.</p>
-      <MarketTable />
-    </section>
-
-    <section class="report-section report-appendix" id="sites" aria-labelledby="sites-h">
-      <h2 class="report-h2" id="sites-h"><span>B</span> Why these towns</h2>
+        </div>
       <p class="report-p">Each candidate town is tagged for what a branch there would do. Deposits and Business pick the sites; the CRA tag, dashed, is the check the network has to pass (appendix D).</p>
       <ul class="report-rules">
         {TAGS.map((t) => <li><span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t.key) }]}>{t.label}</span> {t.rule}.</li>)}
@@ -339,6 +352,27 @@ const SOURCES = {
         </div>
       </div>
 
+        <h3 class="report-h3">Going faster pays back in the same year and puts {mUSD(planPace.peak - fasterPace.peak)} more at risk</h3>
+        <div class="market-table-wrap">
+          <table class="market-table brief-pace">
+            <caption class="sr-only">Two paces compared over ten years</caption>
+            <thead><tr><th scope="col">Over ten years</th><th scope="col">Branches</th><th scope="col">Peak capital</th><th scope="col">Pays back</th><th scope="col">Year 10 earnings</th><th scope="col">Deposits, year 10</th></tr></thead>
+            <tbody>
+              {paces.map((p) => (
+                <tr class:list={[{ 'is-plan': p.label === 'The plan' }]}>
+                  <th scope="row">{p.label}</th>
+                  <td>{p.by10}{p.by5 !== p.by10 ? ` (${p.by5} by year 5)` : ` by year ${Math.max(...p.sites.map((x) => x.opens))}`}</td>
+                  <td>{mUSD(-p.peak)}</td>
+                  <td>{p.paybackYear ? `Year ${p.paybackYear}` : 'After year 10'}</td>
+                  <td>{mUSD(p.year10)} a year</td>
+                  <td>${num(p.deposits10)}M</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="market-table-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one); the {third.town} gate and the year 5 review limit that exposure (<a href="#economics">appendix E</a>).</p>
+
       <h3 class="report-h3">A branch turns positive in its third year and earns about {mUSD(model.expected[0].byYear[4].contribution)} a year by its fifth</h3>
       <div class="market-table-wrap">
         <table class="market-table plan-network">
@@ -394,6 +428,7 @@ const SOURCES = {
         <li><a href="https://www.census.gov/programs-surveys/popest.html">Census Bureau population estimates</a> and the <a href="https://www.census.gov/programs-surveys/acs">American Community Survey</a>: population growth, households, and median household income.</li>
         <li><a href="https://www.census.gov/programs-surveys/cbp.html">Census ZIP Code Business Patterns</a>: establishments and employment by town, 2019 and 2023.</li>
         <li><a href="https://ffiec.cfpb.gov/data-browser/">HMDA data (CFPB)</a>: FFIEC tract income and minority data, and home-purchase lending by tract. Branches placed in tracts with the <a href="https://geocoding.geo.census.gov/">Census geocoder</a>.</li>
+        <li>Branch applications: <a href="https://www.fdic.gov/board/federal-register-notice-branch-final-rule.pdf">FDIC final rule, effective February 27, 2026</a>; <a href="https://www.law.cornell.edu/cfr/text/12/5.30">12 CFR 5.30 (OCC)</a>; <a href="https://www.fdic.gov/regulations/applications/resources/apps-proc-manual/section-07-establishdomesticbranch.pdf">FDIC Applications Procedures Manual, section 7</a>. Board reporting: <a href="https://www.occ.gov/publications-and-resources/publications/banker-education/files/pub-directors-reference-guide.pdf">OCC Director's Reference Guide to Board Reports</a>; <a href="https://www.occ.gov/news-issuances/bulletins/2017/bulletin-2017-43.html">OCC Bulletin 2017-43</a>.</li>
         <li>CRA rules: <a href="https://www.fdic.gov/news/press-releases/2026/agencies-issue-joint-proposal-amending-community-reinvestment-act-rules">FDIC and OCC proposal, July 31, 2026</a>; <a href="https://www.federalregister.gov/documents/2026/08/12/2026-16454/community-reinvestment-act-regulations">Federal Register, August 12, 2026</a>; <a href="https://www.federalreserve.gov/newsevents/pressreleases/bcreg20251230a.htm">2026 asset-size thresholds</a>.</li>
         <li>Branch economics: <a href={SOURCES.qbp.href}>{SOURCES.qbp.text}</a>; <a href={SOURCES.ab.href}>{SOURCES.ab.text}</a>; <a href={SOURCES.be.href}>{SOURCES.be.text}</a>; <a href={SOURCES.bam.href}>{SOURCES.bam.text}</a>; <a href={SOURCES.fed.href}>{SOURCES.fed.text}</a>.</li>
       </ul>
