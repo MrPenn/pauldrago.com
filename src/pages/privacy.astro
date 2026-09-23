@@ -1,0 +1,301 @@
+---
+import Base from '../layouts/Base.astro';
+
+// Lucide icons (ISC license), inlined.
+const icons = {
+  'user-round': '<circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/>',
+  'eye': '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
+  'database': '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/>',
+  'target': '<circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/>',
+  'sliders-horizontal': '<line x1="21" x2="14" y1="4" y2="4"/><line x1="10" x2="3" y1="4" y2="4"/><line x1="21" x2="12" y1="12" y2="12"/><line x1="8" x2="3" y1="12" y2="12"/><line x1="21" x2="16" y1="20" y2="20"/><line x1="12" x2="3" y1="20" y2="20"/><line x1="14" x2="14" y1="2" y2="6"/><line x1="8" x2="8" y1="10" y2="14"/><line x1="16" x2="16" y1="18" y2="22"/>',
+  'lock': '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+  'globe': '<circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/>',
+  'clock': '<circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>',
+  'users': '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+  'cookie': '<path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01"/><path d="M16 15.5v.01"/><path d="M12 12v.01"/><path d="M11 17v.01"/><path d="M7 14v.01"/>',
+  'mail': '<rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>',
+  'monitor': '<rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/>',
+  'hand': '<path d="M18 11V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>',
+};
+
+// When information is collected: each situation, and whether you give it, the site collects it, or both.
+const moments = [
+  { label: 'You read any page on this site', give: false, auto: true },
+  { label: 'You accept analytics cookies', give: false, auto: true },
+  { label: 'You book a call', give: true, auto: false },
+  { label: 'You email me', give: true, auto: false },
+];
+const how = (m) => [m.give && 'you give it', m.auto && 'collected automatically'].filter(Boolean).join(' and ');
+
+// The full notice, in order. The contents list and section headings are built from this.
+const sections = [
+  { id: 'role', icon: 'user-round', title: 'Who is responsible' },
+  { id: 'when', icon: 'eye', title: 'When information is collected' },
+  { id: 'types', icon: 'database', title: 'What is collected' },
+  { id: 'why', icon: 'target', title: 'How and why it is used' },
+  { id: 'rights', icon: 'sliders-horizontal', title: 'Your choices and rights' },
+  { id: 'security', icon: 'lock', title: 'How it is kept secure' },
+  { id: 'where', icon: 'globe', title: 'Where it is stored' },
+  { id: 'retention', icon: 'clock', title: 'How long it is kept' },
+  { id: 'processors', icon: 'users', title: 'Services that process it' },
+  { id: 'cookies', icon: 'cookie', title: 'Cookies' },
+  { id: 'changes', icon: 'mail', title: 'Questions and changes' },
+];
+const section = Object.fromEntries(sections.map((s) => [s.id, s]));
+---
+<Base
+  title="Privacy Notice | Paul Drago"
+  description="How pauldrago.com uses analytics, cookies, and the information you send, at a glance and in full."
+  path="/privacy"
+  variant="articles"
+  subline="Privacy"
+  footerNote="Financial services marketing, market analysis, and executive leadership."
+  stylesheets={['/assets/personal-site.css', '/assets/privacy.css']}
+  lastUpdated="2026-09-23"
+>
+<main id="main" class="privacy-page">
+  <div class="container">
+    <header class="privacy-header">
+      <h1 class="display-title privacy-title">Privacy notice.</h1>
+      <p class="privacy-intro">How this site handles your information, first at a glance and then in full.</p>
+      <p class="privacy-updated">Last updated <time datetime="2026-09-23">September 23, 2026</time></p>
+    </header>
+
+    <section class="glance" aria-labelledby="glance-heading">
+      <h2 class="glance-heading" id="glance-heading">Your privacy at a glance</h2>
+      <p class="glance-intro">Hello. This site is run by Glass Vase, LLC, Paul Drago's advisory company. Here's a summary of how your information is handled and your privacy respected.</p>
+      <div class="glance-columns">
+        <div class="glance-column">
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['database']} />What is collected</h3>
+              <a href="#types">Tell me why</a>
+            </div>
+            <ul>
+              <li>How pages on this site are used</li>
+              <li>Details you enter when booking a call</li>
+              <li>Emails you send me</li>
+            </ul>
+          </div>
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['target']} />How it is used</h3>
+              <a href="#why">How exactly?</a>
+            </div>
+            <ul>
+              <li>To see which writing is useful and improve the site</li>
+              <li>To arrange and hold meetings you book</li>
+              <li>To reply to you</li>
+            </ul>
+          </div>
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['users']} />Services that process it</h3>
+              <a href="#processors">What do they do?</a>
+            </div>
+            <p>These services help run the site by processing information on its behalf:</p>
+            <ul>
+              <li>Analytics: PostHog</li>
+              <li>Scheduling: Cal.com</li>
+              <li>Hosting: Cloudflare</li>
+            </ul>
+          </div>
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['cookie']} />Cookies</h3>
+              <a href="#cookies">How can I choose?</a>
+            </div>
+            <ul>
+              <li>Visits are counted without cookies by default</li>
+              <li>Analytics cookies are used only if you accept them</li>
+              <li>Your browser's Global Privacy Control signal is honoured</li>
+              <li>No advertising cookies, ever</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="glance-column">
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['eye']} />When information is collected</h3>
+              <a href="#when">Am I included?</a>
+            </div>
+            <p>Information comes from people who visit this site, book a call, or write to me, when...</p>
+            <div class="timeline">
+              <div class="timeline-head" aria-hidden="true">
+                <span class="timeline-key timeline-key-give"><svg class="privacy-icon" viewBox="0 0 24 24" set:html={icons['user-round']} />Data you give</span>
+                <span class="timeline-key timeline-key-auto"><svg class="privacy-icon" viewBox="0 0 24 24" set:html={icons['monitor']} />Data collected</span>
+              </div>
+              <ul class="timeline-rows">
+                {moments.map((m) => (
+                  <li class="timeline-row">
+                    <span class:list={['timeline-track', 'timeline-track-give', { 'is-on': m.give }]} aria-hidden="true"></span>
+                    <span class:list={['timeline-track', 'timeline-track-auto', { 'is-on': m.auto }]} aria-hidden="true"></span>
+                    <span class="timeline-label">{m.label}<span class="sr-only">: {how(m)}</span></span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div class="glance-item">
+            <div class="glance-item-head">
+              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['hand']} />Know your rights</h3>
+              <a href="#rights">What can I do?</a>
+            </div>
+            <ul>
+              <li>Change your cookie choice at any time</li>
+              <li>Ask what information is held about you</li>
+              <li>Have it corrected or deleted</li>
+              <li>Take a copy of it with you</li>
+              <li>Complain about how it is handled</li>
+            </ul>
+          </div>
+          <p class="glance-contact">Any concerns about your privacy? Email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>.</p>
+        </div>
+      </div>
+      <a class="glance-cta" href="#role">Read the full notice <span>(no legalese, promise)</span></a>
+    </section>
+
+    <div class="privacy-columns">
+      <nav class="privacy-toc" aria-label="Privacy notice contents">
+        <p class="privacy-toc-label">In full</p>
+        <ol>
+          {sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
+        </ol>
+      </nav>
+
+      <div class="privacy-full">
+        <section class="privacy-section" id="role" aria-labelledby="role-heading">
+          <h2 id="role-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.role.icon]} />{section.role.title}</h2>
+          <p class="privacy-summary">Glass Vase, LLC, the company through which Paul Drago provides advisory services, is responsible for the information this site collects and is the data controller for it where data protection law applies. You can reach us at <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>.</p>
+          <details>
+            <summary>More detail</summary>
+            <p>This notice covers pauldrago.com and the booking and email links on it. It applies to anyone who visits the site, books a call, or writes to me. If we go on to work together, our engagement terms may say more about how client information is handled.</p>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="when" aria-labelledby="when-heading">
+          <h2 id="when-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.when.icon]} />{section.when.title}</h2>
+          <p class="privacy-summary">Some information you give me directly. Some is collected automatically as you use the site.</p>
+          <details>
+            <summary>More detail</summary>
+            <ul>
+              {moments.map((m) => <li><strong>{m.label}:</strong> {how(m)}.</li>)}
+            </ul>
+            <p>If you only read the site and decline analytics cookies, all that is collected is an anonymous visit count.</p>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="types" aria-labelledby="types-heading">
+          <h2 id="types-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.types.icon]} />{section.types.title}</h2>
+          <p class="privacy-summary">Usage of the site, plus whatever you choose to send me when you book or write.</p>
+          <details>
+            <summary>More detail</summary>
+            <ul>
+              <li><strong>Site usage:</strong> pages viewed, links and buttons clicked, how far a page is scrolled, the site that referred you, and your device, browser, and approximate location derived from your IP address.</li>
+              <li><strong>With analytics cookies accepted:</strong> an identifier that recognises a return visit, heatmaps of where people click, and session recordings of how pages are used. Text typed into form fields is masked in recordings.</li>
+              <li><strong>Bookings:</strong> your name, email address, the time you choose, and any notes you add.</li>
+              <li><strong>Email:</strong> your address and whatever your message contains.</li>
+            </ul>
+            <p>The site does not ask for, and I do not want, sensitive information such as account numbers or customer data from your institution.</p>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="why" aria-labelledby="why-heading">
+          <h2 id="why-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.why.icon]} />{section.why.title}</h2>
+          <p class="privacy-summary">To improve the site, to hold the meetings you book, and to reply to you. Never for advertising, and never sold.</p>
+          <details>
+            <summary>More detail</summary>
+            <ul>
+              <li><strong>Measuring and improving the site.</strong> Cookie-free visit counts rely on my legitimate interest in knowing which pages are read. Analytics cookies, heatmaps, and recordings rely on your consent, which you can withdraw at any time.</li>
+              <li><strong>Arranging meetings.</strong> Booking details are used to schedule and hold the call you asked for.</li>
+              <li><strong>Correspondence.</strong> Emails are used to reply and to continue the conversation you started.</li>
+              <li><strong>Keeping the site running and secure.</strong> Technical request data is used to deliver the site and protect it from abuse.</li>
+            </ul>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="rights" aria-labelledby="rights-heading">
+          <h2 id="rights-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.rights.icon]} />{section.rights.title}</h2>
+          <p class="privacy-summary">You can change your cookie choices at any time, and you can ask me what information I hold about you, correct it, or have it deleted.</p>
+          <details>
+            <summary>More detail</summary>
+            <ul>
+              <li><strong>Cookies:</strong> use <button type="button" class="footer-link-button" data-cc="show-preferencesModal">Cookie settings</button> (also in the footer of every page), turn on Global Privacy Control in your browser, or block cookies in your browser.</li>
+              <li><strong>Access, correction, and deletion:</strong> email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> and I will respond within 30 days.</li>
+              <li><strong>Objection and portability:</strong> depending on where you live, you may also object to processing or ask for a copy of your data in a portable format.</li>
+              <li><strong>Complaints:</strong> if you are in the UK or EU and are unhappy with how your data is handled, you can complain to your local data protection authority.</li>
+            </ul>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="security" aria-labelledby="security-heading">
+          <h2 id="security-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.security.icon]} />{section.security.title}</h2>
+          <p class="privacy-summary">Everything travels over encrypted connections, and the site collects as little as it can.</p>
+          <details>
+            <summary>More detail</summary>
+            <p>The site is served only over HTTPS. Analytics requests go through pauldrago.com rather than directly to a third party, and cookies are not set until you allow them. No system is perfectly secure, but the services below are established providers with their own security programmes.</p>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="where" aria-labelledby="where-heading">
+          <h2 id="where-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.where.icon]} />{section.where.title}</h2>
+          <p class="privacy-summary">Mainly in the United States.</p>
+          <details>
+            <summary>More detail</summary>
+            <p>PostHog stores analytics data in the United States and Cal.com processes booking data in the United States. Cloudflare serves the site from data centres around the world. If you visit from the UK or EU, your information is transferred to the United States under the safeguards those providers offer, such as standard contractual clauses.</p>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="retention" aria-labelledby="retention-heading">
+          <h2 id="retention-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.retention.icon]} />{section.retention.title}</h2>
+          <p class="privacy-summary">Only as long as it is useful for the reason it was collected.</p>
+          <details>
+            <summary>More detail</summary>
+            <ul>
+              <li><strong>Analytics:</strong> kept under PostHog's retention settings for this site. Session recordings are deleted automatically after 30 days.</li>
+              <li><strong>Your cookie choice:</strong> remembered for six months, then you are asked again.</li>
+              <li><strong>Bookings and email:</strong> kept while we are in touch and for as long as needed for ordinary business records, then deleted.</li>
+            </ul>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="processors" aria-labelledby="processors-heading">
+          <h2 id="processors-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.processors.icon]} />{section.processors.title}</h2>
+          <p class="privacy-summary">Three services help run the site. None of them receives your information to sell it or advertise to you.</p>
+          <details>
+            <summary>More detail</summary>
+            <ul>
+              <li><strong><a href="https://posthog.com/privacy" target="_blank" rel="noopener noreferrer">PostHog</a></strong> measures how the site is used.</li>
+              <li><strong><a href="https://cal.com/privacy" target="_blank" rel="noopener noreferrer">Cal.com</a></strong> runs the booking scheduler and shares your booking with me. It may set its own cookies once you open the scheduler.</li>
+              <li><strong><a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener noreferrer">Cloudflare</a></strong> hosts the site and processes technical request data, such as IP addresses, to deliver and protect it.</li>
+            </ul>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="cookies" aria-labelledby="cookies-heading">
+          <h2 id="cookies-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.cookies.icon]} />{section.cookies.title}</h2>
+          <p class="privacy-summary">By default, visits are counted without cookies. Analytics cookies are used only if you accept them.</p>
+          <details>
+            <summary>More detail</summary>
+            <p>Without your consent, PostHog sets no cookies and stores nothing in your browser beyond a record of your choice. Visits are counted with an anonymous identifier calculated on PostHog's servers that changes daily and cannot recognise you over time.</p>
+            <ul>
+              <li><strong>cc_cookie</strong> and <strong>__ph_opt_in_out_*</strong> (strictly necessary): remember your cookie choice.</li>
+              <li><strong>ph_*</strong> (analytics, only if you accept): PostHog's visitor and session identifiers.</li>
+            </ul>
+            <p><strong>Browser privacy signals.</strong> If your browser sends a <a href="https://globalprivacycontrol.org" target="_blank" rel="noopener noreferrer">Global Privacy Control</a> signal, it is treated as declining analytics cookies and you are not asked. Browsers' older "Do Not Track" setting has no agreed standard, so the site relies on your cookie choice instead. The site does not allow third parties to track you across other websites.</p>
+            <p>Change your choice at any time with <button type="button" class="footer-link-button" data-cc="show-preferencesModal">Cookie settings</button>.</p>
+          </details>
+        </section>
+
+        <section class="privacy-section" id="changes" aria-labelledby="changes-heading">
+          <h2 id="changes-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.changes.icon]} />{section.changes.title}</h2>
+          <p class="privacy-summary">Email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> with any question. If this notice changes, the date at the top will change with it.</p>
+        </section>
+
+        <p class="privacy-credit">This privacy notice is based on an open-sourced design from <a href="https://juro.com" target="_blank" rel="noopener">Juro</a> and <a href="https://stefaniapassera.com" target="_blank" rel="noopener">Stefania Passera</a> - get your own <a href="https://info.juro.com/privacy-policy-template" target="_blank" rel="noopener">free privacy policy template</a>.</p>
+      </div>
+    </div>
+  </div>
+</main>
+</Base>

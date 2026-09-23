@@ -1,0 +1,142 @@
+---
+// Cookie consent (vanilla-cookieconsent v3). The banner decides whether PostHog may use cookies;
+// until a visitor accepts, PostHog runs cookieless (see posthog.astro).
+---
+<script>
+  // The banner is fixed-position and, like PostHog, loads on the first interaction or once the page
+  // has been idle for a second after load, so neither its script nor its styles compete with the
+  // first render. PostHog keeps its own record of a returning visitor's choice, so the wait never
+  // changes what is tracked.
+  let started = null;
+  let ready = false;
+  function startConsent() {
+    started ??= Promise.all([
+      import('vanilla-cookieconsent'),
+      import('vanilla-cookieconsent/dist/cookieconsent.css?inline'),
+    ]).then(([CookieConsent, css]) => runConsent(CookieConsent, css.default));
+    return started;
+  }
+
+  ['pointerdown', 'keydown', 'scroll', 'touchstart'].forEach((type) => {
+    window.addEventListener(type, () => startConsent(), { once: true, passive: true });
+  });
+  window.addEventListener('load', () => {
+    setTimeout(() => (window.requestIdleCallback || setTimeout)(startConsent), 1000);
+  }, { once: true });
+
+  // A "Cookie settings" click before the banner has loaded loads it, then opens the preferences.
+  document.addEventListener('click', (event) => {
+    if (ready || !(event.target instanceof Element) || !event.target.closest('[data-cc="show-preferencesModal"]')) return;
+    startConsent().then(() => import('vanilla-cookieconsent')).then((CookieConsent) => CookieConsent.showPreferences());
+  });
+
+  function runConsent(CookieConsent, baseCss) {
+    // Theme values come from the site's own tokens (both colour schemes).
+    const theme = `
+  #cc-main {
+    --cc-font-family: inherit;
+    --cc-modal-border-radius: 0;
+    --cc-btn-border-radius: 0;
+    --cc-bg: var(--dark-navy);
+    --cc-primary-color: var(--paper);
+    --cc-secondary-color: var(--secondary);
+    --cc-link-color: var(--brass);
+    --cc-btn-primary-bg: var(--brass);
+    --cc-btn-primary-color: var(--on-brass);
+    --cc-btn-primary-border-color: var(--brass);
+    --cc-btn-primary-hover-bg: var(--paper);
+    --cc-btn-primary-hover-color: var(--ground);
+    --cc-btn-primary-hover-border-color: var(--paper);
+    --cc-btn-secondary-bg: var(--panel);
+    --cc-btn-secondary-color: var(--paper);
+    --cc-btn-secondary-border-color: var(--hairline);
+    --cc-btn-secondary-hover-bg: var(--panel-2);
+    --cc-btn-secondary-hover-color: var(--paper);
+    --cc-btn-secondary-hover-border-color: var(--hairline);
+    --cc-separator-border-color: var(--hairline);
+    --cc-toggle-on-bg: var(--brass);
+    --cc-toggle-off-bg: var(--secondary);
+    --cc-toggle-on-knob-bg: var(--dark-navy);
+    --cc-toggle-off-knob-bg: var(--dark-navy);
+    --cc-toggle-readonly-bg: var(--hairline);
+    --cc-toggle-readonly-knob-bg: var(--dark-navy);
+    --cc-toggle-readonly-knob-icon-color: var(--hairline);
+    --cc-cookie-category-block-bg: var(--panel);
+    --cc-cookie-category-block-border: var(--hairline);
+    --cc-cookie-category-block-hover-bg: var(--panel-2);
+    --cc-cookie-category-block-hover-border: var(--hairline);
+    --cc-cookie-category-expanded-block-bg: var(--panel);
+    --cc-cookie-category-expanded-block-hover-bg: var(--panel-2);
+    --cc-overlay-bg: color-mix(in srgb, var(--ground) 70%, transparent);
+    --cc-footer-bg: var(--panel);
+    --cc-footer-color: var(--secondary);
+    --cc-footer-border-color: var(--hairline);
+  }
+  #cc-main .cm { border: 1px solid var(--hairline); box-shadow: 6px 6px 0 var(--paper); }`;
+    const style = document.createElement('style');
+    style.textContent = baseCss + theme;
+    document.head.appendChild(style);
+
+    const reportConsent = () => window.setAnalyticsConsent?.(CookieConsent.acceptedCategory('analytics'));
+    // Global Privacy Control: a browser that sends the signal is treated as declining analytics
+    // cookies without being asked. The visitor can still opt in from Cookie settings.
+    const gpc = navigator.globalPrivacyControl === true;
+
+    CookieConsent.run({
+      autoShow: !gpc,
+      onConsent: reportConsent,
+      onChange: reportConsent,
+      guiOptions: {
+        consentModal: { layout: 'box inline', position: 'bottom left', equalWeightButtons: true },
+        preferencesModal: { layout: 'box', equalWeightButtons: true },
+      },
+      categories: {
+        necessary: { enabled: true, readOnly: true },
+        analytics: { autoClear: { cookies: [{ name: /^ph_/ }] } },
+      },
+      language: {
+        default: 'en',
+        translations: {
+          en: {
+            consentModal: {
+              title: 'Cookies',
+              description: 'This site counts visits without cookies. With your permission, it also uses analytics cookies to understand how pages are read and improve them. Nothing is sold or used for advertising.',
+              acceptAllBtn: 'Accept',
+              acceptNecessaryBtn: 'Decline',
+              showPreferencesBtn: 'Manage preferences',
+              footer: '<a href="/privacy">Privacy notice</a>',
+            },
+            preferencesModal: {
+              title: 'Cookie preferences',
+              acceptAllBtn: 'Accept all',
+              acceptNecessaryBtn: 'Decline all',
+              savePreferencesBtn: 'Save preferences',
+              closeIconLabel: 'Close',
+              sections: [
+                {
+                  description: 'Choose which cookies this site may use. You can change this at any time from the Cookie settings link in the footer.',
+                },
+                {
+                  title: 'Strictly necessary',
+                  description: 'Remember your cookie choice. These are always on.',
+                  linkedCategory: 'necessary',
+                },
+                {
+                  title: 'Analytics',
+                  description: 'PostHog cookies that recognise a returning visitor, so the site can see which pages are read, how far, and where people get stuck, including heatmaps and session recordings with typed text masked. If you decline, visits are still counted anonymously without cookies.',
+                  linkedCategory: 'analytics',
+                },
+                {
+                  title: 'More information',
+                  description: 'See the <a href="/privacy">privacy notice</a> or email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>.',
+                },
+              ],
+            },
+          },
+        },
+      },
+    });
+    if (gpc && !CookieConsent.validConsent()) CookieConsent.acceptCategory([]);
+    ready = true;
+  }
+</script>
