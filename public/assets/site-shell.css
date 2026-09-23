@@ -6,8 +6,7 @@
 
 /* Two themes, one set of names. "paper" is always the ink colour and "ground"
    the page colour, whichever theme is on; "brass" is the single accent. Light
-   is the default and the system preference picks dark; data-theme on <html>
-   overrides either way (set by the header toggle, remembered per browser). */
+   is the default; the browser's colour-scheme preference picks dark. */
 :root {
   --ground: #F1F2F4;
   --dark-navy: #FFFFFF;
@@ -24,7 +23,7 @@
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root {
     --ground: #0A192F;
     --dark-navy: #081220;
     --panel: #0E203A;
@@ -39,21 +38,6 @@
     --ok: #4CC38A;
     color-scheme: dark;
   }
-}
-:root[data-theme="dark"] {
-  --ground: #0A192F;
-  --dark-navy: #081220;
-  --panel: #0E203A;
-  --panel-2: #102846;
-  --paper: #F4F0EA;
-  --secondary: #A9B0C0;
-  --brass: #E8734A;
-  --on-brass: #081220;
-  --hairline: #2A3448;
-  --hairline-light: #D5CEBF;
-  --shadow: color-mix(in srgb, var(--dark-navy) 90%, transparent);
-  --ok: #4CC38A;
-  color-scheme: dark;
 }
 
 html {
@@ -355,27 +339,3 @@ footer {
   }
 }
 
-/* Theme toggle */
-.header-end { display: flex; align-items: center; gap: 22px; }
-.theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  border: 1px solid var(--hairline);
-  border-radius: 50%;
-  background: transparent;
-  color: var(--paper);
-  cursor: pointer;
-  transition: border-color 200ms ease, color 200ms ease;
-}
-.theme-toggle:hover { border-color: var(--brass); color: var(--brass); }
-.theme-toggle .theme-toggle-sun { display: none; }
-.theme-toggle[data-on="dark"] .theme-toggle-sun { display: block; }
-.theme-toggle[data-on="dark"] .theme-toggle-moon { display: none; }
-@media (max-width: 700px) {
-  .header-end { gap: 14px; }
-  .theme-toggle { width: 36px; height: 36px; }
-}
