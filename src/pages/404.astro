@@ -1,0 +1,22 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="Page not found | Paul Drago"
+  description="That page does not exist on pauldrago.com."
+  path="/404"
+  variant="articles"
+  subline="Page not found"
+  robots="noindex,follow"
+  stylesheets={['/assets/personal-site.css']}
+>
+<main id="main">
+  <section class="articles-hero">
+    <div class="container">
+      <h1 class="display-title articles-title">Not found.</h1>
+      <p class="articles-intro">There is no page at this address. The homepage lists everything on the site.</p>
+      <p class="articles-intro"><a class="header-link" href="/">Go to the homepage</a></p>
+    </div>
+  </section>
+</main>
+</Base>
