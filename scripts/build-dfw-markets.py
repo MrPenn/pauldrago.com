@@ -5,13 +5,18 @@ Public sources only:
   - FDIC Summary of Deposits (branch deposits, June 30), api.fdic.gov
   - U.S. Census Bureau county population estimates (April 2020 base to July of the vintage year)
   - American Community Survey households and median household income (latest release), via Census Reporter
+  - HMDA (CFPB), which carries the FFIEC tract income level and minority share used in CRA and fair-lending
+    review, plus home-purchase lending by tract
+  - Census geocoder (branch tract) and Census tract gazetteer (tract locations)
 
 Re-run after FDIC publishes a new Summary of Deposits (each fall):
     python3 scripts/build-dfw-markets.py
 """
 import collections
 import csv
+import gzip
 import io
+import math
 import json
 import statistics
 import urllib.parse
@@ -19,6 +24,10 @@ import urllib.request
 from pathlib import Path
 
 SOD_YEAR, SOD_BASE_YEAR = 2026, 2021
+HMDA_YEAR = 2025
+# Towns inside the county the example recommends, for the where-in-the-county view (lat, lon).
+TOWNS = {'Kaufman': {'Forney': (32.748, -96.471), 'Terrell': (32.736, -96.275), 'Kaufman': (32.589, -96.309)}}
+TOWN_RADIUS_MILES = 5
 POP_VINTAGE = 2025
 COUNTIES = {'Collin': '085', 'Ellis': '139', 'Kaufman': '257'}
 # A single branch holding more than this is treated as booked (headquarters or corporate) rather than local.
@@ -37,7 +46,7 @@ def sod(county, year):
     while True:
         q = urllib.parse.urlencode({
             'filters': f'STALPBR:TX AND CNTYNAMB:"{county}" AND YEAR:{year}',
-            'fields': 'NAMEFULL,DEPSUMBR,CITYBR,CERT,ASSET',
+            'fields': 'NAMEFULL,DEPSUMBR,CITYBR,CERT,ASSET,SIMS_LATITUDE,SIMS_LONGITUDE',
             'limit': 10000, 'offset': offset, 'format': 'json',
         })
         d = json.loads(get(f'https://api.fdic.gov/banks/sod?{q}'))
@@ -45,6 +54,46 @@ def sod(county, year):
         if len(rows) >= d['meta']['total'] or not d['data']:
             return rows
         offset += 10000
+
+
+def tract_of(lat, lon):
+    q = urllib.parse.urlencode({'x': lon, 'y': lat, 'benchmark': 'Public_AR_Current', 'vintage': 'Census2020_Current', 'layers': 'Census Tracts', 'format': 'json'})
+    for _ in range(3):
+        try:
+            d = json.loads(get(f'https://geocoding.geo.census.gov/geocoder/geographies/coordinates?{q}'))
+            return d['result']['geographies']['Census Tracts'][0]['GEOID']
+        except Exception:
+            pass
+    return None
+
+
+def hmda_tracts(fips):
+    # FFIEC tract data as carried on each HMDA record; income level uses the FFIEC bands.
+    raw = urllib.request.urlopen(urllib.request.Request(
+        f'https://ffiec.cfpb.gov/v2/data-browser-api/view/csv?counties=48{fips}&years={HMDA_YEAR}',
+        headers={'User-Agent': 'curl/8.7.1'})).read()  # the HMDA API rejects other user agents
+    try:
+        raw = gzip.decompress(raw)
+    except OSError:
+        pass
+    tracts, purchases, mfi = {}, collections.Counter(), None
+    for r in csv.DictReader(io.StringIO(raw.decode('utf-8'))):
+        t = r['census_tract']
+        if t in ('', 'NA') or r['tract_population'] in ('', 'NA', '0'):
+            continue  # records without a real tract
+        try:
+            tracts[t] = {'income': float(r['tract_to_msa_income_percentage']), 'minority': float(r['tract_minority_population_percent']),
+                         'population': int(r['tract_population']), 'owner': int(r['tract_owner_occupied_units'])}
+            mfi = int(r['ffiec_msa_md_median_family_income'])
+        except (ValueError, KeyError):
+            continue
+        if r['action_taken'] == '1' and r['loan_purpose'] == '1' and r.get('occupancy_type') == '1':
+            purchases[t] += 1
+    return tracts, purchases, mfi
+
+
+def miles(a, b):
+    return 69 * math.hypot(a[0] - b[0], (a[1] - b[1]) * math.cos(math.radians(a[0])))
 
 
 def local(rows):
@@ -62,7 +111,10 @@ acs_raw = json.loads(get(f'https://api.censusreporter.org/1.0/data/show/latest?t
 acs_release = acs_raw['release']['name']
 acs = {gid[-3:]: v for gid, v in acs_raw['data'].items()}
 
-markets = []
+gaz_raw = get('https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Gazetteer/2025_gaz_tracts_48.txt').decode('latin-1')
+tract_location = {r['GEOID']: (float(r['INTPTLAT']), float(r['INTPTLONG'].strip())) for r in csv.DictReader(io.StringIO(gaz_raw), delimiter='|')}
+
+markets, towns = [], {}
 for name, fips in COUNTIES.items():
     now, then = local(sod(name, SOD_YEAR)), local(sod(name, SOD_BASE_YEAR))
     dep_now, dep_then = sum(r['DEPSUMBR'] for r in now), sum(r['DEPSUMBR'] for r in then)
@@ -93,16 +145,46 @@ for name, fips in COUNTIES.items():
         'leaders': [{'bank': k, 'share': round(s * 100, 1)} for s, k in shares[:3]],
     })
 
+    # CRA and fair access: FFIEC income bands (low < 50%, moderate 50-80% of the metro median
+    # family income), majority-minority tracts, branch locations, and home-purchase lending.
+    tracts, purchases, metro_mfi = hmda_tracts(fips)
+    lmi = {t for t, x in tracts.items() if x['income'] < 80}
+    minority = {t for t, x in tracts.items() if x['minority'] > 50}
+    branch_tracts = [tract_of(r['SIMS_LATITUDE'], r['SIMS_LONGITUDE']) for r in sod(name, SOD_YEAR)]
+    people = sum(x['population'] for x in tracts.values())
+    owners = sum(x['owner'] for x in tracts.values())
+    bought = sum(purchases.values())
+    markets[-1]['fairAccess'] = {
+        'lmiPopulationShare': round(sum(tracts[t]['population'] for t in lmi) / people * 100, 1),
+        'minorityPopulationShare': round(sum(tracts[t]['population'] for t in minority) / people * 100, 1),
+        'lmiTracts': len(lmi),
+        'lmiTractsWithoutBranch': len([t for t in lmi if t not in branch_tracts]),
+        'purchaseLoansInLmiShare': round(sum(purchases[t] for t in lmi) / bought * 100, 1),
+        'ownerHomesInLmiShare': round(sum(tracts[t]['owner'] for t in lmi) / owners * 100, 1),
+        'metroMedianFamilyIncome': metro_mfi,
+    }
+    for town, point in TOWNS.get(name, {}).items():
+        near = [t for t in tracts if t in tract_location and miles(tract_location[t], point) <= TOWN_RADIUS_MILES]
+        pop = sum(tracts[t]['population'] for t in near) or 1
+        towns.setdefault(name, []).append({
+            'town': town,
+            'lmiPopulationShare': round(sum(tracts[t]['population'] for t in near if t in lmi) / pop * 100),
+            'minorityPopulationShare': round(sum(tracts[t]['population'] for t in near if t in minority) / pop * 100),
+            'branches': sum(1 for t in branch_tracts if t in near),
+        })
+
 OUT.write_text(json.dumps({
     'asOf': {
         'deposits': f'FDIC Summary of Deposits, June 30, {SOD_YEAR} (growth from June 30, {SOD_BASE_YEAR})',
         'population': f'U.S. Census Bureau county population estimates, April 2020 to July {POP_VINTAGE}',
         'households': f'U.S. Census Bureau American Community Survey, {acs_release}',
+        'fairAccess': f'HMDA {HMDA_YEAR} (CFPB) with FFIEC tract income and minority data; branches placed by the Census geocoder',
     },
     'notes': [
         'Branches holding more than $1.5 billion are treated as booked deposits and excluded.',
         'Community banks are institutions with less than $10 billion in assets.',
     ],
     'markets': markets,
+    'towns': towns,
 }, indent=2) + '\n')
 print(f'Wrote {OUT}')

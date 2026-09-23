@@ -2,7 +2,8 @@
   "asOf": {
     "deposits": "FDIC Summary of Deposits, June 30, 2026 (growth from June 30, 2021)",
     "population": "U.S. Census Bureau county population estimates, April 2020 to July 2025",
-    "households": "U.S. Census Bureau American Community Survey, ACS 2024 1-year"
+    "households": "U.S. Census Bureau American Community Survey, ACS 2024 1-year",
+    "fairAccess": "HMDA 2025 (CFPB) with FFIEC tract income and minority data; branches placed by the Census geocoder"
   },
   "notes": [
     "Branches holding more than $1.5 billion are treated as booked deposits and excluded.",
@@ -39,7 +40,16 @@
           "bank": "Wells Fargo Bank, National Association",
           "share": 10.9
         }
-      ]
+      ],
+      "fairAccess": {
+        "lmiPopulationShare": 9.3,
+        "minorityPopulationShare": 42.3,
+        "lmiTracts": 24,
+        "lmiTractsWithoutBranch": 12,
+        "purchaseLoansInLmiShare": 8.6,
+        "ownerHomesInLmiShare": 5.0,
+        "metroMedianFamilyIncome": 117300
+      }
     },
     {
       "county": "Ellis",
@@ -71,7 +81,16 @@
           "bank": "Wells Fargo Bank, National Association",
           "share": 9.4
         }
-      ]
+      ],
+      "fairAccess": {
+        "lmiPopulationShare": 17.7,
+        "minorityPopulationShare": 28.3,
+        "lmiTracts": 7,
+        "lmiTractsWithoutBranch": 1,
+        "purchaseLoansInLmiShare": 8.7,
+        "ownerHomesInLmiShare": 12.9,
+        "metroMedianFamilyIncome": 117300
+      }
     },
     {
       "county": "Kaufman",
@@ -103,7 +122,38 @@
           "bank": "Texas Bank and Trust Company",
           "share": 8.8
         }
-      ]
+      ],
+      "fairAccess": {
+        "lmiPopulationShare": 32.8,
+        "minorityPopulationShare": 36.3,
+        "lmiTracts": 10,
+        "lmiTractsWithoutBranch": 6,
+        "purchaseLoansInLmiShare": 20.6,
+        "ownerHomesInLmiShare": 30.0,
+        "metroMedianFamilyIncome": 117300
+      }
     }
-  ]
+  ],
+  "towns": {
+    "Kaufman": [
+      {
+        "town": "Forney",
+        "lmiPopulationShare": 0,
+        "minorityPopulationShare": 56,
+        "branches": 8
+      },
+      {
+        "town": "Terrell",
+        "lmiPopulationShare": 100,
+        "minorityPopulationShare": 74,
+        "branches": 4
+      },
+      {
+        "town": "Kaufman",
+        "lmiPopulationShare": 9,
+        "minorityPopulationShare": 9,
+        "branches": 2
+      }
+    ]
+  }
 }

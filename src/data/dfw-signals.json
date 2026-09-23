@@ -1,0 +1,35 @@
+{
+  "asOf": "September 2026",
+  "note": "Announced, under-construction, and recently opened projects, checked against primary sources where available. Status and dates change; this list is reviewed when the market data is refreshed.",
+  "counties": {
+    "Collin": {
+      "where": "The household growth has moved north and east, to Celina, Princeton, Melissa, and Anna. The corporate relocations are in Plano and Frisco, where the national banks already are.",
+      "signals": [
+        { "brings": "Payroll", "status": "Under construction", "when": "2028", "title": "AT&T global headquarters, Plano", "detail": "$1.3 billion campus at Legacy; 4,000 jobs retained, 10,000 targeted by 2039.", "source": "Community Impact, March 2026", "url": "https://communityimpact.com/dallas-fort-worth/plano/development/2026/03/19/13-billion-att-hq-set-for-heart-of-the-legacy-business-park/" },
+        { "brings": "Households", "status": "Census estimate", "when": "2025", "title": "Four of the five fastest-growing U.S. cities", "detail": "Celina, Princeton, Melissa, and Anna, among cities over 20,000 people, July 2024 to July 2025.", "source": "Texas Tribune, May 2026", "url": "https://www.texastribune.org/2026/05/14/texas-dallas-el-paso-arlington-plano-celina-city-population-census/" },
+        { "brings": "Households", "status": "Under construction", "when": "2027", "title": "Dallas North Tollway extension to FM 428", "detail": "About six miles through Prosper and Celina.", "source": "North Texas Tollway Authority", "url": "https://www.ntta.org/ntta-board-approves-dallas-north-tollway-extension-contracts" }
+      ],
+      "watch": "The national banks are following the rooftops north: PNC opened in Celina in April 2026 and Chase is opening in Prosper."
+    },
+    "Ellis": {
+      "where": "Midlothian has the confirmed household and payroll growth now. Waxahachie's large new community is a longer bet.",
+      "signals": [
+        { "brings": "Payroll", "status": "Under construction", "when": "2027", "title": "Medline distribution center, Midlothian", "detail": "1.2 million sq ft; fully operational in the second quarter of 2027.", "source": "Medline, March 2026", "url": "https://newsroom.medline.com/releases/medlines-growth-continues-as-it-breaks-ground-on-1-2-million-square-foot-distribution-center-in-midlothian-texas/" },
+        { "brings": "Commercial", "status": "Under construction", "when": "2026 to 2027", "title": "DataBank campus for Oracle, Red Oak", "detail": "Up to eight data-center buildings; the first three are under construction.", "source": "DataBank, April 2026", "url": "https://www.databank.com/resources/news/dallas-based-firm-lands-2-billion-construction-loan-for-data-center-campus/" },
+        { "brings": "Households", "status": "Approved", "when": "Multi-year", "title": "3,170-acre Minto community, Waxahachie", "detail": "Roughly 13,000 homes planned; approved by the city council 3-2 in January 2026.", "source": "Ellis County Press", "url": "https://www.elliscountypress.com/news/waxahachie-approves-3170-acre-community-developement-project" },
+        { "brings": "Households", "status": "District projection", "when": "2025 to 2030", "title": "Midlothian ISD growing about 3% a year", "detail": "More than 11,500 students in August 2025; about 350 more each year.", "source": "Midlothian ISD", "url": "https://www.midlothianisd.org/about/bond2025/growth" }
+      ],
+      "watch": "Data centers add tax base but few jobs or households."
+    },
+    "Kaufman": {
+      "where": "Forney, along US-80, is where the households are arriving. The county's lower-income tracts are around Terrell, where the Amazon distribution center is going.",
+      "signals": [
+        { "brings": "Households", "status": "Under construction", "when": "2027", "title": "Texas Health hospital, Forney", "detail": "$171 million acute-care hospital on US-80; opening planned for fall 2027.", "source": "inForney, July 2026", "url": "https://www.inforney.com/texas/healthcare-milestone-texas-health-forney-set-to-t/article_f43fa496-7529-4af2-97df-927864b5dbc2.html" },
+        { "brings": "Payroll", "status": "Permitted", "when": "2027", "title": "Amazon distribution center, Terrell", "detail": "About 1.2 million sq ft and $98 million; state filing July 2026, completion expected around August 2027.", "source": "Texas Dept. of Licensing and Regulation", "url": "https://www.tdlr.texas.gov/TABS/Search/Project/TABS2026024951" },
+        { "brings": "Households", "status": "District report", "when": "2026 to 2035", "title": "Forney ISD past 20,000 students", "detail": "Enrollment passed 20,000 in June 2026; the district's demographer projects nearly 30,000 by 2035.", "source": "Forney ISD", "url": "https://www.forneyisd.net/about-us/growth-in-forney" },
+        { "brings": "Commercial", "status": "Announced", "when": "2028", "title": "Flexential data center, Talty", "detail": "110 acres, up to 108 megawatts; site work from early 2027, first customers late 2028.", "source": "Flexential, July 2026", "url": "https://www.prnewswire.com/news-releases/flexential-to-build-new-dallas-area-data-center-campus-on-110-acres-in-kaufman-county-302836104.html" }
+      ],
+      "watch": "A proposed 2,300-acre development near the city of Kaufman was withdrawn in March 2026 after a state investigation."
+    }
+  }
+}

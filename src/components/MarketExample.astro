@@ -1,13 +1,15 @@
 ---
-// Worked example for the branch-analysis page: the method run on three real Dallas-area counties.
-// Market figures come from src/data/dfw-markets.json (built by scripts/build-dfw-markets.py);
-// the bank is hypothetical and its customer counts are illustrative.
+// Worked example for the branch-analysis page, run on three real Dallas-area counties in four steps:
+// what the data shows, what is coming, CRA and fair access, and what local knowledge has to answer.
+// Market and fair-access figures come from src/data/dfw-markets.json (scripts/build-dfw-markets.py);
+// the pipeline signals from src/data/dfw-signals.json. The bank is hypothetical.
 import data from '../data/dfw-markets.json';
+import signals from '../data/dfw-signals.json';
 import { CRITERIA, PRESETS, INSTITUTION, scoreMarkets } from '../data/market-scoring';
 
 const markets = data.markets;
 const by = Object.fromEntries(markets.map((m) => [m.county, m]));
-const { Collin, Ellis, Kaufman } = by;
+const { Collin, Kaufman } = by;
 const mapView = scoreMarkets(markets, PRESETS.map.weights);
 const fullCase = scoreMarkets(markets, PRESETS.full.weights);
 const publicOnly = scoreMarkets(markets, { ...PRESETS.full.weights, customers: 0 });
@@ -33,13 +35,33 @@ const rows = [
 ];
 const best = (key) => Math.max(...markets.map((m) => m[key]));
 const groups = [...new Set(CRITERIA.map((c) => c.group))];
+const fairRows = [
+  { label: 'People living in low- or moderate-income tracts', show: (f) => pct(f.lmiPopulationShare) },
+  { label: 'People living in majority-minority tracts', show: (f) => pct(f.minorityPopulationShare) },
+  { label: 'Low- or moderate-income tracts with no bank branch', show: (f) => `${f.lmiTractsWithoutBranch} of ${f.lmiTracts}` },
+  { label: 'Home-purchase loans in those tracts', show: (f) => pct(f.purchaseLoansInLmiShare) },
+  { label: "Those tracts' share of owner-occupied homes", show: (f) => pct(f.ownerHomesInLmiShare) },
+];
+const kf = Kaufman.fairAccess;
+const towns = data.towns.Kaufman;
+const forney = towns.find((t) => t.town === 'Forney');
+const terrell = towns.find((t) => t.town === 'Terrell');
+const mfi = kf.metroMedianFamilyIncome;
 ---
 <section class="market-example" id="worked-example" aria-labelledby="market-example-heading">
   <div class="container">
     <p class="band-label">A worked example on public data</p>
-    <h2 class="display-title section-title" id="market-example-heading">The map says Collin. The branch economics say Kaufman.</h2>
-    <p class="section-intro">Take {INSTITUTION.description}, looking for its first branch outside the county. Here is the method run on three real candidates: Collin County to the north, Ellis to the south, and Kaufman to the east. The bank is hypothetical. The market numbers are not, and anyone can check them.</p>
+    <h2 class="display-title section-title" id="market-example-heading">The biggest market isn't the best place for a community bank's next branch.</h2>
+    <p class="section-intro">Take {INSTITUTION.description}, looking for its first branch outside the county. Here is the method run on three real candidates: Collin County to the north, Ellis to the south, and Kaufman to the east. The bank is hypothetical. The public data is not, and anyone can check it.</p>
 
+    <ol class="market-steps" aria-label="The four steps">
+      <li><a href="#step-data">What the data shows</a></li>
+      <li><a href="#step-pipeline">What's coming</a></li>
+      <li><a href="#step-fair-access">CRA and fair access</a></li>
+      <li><a href="#step-local">What local knowledge has to answer</a></li>
+    </ol>
+
+    <h3 class="market-step-title" id="step-data"><span>1</span>What the data shows</h3>
     <div class="market-table-wrap">
       <table class="market-table">
         <caption class="sr-only">Three Dallas-area counties compared on public deposit, population, and income data</caption>
@@ -57,7 +79,6 @@ const groups = [...new Set(CRITERIA.map((c) => c.group))];
       </table>
       <p class="market-table-note">Highlighted: the strongest of the three on each measure. {data.asOf.deposits}. {data.asOf.population}. {data.asOf.households}. {data.notes.join(' ')}</p>
     </div>
-
     <div class="market-scorecard" data-market-scorecard>
       <div class="market-weights">
         <p class="market-weights-title">Weight the criteria</p>
@@ -95,17 +116,81 @@ const groups = [...new Set(CRITERIA.map((c) => c.group))];
 
     <div class="market-findings">
       <div class="market-finding">
-        <h3>Where the answer flipped</h3>
+        <h4>Where the answer flipped</h4>
         <p>Collin added {money(Collin.depositGrowth)} of deposits in five years, {growthVsKaufman} times Kaufman's entire deposit base. But community banks captured only {money(Collin.communityGrowth)} of it across {Collin.communityBranches} branches. {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of Collin between them, and a typical community-bank branch there holds ${Collin.medianCommunityBranch}M.</p>
       </div>
       <div class="market-finding">
-        <h3>Why Kaufman leads on the evidence</h3>
+        <h4>Why Kaufman leads on the numbers</h4>
         <p>Kaufman's population grew {pct(Kaufman.populationGrowthPct)} since 2020, the fastest of the three, and it has the most households per branch ({num(Kaufman.householdsPerBranch)}). Its residents bank locally: community banks hold {pct(Kaufman.communityShare)} of deposits, and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M, nearly three times Collin's.</p>
       </div>
       <div class="market-finding">
-        <h3>What could still change it</h3>
-        <p>Kaufman is a concentrated market: {incumbent.bank} holds {pct(incumbent.share)} of its deposits. A de novo branch ramps slowly against an incumbent like that, so the recommendation comes with a diligence question, not a verdict. The branch would also extend the bank's CRA assessment area beyond Dallas County, which is a question for compliance before it is a marketing one.</p>
+        <h4>What the numbers can't tell you</h4>
+        <p>The data describes the last five years. It says nothing about what is being built, whether the bank can meet the county's credit needs, or why {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits. The next three steps take those in turn.</p>
       </div>
+    </div>
+
+    <h3 class="market-step-title" id="step-pipeline"><span>2</span>What's coming</h3>
+    <p class="market-step-intro">Announced and under-construction projects, checked against primary sources, as of {signals.asOf}. They don't change the scores; they test them, and they show where in each county the growth will land. Each is marked for what it brings a bank: households, payroll, or commercial activity.</p>
+    <div class="pipe-columns">
+      {Object.entries(signals.counties).map(([county, c]) => (
+        <section class="pipe-county" aria-labelledby={`signals-${county}`}>
+          <h4 id={`signals-${county}`}>{county}</h4>
+          <ul class="pipe-list">
+            {c.signals.map((sig) => (
+              <li class="pipe">
+                <p class="pipe-meta"><span class="pipe-brings">{sig.brings}</span><span>{sig.status}, {sig.when}</span></p>
+                <p class="pipe-title">{sig.title}</p>
+                <p class="pipe-detail">{sig.detail} <a href={sig.url} target="_blank" rel="noopener noreferrer">{sig.source}</a></p>
+              </li>
+            ))}
+          </ul>
+          <p class="pipe-watch"><strong>Watch:</strong> {c.watch}</p>
+          <p class="pipe-where"><strong>Where:</strong> {c.where}</p>
+        </section>
+      ))}
+    </div>
+    <p class="market-table-note">{signals.note}</p>
+
+    <h3 class="market-step-title" id="step-fair-access"><span>3</span>CRA and fair access</h3>
+    <p class="market-step-intro">A branch outside Dallas County adds that county to the bank's CRA assessment area, and where the branch sits inside it is a fair-lending question as much as a marketing one. Income levels follow the FFIEC bands examiners use: low is below 50% of the metro median family income (${num(mfi)}), moderate is 50% to 80%.</p>
+    <div class="market-table-wrap">
+      <table class="market-table">
+        <caption class="sr-only">CRA and fair-access measures for the three counties</caption>
+        <thead>
+          <tr><th scope="col"><span class="sr-only">Measure</span></th>{markets.map((m) => <th scope="col">{m.county}</th>)}</tr>
+        </thead>
+        <tbody>
+          {fairRows.map((r) => (
+            <tr><th scope="row">{r.label}</th>{markets.map((m) => <td>{r.show(m.fairAccess)}</td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+      <p class="market-table-note">{data.asOf.fairAccess}. Home-purchase loans are owner-occupied originations by all lenders in 2025.</p>
+    </div>
+    <div class="market-findings market-findings-two">
+      <div class="market-finding">
+        <h4>Kaufman is the strongest CRA case</h4>
+        <p>A third of Kaufman's residents ({pct(kf.lmiPopulationShare)}) live in low- or moderate-income tracts, {kf.lmiTractsWithoutBranch} of its {kf.lmiTracts} such tracts have no branch, and home-purchase lending there ({pct(kf.purchaseLoansInLmiShare)} of loans) runs well below those tracts' share of owner-occupied homes ({pct(kf.ownerHomesInLmiShare)}). A bank that meets that need would have a real CRA record to show for the branch.</p>
+      </div>
+      <div class="market-finding">
+        <h4>Which is why the site matters</h4>
+        <p>The tracts within five miles of central Forney are middle and upper income ({pct(forney.lmiPopulationShare)} of residents in low- or moderate-income tracts). Around Terrell it is {pct(terrell.lmiPopulationShare)}, and {pct(terrell.minorityPopulationShare)} of residents live in majority-minority tracts. A bank that entered Kaufman through Forney alone would have its whole local presence in the county's better-off tracts. Examiners read that pattern closely, and it needs a documented answer before the branch application, not after.</p>
+      </div>
+    </div>
+
+    <h3 class="market-step-title" id="step-local"><span>4</span>What local knowledge has to answer</h3>
+    <p class="market-step-intro">None of this replaces the people who know the market. The bank's lenders, branch managers, and directors, and the local economic development office know things no dataset shows. The analysis is what makes that conversation useful: instead of anecdote against anecdote, each question below comes from the evidence, and the answers are written down next to it.</p>
+    <ol class="local-questions">
+      <li><strong>{incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits.</strong> Is that loyalty or habit, and who at our bank knows its customers?</li>
+      <li><strong>Forney is where the county is growing fastest.</strong> Do the new households bank near home or near work in Dallas, and does that call for a branch or for a lender on the ground?</li>
+      <li><strong>Terrell's tracts are lower income, and Amazon is hiring there from 2027.</strong> How do workers in Terrell bank today, and what would it take for us to serve them from day one?</li>
+      <li><strong>How many of our own customers already live or work east of Mesquite?</strong> Our customer file answers this in an afternoon.</li>
+      <li><strong>Adding Kaufman changes our assessment area.</strong> What does compliance need to see in the plan before we file?</li>
+    </ol>
+
+    <div class="market-recommendation">
+      <p class="band-label">The recommendation</p>
+      <p>On this evidence I'd put the branch in Kaufman County, in Forney on US-80, where the households are arriving: a hospital opens there in 2027 and the school district has passed 20,000 students. But I wouldn't take it to the board without a plan for Terrell. That is where the county's lower-income tracts are and where Amazon is hiring, and a Forney-only entry would leave them out. The open questions are the ones above, starting with {incumbent.bank}. I'd want the bank's own lenders to answer them before committing.</p>
     </div>
   </div>
 </section>
