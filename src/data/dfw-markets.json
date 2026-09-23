@@ -151,7 +151,8 @@
       "businessGrowthPct": 26,
       "lmiPopulationShare": 0,
       "minorityPopulationShare": 5,
-      "lmiTracts": 0
+      "lmiTracts": 0,
+      "lmiTractsWithoutBranch": 0
     },
     {
       "town": "Waxahachie",
@@ -167,7 +168,8 @@
       "businessGrowthPct": 20,
       "lmiPopulationShare": 39,
       "minorityPopulationShare": 25,
-      "lmiTracts": 3
+      "lmiTracts": 3,
+      "lmiTractsWithoutBranch": 1
     },
     {
       "town": "Red Oak",
@@ -183,7 +185,8 @@
       "businessGrowthPct": 10,
       "lmiPopulationShare": 0,
       "minorityPopulationShare": 53,
-      "lmiTracts": 0
+      "lmiTracts": 0,
+      "lmiTractsWithoutBranch": 0
     },
     {
       "town": "Ennis",
@@ -199,7 +202,8 @@
       "businessGrowthPct": 11,
       "lmiPopulationShare": 52,
       "minorityPopulationShare": 52,
-      "lmiTracts": 2
+      "lmiTracts": 2,
+      "lmiTractsWithoutBranch": 0
     },
     {
       "town": "Forney",
@@ -215,7 +219,8 @@
       "businessGrowthPct": 36,
       "lmiPopulationShare": 0,
       "minorityPopulationShare": 56,
-      "lmiTracts": 0
+      "lmiTracts": 0,
+      "lmiTractsWithoutBranch": 0
     },
     {
       "town": "Terrell",
@@ -231,7 +236,8 @@
       "businessGrowthPct": 8,
       "lmiPopulationShare": 100,
       "minorityPopulationShare": 74,
-      "lmiTracts": 4
+      "lmiTracts": 4,
+      "lmiTractsWithoutBranch": 2
     },
     {
       "town": "Kaufman",
@@ -247,7 +253,8 @@
       "businessGrowthPct": 14,
       "lmiPopulationShare": 9,
       "minorityPopulationShare": 9,
-      "lmiTracts": 1
+      "lmiTracts": 1,
+      "lmiTractsWithoutBranch": 1
     }
   ],
   "ramp": {

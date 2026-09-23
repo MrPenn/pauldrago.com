@@ -281,6 +281,7 @@ for name, fips in COUNTIES.items():
             'lmiPopulationShare': round(sum(tracts[t]['population'] for t in near if t in lmi) / residents * 100),
             'minorityPopulationShare': round(sum(tracts[t]['population'] for t in near if t in minority) / residents * 100),
             'lmiTracts': sum(1 for t in near if t in lmi),
+            'lmiTractsWithoutBranch': sum(1 for t in near if t in lmi and t not in branch_tracts),
         })
 
 OUT.write_text(json.dumps({

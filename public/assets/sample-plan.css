@@ -5,7 +5,7 @@
 .sample-banner a { margin-left: 6px; color: var(--paper); font-weight: 700; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 
 .report-cover { margin-top: 48px; padding-bottom: 32px; border-bottom: 2px solid var(--paper); }
-.report-title { margin-top: 10px; font-size: clamp(36px, 6vw, 64px); line-height: 1; text-wrap: balance; }
+.report-title { max-width: 18ch; font-size: clamp(34px, 5.4vw, 58px); line-height: 1; text-wrap: balance; }
 .report-meta { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; margin: 28px 0 0; }
 .report-meta dt { color: var(--secondary); font-size: 13px; font-weight: 600; }
 .report-meta dd { margin: 4px 0 0; color: var(--paper); font-size: 16px; line-height: 1.45; }
@@ -56,6 +56,7 @@
 .report-rules li { padding: 6px 0; color: var(--secondary); font-size: 16px; line-height: 1.5; }
 
 .sample-plan .market-table-wrap { max-width: none; overflow-x: auto; }
+.sample-plan .market-table-note { max-width: 72ch; }
 .report-plan-table th, .report-plan-table td, .report-towns th, .report-towns td { text-align: left; vertical-align: top; }
 .report-plan-table td:first-child { width: 56px; color: var(--brass); font-weight: 700; }
 .report-plan-table tbody th { color: var(--paper); font-weight: 700; white-space: nowrap; }
@@ -95,6 +96,8 @@
   .report-plan-table th, .report-plan-table td { padding: 2px 0; border: 0; }
   .report-plan-table td:first-child::before { content: "Year "; }
   .report-cta { padding: 22px 20px; }
+  .market-table-wrap:has(.report-towns, .plan-network) .market-table-note { position: sticky; left: 0; max-width: calc(100vw - 40px); }
+  .report-towns th:first-child, .plan-network th:first-child { position: sticky; left: 0; z-index: 1; max-width: 132px; background: var(--ground); box-shadow: 1px 0 0 var(--hairline); }
 }
 
 /* Pipeline, questions, and the ramp chart and economics tables */
@@ -121,17 +124,18 @@
 .plan-chart svg { display: block; width: 100%; height: auto; }
 .plan-chart figcaption { margin-top: 10px; color: var(--secondary); font-size: 13px; line-height: 1.55; }
 .plan-grid line { stroke: var(--hairline); stroke-width: 1; }
-.plan-grid text, .plan-axis { fill: var(--secondary); font-size: 12px; font-variant-numeric: tabular-nums; }
+.plan-grid text, .plan-axis { fill: var(--secondary); font-size: 15px; font-variant-numeric: tabular-nums; }
 .plan-grid text { text-anchor: end; }
 .plan-axis { text-anchor: middle; }
-.plan-band { fill: color-mix(in srgb, var(--brass) 16%, transparent); }
+.plan-band { fill: color-mix(in srgb, var(--brass) 20%, transparent); }
 .plan-median { fill: none; stroke: var(--brass); stroke-width: 3; stroke-linejoin: round; }
 .plan-target { stroke: var(--paper); stroke-width: 1.5; }
 .plan-breakeven { stroke: var(--paper); stroke-width: 1.5; stroke-dasharray: 5 4; }
-.plan-line-label { fill: var(--paper); font-size: 12px; font-weight: 700; }
+.plan-line-label { fill: var(--paper); font-size: 15px; font-weight: 700; }
 .plan-line-label-end { text-anchor: end; }
 .plan-outcomes thead th:first-child, .plan-network thead th:first-child { text-align: left; }
-.market-table td.is-negative { color: var(--brass); }
+/* Negatives read as accounting figures: ink with a minus sign. Brass stays for emphasis. */
+.market-table td.is-negative { color: var(--paper); }
 .market-table .plan-total th, .market-table .plan-total td { border-top: 2px solid var(--paper); color: var(--paper); font-weight: 700; }
 .plan-network { min-width: 560px; }
 .plan-network td { white-space: nowrap; }
@@ -151,15 +155,18 @@
 
 /* A board packet: black on white, no site chrome, sections kept together where they fit. */
 @media print {
-  header, footer, .trace-rail, .skip-link, .sample-banner a, .report-toc, .report-cta, #cc-main { display: none !important; }
-  :root { --paper: #000; --secondary: #333; --hairline: #bbb; --brass: #8a2f14; --dark-navy: #fff; }
+  header, footer, .trace-rail, .skip-link, .sample-banner a, .report-cta, #cc-main { display: none !important; }
+  :root { --paper: #000; --secondary: #333; --hairline: #bbb; --brass: #8a2f14; --dark-navy: #fff; --ground: #fff; }
   body { background: #fff !important; }
   .sample-plan { padding: 0; }
   .report-cover { margin-top: 16px; }
-  .report-section { margin-top: 28px; break-before: page; }
-  #recommendation { break-before: auto; }
-  .report-figures, table, figure, .market-finding, .pipe { break-inside: avoid; }
+  .report-toc a { border: 0; }
+  .report-section { margin-top: 28px; }
+  #recommendation, #economics, #methods { break-before: page; }
+  .report-h2, .report-h3 { break-after: avoid; }
+  .report-figures, table, figure, .market-finding, .pipe, .report-risks li { break-inside: avoid; }
   .sample-plan .market-table-wrap { overflow: visible; }
   .report-towns, .plan-network { min-width: 0; }
   a { color: inherit !important; }
+  .report-sources a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 11px; word-break: break-all; }
 }

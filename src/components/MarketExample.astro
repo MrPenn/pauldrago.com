@@ -55,7 +55,7 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
       </div>
       <div class="market-ranking">
         <p class="market-weights-title" id="market-ranking-title">Ranking</p>
-        <ol class="market-ranking-list" aria-labelledby="market-ranking-title" aria-live="polite" data-ranking>
+        <ol class="market-ranking-list" aria-labelledby="market-ranking-title" data-ranking>
           {fullCase.map((r) => (
             <li class="market-rank" data-county={r.county}>
               <span class="market-rank-name">{r.county} County</span>
@@ -64,6 +64,7 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
             </li>
           ))}
         </ol>
+        <p class="sr-only" aria-live="polite" data-ranking-status></p>
         <p class="market-ranking-note">Each measure scores a county against the best of the three (best = 100); the ranking is the weighted average. Try the deposit-map weights: {mapView[0].county} leads with {mapView[0].score}. The full case puts {fullCase[0].county} first with {fullCase[0].score}.{holdsOnPublicData && ' Set "Your customers nearby" to zero and it still leads: the case rests on public data.'}</p>
       </div>
     </div>
@@ -99,6 +100,7 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
     const outputs = Object.fromEntries([...root.querySelectorAll<HTMLOutputElement>('[data-weight-out]')].map((o) => [o.dataset.weightOut, o]));
     const presetButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-preset]')];
     const list = root.querySelector('[data-ranking]');
+    const status = root.querySelector('[data-ranking-status]');
     const items = Object.fromEntries([...root.querySelectorAll<HTMLElement>('[data-county]')].map((li) => [li.dataset.county, li]));
 
     function render() {
@@ -111,6 +113,8 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
         li.querySelector('.market-rank-score').textContent = String(r.score);
         list.appendChild(li);
       });
+      // Announce only the leader, so a screen reader isn't read the whole list on every step.
+      if (status) status.textContent = `${ranked[0].county} leads with ${ranked[0].score}.`;
       const match = Object.entries(PRESETS).find(([, p]) => CRITERIA.every((c) => (p.weights[c.key] || 0) === weights[c.key]));
       presetButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.preset === match?.[0])));
     }
