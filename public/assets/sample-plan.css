@@ -1,0 +1,368 @@
+/* Sample deliverable: the five-year branch plan, laid out as a report and printable as a board packet. */
+.sample-plan { padding: 40px 0 96px; }
+.sample-plan .container { max-width: 1040px; }
+.sample-banner { padding: 10px 14px; border: 1px solid var(--hairline); color: var(--secondary); font-size: 14px; line-height: 1.5; }
+.sample-banner a { margin-left: 6px; color: var(--paper); font-weight: 700; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+
+.report-cover { margin-top: 36px; padding-bottom: 20px; border-bottom: 2px solid var(--paper); }
+.report-title { max-width: 24ch; font-size: clamp(30px, 4.2vw, 46px); line-height: 1; text-wrap: balance; }
+.report-meta { margin-top: 12px; color: var(--secondary); font-size: 15px; line-height: 1.5; }
+
+
+.report-section { margin-top: 72px; scroll-margin-top: 24px; }
+.report-h2 {
+  display: flex;
+  gap: 14px;
+  align-items: baseline;
+  padding-top: 20px;
+  border-top: 2px solid var(--paper);
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: clamp(22px, 2.6vw, 30px);
+  line-height: 1.15;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.report-h2 span { color: var(--brass); }
+.report-h3 { margin-top: 36px; font-size: 20px; line-height: 1.3; }
+.report-p, .report-lede { max-width: 70ch; margin-top: 16px; color: var(--secondary); font-size: 17px; line-height: 1.65; text-wrap: pretty; }
+.report-lede { color: var(--paper); font-size: 20px; line-height: 1.55; }
+.report-small { font-size: 14px; }
+
+.report-figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 32px 0 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+.report-figures div { padding: 18px 18px 18px 0; }
+.report-figures div + div { padding-left: 18px; border-left: 1px solid var(--hairline); }
+.report-figures dt { color: var(--secondary); font-size: 13px; font-weight: 600; line-height: 1.35; }
+.report-figures dd { margin: 6px 0 0; }
+.report-figure { display: block; color: var(--paper); font-size: 28px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.report-figure-note { display: block; margin-top: 6px; color: var(--secondary); font-size: 13px; line-height: 1.45; }
+
+.report-decisions, .report-risks { max-width: 76ch; margin: 16px 0 0; padding-left: 22px; }
+.report-risks { padding-left: 0; list-style: none; }
+.report-decisions li, .report-risks li { padding: 10px 0 10px 6px; color: var(--secondary); font-size: 17px; line-height: 1.55; }
+.report-risks li { padding-left: 0; }
+.report-decisions li + li, .report-risks li + li { border-top: 1px solid var(--hairline); }
+.report-decisions strong, .report-risks strong { color: var(--paper); }
+
+.tag { display: inline-block; margin: 2px 6px 2px 0; padding: 1px 8px; border: 1px solid var(--brass); color: var(--brass); font-size: 13px; font-weight: 700; line-height: 1.5; white-space: nowrap; }
+.tag-check { border-style: dashed; border-color: var(--secondary); color: var(--secondary); }
+.report-rules { max-width: 76ch; margin: 14px 0 0; padding: 0; list-style: none; }
+.report-rules li { padding: 6px 0; color: var(--secondary); font-size: 16px; line-height: 1.5; }
+
+.sample-plan .market-table-wrap { max-width: none; overflow-x: auto; }
+.sample-plan .market-table-note { max-width: 72ch; }
+.report-plan-table th, .report-plan-table td, .report-towns th, .report-towns td { text-align: left; vertical-align: top; }
+.report-plan-table td:first-child { width: 56px; color: var(--brass); font-weight: 700; }
+.report-plan-table tbody th { color: var(--paper); font-weight: 700; white-space: nowrap; }
+.report-plan-table td:nth-child(3) { width: 200px; }
+.report-plan-table td:last-child { color: var(--secondary); line-height: 1.5; }
+.report-towns { min-width: 720px; }
+.report-towns td:not(.report-tags) { text-align: right; }
+.report-towns thead th:not(:first-child):not(:last-child) { text-align: right; }
+.report-towns .report-county { display: block; color: var(--secondary); font-size: 13px; font-weight: 500; }
+.report-towns tr.is-plan th { color: var(--paper); font-weight: 700; }
+
+
+.sample-plan .market-finding h3 { font-size: 18px; line-height: 1.3; }
+.pipe-columns.report-pipe { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+.report-sources { max-width: 80ch; margin: 16px 0 0; padding-left: 20px; }
+.report-sources li { padding: 5px 0; color: var(--secondary); font-size: 15px; line-height: 1.55; }
+.report-sources a, .report-p a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+
+.report-cta { max-width: 76ch; margin-top: 72px; padding: 28px 32px; border: 2px solid var(--brass); background: var(--dark-navy); }
+.report-cta p:last-child { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 12px; color: var(--paper); font-size: 18px; line-height: 1.55; }
+
+@media (max-width: 900px) {
+  .report-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .report-figures div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .report-figures div:nth-child(n + 3) { border-top: 1px solid var(--hairline); }
+  .pipe-columns.report-pipe { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .sample-plan { padding-top: 24px; }
+  .report-figure { font-size: 24px; }
+  .report-lede { font-size: 18px; }
+  .report-plan-table, .report-plan-table tbody, .report-plan-table tr, .report-plan-table th, .report-plan-table td { display: block; width: auto !important; }
+  .report-plan-table thead { display: none; }
+  .report-plan-table tr { padding: 12px 0; border-top: 1px solid var(--hairline); }
+  .report-plan-table th, .report-plan-table td { padding: 2px 0; border: 0; }
+  .report-plan-table td:first-child::before { content: "Year "; }
+  .report-plan-table td.crit { display: inline-block; width: auto !important; margin-right: 14px; text-align: left !important; }
+  .report-plan-table td.crit:empty { display: none; }
+  .report-plan-table td.crit::after { content: " " attr(data-label); }
+  .brief-options, .brief-options tbody, .brief-options tr, .brief-options th, .brief-options td { display: block; width: auto !important; }
+  .brief-options tr { padding: 10px 0; border-top: 1px solid var(--hairline); }
+  .brief-options th, .brief-options td { padding: 2px 0 !important; border: 0 !important; }
+  .report-cta { padding: 22px 20px; }
+  .market-table-wrap:has(.report-towns, .plan-network) .market-table-note { position: sticky; left: 0; max-width: calc(100vw - 40px); }
+  .report-towns th:first-child, .plan-network th:first-child { position: sticky; left: 0; z-index: 1; max-width: 132px; background: var(--ground); box-shadow: 1px 0 0 var(--hairline); }
+}
+
+/* The two-page brief */
+.report-status { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-bottom: 14px; color: var(--secondary); font-size: 14px; }
+.report-status strong { padding: 1px 8px; border: 1px solid var(--paper); color: var(--paper); font-size: 13px; letter-spacing: 0.02em; }
+.brief-why { max-width: 76ch; margin-top: 10px; font-size: 16px; }
+.brief-p { max-width: 80ch; margin-top: 8px; font-size: 15px; }
+.brief-options th { width: 220px; color: var(--paper) !important; font-weight: 700 !important; text-align: left; vertical-align: top; }
+.brief-options td { text-align: left; color: var(--secondary); line-height: 1.5; }
+.brief-options tr.is-plan td { color: var(--paper); }
+.brief-options tbody tr:first-child th, .brief-options tbody tr:first-child td { border-top: 0; }
+.brief-resolution { margin-top: 24px; padding: 14px 16px; border: 1px solid var(--paper); }
+.brief-resolution p:last-child { margin-top: 6px; color: var(--paper); font-size: 15px; line-height: 1.55; }
+.brief-resolution .brief-h2 { padding-top: 0; border-top: 0; }
+
+.report-brief { margin-top: 8px; }
+.brief-block { margin-top: 36px; }
+.report-brief > .brief-block:first-child .brief-h2 { padding-top: 0; border-top: 0; }
+.brief-h2 { padding-top: 12px; border-top: 1px solid var(--hairline); color: var(--paper); font-size: 13px; font-weight: 700; letter-spacing: 0.02em; }
+.brief-block .report-lede { margin-top: 10px; }
+.brief-block .report-figures { margin-top: 20px; }
+.brief-h3 { margin-top: 18px; color: var(--paper); font-size: 13px; font-weight: 700; }
+.brief-pace th, .brief-pace td { font-variant-numeric: tabular-nums; }
+.brief-pace thead th:first-child, .brief-pace tbody th { text-align: left; }
+.brief-pace tr.is-plan th, .brief-pace tr.is-plan td { color: var(--paper); font-weight: 700; }
+.pace-table { min-width: 640px; }
+.brief-note { max-width: 80ch; margin-top: 10px; color: var(--secondary); font-size: 14px; line-height: 1.55; }
+.brief-note a, .brief-appendix a, .report-lede a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+.report-brief .report-decisions { margin-top: 8px; }
+.report-brief .report-decisions li { padding: 7px 0 7px 6px; font-size: 16px; }
+.brief-page-two { margin-top: 12px; }
+.brief-page-two .county-maps { margin-top: 28px; }
+.report-brief .report-plan-table td, .report-brief .report-plan-table th { padding-top: 9px; padding-bottom: 9px; font-size: 15px; }
+.report-brief .market-table-wrap { margin-top: 10px; }
+.brief-risks li { padding: 7px 0; font-size: 15px; }
+.brief-appendix { margin-top: 28px; padding: 14px 16px; border: 1px solid var(--hairline); color: var(--secondary); font-size: 14px; line-height: 1.7; }
+.brief-appendix strong { color: var(--paper); }
+.appendix-divider { display: flex; gap: 16px; align-items: center; margin-top: 88px; color: var(--secondary); font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+.appendix-divider::before, .appendix-divider::after { content: ""; flex: 1; border-top: 2px solid var(--paper); }
+.report-appendix:first-of-type { margin-top: 32px; }
+
+/* Criteria columns: an X where the town meets the criterion. */
+.market-table th.crit, .market-table td.crit { width: 72px; text-align: center !important; }
+.market-table td.crit { color: var(--paper); font-weight: 700; }
+.market-table th.crit-group { text-align: center !important; border-bottom: 1px solid var(--hairline); padding-bottom: 4px; }
+.market-table thead tr + tr th { border-top: 0; }
+.report-rules li strong { color: var(--paper); margin-right: 6px; }
+
+/* County maps: tracts shaded by home purchases, low/mod-income hatched, branches, review areas. */
+.county-maps { margin: 40px 0 0; }
+.county-maps-head { max-width: 70ch; }
+.county-maps-title { font-size: 22px; line-height: 1.25; }
+.county-maps-head p { margin-top: 8px; color: var(--secondary); font-size: 16px; line-height: 1.55; }
+.county-maps-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; align-items: start; margin-top: 24px; }
+.county-map-name { font-size: 18px; line-height: 1.3; }
+.county-map-sub { margin-top: 2px; color: var(--secondary); font-size: 14px; }
+.county-map svg { display: block; width: 100%; height: auto; margin-top: 10px; }
+.map-band--1 { fill: var(--hairline); }
+.map-band-0 { fill: color-mix(in srgb, var(--brass) 3%, var(--ground)); }
+.map-band-1 { fill: color-mix(in srgb, var(--brass) 22%, var(--ground)); }
+.map-band-2 { fill: color-mix(in srgb, var(--brass) 40%, var(--ground)); }
+.map-band-3 { fill: color-mix(in srgb, var(--brass) 60%, var(--ground)); }
+.map-band-4 { fill: color-mix(in srgb, var(--brass) 85%, var(--ground)); }
+.map-tracts path { stroke: var(--ground); stroke-width: 1; stroke-linejoin: round; }
+.map-lmi { stroke: none; }
+.map-hatch-line { stroke: var(--paper); stroke-width: 1.4; stroke-opacity: 0.55; }
+.map-outline { fill: none; stroke: var(--paper); stroke-width: 2; stroke-linejoin: round; }
+.map-radius { fill: color-mix(in srgb, var(--paper) 6%, transparent); stroke: var(--paper); stroke-width: 2.5; }
+.map-radius.is-review { fill: none; stroke-width: 2; stroke-dasharray: 7 6; }
+.map-branch { fill: var(--paper); stroke: var(--ground); stroke-width: 1.5; }
+.map-branch.is-large { fill: var(--ground); stroke: var(--paper); stroke-width: 2.5; stroke-linejoin: miter; }
+.map-site circle { fill: var(--brass); stroke: var(--ground); stroke-width: 3; }
+.map-site.is-review circle { fill: var(--ground); stroke: var(--paper); stroke-width: 2; stroke-dasharray: 4 3; }
+.map-site text { fill: #fff; font-size: 16px; font-weight: 700; text-anchor: middle; }
+.map-site.is-review text { fill: var(--paper); }
+.map-site .map-site-label, .map-town { fill: var(--paper); font-size: 17px; font-weight: 700; paint-order: stroke; stroke: var(--ground); stroke-width: 5px; stroke-linejoin: round; }
+.map-town { font-size: 15px; font-weight: 600; fill: var(--secondary); }
+.map-scale line { stroke: var(--paper); stroke-width: 2; }
+.map-scale text { fill: var(--secondary); font-size: 14px; text-anchor: middle; }
+.county-maps-legend { display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: flex-start; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--hairline); }
+.legend-title { color: var(--paper); font-size: 13px; font-weight: 700; }
+.legend-scale { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 0 0; padding: 0; list-style: none; }
+.legend-scale li, .legend-keys li { display: flex; gap: 8px; align-items: center; color: var(--secondary); font-size: 13px; }
+.legend-swatch { display: inline-block; width: 22px; height: 14px; }
+.legend-swatch.map-band-0 { background: color-mix(in srgb, var(--brass) 3%, var(--ground)); box-shadow: inset 0 0 0 1px var(--hairline); }
+.legend-swatch.map-band-1 { background: color-mix(in srgb, var(--brass) 22%, var(--ground)); }
+.legend-swatch.map-band-2 { background: color-mix(in srgb, var(--brass) 40%, var(--ground)); }
+.legend-swatch.map-band-3 { background: color-mix(in srgb, var(--brass) 60%, var(--ground)); }
+.legend-swatch.map-band-4 { background: color-mix(in srgb, var(--brass) 85%, var(--ground)); }
+.legend-keys { display: grid; grid-template-columns: repeat(2, auto); gap: 6px 24px; margin: 0; padding: 0; list-style: none; }
+.legend-keys svg { width: 20px; height: 20px; flex: none; overflow: hidden; }
+.legend-hatch-bg { fill: var(--ground); stroke: var(--hairline); }
+.legend-scale-print { display: none !important; }
+.county-maps-note { margin-top: 12px; color: var(--secondary); font-size: 13px; }
+@media (max-width: 760px) {
+  .county-maps-grid { grid-template-columns: 1fr; gap: 28px; }
+  .legend-keys { grid-template-columns: 1fr; }
+  .map-site .map-site-label { font-size: 24px; }
+  .map-town { font-size: 21px; }
+  .map-site text { font-size: 20px; }
+}
+
+/* Pipeline, questions, and the ramp chart and economics tables */
+.pipe-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 32px; }
+.pipe-county h3 { padding-bottom: 10px; border-bottom: 1px solid var(--hairline); font-size: 20px; }
+.pipe-list { margin: 0; padding: 0; list-style: none; }
+.pipe { padding: 14px 0; border-bottom: 1px solid var(--hairline); }
+.pipe-meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: var(--secondary); font-size: 13px; }
+.pipe-brings { padding: 1px 8px; border: 1px solid var(--brass); color: var(--brass); font-weight: 700; }
+.pipe-title { margin-top: 6px; color: var(--paper); font-size: 16px; font-weight: 700; line-height: 1.35; }
+.pipe-detail { margin-top: 4px; color: var(--secondary); font-size: 15px; line-height: 1.5; }
+.pipe-detail a, .local-questions a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+.pipe-watch { margin-top: 12px; color: var(--secondary); font-size: 15px; line-height: 1.5; }
+.pipe-watch strong { color: var(--paper); }
+
+.local-questions { max-width: 76ch; margin: 24px 0 0; padding-left: 22px; }
+.local-questions li { padding: 10px 0 10px 6px; color: var(--secondary); font-size: 17px; line-height: 1.55; }
+.local-questions li + li { border-top: 1px solid var(--hairline); }
+.local-questions strong { color: var(--paper); }
+
+.plan-ramp { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.plan-ramp .market-table-wrap { margin-top: 20px; }
+.plan-chart { margin: 20px 0 0; }
+.plan-chart svg { display: block; width: 100%; height: auto; }
+.plan-chart figcaption { margin-top: 10px; color: var(--secondary); font-size: 13px; line-height: 1.55; }
+.plan-grid line { stroke: var(--hairline); stroke-width: 1; }
+.plan-grid text, .plan-axis { fill: var(--secondary); font-size: 15px; font-variant-numeric: tabular-nums; }
+.plan-grid text { text-anchor: end; }
+.plan-axis { text-anchor: middle; }
+.plan-band { fill: color-mix(in srgb, var(--brass) 20%, transparent); }
+.plan-median { fill: none; stroke: var(--brass); stroke-width: 3; stroke-linejoin: round; }
+.plan-target { stroke: var(--paper); stroke-width: 1.5; }
+.plan-breakeven { stroke: var(--paper); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.plan-line-label { fill: var(--paper); font-size: 15px; font-weight: 700; }
+.plan-line-label-end { text-anchor: end; }
+.plan-outcomes thead th:first-child, .plan-network thead th:first-child { text-align: left; }
+/* Negatives read as accounting figures: ink with a minus sign. Brass stays for emphasis. */
+.market-table td.is-negative { color: var(--paper); }
+.market-table .plan-total th, .market-table .plan-total td { border-top: 2px solid var(--paper); color: var(--paper); font-weight: 700; }
+.plan-network { min-width: 560px; }
+.plan-network td { white-space: nowrap; }
+.market-table-wrap:has(.plan-network) { overflow-x: auto; }
+.market-table-note a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+.plan-outcomes thead th { white-space: nowrap; }
+@media (max-width: 900px) {
+  .plan-ramp { grid-template-columns: 1fr; gap: 8px; }
+}
+@media (max-width: 640px) {
+  .plan-grid text, .plan-axis, .plan-line-label { font-size: 22px; }
+  .plan-network { font-size: 14px; }
+}
+@media (max-width: 900px) {
+  .pipe-columns { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* A board packet: black on white, no site chrome, sections kept together where they fit. */
+/* A board pack: letter pages, folios and a running footer, black and white, six type sizes
+   (22 title, 18 figures, 13 section, 11 lede, 9.5 body, 8.5 tables and notes). */
+@media print {
+  @page {
+    size: letter;
+    margin: 0.55in 0.6in 0.7in;
+    @bottom-left { content: "Five-year branch plan \00B7  Board, October 2026 \00B7  Confidential"; font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
+    @bottom-right { content: counter(page) " of " counter(pages); font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
+  }
+  header, footer, .trace-rail, .skip-link, .sample-banner, .report-cta, #cc-main, .appendix-divider, .brief-appendix, .county-maps-head p, .county-maps-note, .county-map-sub { display: none !important; }
+  :root { --paper: #000; --secondary: #333; --hairline: #bbb; --brass: #8a2f14; --dark-navy: #fff; --ground: #fff; }
+  body { background: #fff !important; font-size: 9.5pt; }
+  .sample-plan { padding: 0; }
+  .sample-plan .container { max-width: none; padding: 0; }
+  a { color: inherit !important; text-decoration: none !important; }
+
+  /* Type scale */
+  .report-title { font-size: 22pt; max-width: none; }
+  .report-figure { font-size: 18pt !important; }
+  .county-maps-title, .report-appendix .report-h2 { font-size: 13pt !important; }
+  .report-lede { font-size: 11pt !important; line-height: 1.4; max-width: none; }
+  .report-meta, .brief-why, .brief-p, .brief-note, .report-status, .report-status strong,
+  .report-brief .report-decisions li, .brief-risks li, .brief-resolution p,
+  .report-appendix .report-p, .report-appendix .report-rules li, .report-appendix .local-questions li, .report-appendix .report-risks li,
+  .report-appendix .market-finding p, .report-appendix .pipe-detail, .report-appendix .pipe-watch, .report-appendix .pipe-title { font-size: 9.5pt !important; line-height: 1.42; }
+  .market-table, .market-table th, .market-table td, .market-table thead th, .market-table-note, figcaption,
+  .report-figure-note, .report-figures dt, .legend-scale li, .legend-keys li, .legend-title, .tag, .pipe-meta, .report-sources li, .county-map-name, .brief-h2, .brief-h3, .report-appendix .report-h3 { font-size: 8.5pt !important; }
+  .brief-h2, .brief-h3, .report-appendix .report-h3, .county-map-name, .legend-title { font-weight: 700; }
+
+  /* Cover and brief */
+  .report-cover { margin-top: 0; padding-bottom: 8px; }
+  .report-status { margin-bottom: 6px; }
+  .report-meta { margin-top: 4px; }
+  .brief-block { margin-top: 10px; }
+  .brief-h2 { padding-top: 6px; }
+  .brief-why, .brief-p, .brief-note { margin-top: 3px; max-width: none !important; }
+  .report-figures { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; margin-top: 10px; }
+  .report-figures div { padding: 6px 12px 6px 12px !important; border-left: 1px solid var(--hairline) !important; }
+  .report-figures div:first-child { padding-left: 0 !important; border-left: 0 !important; }
+  .report-figures div:nth-child(n + 3) { border-top: 0 !important; }
+  .report-brief .report-decisions, .report-brief .report-risks { max-width: none; margin-top: 3px; }
+  .report-brief .report-decisions li, .brief-risks li { padding-top: 2px; padding-bottom: 2px; }
+  .market-table th, .market-table td { padding-top: 3px !important; padding-bottom: 3px !important; }
+  .brief-econ, .brief-pace, .pace-table, .report-towns, .plan-network { min-width: 0; }
+  #economics-brief .market-table-wrap { margin-top: 4px; }
+  #economics-brief .brief-note { margin-top: 3px; }
+  .brief-options th { width: 1.5in; }
+  .brief-page-two { break-before: page; margin-top: 0; }
+  .brief-resolution { margin-top: 8px; padding: 6px 10px; break-inside: avoid; }
+  .brief-resolution p:last-child, .brief-resolution p { margin-top: 2px; }
+  .brief-sign { display: flex !important; gap: 0.4in; margin-top: 10px !important; }
+  .brief-sign span { flex: 1; padding-top: 14px; border-bottom: 1px solid #000; font-size: 8.5pt; color: #444; }
+
+  /* Maps: same printed height, so both counties are at the same scale; labels sized to print at 8.5pt */
+  .brief-page-two .county-maps { margin-top: 0; }
+  .county-maps-grid { grid-template-columns: auto auto !important; justify-content: space-between; margin-top: 4px !important; }
+  .map-scale { display: none; }
+  .legend-scale-print { display: flex !important; }
+  .legend-scale-print svg { width: calc(5 * 0.0669in) !important; height: 8px !important; }
+  .legend-scale-bar { fill: none; stroke: #000; stroke-width: 1.5; }
+  .county-map svg { height: calc(var(--miles) * 0.0669in); width: auto; max-width: 100%; margin-top: 2px; }
+  .county-map svg text { font-size: calc(var(--mile) * 1.76px) !important; stroke-width: calc(var(--mile) * 0.53px) !important; }
+  .map-site circle { r: calc(var(--mile) * 0.99px); }
+  .county-maps-legend { margin-top: 6px; padding-top: 6px; gap: 6px 24px; }
+  .legend-keys { grid-template-columns: repeat(3, auto) !important; gap: 3px 18px; }
+
+  /* Tags print as text, not pills */
+  .tag, .pipe-brings { border: 0; padding: 0; margin-right: 8px; font-size: 8.5pt !important; font-weight: 700; }
+  .tag-check { color: #333; }
+  .tag-check::after { content: " (check)"; font-weight: 400; }
+  .report-rules { break-inside: avoid; }
+  .report-appendix .local-questions li, .report-appendix .report-risks li { padding-top: 3px; padding-bottom: 3px; }
+  .report-appendix .local-questions { margin-top: 6px; }
+  .report-sources { margin-top: 6px; }
+  .report-sources li { padding: 1px 0 !important; }
+  #methods .report-small { margin-top: 6px; }
+  .report-appendix .market-findings { gap: 12px; }
+  .report-appendix .market-finding h3 { font-size: 9.5pt; }
+  .plan-ramp figure, .plan-ramp .market-table-wrap { break-inside: auto; }
+
+  /* Appendix: one heading style, letters in the display face; sections flow */
+  .report-appendix { margin-top: 20px; }
+  #markets { break-before: page; margin-top: 0; }
+  .report-appendix .report-h2 { display: block; padding-top: 8px; font-family: "IBM Plex Sans", sans-serif; font-weight: 700; text-transform: none; }
+  .report-appendix .report-h2 span { margin-right: 8px; font-family: "Archivo Black", sans-serif; }
+  .report-appendix .report-h3, .report-appendix .market-finding h3, .pipe-county h3 { margin-top: 12px; font-size: 11pt !important; font-weight: 700; line-height: 1.3; }
+  .pipe-county h3 { padding-bottom: 4px; }
+  .report-appendix .market-table-wrap, .report-appendix .market-findings { margin-top: 8px; }
+  .report-appendix .pipe { padding: 5px 0; }
+  .pipe-columns.report-pipe { display: block !important; }
+  .report-pipe .pipe-county + .pipe-county { margin-top: 12px; }
+  .plan-ramp { grid-template-columns: 1fr 1fr !important; gap: 18px; }
+  .plan-grid text, .plan-axis, .plan-line-label { font-size: 21px !important; }
+  .sample-plan .market-table-wrap { overflow: visible; }
+  .report-towns tbody th { font-size: 8.5pt !important; }
+  .report-towns .report-county { font-size: 7.5pt !important; color: #555; font-weight: 400; }
+  .report-appendix .report-risks, .report-appendix .local-questions, .report-appendix .report-rules { max-width: none; }
+  .pipe-detail a { color: #444 !important; }
+  .pace-block { break-inside: avoid; }
+  .report-appendix .report-p, .report-appendix .local-questions li, .report-appendix .report-risks li, .report-appendix .market-finding p, .report-appendix .pipe-detail { line-height: 1.34 !important; }
+  .report-appendix .local-questions li { padding: 3px 0 3px 4px !important; }
+  .report-rules li { display: grid; grid-template-columns: 1.1in 1fr; padding: 1pt 0 !important; }
+  .market-table th.crit, .market-table td.crit { width: 0.6in; }
+  .report-appendix :is(.report-p, .market-table-note, figcaption, .report-small) { max-width: none !important; }
+  .market-table-note, figcaption, .report-figure-note, .report-sources li { line-height: 1.3 !important; }
+
+  .report-sources { padding-left: 18px; }
+  .report-sources li::after { content: ""; }
+
+
+  /* Keep things together */
+  .report-h2, .report-h3, .pipe-county h3, .report-rules { break-after: avoid; }
+  .report-figures, table, figure:not(.county-maps), .county-map, .market-finding, .pipe, .report-risks li, #economics-brief { break-inside: avoid; }
+}

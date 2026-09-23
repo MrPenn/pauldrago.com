@@ -1,0 +1,103 @@
+---
+// County maps for the sample plan: census tracts shaded by home purchases per 1,000 residents
+// (where households are arriving), low- and moderate-income tracts hatched, every existing branch,
+// and a five-mile review area around each planned site. Built from src/data/dfw-map.json
+// (scripts/build-dfw-markets.py) as static SVG, so the page ships no map script.
+import mapData from '../data/dfw-map.json';
+import { PLAN, REVIEW_SITES } from '../data/branch-plan';
+
+// One color scale for both counties: quintiles of every tract's value.
+const values = mapData.counties.flatMap((c) => c.tracts.map((t) => t.purchasesPer1000)).filter((v) => v != null).sort((a, b) => a - b);
+const cuts = [0.2, 0.4, 0.6, 0.8].map((q) => values[Math.floor(q * (values.length - 1))]);
+const band = (v) => (v == null ? -1 : cuts.filter((c) => v >= c).length);
+const round = (v) => Math.round(v);
+const bands = [0, 1, 2, 3, 4].map((i) => ({
+  i,
+  label: i === 0 ? `Under ${round(cuts[0])}` : i === 4 ? `${round(cuts[3])} or more` : `${round(cuts[i - 1])} to ${round(cuts[i])}`,
+}));
+
+// Larger banks' branches are diamonds, community banks' are dots: shape, not just fill, tells them apart.
+const diamond = (x, y, r) => `M${x},${y - r}L${x + r},${y}L${x},${y + r}L${x - r},${y}Z`;
+// Labels near the frame edge anchor inward so they aren't clipped.
+const anchor = (x, width) => (x < 70 ? 'start' : x > width - 70 ? 'end' : 'middle');
+const REVIEW = Object.fromEntries(REVIEW_SITES.map((site) => [site, true]));
+const planned = Object.fromEntries(PLAN.map((b, n) => [b.site, n + 1]));
+const maps = mapData.counties.map((c) => {
+  const sites = c.towns
+    .filter((t) => planned[t.town] || REVIEW[t.town])
+    .map((t) => ({ ...t, n: planned[t.town], review: !planned[t.town], r: mapData.radiusMiles * c.milePx }));
+  return { ...c, sites, id: c.county.toLowerCase() };
+});
+---
+<figure class="county-maps" aria-labelledby="county-maps-title">
+  <figcaption class="county-maps-head">
+    <h2 class="county-maps-title" id="county-maps-title">Each site sits where households are buying homes fastest</h2>
+    <p>Census tracts shaded by home purchases per 1,000 residents, with a five-mile review area around each planned site. Hatched tracts are low or moderate income.</p>
+  </figcaption>
+  <div class="county-maps-grid">
+    {maps.map((m) => (
+      <div class="county-map">
+        <h3 class="county-map-name">{m.county} County</h3>
+        <p class="county-map-sub">{m.sites.filter((s) => !s.review).length} planned {m.sites.filter((s) => !s.review).length === 1 ? 'branch' : 'branches'}{m.sites.some((s) => s.review) && `, ${m.sites.filter((s) => s.review).length} at the year 5 review`}; {m.branches.length} existing</p>
+        <svg viewBox={`-12 -12 ${m.width + 24} ${m.height + 56}`} style={`--map-h: ${m.height + 56}; --mile: ${m.milePx}; --miles: ${((m.height + 56) / m.milePx).toFixed(2)}`} role="img" aria-labelledby={`map-${m.id}-title`}>
+          <title id={`map-${m.id}-title`}>{m.county} County census tracts shaded by home purchases per 1,000 residents, with {m.branches.length} existing branches and five-mile review areas around {m.sites.map((s) => s.town).join(' and ')}.</title>
+          <defs>
+            <pattern id={`hatch-${m.id}`} width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+              <line x1="0" y1="0" x2="0" y2="7" class="map-hatch-line" />
+            </pattern>
+            <clipPath id={`clip-${m.id}`}><path d={m.outline} /></clipPath>
+          </defs>
+          <g class="map-tracts">
+            {m.tracts.map((t) => <path d={t.d} class={`map-band-${band(t.purchasesPer1000)}`} />)}
+          </g>
+          <g>
+            {m.tracts.filter((t) => t.lmi).map((t) => <path d={t.d} fill={`url(#hatch-${m.id})`} class="map-lmi" />)}
+          </g>
+          <path d={m.outline} class="map-outline" />
+          <g clip-path={`url(#clip-${m.id})`}>
+            {m.sites.map((s) => <circle cx={s.x} cy={s.y} r={s.r} class:list={['map-radius', { 'is-review': s.review }]} />)}
+          </g>
+          <g class="map-scale" transform={`translate(${m.width - mapData.radiusMiles * m.milePx}, ${m.height + 36})`}>
+            <line x1="0" x2={mapData.radiusMiles * m.milePx} y1="0" y2="0" />
+            <line x1="0" x2="0" y1="-6" y2="6" /><line x1={mapData.radiusMiles * m.milePx} x2={mapData.radiusMiles * m.milePx} y1="-6" y2="6" />
+            <text x={mapData.radiusMiles * m.milePx / 2} y="-10">{mapData.radiusMiles} miles</text>
+          </g>
+          <g class="map-branches">
+            {m.branches.map((b) => b.community
+              ? <circle cx={b.x} cy={b.y} r="4.5" class="map-branch" />
+              : <path d={diamond(b.x, b.y, 7)} class="map-branch is-large" />)}
+          </g>
+          {m.towns.map((t) => {
+            const site = m.sites.find((s) => s.town === t.town);
+            return site ? (
+              <g class:list={['map-site', { 'is-review': site.review }]}>
+                <circle cx={t.x} cy={t.y} r="15" />
+                <text x={t.x} y={t.y} dy="0.36em">{site.review ? '5' : site.n}</text>
+                <text class="map-site-label" x={t.x} y={t.y < 40 ? t.y + 36 : t.y - 24} text-anchor={anchor(t.x, m.width)}>{t.town}</text>
+              </g>
+            ) : (
+              <text class="map-town" x={t.x} y={t.y < 40 ? t.y + 26 : t.y - 12} text-anchor={anchor(t.x, m.width)}>{t.town}</text>
+            );
+          })}
+        </svg>
+      </div>
+    ))}
+  </div>
+  <div class="county-maps-legend">
+    <div class="legend-group">
+      <p class="legend-title">Home purchases per 1,000 residents, 2025</p>
+      <ul class="legend-scale">
+        {bands.map((b) => <li><span class={`legend-swatch map-band-${b.i}`}></span>{b.label}</li>)}
+      </ul>
+    </div>
+    <ul class="legend-keys">
+      <li><svg viewBox="0 0 20 20" aria-hidden="true"><rect width="20" height="20" class="legend-hatch-bg" /><path d="M-2,6 L6,-2 M-2,14 L14,-2 M-2,22 L22,-2 M6,22 L22,6 M14,22 L22,14" class="map-hatch-line" /></svg>Low- or moderate-income tract</li>
+      <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="5" class="map-branch" /></svg>Community-bank branch</li>
+      <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d={diamond(10, 10, 7)} class="map-branch is-large" /></svg>Branch of a bank over $10 billion</li>
+      <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" class="map-radius" /></svg>Five-mile review area, planned branch</li>
+      <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" class="map-radius is-review" /></svg>Five-mile review area, year 5 review</li>
+      <li class="legend-scale-print"><svg viewBox="0 0 40 10" aria-hidden="true"><path d="M1,2V8M1,5H39M39,2V8" class="legend-scale-bar" /></svg>{mapData.radiusMiles} miles, both maps</li>
+    </ul>
+  </div>
+  <p class="county-maps-note">{mapData.asOf}. Tract boundaries generalized to about 100 meters.</p>
+</figure>

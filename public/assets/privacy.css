@@ -163,14 +163,6 @@
 .glance-cta span { display: block; font-size: 14px; font-weight: 500; }
 .glance-cta:hover { background: var(--paper); color: var(--ground); }
 
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
 
 /* In full */
 .privacy-columns {

@@ -1,0 +1,369 @@
+{
+  "asOf": {
+    "deposits": "FDIC Summary of Deposits, June 30, 2026 (growth from June 30, 2021)",
+    "population": "U.S. Census Bureau county population estimates, April 2020 to July 2025",
+    "households": "U.S. Census Bureau American Community Survey, ACS 2024 1-year",
+    "ramp": "FDIC Summary of Deposits, June 2008 to June 2026, Dallas-Fort Worth metro",
+    "towns": "FDIC Summary of Deposits by branch city, 2021 to 2026; Census ZIP Code Business Patterns, 2019 to 2023; tracts within 5 miles of the town center",
+    "fairAccess": "HMDA 2025 (CFPB) with FFIEC tract income and minority data; branches placed by the Census geocoder"
+  },
+  "notes": [
+    "Branches holding more than $1.5 billion are treated as booked deposits and excluded."
+  ],
+  "markets": [
+    {
+      "county": "Collin",
+      "deposits": 39.78,
+      "depositGrowthPct": 19.4,
+      "depositGrowth": 6.46,
+      "populationGrowthPct": 21.7,
+      "population": 1297179,
+      "households": 452965,
+      "medianIncome": 124316,
+      "branches": 274,
+      "householdsPerBranch": 1653,
+      "communityShare": 16.0,
+      "communityBranches": 72,
+      "communityGrowth": 0.69,
+      "medianCommunityBranch": 49,
+      "top4Share": 54.5,
+      "hhi": 948,
+      "leaders": [
+        {
+          "bank": "JPMorgan Chase Bank, National Association",
+          "share": 22.1
+        },
+        {
+          "bank": "Bank of America, National Association",
+          "share": 13.5
+        },
+        {
+          "bank": "Wells Fargo Bank, National Association",
+          "share": 10.9
+        }
+      ],
+      "fairAccess": {
+        "lmiPopulationShare": 9.3,
+        "minorityPopulationShare": 42.3,
+        "lmiTracts": 24,
+        "lmiTractsWithoutBranch": 12,
+        "purchaseLoansInLmiShare": 8.6,
+        "ownerHomesInLmiShare": 5.0,
+        "metroMedianFamilyIncome": 117300
+      }
+    },
+    {
+      "county": "Ellis",
+      "deposits": 3.95,
+      "depositGrowthPct": 25.3,
+      "depositGrowth": 0.8,
+      "populationGrowthPct": 25.2,
+      "population": 240867,
+      "households": 78207,
+      "medianIncome": 100052,
+      "branches": 37,
+      "householdsPerBranch": 2114,
+      "communityShare": 63.2,
+      "communityBranches": 23,
+      "communityGrowth": 0.47,
+      "medianCommunityBranch": 49,
+      "top4Share": 65.3,
+      "hhi": 1861,
+      "leaders": [
+        {
+          "bank": "Citizens National Bank of Texas",
+          "share": 38.1
+        },
+        {
+          "bank": "Prosperity Bank",
+          "share": 9.9
+        },
+        {
+          "bank": "Wells Fargo Bank, National Association",
+          "share": 9.4
+        }
+      ],
+      "fairAccess": {
+        "lmiPopulationShare": 17.7,
+        "minorityPopulationShare": 28.3,
+        "lmiTracts": 7,
+        "lmiTractsWithoutBranch": 1,
+        "purchaseLoansInLmiShare": 8.7,
+        "ownerHomesInLmiShare": 12.9,
+        "metroMedianFamilyIncome": 117300
+      }
+    },
+    {
+      "county": "Kaufman",
+      "deposits": 2.79,
+      "depositGrowthPct": 21.9,
+      "depositGrowth": 0.5,
+      "populationGrowthPct": 44.0,
+      "population": 209235,
+      "households": 52247,
+      "medianIncome": 89860,
+      "branches": 19,
+      "householdsPerBranch": 2750,
+      "communityShare": 78.3,
+      "communityBranches": 13,
+      "communityGrowth": 0.38,
+      "medianCommunityBranch": 138,
+      "top4Share": 74.3,
+      "hhi": 2566,
+      "leaders": [
+        {
+          "bank": "The American National Bank of Texas",
+          "share": 46.3
+        },
+        {
+          "bank": "City Bank",
+          "share": 11.5
+        },
+        {
+          "bank": "Texas Bank and Trust Company",
+          "share": 8.8
+        }
+      ],
+      "fairAccess": {
+        "lmiPopulationShare": 32.8,
+        "minorityPopulationShare": 36.3,
+        "lmiTracts": 10,
+        "lmiTractsWithoutBranch": 6,
+        "purchaseLoansInLmiShare": 20.6,
+        "ownerHomesInLmiShare": 30.0,
+        "metroMedianFamilyIncome": 117300
+      }
+    }
+  ],
+  "towns": [
+    {
+      "town": "Midlothian",
+      "county": "Ellis",
+      "deposits": 898,
+      "depositGrowthPct": 33,
+      "branches": 8,
+      "depositsPerBranch": 112,
+      "communityShare": 49,
+      "jobs": 12513,
+      "jobGrowthPct": 33,
+      "businesses": 952,
+      "businessGrowthPct": 26,
+      "lmiPopulationShare": 0,
+      "minorityPopulationShare": 5,
+      "lmiTracts": 0,
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "Citizens National Bank of Texas",
+      "largestBankShare": 37
+    },
+    {
+      "town": "Waxahachie",
+      "county": "Ellis",
+      "deposits": 1697,
+      "depositGrowthPct": 33,
+      "branches": 13,
+      "depositsPerBranch": 131,
+      "communityShare": 72,
+      "jobs": 21006,
+      "jobGrowthPct": 10,
+      "businesses": 1326,
+      "businessGrowthPct": 20,
+      "lmiPopulationShare": 39,
+      "minorityPopulationShare": 25,
+      "lmiTracts": 3,
+      "lmiTractsWithoutBranch": 1,
+      "largestBank": "Citizens National Bank of Texas",
+      "largestBankShare": 55
+    },
+    {
+      "town": "Red Oak",
+      "county": "Ellis",
+      "deposits": 466,
+      "depositGrowthPct": 1,
+      "branches": 6,
+      "depositsPerBranch": 78,
+      "communityShare": 45,
+      "jobs": 6506,
+      "jobGrowthPct": 3,
+      "businesses": 550,
+      "businessGrowthPct": 10,
+      "lmiPopulationShare": 0,
+      "minorityPopulationShare": 53,
+      "lmiTracts": 0,
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "Citizens National Bank of Texas",
+      "largestBankShare": 33
+    },
+    {
+      "town": "Ennis",
+      "county": "Ellis",
+      "deposits": 686,
+      "depositGrowthPct": 25,
+      "branches": 6,
+      "depositsPerBranch": 114,
+      "communityShare": 60,
+      "jobs": 9015,
+      "jobGrowthPct": 12,
+      "businesses": 615,
+      "businessGrowthPct": 11,
+      "lmiPopulationShare": 52,
+      "minorityPopulationShare": 52,
+      "lmiTracts": 2,
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "Trinity Capital Bank of Texas",
+      "largestBankShare": 35
+    },
+    {
+      "town": "Forney",
+      "county": "Kaufman",
+      "deposits": 1010,
+      "depositGrowthPct": 25,
+      "branches": 9,
+      "depositsPerBranch": 112,
+      "communityShare": 66,
+      "jobs": 12124,
+      "jobGrowthPct": 66,
+      "businesses": 952,
+      "businessGrowthPct": 36,
+      "lmiPopulationShare": 0,
+      "minorityPopulationShare": 56,
+      "lmiTracts": 0,
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "City Bank",
+      "largestBankShare": 32
+    },
+    {
+      "town": "Terrell",
+      "county": "Kaufman",
+      "deposits": 791,
+      "depositGrowthPct": 12,
+      "branches": 4,
+      "depositsPerBranch": 198,
+      "communityShare": 88,
+      "jobs": 14481,
+      "jobGrowthPct": 15,
+      "businesses": 767,
+      "businessGrowthPct": 8,
+      "lmiPopulationShare": 100,
+      "minorityPopulationShare": 74,
+      "lmiTracts": 4,
+      "lmiTractsWithoutBranch": 2,
+      "largestBank": "The American National Bank of Texas",
+      "largestBankShare": 68
+    },
+    {
+      "town": "Kaufman",
+      "county": "Kaufman",
+      "deposits": 541,
+      "depositGrowthPct": 21,
+      "branches": 3,
+      "depositsPerBranch": 180,
+      "communityShare": 69,
+      "jobs": 4723,
+      "jobGrowthPct": -4,
+      "businesses": 388,
+      "businessGrowthPct": 14,
+      "lmiPopulationShare": 9,
+      "minorityPopulationShare": 9,
+      "lmiTracts": 1,
+      "lmiTractsWithoutBranch": 1,
+      "largestBank": "The American National Bank of Texas",
+      "largestBankShare": 69
+    },
+    {
+      "town": "Crandall",
+      "county": "Kaufman",
+      "deposits": 138,
+      "depositGrowthPct": 73,
+      "branches": 1,
+      "depositsPerBranch": 138,
+      "communityShare": 100,
+      "jobs": 591,
+      "jobGrowthPct": 6,
+      "businesses": 91,
+      "businessGrowthPct": 2,
+      "lmiPopulationShare": 45,
+      "minorityPopulationShare": 45,
+      "lmiTracts": 1,
+      "lmiTractsWithoutBranch": 0,
+      "largestBank": "The American National Bank of Texas",
+      "largestBankShare": 100
+    }
+  ],
+  "ramp": {
+    "branches": 146,
+    "relocationsExcluded": 17,
+    "opened": [
+      2009,
+      2023
+    ],
+    "target": 50,
+    "breakeven": 26,
+    "breakevenLow": 7,
+    "branchCost": [
+      250,
+      1000
+    ],
+    "nim": 3.81,
+    "nimIndustry": 3.32,
+    "buildOut": 3.5,
+    "paybackYears": 4,
+    "payback": 49,
+    "byAge": [
+      {
+        "age": 1,
+        "branches": 146,
+        "reachedTargetShare": 26,
+        "stillOpenShare": 99,
+        "belowBreakevenShare": 59,
+        "atTargetShare": 26,
+        "p25": 5,
+        "median": 17,
+        "p75": 52
+      },
+      {
+        "age": 2,
+        "branches": 146,
+        "reachedTargetShare": 36,
+        "stillOpenShare": 95,
+        "belowBreakevenShare": 42,
+        "atTargetShare": 34,
+        "p25": 11,
+        "median": 33,
+        "p75": 69
+      },
+      {
+        "age": 3,
+        "branches": 146,
+        "reachedTargetShare": 41,
+        "stillOpenShare": 90,
+        "belowBreakevenShare": 32,
+        "atTargetShare": 38,
+        "p25": 16,
+        "median": 43,
+        "p75": 81
+      },
+      {
+        "age": 4,
+        "branches": 131,
+        "reachedTargetShare": 47,
+        "stillOpenShare": 87,
+        "belowBreakevenShare": 26,
+        "atTargetShare": 43,
+        "p25": 18,
+        "median": 47,
+        "p75": 102
+      },
+      {
+        "age": 5,
+        "branches": 111,
+        "reachedTargetShare": 51,
+        "stillOpenShare": 85,
+        "belowBreakevenShare": 22,
+        "atTargetShare": 44,
+        "p25": 24,
+        "median": 60,
+        "p75": 111
+      }
+    ]
+  }
+}
