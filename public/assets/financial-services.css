@@ -828,7 +828,7 @@ input):focus-visible {
 
   @media (max-width: 640px) {.hero-copy .headline-104,
     .headline-104 {
-      font-size: 42px;
+      font-size: clamp(28px, 9.5vw, 42px);
     }
 
     .process-step {
@@ -885,3 +885,6 @@ input):focus-visible {
 .router-visual .overlap-circle { width: 72px; height: 72px; border-radius: 50%; top: 0; }
 .router-visual .overlap-circle.target { left: 44px; }
 .router-visual .overlap-note { left: 0; right: auto; bottom: 0; width: auto; }
+
+/* Reading measure: keep running text near 65-75 characters a line. */
+.process-note { max-width: 70ch; }

@@ -239,6 +239,12 @@ button):focus-visible {
 
   .link-group + .link-group {
     border-top: 1px solid color-mix(in srgb, var(--paper) 20%, transparent);
+    border-left: 0;
+  }
+
+  /* Single-line contact links don't need the two-line row height. */
+  .link-group:last-child .plain-link {
+    min-height: 0;
   }
 
   .articles-hero {
@@ -280,7 +286,7 @@ button):focus-visible {
 
 /* Author box: who wrote this and how to reach him */
 .article-author { max-width: 68ch; margin: 56px 0 0; padding: 28px 0 0; border-top: 2px solid var(--paper); }
-.article-author-label { margin: 0 0 12px; color: var(--brass); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+.article-author-label { margin: 0 0 12px; color: var(--brass); font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
 .article-author-bio { margin: 0 0 20px; font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 18px; line-height: 1.55; }
 .article-author-links { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin: 0; }
 .article-author-link { color: var(--paper); font-size: 14px; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--hairline); }
@@ -294,3 +300,7 @@ button):focus-visible {
 .article-body a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .article-body blockquote { margin: 28px 0; padding-left: 20px; border-left: 3px solid currentColor; opacity: 0.9; }
 .article-body img { max-width: 100%; height: auto; }
+
+.not-found-links { max-width: 62ch; margin: 24px 0 0; padding-left: 20px; font-size: 18px; line-height: 1.6; }
+.not-found-links li + li { margin-top: 8px; }
+.not-found-links a { color: var(--paper); font-weight: 700; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 4px; }

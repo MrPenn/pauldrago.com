@@ -15,29 +15,29 @@ const meta = {
     "/assets/service-detail.css"
   ],
   "scripts": [],
-  "lastUpdated": "2026-09-22"
+  "lastUpdated": "2026-09-23"
 };
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "Person",
-      "@id": "https://pauldrago.com/#paul-drago",
-      "name": "Paul Drago",
-      "url": "https://pauldrago.com/",
-      "sameAs": ["https://www.linkedin.com/in/pauldrago"]
-    },
     {
       "@type": "WebPage",
       "@id": "https://pauldrago.com/branch-market-expansion-analysis#webpage",
       "url": "https://pauldrago.com/branch-market-expansion-analysis",
       "name": "Bank Branch and Market Expansion Analysis",
       "description": "Compare markets using deposit share, growth, customer geography, branch economics, CRA context, and fair-lending considerations.",
-      "dateModified": "2026-09-21",
-      "about": {"@id": "https://pauldrago.com/branch-market-expansion-analysis#service"},
-      "mainEntity": {"@id": "https://pauldrago.com/branch-market-expansion-analysis#service"},
-      "breadcrumb": {"@id": "https://pauldrago.com/branch-market-expansion-analysis#breadcrumb"},
-      "author": {"@id": "https://pauldrago.com/#paul-drago"}
+      "about": {
+        "@id": "https://pauldrago.com/branch-market-expansion-analysis#service"
+      },
+      "mainEntity": {
+        "@id": "https://pauldrago.com/branch-market-expansion-analysis#service"
+      },
+      "breadcrumb": {
+        "@id": "https://pauldrago.com/branch-market-expansion-analysis#breadcrumb"
+      },
+      "author": {
+        "@id": "https://pauldrago.com/#paul-drago"
+      }
     },
     {
       "@type": "Service",
@@ -46,31 +46,59 @@ const jsonld = {
       "name": "Branch and Market Expansion Analysis",
       "serviceType": "Bank branch and market analysis",
       "description": "A documented market scorecard, competitor and deposit-share view, customer-geography comparison, CRA and fair-access context, and reusable assumptions model.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Banks and credit unions"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Banks and credit unions"
+      },
       "areaServed": "United States"
     },
     {
       "@type": "BreadcrumbList",
       "@id": "https://pauldrago.com/branch-market-expansion-analysis#breadcrumb",
       "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Financial Services", "item": "https://pauldrago.com/financial-services"},
-        {"@type": "ListItem", "position": 2, "name": "Branch and Market Expansion Analysis", "item": "https://pauldrago.com/branch-market-expansion-analysis"}
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Services",
+          "item": "https://pauldrago.com/financial-services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Branch and Market Expansion Analysis",
+          "item": "https://pauldrago.com/branch-market-expansion-analysis"
+        }
       ]
     }
   ]
 };
+import OtherDecisions from '../components/OtherDecisions.astro';
 ---
 <Base {...meta} jsonld={jsonld}>
 <main id="main">
   <section class="service-hero">
     <div class="container">
-      <div class="hero-grid">
+      <div class="hero-grid hero-grid-with-model">
         <div>
           <p class="eyebrow">For bank and credit union leadership teams</p>
           <h1 class="display-title hero-title">Compare markets before committing to a <span class="accent">branch plan</span>.</h1>
           <p class="hero-subhead">Compare deposits, customer geography, branch economics, CRA implications, and fair-access risk before choosing a market.</p>
         </div>
+        <figure class="decision-model" aria-labelledby="branch-model-title">
+          <p class="model-label">What you receive</p>
+          <p class="model-title" id="branch-model-title">One scorecard per market</p>
+          <dl class="score-table">
+            <div class="score-row"><dt class="score-name">Deposit opportunity</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 72%"></span></dd><dd class="score-value">72</dd></div>
+            <div class="score-row"><dt class="score-name">Customer geography</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 64%"></span></dd><dd class="score-value">64</dd></div>
+            <div class="score-row"><dt class="score-name">Branch economics</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 58%"></span></dd><dd class="score-value">58</dd></div>
+            <div class="score-row"><dt class="score-name">CRA and assessment area</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 81%"></span></dd><dd class="score-value">81</dd></div>
+            <div class="score-row"><dt class="score-name">Fair-access review</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style="width: 90%"></span></dd><dd class="score-value">90</dd></div>
+          </dl>
+          <figcaption class="model-note">Illustration, not client data. Each score traces to FDIC, NCUA, Census, and institution data, with the assumption behind it written down.</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -137,11 +165,12 @@ const jsonld = {
     </div>
   </section>
 
+  <OtherDecisions current="/branch-market-expansion-analysis" />
   <section class="closing-band">
     <div class="container">
       <div class="closing-grid">
         <div><h2 class="display-title closing-title">Bring the market list and the current branch case.</h2><p class="closing-copy">We will identify which facts support the recommendation, which assumptions need testing, and which questions belong with compliance or counsel.</p></div>
-        <aside class="call-prep"><div class="call-prep-title">Bring to the call</div><ul><li>The markets under consideration</li><li>The current scorecard or branch deck</li><li>The latest CRA performance evaluation</li><li>Known fair-lending or access concerns</li></ul><a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"&#125;'>Book a call</a></aside>
+        <aside class="call-prep"><div class="call-prep-title">Bring to the call</div><ul><li>The markets under consideration</li><li>The current scorecard or branch deck</li><li>The latest CRA performance evaluation</li><li>Known fair-lending or access concerns</li></ul><a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a></aside>
       </div>
     </div>
   </section>

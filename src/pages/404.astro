@@ -1,5 +1,8 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
+
+const latest = (await getCollection('articles', ({ data }) => !data.draft)).sort((a, b) => b.data.date - a.data.date)[0];
 ---
 <Base
   title="Page not found | Paul Drago"
@@ -14,8 +17,12 @@ import Base from '../layouts/Base.astro';
   <section class="articles-hero">
     <div class="container">
       <h1 class="display-title articles-title">Not found.</h1>
-      <p class="articles-intro">There is no page at this address. The homepage lists everything on the site.</p>
-      <p class="articles-intro"><a class="header-link" href="/">Go to the homepage</a></p>
+      <p class="articles-intro">There is no page at this address. It may have moved, or the link may be mistyped. These are the places most people are looking for:</p>
+      <ul class="not-found-links">
+        <li><a href="/financial-services">Services</a>: measurement, market analysis, acquisitions, and fractional leadership.</li>
+        {latest && <li><a href={`/articles/${latest.id}`}>{latest.data.title}</a>: the most recent article.</li>}
+        <li><a href="/">Home</a>: everything else, including how to book a call.</li>
+      </ul>
     </div>
   </section>
 </main>

@@ -5,7 +5,19 @@ const isDevelopment = import.meta.env.DEV;
 const apiHost = isDevelopment ? import.meta.env.PUBLIC_POSTHOG_HOST : '/ingest';
 ---
 <script is:inline define:vars={{ apiKey, apiHost, isDevelopment }}>
-  if (!apiKey || !apiHost) {
+  // Owner's browsers stay out of analytics: open any page with ?internal=on once to switch
+  // PostHog off in that browser for good, and ?internal=off to switch it back on.
+  let internalBrowser = false;
+  try {
+    const internalFlag = new URLSearchParams(location.search).get('internal');
+    if (internalFlag === 'on') localStorage.setItem('pd_internal', '1');
+    if (internalFlag === 'off') localStorage.removeItem('pd_internal');
+    internalBrowser = localStorage.getItem('pd_internal') === '1';
+  } catch (error) {}
+
+  if (internalBrowser) {
+    // No analytics in this browser.
+  } else if (!apiKey || !apiHost) {
     if (isDevelopment) {
       const missingVariable = !apiKey
         ? 'PUBLIC_POSTHOG_PROJECT_TOKEN'

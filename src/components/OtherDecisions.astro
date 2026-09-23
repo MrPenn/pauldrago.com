@@ -1,0 +1,22 @@
+---
+// "Other decisions" row for the product pages: the sibling services, so a reader
+// who landed on the wrong one is one click from the right one.
+const { current } = Astro.props;
+const services = [
+  { href: '/marketing-measurement-reset', name: 'Marketing Measurement Reset', question: 'Show what acquisition spend produced after account opening.' },
+  { href: '/branch-market-expansion-analysis', name: 'Branch and Market Expansion Analysis', question: 'Compare markets before committing to a branch plan.' },
+  { href: '/acquisition-footprint-analysis', name: 'Acquisition and Footprint Analysis', question: 'Test the market case for an acquisition target.' },
+  { href: '/fractional-cmo-financial-services', name: 'Fractional CMO', question: 'Add senior marketing leadership without a full-time hire.' },
+].filter((s) => s.href !== current);
+---
+<nav class="other-decisions" aria-labelledby="other-decisions-heading">
+  <div class="container">
+    <h2 class="other-decisions-label" id="other-decisions-heading">Facing a different decision?</h2>
+    <ul class="other-decisions-list">
+      {services.map((s) => (
+        <li><a href={s.href}><span class="other-decisions-name">{s.name}</span><span class="other-decisions-question">{s.question}</span></a></li>
+      ))}
+    </ul>
+    <a class="other-decisions-all" href="/financial-services">All services</a>
+  </div>
+</nav>

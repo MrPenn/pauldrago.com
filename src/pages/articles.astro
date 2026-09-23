@@ -9,9 +9,23 @@ const long = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric
 const jsonld = {
   '@context': 'https://schema.org',
   '@graph': [
-    { '@type': 'Person', '@id': 'https://pauldrago.com/#paul-drago', name: 'Paul Drago', url: 'https://pauldrago.com/', sameAs: ['https://www.linkedin.com/in/pauldrago'] },
-    { '@type': 'CollectionPage', '@id': 'https://pauldrago.com/articles#webpage', url: 'https://pauldrago.com/articles', name: 'Articles by Paul Drago',
-      description: 'Articles on marketing measurement, market decisions, and accountable growth.', author: { '@id': 'https://pauldrago.com/#paul-drago' } },
+    {
+      '@type': 'CollectionPage',
+      '@id': 'https://pauldrago.com/articles#webpage',
+      url: 'https://pauldrago.com/articles',
+      name: 'Articles by Paul Drago',
+      description: 'Articles on marketing measurement, market decisions, and accountable growth.',
+      author: { '@id': 'https://pauldrago.com/#paul-drago' },
+      mainEntity: {
+        '@type': 'ItemList',
+        itemListElement: articles.map((a, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          url: `https://pauldrago.com/articles/${a.id}`,
+          name: a.data.title,
+        })),
+      },
+    },
   ],
 };
 ---
@@ -24,6 +38,7 @@ const jsonld = {
   robots={articles.length ? '' : 'noindex,follow'}
   footerNote="Writing on marketing measurement, markets, and accountable growth."
   stylesheets={['/assets/personal-site.css']}
+  lastUpdated={articles.length ? iso(articles[0].data.updated ?? articles[0].data.date) : undefined}
   jsonld={jsonld}
 >
 <main id="main">

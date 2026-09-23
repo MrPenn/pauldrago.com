@@ -17,46 +17,33 @@ const meta = {
   "scripts": [
     "/assets/financial-services.js"
   ],
-  "lastUpdated": "2026-09-22"
+  "lastUpdated": "2026-09-23"
 };
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
-    {
-      "@type": "Person",
-      "@id": "https://pauldrago.com/#paul-drago",
-      "name": "Paul Drago",
-      "url": "https://pauldrago.com/",
-      "email": "mailto:paul@pauldrago.com",
-      "sameAs": ["https://www.linkedin.com/in/pauldrago"],
-      "jobTitle": "Financial Services Marketing and Market Analysis Advisor",
-      "knowsAbout": [
-        "Bank marketing measurement",
-        "Branch and market expansion analysis",
-        "Bank acquisition footprint analysis",
-        "Fractional CMO leadership"
-      ]
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://pauldrago.com/#website",
-      "url": "https://pauldrago.com/",
-      "name": "Paul Drago",
-      "publisher": {"@id": "https://pauldrago.com/#paul-drago"}
-    },
     {
       "@type": "WebPage",
       "@id": "https://pauldrago.com/financial-services#webpage",
       "url": "https://pauldrago.com/financial-services",
       "name": "Financial Services Marketing and Market Analysis",
       "description": "Marketing measurement, branch and market analysis, acquisition footprint analysis, and fractional CMO leadership for banks and credit unions.",
-      "dateModified": "2026-09-21",
-      "isPartOf": {"@id": "https://pauldrago.com/#website"},
+      "isPartOf": {
+        "@id": "https://pauldrago.com/#website"
+      },
       "about": [
-        {"@id": "https://pauldrago.com/marketing-measurement-reset#service"},
-        {"@id": "https://pauldrago.com/branch-market-expansion-analysis#service"},
-        {"@id": "https://pauldrago.com/acquisition-footprint-analysis#service"},
-        {"@id": "https://pauldrago.com/fractional-cmo-financial-services#service"}
+        {
+          "@id": "https://pauldrago.com/marketing-measurement-reset#service"
+        },
+        {
+          "@id": "https://pauldrago.com/branch-market-expansion-analysis#service"
+        },
+        {
+          "@id": "https://pauldrago.com/acquisition-footprint-analysis#service"
+        },
+        {
+          "@id": "https://pauldrago.com/fractional-cmo-financial-services#service"
+        }
       ]
     },
     {
@@ -66,8 +53,13 @@ const jsonld = {
       "url": "https://pauldrago.com/marketing-measurement-reset",
       "serviceType": "Bank marketing measurement consulting",
       "description": "A reporting model that connects acquisition spend to retained accounts, funded balances, and board reporting.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Banks and credit unions"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Banks and credit unions"
+      },
       "areaServed": "United States"
     },
     {
@@ -77,8 +69,13 @@ const jsonld = {
       "url": "https://pauldrago.com/branch-market-expansion-analysis",
       "serviceType": "Bank branch and market analysis",
       "description": "Market scorecards, competitor and deposit-share analysis, customer geography, CRA and fair-access context, and reusable expansion assumptions.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Banks and credit unions"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Banks and credit unions"
+      },
       "areaServed": "United States"
     },
     {
@@ -88,8 +85,13 @@ const jsonld = {
       "url": "https://pauldrago.com/acquisition-footprint-analysis",
       "serviceType": "Bank acquisition footprint analysis",
       "description": "Deposit, market, footprint-overlap, and retention analysis for evaluating acquisition targets.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Banks and credit unions"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Banks and credit unions"
+      },
       "areaServed": "United States"
     },
     {
@@ -99,8 +101,13 @@ const jsonld = {
       "url": "https://pauldrago.com/fractional-cmo-financial-services",
       "serviceType": "Fractional chief marketing officer services",
       "description": "Senior marketing leadership, budget and reporting discipline, and direction for internal teams and outside partners.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Banks and regulated financial services companies"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Banks and regulated financial services companies"
+      },
       "areaServed": "United States"
     }
   ]
@@ -116,7 +123,7 @@ const jsonld = {
           <h1 class="display-title headline-104">Marketing measurement and market analysis.</h1>
           <p class="hero-subhead">Measure marketing, compare branch markets, test acquisition footprints, or add senior marketing leadership.</p>
           <div class="hero-actions">
-            <a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"&#125;'>Book a call</a>
+            <a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
             <a class="btn-secondary" href="#decisions">Compare the services</a>
           </div>
         </div>
@@ -144,7 +151,7 @@ const jsonld = {
 
       <div class="router">
         <div class="service-group-label">Decision projects</div>
-        <div class="router-row" id="measurement">
+        <div class="router-row is-visible" id="measurement">
           <div>
             <div class="router-service">Marketing Measurement Reset</div>
             <h3 class="router-question">Show what acquisition spend produced after account opening.</h3>
@@ -160,7 +167,7 @@ const jsonld = {
           </div>
         </div>
 
-        <div class="router-row" id="branch">
+        <div class="router-row is-visible" id="branch">
           <div>
             <div class="router-service">Branch and Market Expansion Analysis</div>
             <h3 class="router-question">Compare markets before committing to a branch plan.</h3>
@@ -176,7 +183,7 @@ const jsonld = {
           </div>
         </div>
 
-        <div class="router-row" id="acquisition">
+        <div class="router-row is-visible" id="acquisition">
           <div>
             <div class="router-service">Acquisition and Footprint Analysis</div>
             <h3 class="router-question">Test the market case for an acquisition target.</h3>
@@ -193,7 +200,7 @@ const jsonld = {
         </div>
 
         <div class="service-group-label embedded">Embedded leadership</div>
-        <div class="router-row" id="fractional">
+        <div class="router-row is-visible" id="fractional">
           <div>
             <div class="router-service">Fractional CMO, Regulated Financial Services</div>
             <h3 class="router-question">Add senior marketing leadership without a full-time hire.</h3>
@@ -270,10 +277,10 @@ const jsonld = {
     <div class="container">
       <div class="closing-grid">
         <div>
-          <h2 class="display-title headline-104">Tell me what the bank is trying to decide.</h2>
+          <h2 class="display-title headline-104">Tell me what the institution is trying to decide.</h2>
           <p class="hero-subhead">In 20 minutes, we will define the question, identify the reports already available, and determine whether there is enough information for useful work.</p>
           <div class="hero-actions">
-            <a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"&#125;'>Book a call</a>
+            <a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
           </div>
         </div>
         <aside class="call-note" aria-label="What to bring to the call">

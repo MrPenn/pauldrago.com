@@ -649,7 +649,7 @@
 .fd-sidenote .fd-note-more:hover { text-decoration: underline; }
 .fd-sidenote .fd-note-full { display: none; }
 .fd-sidenote.is-open .fd-note-full { display: inline; }
-.fd-sidenote.is-open .fd-note-brief, .fd-sidenote.is-open .fd-note-more { display: none; }
+.fd-sidenote.is-open .fd-note-brief { display: none; }
 .fd-sticky-notes .fd-sidenote.is-current.is-open { max-height: 600px; }
 
 /* ---------- Scanability: short version, decks, stat lines, section air ---------- */
@@ -949,17 +949,7 @@ figure.fd-stat {
 }
 /* speaker labels, quiet */
 .fd-who { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; text-transform: none; }
-/* reading progress without a scroll listener where the browser supports it */
-@supports (animation-timeline: scroll()) {
-  .trace-fill {
-    height: 100%;
-    transform-origin: top;
-    transform: scaleY(0);
-    animation: fd-trace linear both;
-    animation-timeline: scroll(root);
-  }
-  @keyframes fd-trace { from { transform: scaleY(0); } to { transform: scaleY(1); } }
-}
+/* reading progress: site-shell.css drives the rail with a scroll timeline where supported */
 
 /* ---------- Impeccable pass ---------- */
 /* close the void: the article's container is sized to the column plus the rail, not the full site width */
@@ -1148,3 +1138,28 @@ figure.fd-stat {
 .fd-sticky-notes .fd-sidenote.is-current { opacity: 1; }
 /* a segment too narrow for its label shows no label; the ledger and payback line carry the number */
 .fd-g-seg.is-tight .fd-g-seg-label { visibility: hidden; }
+
+/* Legibility floor: this audience reads on phones, so small supporting text stays at 12px or more. */
+.fd-eyebrow { font-size: 13px; }
+.fd-field-label { font-size: 13px; }
+.fd-durbin-btn { font-size: 14px; }
+.fd-org-status { font-size: 12px; letter-spacing: 0.04em; }
+.fd-g-cac span { font-size: 12px; }
+.fd-tl-label { font-size: 13px; }
+.fd-tl-sub { font-size: 13px; }
+.fd-tl-callout { font-size: 18px; }
+.fd-tl-marker-label { font-size: 12px; }
+.fd-g-timeline svg { display: block; max-width: 100%; height: auto; overflow: visible; }
+.fd-sidenote .fd-note-more { font-size: 13px; padding: 3px 0; }
+
+/* The calculator follows the site's square corners and hard focus outline. */
+.fd-input-wrap, .fd-durbin-btn { border-radius: 0; }
+.fd-input-wrap:focus-within { box-shadow: none; outline: 3px solid var(--paper); outline-offset: 2px; }
+
+/* Without JavaScript the reveal never runs, so images start visible. */
+@media (scripting: none) { .fd-img img, .fd-illo img { opacity: 1; transform: none; } }
+
+/* Closing grid without JavaScript: the four community-bank boxes are simply filled. */
+@media (scripting: none) {
+  .fd-grid-close .fd-cell:nth-child(n+45):nth-child(-n+48) { background: var(--paper); border-color: var(--paper); }
+}

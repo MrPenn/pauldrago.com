@@ -15,23 +15,29 @@ const meta = {
     "/assets/service-detail.css"
   ],
   "scripts": [],
-  "lastUpdated": "2026-09-22"
+  "lastUpdated": "2026-09-23"
 };
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
-    {"@type": "Person", "@id": "https://pauldrago.com/#paul-drago", "name": "Paul Drago", "url": "https://pauldrago.com/", "sameAs": ["https://www.linkedin.com/in/pauldrago"]},
     {
       "@type": "WebPage",
       "@id": "https://pauldrago.com/acquisition-footprint-analysis#webpage",
       "url": "https://pauldrago.com/acquisition-footprint-analysis",
       "name": "Bank Acquisition and Footprint Analysis",
       "description": "Evaluate acquisition targets through deposits, market fit, branch overlap, retention assumptions, and local-brand risk.",
-      "dateModified": "2026-09-21",
-      "about": {"@id": "https://pauldrago.com/acquisition-footprint-analysis#service"},
-      "mainEntity": {"@id": "https://pauldrago.com/acquisition-footprint-analysis#service"},
-      "breadcrumb": {"@id": "https://pauldrago.com/acquisition-footprint-analysis#breadcrumb"},
-      "author": {"@id": "https://pauldrago.com/#paul-drago"}
+      "about": {
+        "@id": "https://pauldrago.com/acquisition-footprint-analysis#service"
+      },
+      "mainEntity": {
+        "@id": "https://pauldrago.com/acquisition-footprint-analysis#service"
+      },
+      "breadcrumb": {
+        "@id": "https://pauldrago.com/acquisition-footprint-analysis#breadcrumb"
+      },
+      "author": {
+        "@id": "https://pauldrago.com/#paul-drago"
+      }
     },
     {
       "@type": "Service",
@@ -40,31 +46,61 @@ const jsonld = {
       "name": "Acquisition and Footprint Analysis",
       "serviceType": "Bank acquisition footprint analysis",
       "description": "Deposit, market, footprint-overlap, retention, and local-brand analysis for evaluating bank acquisition targets.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Banks and credit unions"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Banks and credit unions"
+      },
       "areaServed": "United States"
     },
     {
       "@type": "BreadcrumbList",
       "@id": "https://pauldrago.com/acquisition-footprint-analysis#breadcrumb",
       "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Financial Services", "item": "https://pauldrago.com/financial-services"},
-        {"@type": "ListItem", "position": 2, "name": "Acquisition and Footprint Analysis", "item": "https://pauldrago.com/acquisition-footprint-analysis"}
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Services",
+          "item": "https://pauldrago.com/financial-services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Acquisition and Footprint Analysis",
+          "item": "https://pauldrago.com/acquisition-footprint-analysis"
+        }
       ]
     }
   ]
 };
+import OtherDecisions from '../components/OtherDecisions.astro';
 ---
 <Base {...meta} jsonld={jsonld}>
 <main id="main">
   <section class="service-hero">
     <div class="container">
-      <div class="hero-grid">
+      <div class="hero-grid hero-grid-with-model">
         <div>
           <p class="eyebrow">For bank leadership and transaction teams</p>
           <h1 class="display-title hero-title">Test what an acquisition target <span class="accent">actually adds</span>.</h1>
           <p class="hero-subhead">Separate attractive deposits and market whitespace from branch overlap, customer attrition, concentration, and local-brand risk.</p>
         </div>
+        <figure class="decision-model" aria-labelledby="footprint-model-title">
+          <p class="model-label">What you receive</p>
+          <p class="model-title" id="footprint-model-title">What the deal adds, and what it duplicates</p>
+          <div class="overlap-stage" aria-hidden="true">
+            <span class="footprint-circle current"></span>
+            <span class="footprint-circle target"></span>
+          </div>
+          <ul class="footprint-legend">
+            <li><span class="footprint-key current" aria-hidden="true"></span><span><strong>Current footprint.</strong> Your branches and deposits today.</span></li>
+            <li><span class="footprint-key target" aria-hidden="true"></span><span><strong>Target only.</strong> The markets and deposits the deal actually adds.</span></li>
+            <li><span class="footprint-key overlap" aria-hidden="true"></span><span><strong>Overlap.</strong> Duplicated branches, consolidation, and customer attrition risk.</span></li>
+          </ul>
+          <figcaption class="model-note">Illustration, not client data. The analysis sizes each area from FDIC Summary of Deposits, NCUA, and Census data.</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -116,11 +152,12 @@ const jsonld = {
     </div>
   </section>
 
+  <OtherDecisions current="/acquisition-footprint-analysis" />
   <section class="closing-band">
     <div class="container">
       <div class="closing-grid">
         <div><h2 class="display-title closing-title">Bring the target and the question the board needs answered.</h2><p class="closing-copy">We will separate public facts from institution assumptions and identify the diligence that could change the recommendation.</p></div>
-        <aside class="call-prep"><div class="call-prep-title">Bring to the call</div><ul><li>The target or target list</li><li>The current footprint view</li><li>The strategic question under review</li></ul><a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"&#125;'>Book a call</a></aside>
+        <aside class="call-prep"><div class="call-prep-title">Bring to the call</div><ul><li>The target or target list</li><li>The current footprint view</li><li>The strategic question under review</li></ul><a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a></aside>
       </div>
     </div>
   </section>

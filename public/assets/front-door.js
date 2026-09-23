@@ -62,6 +62,8 @@
     // The markup is rendered at build time (FrontDoorOpener.astro); this only animates it.
     var units = opener.querySelector('.fd-opener-units');
     var legend = opener.querySelector('.fd-opener-legend');
+    // The figures ship in the HTML; zero them only when there is an animation to run.
+    if (!reduceMotion) legend.querySelectorAll('[data-count]').forEach(function (n) { n.textContent = '0'; });
 
     var cells = units.children;
     var per = reduceMotion ? 0 : 16;           // the brass fill runs left to right in about 0.7s
@@ -87,7 +89,8 @@
   document.querySelectorAll('[data-fd="grid-empty"]').forEach(function (fig) {
     var cells = fig.querySelector('.fd-grid-cells');
     if (!cells) return;
-    for (var i = 0; i < 100; i++) cells.appendChild(h('div', 'fd-cell'));
+    // The hundred boxes ship in the HTML; only build them if an older page lacks them.
+    if (!cells.children.length) for (var i = 0; i < 100; i++) cells.appendChild(h('div', 'fd-cell'));
     onEnter(fig, function () {
       for (var j = 0; j < 4; j++) {
         (function (j) { setTimeout(function () { cells.children[44 + j].classList.add('is-community'); }, 700 + j * 420); })(j);
@@ -186,6 +189,8 @@
     var BAL = 5400, NIM = 0.0381, TXN = 34.6, IC_EX = 0.51, IC_COV = 0.23, CAC = 350;
     var spread = BAL * NIM, icEx = TXN * 12 * IC_EX, icCov = TXN * 12 * IC_COV;
     var totalEx = spread + icEx, totalCov = spread + icCov;
+    // Totals shown on screen are the sum of the rounded parts, so the ledger always adds up.
+    var shownEx = Math.round(spread) + Math.round(icEx);
     var scale = Math.max(totalEx, CAC) * 1.12;
     var pct = function (v) { return (v / scale * 100).toFixed(2) + '%'; };
     var months = Math.ceil(CAC / (totalEx / 12));
@@ -201,7 +206,7 @@
       '<div class="fd-g-ledger">' +
         '<div class="fd-g-row" data-row="spread"><span class="fd-g-row-label">Deposit spread<small>' + money(BAL) + ' × 3.81% net interest margin</small></span><span class="fd-g-row-val">' + money(spread) + '</span></div>' +
         '<div class="fd-g-row" data-row="ic"><span class="fd-g-row-label">Interchange, gross<small>34.6 transactions a month × 12 × $0.51</small></span><span class="fd-g-row-val">' + money(icEx) + '</span></div>' +
-        '<div class="fd-g-row is-total" data-row="total"><span class="fd-g-row-label">A year of checking, before any loan</span><span class="fd-g-row-val">' + money(totalEx) + '</span></div>' +
+        '<div class="fd-g-row is-total" data-row="total"><span class="fd-g-row-label">A year of checking, before any loan</span><span class="fd-g-row-val">' + money(shownEx) + '</span></div>' +
       '</div>' +
       '<p class="fd-g-payback">Against a <strong>' + money(CAC) + '</strong> acquisition cost, that pays back in <strong>' + months + ' months</strong>.</p>';
 
@@ -252,12 +257,6 @@
     var endAge = parseInt(g2.getAttribute('data-end'), 10) || 40;
     var eventVal = parseFloat(g2.getAttribute('data-event')) || 973;
     var years = endAge - startAge;
-    var narrow = window.innerWidth < 760;
-    var W = narrow ? 440 : 760, H = narrow ? 340 : 330, padL = narrow ? 58 : 58, padR = 20, padT = 54, padB = 44;
-    var innerW = W - padL - padR, innerH = H - padT - padB;
-    var maxVal = perYear * years;
-    var slots = years + 1, slotW = innerW / slots, barW = slotW * 0.62;
-    var y = function (v) { return padT + innerH - (v / maxVal) * innerH; };
     var ns = 'http://www.w3.org/2000/svg';
     function el(name, attrs, text) {
       var e = document.createElementNS(ns, name);
@@ -265,41 +264,61 @@
       if (text != null) e.textContent = text;
       return e;
     }
-    var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Checking contribution accumulating from age ' + startAge + ' to ' + (endAge - 1) + ', about ' + money(maxVal) + ' in total, beside a ' + money(eventVal) + ' mortgage at ' + endAge + '.' });
     g2.appendChild(h('p', 'fd-eyebrow', 'The fifteen-year wait'));
+    var maxVal = perYear * years;
+    var svg = null;
 
-    [0, 2000, 4000, 6000].forEach(function (v) {
-      if (v > maxVal) return;
-      svg.appendChild(el('line', { x1: padL, x2: W - padR, y1: y(v), y2: y(v), 'class': 'fd-tl-axis' }));
-      svg.appendChild(el('text', { x: padL - 10, y: y(v) + 4, 'text-anchor': 'end', 'class': 'fd-tl-label' }, money(v)));
-    });
-    for (var i = 0; i < years; i++) {
-      var val = perYear * (i + 1);
-      var x = padL + i * slotW + (slotW - barW) / 2;
-      var bar = el('rect', { x: x, y: y(val), width: barW, height: innerH - (y(val) - padT), 'class': 'fd-tl-bar' });
-      bar.style.transitionDelay = (reduceMotion ? 0 : i * 55) + 'ms';   // rises left to right, about 0.8s across
-      svg.appendChild(bar);
-      var age = startAge + i;
-      if ((age - startAge) % 5 === 0) {
-        svg.appendChild(el('text', { x: x + barW / 2, y: H - padB + 22, 'text-anchor': 'middle', 'class': 'fd-tl-label' + (age === startAge ? ' is-strong' : '') }, String(age)));
+    // Drawn at the width it is displayed, so one SVG unit is one CSS pixel and the type stays
+    // at its real size. The two callouts live in a band above the plot, clear of every bar.
+    function drawTimeline() {
+      var cs = getComputedStyle(g2);
+      var W = Math.max(300, Math.round(g2.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)));
+      var H = Math.round(Math.max(300, Math.min(380, W * 0.78)));
+      var padL = 54, padR = 8, padT = 78, padB = 52;
+      var innerW = W - padL - padR, innerH = H - padT - padB;
+      var slots = years + 1, slotW = innerW / slots, barW = Math.max(6, slotW * 0.62);
+      var y = function (v) { return padT + innerH - (v / maxVal) * innerH; };
+      var next = el('svg', { viewBox: '0 0 ' + W + ' ' + H, width: W, height: H, role: 'img', 'aria-label': 'Checking contribution accumulating from age ' + startAge + ' to ' + (endAge - 1) + ', about ' + money(maxVal) + ' in total, beside a ' + money(eventVal) + ' mortgage at ' + endAge + '.' });
+
+      [0, 2000, 4000, 6000].forEach(function (v) {
+        if (v > maxVal) return;
+        next.appendChild(el('line', { x1: padL, x2: W - padR, y1: y(v), y2: y(v), 'class': 'fd-tl-axis' }));
+        next.appendChild(el('text', { x: padL - 8, y: y(v) + 4, 'text-anchor': 'end', 'class': 'fd-tl-label' }, money(v)));
+      });
+      for (var i = 0; i < years; i++) {
+        var val = perYear * (i + 1);
+        var x = padL + i * slotW + (slotW - barW) / 2;
+        var bar = el('rect', { x: x, y: y(val), width: barW, height: innerH - (y(val) - padT), 'class': 'fd-tl-bar' });
+        bar.style.transitionDelay = (reduceMotion ? 0 : i * 55) + 'ms';   // rises left to right, about 0.8s across
+        next.appendChild(bar);
+        var age = startAge + i;
+        if ((age - startAge) % 5 === 0) {
+          next.appendChild(el('text', { x: x + barW / 2, y: padT + innerH + 20, 'text-anchor': 'middle', 'class': 'fd-tl-label' + (age === startAge ? ' is-strong' : '') }, String(age)));
+        }
       }
+      var xe = padL + years * slotW + (slotW - barW) / 2, xm = xe + barW / 2;
+      // the marker at 40 comes first: the wait, before anything has accumulated
+      next.appendChild(el('line', { x1: xm, x2: xm, y1: 50, y2: padT + innerH, 'class': 'fd-tl-marker' }));
+      next.appendChild(el('text', { x: W - padR, y: padT + innerH + 40, 'text-anchor': 'end', 'class': 'fd-tl-marker-label' }, 'Median first-time buyer'));
+      var ev = el('rect', { x: xe, y: y(eventVal), width: barW, height: innerH - (y(eventVal) - padT), 'class': 'fd-tl-event' });
+      ev.style.transitionDelay = (reduceMotion ? 0 : 380) + 'ms';   // a beat after the reader lands on the sentence
+      next.appendChild(ev);
+      next.appendChild(el('text', { x: xm, y: padT + innerH + 20, 'text-anchor': 'middle', 'class': 'fd-tl-label is-strong' }, String(endAge)));
+      // callout band: checking total top left, the mortgage top right above its marker
+      next.appendChild(el('text', { x: padL, y: 22, 'text-anchor': 'start', 'class': 'fd-tl-callout' }, money(maxVal) + ' of checking'));
+      next.appendChild(el('text', { x: padL, y: 42, 'text-anchor': 'start', 'class': 'fd-tl-sub' }, 'gross, at ' + money(perYear) + ' a year'));
+      next.appendChild(el('text', { x: W - padR, y: 22, 'text-anchor': 'end', 'class': 'fd-tl-callout is-brass' }, money(eventVal)));
+      next.appendChild(el('text', { x: W - padR, y: 42, 'text-anchor': 'end', 'class': 'fd-tl-sub is-brass' }, 'the mortgage'));
+      next.appendChild(el('line', { x1: padL, x2: W - padR, y1: padT + innerH, y2: padT + innerH, 'class': 'fd-tl-axis', style: 'stroke: var(--secondary)' }));
+      if (svg) g2.replaceChild(next, svg); else g2.appendChild(next);
+      svg = next;
     }
-    var xe = padL + years * slotW + (slotW - barW) / 2;
-    // the marker at 40 comes first: the wait, before anything has accumulated
-    svg.appendChild(el('line', { x1: xe + barW / 2, x2: xe + barW / 2, y1: padT - 18, y2: padT + innerH, 'class': 'fd-tl-marker' }));
-    svg.appendChild(el('text', { x: xe + barW / 2, y: padT - 26, 'text-anchor': 'end', 'class': 'fd-tl-marker-label' }, 'median first-time buyer'));
-    var ev = el('rect', { x: xe, y: y(eventVal), width: barW, height: innerH - (y(eventVal) - padT), 'class': 'fd-tl-event' });
-    ev.style.transitionDelay = (reduceMotion ? 0 : 380) + 'ms';   // a beat after the reader lands on the sentence
-    svg.appendChild(ev);
-    svg.appendChild(el('text', { x: xe + barW / 2, y: H - padB + 22, 'text-anchor': 'middle', 'class': 'fd-tl-label is-strong' }, String(endAge)));
-    // the checking total sits left of the peak, inside the chart; the mortgage label sits above its bar, flush right
-    var peakLeft = padL + (years - 1) * slotW + (slotW - barW) / 2 - 10;
-    svg.appendChild(el('text', { x: peakLeft, y: y(maxVal) + 8, 'text-anchor': 'end', 'class': 'fd-tl-callout' }, money(maxVal) + ' of checking'));
-    svg.appendChild(el('text', { x: peakLeft, y: y(maxVal) + 27, 'text-anchor': 'end', 'class': 'fd-tl-sub' }, 'gross, at ' + money(perYear) + ' a year'));
-    svg.appendChild(el('text', { x: W - padR, y: y(eventVal) - 30, 'text-anchor': 'end', 'class': 'fd-tl-callout is-brass' }, money(eventVal)));
-    svg.appendChild(el('text', { x: W - padR, y: y(eventVal) - 13, 'text-anchor': 'end', 'class': 'fd-tl-sub is-brass' }, 'the mortgage'));
-    svg.appendChild(el('line', { x1: padL, x2: W - padR, y1: padT + innerH, y2: padT + innerH, 'class': 'fd-tl-axis', style: 'stroke: var(--secondary)' }));
-    g2.appendChild(svg);
+    drawTimeline();
+    var tlWidth = g2.clientWidth, tlTimer;
+    window.addEventListener('resize', function () {
+      clearTimeout(tlTimer);
+      tlTimer = setTimeout(function () { if (g2.clientWidth !== tlWidth) { tlWidth = g2.clientWidth; drawTimeline(); } }, 150);
+    });
   }
 
   /* ---------- Sequence 3: twelve functions, one bank ---------- */
@@ -342,7 +361,8 @@
       var bal = num(inBal), nim = num(inNim) / 100, txn = num(inTxn), ic = num(inIc), cacv = num(inCac);
       var sp = bal * nim, inter = txn * 12 * ic, total = sp + inter;
       var m = total > 0 ? Math.ceil(cacv / (total / 12)) : 0;
-      outSpread.textContent = money(sp); outIc.textContent = money(inter); outTotal.textContent = money(total);
+      // The displayed total is the sum of the displayed parts, so the ledger always adds up.
+      outSpread.textContent = money(sp); outIc.textContent = money(inter); outTotal.textContent = money(Math.round(sp) + Math.round(inter));
       outMonths.textContent = total > 0 ? (m <= 12 ? m + (m === 1 ? ' month' : ' months') : (m / 12).toFixed(1) + ' years') : '—';
       var sc = Math.max(total, cacv) * 1.12 || 1;
       var wS = sp / sc * 100, wI = inter / sc * 100;
@@ -366,17 +386,19 @@
     });
     if (reset) reset.addEventListener('click', function () {
       inputs.forEach(function (el, i) { el.value = defaults[i]; });
-      calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { b.classList.toggle('is-on', b.getAttribute('data-ic') === defaults[3]); });
+      calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { setPressed(b, b.getAttribute('data-ic') === defaults[3]); });
       afterEdit();
     });
+    function setPressed(b, on) { b.classList.toggle('is-on', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); }
     calc.querySelectorAll('.fd-durbin-btn').forEach(function (btn) {
+      setPressed(btn, btn.classList.contains('is-on'));
       btn.addEventListener('click', function () {
-        calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { b.classList.remove('is-on'); });
-        btn.classList.add('is-on'); inIc.value = btn.getAttribute('data-ic'); afterEdit();
+        calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { setPressed(b, b === btn); });
+        inIc.value = btn.getAttribute('data-ic'); afterEdit();
       });
     });
     inIc.addEventListener('input', function () {
-      calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { b.classList.toggle('is-on', parseFloat(b.getAttribute('data-ic')) === parseFloat(inIc.value)); });
+      calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { setPressed(b, parseFloat(b.getAttribute('data-ic')) === parseFloat(inIc.value)); });
     });
     var key = h('div', 'fd-bar-key', '<span class="k-spread">Deposit spread</span><span class="k-ic">Interchange</span>');
     calc.querySelector('.fd-bar').appendChild(key);
@@ -426,8 +448,13 @@
           var lead = strong ? '<strong>' + strong.textContent + '</strong> ' : '';
           if (strong) brief = brief.replace(strong.textContent, '').replace(/^\s+/, '');
           var full = li.innerHTML;
-          aside.innerHTML = '<span class="fd-sidenote-num">' + num + '</span>' + lead + '<span class="fd-note-brief">' + brief + '</span><span class="fd-note-full">' + full.replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '') + '</span> <button type="button" class="fd-note-more">Full note</button>';
-          aside.querySelector('.fd-note-more').addEventListener('click', function () { aside.classList.add('is-open'); });
+          aside.innerHTML = '<span class="fd-sidenote-num">' + num + '</span>' + lead + '<span class="fd-note-brief">' + brief + '</span><span class="fd-note-full">' + full.replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '') + '</span> <button type="button" class="fd-note-more" aria-expanded="false">Full note</button>';
+          var more = aside.querySelector('.fd-note-more');
+          more.addEventListener('click', function () {
+            var open = aside.classList.toggle('is-open');
+            more.setAttribute('aria-expanded', open ? 'true' : 'false');
+            more.textContent = open ? 'Shorter note' : 'Full note';
+          });
           // in a pinned sequence the note lives under the graphic and appears with its step
           aside.setAttribute('data-step', step.getAttribute('data-step'));
           seq.querySelector('.fd-sticky-notes').appendChild(aside);

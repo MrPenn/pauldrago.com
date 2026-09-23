@@ -2,6 +2,7 @@
 import { readFileSync } from 'node:fs';
 import { join, posix } from 'node:path';
 import PostHog from '../components/posthog.astro';
+import { SHARED_NODES, PAGE_TYPES, WEBSITE_ID, ORG_ID } from '../data/schema';
 import CookieConsent from '../components/CookieConsent.astro';
 
 const SITE = 'https://pauldrago.com';
@@ -12,7 +13,7 @@ const BOOKING = 'https://cal.com/pauldrago/20-min-intro-call';
 const CAL_ATTRS = {
   'data-cal-link': 'pauldrago/20-min-intro-call',
   'data-cal-namespace': '20-min-intro-call',
-  'data-cal-config': '{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"light"}',
+  'data-cal-config': '{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"}',
 };
 const {
   title,
@@ -38,6 +39,24 @@ const inlineCss = (href) => readFileSync(join(process.cwd(), 'public', href), 'u
   .replace(/url\((['"]?)(?![a-z]+:|\/)/gi, `url($1${posix.dirname(href)}/`);
 const css = ['/assets/site-shell.css', ...stylesheets].map(inlineCss).join('\n');
 const canonical = SITE + (path === '/' ? '/' : path);
+// Structured data: the shared person, company, and website entities, plus this page's own nodes.
+// Page nodes are linked to the website, dated from lastUpdated, and services credited to the company.
+// Pages that define nothing get a basic WebPage node; noindex pages get none.
+const sharedIds = new Set(SHARED_NODES.map((n) => n['@id']));
+const pageNodes = (jsonld ? (jsonld['@graph'] ?? [jsonld]) : robots.includes('noindex') ? [] : [{
+  '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description,
+}])
+  .filter((n) => !sharedIds.has(n['@id']))
+  .map(({ '@context': _context, ...n }) => {
+    if (PAGE_TYPES.has(n['@type'])) {
+      n.isPartOf = { '@id': WEBSITE_ID };
+      n.inLanguage = 'en-US';
+      n.dateModified = lastUpdated;
+    }
+    if (n['@type'] === 'Service') n.provider = { '@id': ORG_ID };
+    return n;
+  });
+const structuredData = pageNodes.length ? { '@context': 'https://schema.org', '@graph': [...SHARED_NODES, ...pageNodes] } : null;
 const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 ---
 <!DOCTYPE html>
@@ -80,10 +99,10 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
 @font-face { font-family: 'Source Serif 4 Fallback'; src: local('Times New Roman'), local('TimesNewRomanPSMT'), local('Liberation Serif'); size-adjust: 103.47%; ascent-override: 100.13%; descent-override: 32.38%; line-gap-override: 0%; }
 </style>
 <style is:inline set:html={css}></style>
-{jsonld && <script type="application/ld+json" set:html={JSON.stringify(jsonld)} />}
+{structuredData && <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
 <PostHog />
 </head>
-<body>
+<body class:list={[{ 'no-trace-script': scripts.length === 0 }]}>
 <Fragment set:html="<!--email_off-->" />
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div>
@@ -91,51 +110,23 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
 <header>
   <div class="container">
     <div class="header-inner">
-      {variant === 'home' && (
-        <>
-          <div class="brand-group">
-            <div class="brand-name">Paul Drago</div>
-            <div class="brand-subline">{subline}</div>
-          </div>
-          <a class="header-link" href="/financial-services">Financial services</a>
-        </>
+      {variant === 'home' ? (
+        <span class="brand-group">
+          <span class="brand-name">Paul Drago</span>
+          <span class="brand-subline">{subline}</span>
+        </span>
+      ) : (
+        <a class="brand-home" href="/">
+          <span class="brand-group">
+            <span class="brand-name">Paul Drago</span>
+            <span class="brand-subline">{subline}</span>
+          </span>
+        </a>
       )}
-      {variant === 'services' && (
-        <>
-          <a class="brand-home" href="/" aria-label="Paul Drago home">
-            <div class="brand-group">
-              <div class="brand-name">Paul Drago</div>
-              <div class="brand-subline">{subline}</div>
-            </div>
-          </a>
-          <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
-        </>
-      )}
-      {variant === 'product' && (
-        <>
-          <a class="brand-home" href="/financial-services" aria-label="Paul Drago financial services">
-            <div class="brand-group">
-              <div class="brand-name">Paul Drago</div>
-              <div class="brand-subline">{subline}</div>
-            </div>
-          </a>
-          <nav class="header-actions" aria-label="Primary">
-            <a class="services-link" href="/financial-services">Financial services</a>
-            <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
-          </nav>
-        </>
-      )}
-      {variant === 'articles' && (
-        <>
-          <a class="brand-home" href="/">
-            <span class="brand-group">
-              <span class="brand-name">Paul Drago</span>
-              <span class="brand-subline">{subline}</span>
-            </span>
-          </a>
-          <a class="header-link" href="/">Home</a>
-        </>
-      )}
+      <nav class="header-actions" aria-label="Primary">
+        {variant !== 'services' && <a class="services-link" href="/financial-services">Services</a>}
+        <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
+      </nav>
     </div>
   </div>
 </header>
@@ -148,7 +139,7 @@ const updatedLabel = new Date(lastUpdated + 'T00:00:00Z').toLocaleDateString('en
       <div class="footer-brand">Paul Drago</div>
       <div class="footer-links">
         <a href="/">Home</a>
-        <a href="/financial-services">Financial services</a>
+        <a href="/financial-services">Services</a>
         <a href="/articles">Articles</a>
         <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
         <a href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a>
