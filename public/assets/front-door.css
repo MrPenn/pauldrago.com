@@ -971,3 +971,76 @@ figure.fd-stat {
 }
 /* one rule under the header, not two */
 .article-header { border-bottom: 0; }
+
+/* ---------- Calculator pass: it should look like a tool, not a table ---------- */
+.fd-calc {
+  padding: 30px 32px 24px;
+  border: 0;
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--hairline);
+}
+.fd-calc .fd-eyebrow { margin-bottom: 8px; }
+.fd-calc-title {
+  margin: 0 0 8px;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 26px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--paper);
+}
+.fd-calc-lede { max-width: 54ch; font-size: 16px; line-height: 1.5; color: var(--paper); opacity: 0.8; }
+.fd-calc-head { margin-bottom: 26px; }
+.fd-calc-inputs { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 18px 16px; margin-bottom: 26px; }
+.fd-field-label { font-size: 12px; color: var(--paper); opacity: 0.75; margin-bottom: 8px; }
+.fd-input-wrap {
+  padding: 10px 14px;
+  border: 1.5px solid var(--hairline);
+  border-radius: 3px;
+  background: var(--dark-navy);
+  cursor: text;
+  transition: border-color var(--fd-fast) var(--fd-ease), box-shadow var(--fd-fast) var(--fd-ease);
+}
+.fd-input-wrap:hover { border-color: var(--secondary); }
+.fd-input-wrap:focus-within { border-color: var(--brass); box-shadow: 0 0 0 3px color-mix(in srgb, var(--brass) 28%, transparent); }
+.fd-input { font-size: 24px; font-weight: 600; line-height: 1.1; }
+.fd-affix { font-size: 18px; opacity: 0.9; }
+.fd-field-src { font-size: 12px; margin-top: 7px; }
+.fd-calc-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.fd-calc .fd-durbin { margin-bottom: 0; }
+.fd-durbin-btn { padding: 11px 14px; font-size: 12px; border-radius: 3px; border-color: var(--secondary); }
+.fd-durbin-btn:hover { border-color: var(--paper); }
+.fd-calc-reset {
+  padding: 8px 0;
+  border: 0;
+  background: none;
+  color: var(--brass);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.fd-calc-reset[hidden] { display: none; }
+.fd-calc .fd-bar-track { height: 34px; background: color-mix(in srgb, var(--paper) 8%, transparent); }
+.fd-calc .fd-bar-key { margin-top: 32px; font-size: 13px; }
+.fd-calc .fd-ledger { margin-top: 22px; }
+.fd-calc .fd-ledger-row { padding: 16px 0; border-top-color: color-mix(in srgb, var(--paper) 16%, transparent); }
+.fd-calc .fd-ledger-label { font-size: 17px; }
+.fd-calc .fd-ledger-src { font-size: 13px; margin-top: 2px; }
+.fd-calc .fd-ledger-value { font-size: 30px; transition: color var(--fd-base) var(--fd-ease); }
+.fd-calc .fd-ledger-total { margin-top: 4px; padding: 20px 18px; border-top: 0; background: var(--dark-navy); box-shadow: inset 0 0 0 1px var(--hairline); }
+.fd-calc .fd-ledger-total .fd-ledger-label { font-size: 18px; font-weight: 600; }
+.fd-calc .fd-ledger-total .fd-ledger-value { font-size: 40px; }
+.fd-calc .fd-ledger-value.is-hot { color: var(--brass); }
+.fd-calc figcaption { margin-top: 20px; font-size: 13px; }
+@media (max-width: 760px) {
+  .fd-calc { padding: 22px 18px 18px; }
+  .fd-calc-title { font-size: 22px; }
+  .fd-calc-inputs { grid-template-columns: repeat(2, 1fr); }
+  .fd-input { font-size: 22px; }
+  .fd-calc .fd-ledger-value { font-size: 24px; }
+  .fd-calc .fd-ledger-total { padding: 16px 14px; }
+  .fd-calc .fd-ledger-total .fd-ledger-value { font-size: 30px; }
+}

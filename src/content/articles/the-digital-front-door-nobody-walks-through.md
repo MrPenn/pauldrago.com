@@ -149,8 +149,9 @@ Chime’s partner banks are small enough to have the exemption too, and it is mo
 
 <figure class="fd-figure fd-wide fd-calc" id="fd-calc" data-fd="calc">
   <div class="fd-calc-head">
-    <p class="fd-eyebrow">Now your numbers</p>
-    <p class="fd-calc-lede">The defaults are the public figures above. Replace them with your bank’s.</p>
+    <p class="fd-eyebrow">Calculator</p>
+    <p class="fd-calc-title">Run your bank’s numbers</p>
+    <p class="fd-calc-lede">The five fields hold the public figures from the sequence above. Type over any of them and everything below the line recalculates.</p>
   </div>
   <div class="fd-calc-inputs">
     <label class="fd-field"><span class="fd-field-label">Average checking balance</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-balance" type="number" inputmode="decimal" value="5400" min="0" step="100"></span><span class="fd-field-src">SCF median, under 35</span></label>
@@ -159,10 +160,15 @@ Chime’s partner banks are small enough to have the exemption too, and it is mo
     <label class="fd-field"><span class="fd-field-label">Interchange per transaction</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-ic" type="number" inputmode="decimal" value="0.51" min="0" step="0.01"></span><span class="fd-field-src">Fed Reg II, exempt issuers</span></label>
     <label class="fd-field"><span class="fd-field-label">Cost to acquire one account</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-cac" type="number" inputmode="decimal" value="350" min="0" step="10"></span><span class="fd-field-src">Digital Onboarding, 2021</span></label>
   </div>
-  <p class="fd-field-label fd-durbin-label">Interchange regime</p>
-  <div class="fd-durbin" role="group" aria-label="Interchange regime">
-    <button type="button" class="fd-durbin-btn is-on" data-ic="0.51">Under $10B, exempt ($0.51)</button>
-    <button type="button" class="fd-durbin-btn" data-ic="0.23">Over $10B, capped ($0.23)</button>
+  <div class="fd-calc-row">
+    <div>
+      <p class="fd-field-label fd-durbin-label">Interchange regime</p>
+      <div class="fd-durbin" role="group" aria-label="Interchange regime">
+        <button type="button" class="fd-durbin-btn is-on" data-ic="0.51">Under $10B, exempt ($0.51)</button>
+        <button type="button" class="fd-durbin-btn" data-ic="0.23">Over $10B, capped ($0.23)</button>
+      </div>
+    </div>
+    <button type="button" class="fd-calc-reset" id="fd-calc-reset" hidden>Reset to the public figures</button>
   </div>
   <div class="fd-bar" aria-hidden="true">
     <div class="fd-bar-track">
@@ -177,7 +183,7 @@ Chime’s partner banks are small enough to have the exemption too, and it is mo
     <div class="fd-ledger-row fd-ledger-total"><span class="fd-ledger-label">A year of checking, before any loan</span><span class="fd-ledger-value fd-accent" id="fd-out-total">$418</span></div>
     <div class="fd-ledger-row"><span class="fd-ledger-label">Payback on the acquisition cost</span><span class="fd-ledger-value" id="fd-out-months">11 months</span></div>
   </div>
-  <figcaption>Gross figures, before servicing, fraud and network costs. Change the interchange regime to see what the same customer is worth at a bank over $10 billion.</figcaption>
+  <figcaption>Gross figures, before servicing, fraud and network costs. Switch the interchange regime to see what the same customer is worth at a bank over $10 billion.</figcaption>
 </figure>
 
 

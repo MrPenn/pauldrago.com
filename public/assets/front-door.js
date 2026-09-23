@@ -324,11 +324,31 @@
       var wS = sp / sc * 100, wI = inter / sc * 100;
       barSpread.style.width = wS + '%'; barIc.style.left = wS + '%'; barIc.style.width = wI + '%'; barCac.style.left = (cacv / sc * 100) + '%';
     }
-    [inBal, inNim, inTxn, inIc, inCac].forEach(function (el) { el.addEventListener('input', update); });
+    var inputs = [inBal, inNim, inTxn, inIc, inCac];
+    var defaults = inputs.map(function (el) { return el.value; });
+    var reset = $('fd-calc-reset');
+    var hotTimer;
+    function afterEdit() {
+      update();
+      var dirty = inputs.some(function (el, i) { return el.value !== defaults[i]; });
+      if (reset) reset.hidden = !dirty;
+      [outSpread, outIc, outTotal, outMonths].forEach(function (o) { o.classList.add('is-hot'); });
+      clearTimeout(hotTimer);
+      hotTimer = setTimeout(function () { [outSpread, outIc, outTotal, outMonths].forEach(function (o) { o.classList.remove('is-hot'); }); }, 700);
+    }
+    inputs.forEach(function (el) {
+      el.addEventListener('input', afterEdit);
+      el.addEventListener('focus', function () { el.select(); });
+    });
+    if (reset) reset.addEventListener('click', function () {
+      inputs.forEach(function (el, i) { el.value = defaults[i]; });
+      calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { b.classList.toggle('is-on', b.getAttribute('data-ic') === defaults[3]); });
+      afterEdit();
+    });
     calc.querySelectorAll('.fd-durbin-btn').forEach(function (btn) {
       btn.addEventListener('click', function () {
         calc.querySelectorAll('.fd-durbin-btn').forEach(function (b) { b.classList.remove('is-on'); });
-        btn.classList.add('is-on'); inIc.value = btn.getAttribute('data-ic'); update();
+        btn.classList.add('is-on'); inIc.value = btn.getAttribute('data-ic'); afterEdit();
       });
     });
     inIc.addEventListener('input', function () {
