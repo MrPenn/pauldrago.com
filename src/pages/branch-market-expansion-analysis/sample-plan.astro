@@ -209,7 +209,7 @@ const SOURCES = {
         </div>
 
         <nav class="brief-appendix" aria-label="Appendix">
-          <p><strong>Appendix:</strong> <a href="#markets">A. Why Kaufman and Ellis</a>, <a href="#sites">B. Why these towns</a>, <a href="#pipeline">C. What's coming</a>, <a href="#cra">D. CRA and fair lending</a>, <a href="#economics">E. Economics</a>, <a href="#risks">F. Other risks and questions</a>, <a href="#methods">G. Methods and sources</a>.</p>
+          <p><strong>Appendix:</strong> <a href="#markets">A. Why Kaufman and Ellis</a>, <a href="#sites">B. Why these towns</a>, <a href="#pipeline">C. What's coming</a>, <a href="#cra">D. CRA and fair lending</a>, <a href="#economics">E. Economics</a>, <a href="#risks">F. Other risks and questions</a>, <a href="#methods">G. Data and definitions</a>.</p>
         </nav>
       </div>
     </section>
@@ -422,17 +422,14 @@ const SOURCES = {
     </section>
 
     <section class="report-section report-appendix" id="methods" aria-labelledby="methods-h">
-      <h2 class="report-h2" id="methods-h"><span>G</span> Methods and sources</h2>
+      <h2 class="report-h2" id="methods-h"><span>G</span> Data and definitions</h2>
       <ul class="report-sources">
-        <li><a href="https://banks.data.fdic.gov/bankfind-suite/SOD">FDIC Summary of Deposits</a>: branch deposits by county and town, 2021 and 2026, and every Dallas-Fort Worth branch each June from 2008 to 2026 for the ramp.</li>
-        <li><a href="https://www.census.gov/programs-surveys/popest.html">Census Bureau population estimates</a> and the <a href="https://www.census.gov/programs-surveys/acs">American Community Survey</a>: population growth, households, and median household income.</li>
-        <li><a href="https://www.census.gov/programs-surveys/cbp.html">Census ZIP Code Business Patterns</a>: establishments and employment by town, 2019 and 2023.</li>
-        <li><a href="https://ffiec.cfpb.gov/data-browser/">HMDA data (CFPB)</a>: FFIEC tract income and minority data, and home-purchase lending by tract. Branches placed in tracts with the <a href="https://geocoding.geo.census.gov/">Census geocoder</a>.</li>
-        <li>Branch applications: <a href="https://www.fdic.gov/board/federal-register-notice-branch-final-rule.pdf">FDIC final rule, effective February 27, 2026</a>; <a href="https://www.law.cornell.edu/cfr/text/12/5.30">12 CFR 5.30 (OCC)</a>; <a href="https://www.fdic.gov/regulations/applications/resources/apps-proc-manual/section-07-establishdomesticbranch.pdf">FDIC Applications Procedures Manual, section 7</a>. Board reporting: <a href="https://www.occ.gov/publications-and-resources/publications/banker-education/files/pub-directors-reference-guide.pdf">OCC Director's Reference Guide to Board Reports</a>; <a href="https://www.occ.gov/news-issuances/bulletins/2017/bulletin-2017-43.html">OCC Bulletin 2017-43</a>.</li>
-        <li>CRA rules: <a href="https://www.fdic.gov/news/press-releases/2026/agencies-issue-joint-proposal-amending-community-reinvestment-act-rules">FDIC and OCC proposal, July 31, 2026</a>; <a href="https://www.federalregister.gov/documents/2026/08/12/2026-16454/community-reinvestment-act-regulations">Federal Register, August 12, 2026</a>; <a href="https://www.federalreserve.gov/newsevents/pressreleases/bcreg20251230a.htm">2026 asset-size thresholds</a>.</li>
-        <li>Branch economics: <a href={SOURCES.qbp.href}>{SOURCES.qbp.text}</a>; <a href={SOURCES.ab.href}>{SOURCES.ab.text}</a>; <a href={SOURCES.be.href}>{SOURCES.be.text}</a>; <a href={SOURCES.bam.href}>{SOURCES.bam.text}</a>; <a href={SOURCES.fed.href}>{SOURCES.fed.text}</a>.</li>
+        <li><a href="https://banks.data.fdic.gov/bankfind-suite/SOD">FDIC Summary of Deposits</a>: branch deposits, 2008 to 2026.</li>
+        <li><a href="https://www.census.gov/programs-surveys/popest.html">Census population estimates</a>, the <a href="https://www.census.gov/programs-surveys/acs">American Community Survey</a>, and <a href="https://www.census.gov/programs-surveys/cbp.html">ZIP Code Business Patterns</a>: population, households, income, and jobs.</li>
+        <li><a href="https://ffiec.cfpb.gov/data-browser/">HMDA</a>: tract income and minority data, and home-purchase lending, 2025.</li>
+        <li><a href="https://www.fdic.gov/board/federal-register-notice-branch-final-rule.pdf">FDIC branch application rule, effective February 27, 2026</a>.</li>
       </ul>
-      <p class="report-p report-small">{data.notes.join(' ')} Towns are measured by branch city (deposits), ZIP code (businesses), and census tracts within five miles of the town center (income). The tag thresholds are judgments, stated so they can be argued with. The bank and its customer counts are hypothetical. This plan supports a business decision; it is not legal advice, a fair-lending analysis, or a CRA compliance determination.</p>
+      <p class="report-p report-small">{data.notes.join(' ')} Towns are measured by branch city for deposits, ZIP code for jobs, and census tracts within five miles of the town center for income. The tag thresholds are judgments, stated so they can be argued with. The bank, its capital, income, and hurdle rate are illustrative. This plan supports a business decision; it is not legal advice, a fair-lending analysis, or a CRA compliance determination.</p>
     </section>
 
     <aside class="report-cta">

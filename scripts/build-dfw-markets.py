@@ -348,7 +348,6 @@ OUT.write_text(json.dumps({
     },
     'notes': [
         'Branches holding more than $1.5 billion are treated as booked deposits and excluded.',
-        'Community banks are institutions with less than $10 billion in assets.',
     ],
     'markets': markets,
     'towns': towns,
