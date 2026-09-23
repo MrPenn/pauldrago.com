@@ -79,7 +79,12 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 import MarketExample from '../components/MarketExample.astro';
 import marketData from '../data/dfw-markets.json';
 import { PRESETS, scoreMarkets } from '../data/market-scoring';
-const heroRanking = scoreMarkets(marketData.markets, PRESETS.full.weights);
+// Hero hook: what the deposit map says, what the branch economics say, and the one fact behind it.
+const mapPick = scoreMarkets(marketData.markets, PRESETS.map.weights)[0].county;
+const casePick = scoreMarkets(marketData.markets, PRESETS.full.weights)[0].county;
+const heroMarkets = Object.fromEntries(marketData.markets.map((m) => [m.county, m]));
+const branchBars = [...marketData.markets].sort((a, b) => b.medianCommunityBranch - a.medianCommunityBranch);
+const maxBranch = branchBars[0].medianCommunityBranch;
 ---
 <Base {...meta} jsonld={jsonld}>
 <main id="main">
@@ -91,15 +96,32 @@ const heroRanking = scoreMarkets(marketData.markets, PRESETS.full.weights);
           <h1 class="display-title hero-title">Compare markets before committing to a <span class="accent">branch plan</span>.</h1>
           <p class="hero-subhead">Compare deposits, customer geography, branch economics, CRA implications, and fair-access risk before choosing a market.</p>
         </div>
-        <figure class="decision-model" aria-labelledby="branch-model-title">
-          <p class="model-label">A worked example</p>
-          <p class="model-title" id="branch-model-title">Three Dallas counties, one branch</p>
-          <dl class="score-table">
-            {heroRanking.map((r) => (
-              <div class="score-row"><dt class="score-name">{r.county} County</dt><dd class="score-track" aria-hidden="true"><span class="score-fill" style={`width: ${r.score}%`}></span></dd><dd class="score-value">{r.score}</dd></div>
+        <figure class="decision-model flip-model" aria-labelledby="branch-model-title">
+          <p class="model-label">A worked example on real data</p>
+          <p class="model-title" id="branch-model-title">Where should a Dallas bank open its next branch?</p>
+          <div class="flip-answers">
+            <div class="flip-answer">
+              <span class="flip-answer-label">The deposit map says</span>
+              <span class="flip-answer-county">{mapPick} County</span>
+              <span class="flip-answer-why">${heroMarkets[mapPick].deposits.toFixed(1)}B in deposits, the biggest market</span>
+            </div>
+            <div class="flip-answer is-case">
+              <span class="flip-answer-label">The branch economics say</span>
+              <span class="flip-answer-county">{casePick} County</span>
+              <span class="flip-answer-why">{Math.round(heroMarkets[casePick].communityShare)}% of deposits at community banks</span>
+            </div>
+          </div>
+          <p class="flip-evidence-title">Deposits in a typical community-bank branch</p>
+          <dl class="flip-bars">
+            {branchBars.map((m) => (
+              <div class:list={['flip-bar', { 'is-case': m.county === casePick }]}>
+                <dt>{m.county}</dt>
+                <dd class="flip-bar-track" aria-hidden="true"><span style={`width: ${Math.round((m.medianCommunityBranch / maxBranch) * 100)}%`}></span></dd>
+                <dd class="flip-bar-value">${m.medianCommunityBranch}M</dd>
+              </div>
             ))}
           </dl>
-          <figcaption class="model-note">Scored on public FDIC and Census data for a hypothetical $2 billion Dallas County bank. <a href="#worked-example">Change the weights yourself</a>.</figcaption>
+          <figcaption class="model-note">FDIC Summary of Deposits, June 2026. <a href="#worked-example">See how the answer flips</a>.</figcaption>
         </figure>
       </div>
     </div>

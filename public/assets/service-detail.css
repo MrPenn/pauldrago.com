@@ -624,3 +624,26 @@ button):focus-visible {
   .market-weight { grid-template-columns: minmax(0, 1fr) 96px 18px; gap: 8px; }
   .market-rank { grid-template-columns: 104px minmax(0, 1fr) 32px; }
 }
+
+/* Hero hook on the branch page: the two answers and the fact that separates them */
+.flip-model .model-title { font-size: 24px; }
+.flip-answers { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 22px; }
+.flip-answer { display: flex; flex-direction: column; gap: 4px; padding: 14px; border: 1px solid var(--hairline); }
+.flip-answer.is-case { border: 2px solid var(--brass); }
+.flip-answer-label { color: var(--secondary); font-size: 13px; font-weight: 600; }
+.flip-answer-county { color: var(--paper); font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 20px; line-height: 1.1; text-transform: uppercase; }
+.flip-answer.is-case .flip-answer-county { color: var(--brass); }
+.flip-answer-why { color: var(--secondary); font-size: 13px; line-height: 1.4; }
+.flip-evidence-title { margin-top: 24px; color: var(--paper); font-size: 14px; font-weight: 700; }
+.flip-bars { margin-top: 8px; }
+.flip-bar { display: grid; grid-template-columns: 72px minmax(0, 1fr) 52px; gap: 12px; align-items: center; padding: 8px 0; border-top: 1px solid var(--hairline); }
+.flip-bar dt { color: var(--paper); font-size: 15px; font-weight: 600; }
+.flip-bar dd { margin: 0; }
+.flip-bar-track { height: 12px; background: var(--hairline); }
+.flip-bar-track span { display: block; height: 100%; background: var(--paper); }
+.flip-bar.is-case dt, .flip-bar.is-case .flip-bar-value { color: var(--brass); }
+.flip-bar.is-case .flip-bar-track span { background: var(--brass); }
+.flip-bar-value { color: var(--paper); font-size: 15px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 400px) {
+  .flip-answers { grid-template-columns: 1fr; }
+}
