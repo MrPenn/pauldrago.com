@@ -9,6 +9,17 @@ stylesheets: ["/assets/front-door.css"]
 scripts: ["/assets/front-door.js"]
 ---
 
+<aside class="fd-brief" aria-label="The short version">
+<p class="fd-eyebrow">The short version</p>
+<ol>
+<li>Community banks built the digital front door. In 2024 they still took 4 of every 100 new checking accounts.</li>
+<li>A 25-year-old with the median balance is worth a little over $400 a year to a community bank before any loan, and covers a typical acquisition cost inside the first year.</li>
+<li>The mortgage the bank is waiting for arrives at 40. The industry earned $973 per loan on it last quarter.</li>
+<li>Chime feels like one product. A community bank is twelve functions wearing one logo, and nobody owns the whole.</li>
+<li>The fix is three decisions, not a reorg: one owner, a scorecard that measures the relationship, one journey run as a product for a quarter.</li>
+</ol>
+</aside>
+
 For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket. Add mobile deposit, card controls, digital wallets, person-to-person payments and a better app, and the trip to the branch stops being a reason to choose someone else.
 
 Banks responded with platform contracts, implementation projects and new digital capabilities. But removing a reason to choose someone else is not the same as creating a reason to choose you.
@@ -20,6 +31,8 @@ The industry got the channel right. What it missed was the reason for choosing t
 
 ## A digital front door is not a reason to enter
 
+<p class="fd-deck">Access was the problem the industry solved. Preference is the one it did not.</p>
+
 Digital account opening answered a real question: can I open this account from my phone? A bank that required paperwork, signatures and a branch visit was putting obvious friction between itself and people accustomed to doing things from a screen.
 
 Removing that friction leaves a different question. Why would I open this account from my phone?
@@ -30,7 +43,11 @@ Even Cornerstone, whose research produced the 44% figure, describes the challeng
 
 ## The 4.8-star trap
 
+<p class="fd-deck">Everyone’s app is fine. Fine is not a position.</p>
+
 Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars.
+
+<p class="fd-stat"><span class="fd-stat-num">95%</span><span class="fd-stat-label">of consumers rate their bank’s online and mobile experience good, very good or excellent</span></p>
 
 Both things can be true and still leave the competitive question unanswered. In the ABA survey, 95% of consumers rated their bank's online and mobile experience as good, very good or excellent.[^2] When nearly everyone's customers say the same thing, "ours works fine" is not a competitive position.
 
@@ -41,6 +58,8 @@ The benchmarking problem runs deeper than the rating. Inside the bank, the compa
 Your benchmark should not stop at the bank across town. It should include the best financial experience on your customer's phone. Good enough is a dangerous place to be when the customer knows what excellent feels like.
 
 ## So, why should I bank with you?
+
+<p class="fd-deck">The younger customer is already profitable. The pitch pretends otherwise.</p>
 
 Strip away the campaign and have the conversation with a 25-year-old deciding where to send a paycheck.
 
@@ -81,7 +100,9 @@ Call it a little over $400 a year from a primary checking account alone, before 
 </div>
 <div class="fd-step" data-step="5">
 
-So the 25-year-old with $5,400 and a paycheck is not a bet on the future. That customer is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. (Chime’s partner banks are small enough to have it too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank’s assets below $10 billion for the foreseeable future.[^8] The exemption is not the community bank’s secret. Using it on purpose would be.) Lending is upside. It was never the business case.
+So the 25-year-old with $5,400 and a paycheck is not a bet on the future. That customer is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. Lending is upside. It was never the business case.
+
+Chime’s partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank’s assets below $10 billion for the foreseeable future.[^8] The exemption is not the community bank’s secret. Using it on purpose would be.
 
 </div>
 </div>
@@ -166,11 +187,15 @@ Human judgment and local knowledge still matter. A person who understands the si
 
 ## Chime has fewer levers
 
+<p class="fd-deck">Fewer capabilities, one experience.</p>
+
 Chime's proposition centers on everyday money: checking, savings, credit-building products, early access to qualifying direct deposits and overdraft features for eligible members. Its checking offer emphasizes no monthly service fees and no minimum balance fees, with additional features subject to their own terms.[^8]
 
 A full-service community bank has a broader set of capabilities to assemble. Alongside checking and payments, it may offer consumer lending, mortgages, small-business banking, local decision-makers and places where customers can sit down with someone. Commercial relationships and community partnerships add further possibilities.
 
 Having more capabilities does not automatically produce a more compelling experience.
+
+<p class="fd-stat"><span class="fd-stat-num">64%</span><span class="fd-stat-label">of Chime’s revenue in the second quarter of 2026 was payments, most of it debit interchange</span></p>
 
 Chime does not literally have one product. It has multiple accounts, credit products and banking partners; Chime itself is a financial technology company, not a chartered bank. Its banking services are provided by The Bancorp Bank or Stride Bank, and Chime has agreed to acquire Stride, pending regulatory approval, with closing expected in the first half of 2027.[^8]
 
@@ -179,6 +204,8 @@ What differs is the presentation. Checking, cards, savings and credit building s
 A community bank can have more to offer and still make the customer do more work to understand how it fits together.
 
 ## A community bank is twelve things wearing one logo
+
+<p class="fd-deck">The org chart has become the customer experience.</p>
 
 Walk inside the community bank. Marketing owns the brand, Digital owns the app, Retail owns the branches and Deposit Product owns checking. Cards manages debit; Consumer Lending and Mortgage have their own businesses. Operations handles servicing, IT manages vendors, Finance evaluates pricing and margin, and Risk and Compliance establish the boundaries.
 
@@ -224,9 +251,13 @@ The comparison with Chime is not how many features each institution has. It is w
 
 ## Everyone can hit their goals and the bank can still lose
 
+<p class="fd-deck">A third of new accounts leave inside a year, and no department’s number moves.</p>
+
 Once you see the problem this way, good enough becomes understandable. If the app is treated as a servicing channel, uptime, adoption and satisfaction are sensible measures. If checking is a deposit product, balances and cost of funds matter. If Marketing owns acquisition, applications and cost per account matter.
 
 No individual executive needs to be making a bad decision. The failure happens between the decisions.
+
+<p class="fd-stat"><span class="fd-stat-num">34%</span><span class="fd-stat-label">of activated new checking customers went inactive or left within their first year, by the institutions’ own estimate</span></p>
 
 In March 2024 research published in *The Power of Primacy*, financial institutions estimated that 34% of activated new customers became inactive or churned within their first year. The report also presented an estimated direct-deposit penetration rate of 55%.[^11] These were institution-reported estimates, not an audit of individual account histories. They are useful here because they distinguish an account opened from a relationship established.
 
@@ -237,6 +268,8 @@ Someone needs to ask the larger question: what should banking with us feel like 
 That is a product-management question, and it does not get answered merely because each product has a manager.
 
 ## This is why the Gen Z campaign keeps happening
+
+<p class="fd-deck">Advertising is the only lever one department can pull alone.</p>
 
 Suppose Marketing does the research properly. YouGov's U.S. research among employed Gen Z consumers places low or no maintenance fees, security and reliability, and brand trustworthiness among the leading account-selection factors. Digital usability matters too.[^12] Separate YouGov research found that building an emergency fund was Gen Z's most frequently cited savings goal.[^13]
 
@@ -258,6 +291,8 @@ Modern is not the same as young. Authentic is not the same as casual. Customer-c
 
 ## What if the bank actually used all of its advantages?
 
+<p class="fd-deck">The same bank, run as one product.</p>
+
 Imagine the same community bank behaving as a single product.
 
 A 24-year-old moves direct deposit into the bank. The experience makes the arrival of that first paycheck clear and offers an easy, optional way to begin building emergency savings. The customer does not have to discover a separate product, repeat information or arrange an appointment to get started.
@@ -273,6 +308,8 @@ A few years later there may be a car loan, a house or a business. The bank shoul
 Local employers, merchants and community relationships strengthen the proposition further when they produce something the customer can feel. That is not a worse version of Chime. It is an experience that makes the bank's additional capabilities worth choosing.
 
 ## Somebody has to own the whole bank
+
+<p class="fd-deck">Three decisions, no reorg.</p>
 
 Community banks do not need to copy Chime's palette, vocabulary or roadmap. The lesson is coherence: product, brand and experience that reinforce each other.
 

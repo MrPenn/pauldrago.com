@@ -649,3 +649,59 @@
 .fd-sidenote.is-open .fd-note-full { display: inline; }
 .fd-sidenote.is-open .fd-note-brief, .fd-sidenote.is-open .fd-note-more { display: none; }
 .fd-sticky-notes .fd-sidenote.is-current.is-open { max-height: 600px; }
+
+/* ---------- Scanability: short version, decks, stat lines, section air ---------- */
+.fd-brief {
+  margin: 0 0 44px;
+  padding: 22px 0 8px;
+  border-top: 4px solid var(--brass);
+  border-bottom: 1px solid var(--hairline);
+}
+.fd-brief ol { list-style: none; margin: 0; padding: 0; counter-reset: brief; }
+.fd-brief li {
+  counter-increment: brief;
+  position: relative;
+  padding: 0 0 14px 34px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--paper);
+}
+.fd-brief li::before {
+  content: counter(brief);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 15px;
+  color: var(--brass);
+}
+.article-body h2 { margin-top: 72px; padding-top: 22px; border-top: 1px solid var(--hairline); }
+.fd-deck {
+  margin: -6px 0 24px !important;
+  color: var(--secondary);
+  font-size: 18px;
+  line-height: 1.45;
+  max-width: 52ch;
+}
+.fd-stat {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 16px;
+  align-items: baseline;
+  margin: 34px 0 22px !important;
+  padding: 16px 0 14px;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.fd-stat-num {
+  font-family: 'Archivo Black', sans-serif;
+  font-size: clamp(38px, 4.2vw, 56px);
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+}
+.fd-stat-label { color: var(--secondary); font-size: 14px; line-height: 1.4; max-width: 30ch; }
+@media (max-width: 760px) {
+  .article-body h2 { margin-top: 52px; }
+  .fd-stat-num { font-size: 34px; }
+}
