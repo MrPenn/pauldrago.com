@@ -395,18 +395,17 @@
 }
 .fd-steps { position: relative; z-index: 2; }
 .fd-step {
-  min-height: 62vh;
+  min-height: 40vh;
   display: flex;
   align-items: center;
-  padding: 8vh 0;
-  transition: color var(--fd-base) var(--fd-ease);
-  color: var(--secondary);
+  padding: 4vh 0;
+  color: var(--paper);   /* every paragraph at full ink; the figure shows which step is active */
 }
 .fd-step > p { margin: 0; max-width: 50ch; }
 .fd-step > p + p { margin-top: 18px; }
 .fd-step.is-active { color: var(--paper); }
-.fd-step:first-child { padding-top: 2vh; min-height: 48vh; }
-.fd-step:last-child { padding-bottom: 6vh; min-height: 48vh; }
+.fd-step:first-child { padding-top: 2vh; min-height: 36vh; }
+.fd-step:last-child { padding-bottom: 6vh; min-height: 40vh; }
 .fd-step .fd-pull { margin: 0; }
 
 .fd-sticky {

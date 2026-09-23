@@ -673,3 +673,10 @@ button):focus-visible {
   .market-recommendation { padding: 22px 20px; }
   .market-recommendation p:not(.band-label) { font-size: 17px; }
 }
+
+/* Fractional CMO hero: a quiet cadence table in the same figure frame as the other service pages. */
+.cadence-table { width: 100%; margin-top: 18px; border-collapse: collapse; font-size: 15px; line-height: 1.45; }
+.cadence-table th, .cadence-table td { padding: 12px 0; border-top: 1px solid var(--hairline); text-align: left; vertical-align: top; }
+.cadence-table th { width: 118px; padding-right: 16px; color: var(--paper); font-weight: 700; white-space: nowrap; }
+.cadence-table td { color: var(--secondary); }
+.cadence-table tr:last-child th, .cadence-table tr:last-child td { border-bottom: 1px solid var(--hairline); }

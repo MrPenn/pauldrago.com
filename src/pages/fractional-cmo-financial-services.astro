@@ -81,12 +81,26 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <main id="main">
   <section class="service-hero">
     <div class="container">
-      <div class="hero-grid">
+      <div class="hero-grid hero-grid-with-model">
         <div>
           <p class="eyebrow">For banks and regulated financial-services companies</p>
           <h1 class="display-title hero-title">Put a senior marketing operator <span class="accent">in the seat</span>.</h1>
           <p class="hero-subhead">Set priorities, direct the team, align finance and compliance, and report clearly to leadership.</p>
         </div>
+        <figure class="decision-model" aria-labelledby="cadence-model-title">
+          <p class="model-label">What leadership sees</p>
+          <p class="model-title" id="cadence-model-title">The first quarter, and every month after</p>
+          <table class="cadence-table">
+            <caption class="sr-only">An illustrative first quarter and monthly reporting rhythm</caption>
+            <tbody>
+              <tr><th scope="row">Weeks 1 to 4</th><td>Priorities set, decision rights written down, the team's work re-planned against them.</td></tr>
+              <tr><th scope="row">Weeks 5 to 8</th><td>One marketing report that finance agrees with; compliance review built into the calendar.</td></tr>
+              <tr><th scope="row">Weeks 9 to 12</th><td>Agencies and vendors held to the plan; the first quarter reviewed with leadership.</td></tr>
+              <tr><th scope="row">Every month</th><td>Results against plan, what changed, and the next decision leadership owns.</td></tr>
+            </tbody>
+          </table>
+          <figcaption class="model-note">Illustration, not client data. The cadence is set with the executive team in the first two weeks.</figcaption>
+        </figure>
       </div>
     </div>
   </section>

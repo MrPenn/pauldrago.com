@@ -828,3 +828,7 @@ input):focus-visible {
 .hero-section .headline-96 { font-size: clamp(40px, 5vw, 64px); }
 .headline-84 { font-size: clamp(32px, 4.2vw, 52px); }
 @media (max-width: 700px) { .headline-84 { font-size: 30px; } .hero-section .headline-96 { font-size: 34px; } }
+
+/* The illustrative report sits under both offers, so neither column is left empty beside it. */
+.section-d .artifact-preview { max-width: 760px; margin-top: 40px; }
+.section-d-cta-row { margin-top: 28px; }
