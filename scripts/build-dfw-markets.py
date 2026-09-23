@@ -10,6 +10,7 @@ Public sources only:
   - Census geocoder (branch tract) and Census tract gazetteer (tract locations)
   - FDIC Summary of Deposits history for the Dallas-Fort Worth metro, to measure how new branches ramp
   - Census ZIP Code Business Patterns (establishments and employment by town)
+  - Census TIGERweb tract and county boundaries, for the county maps (src/data/dfw-map.json)
 
 Re-run after FDIC publishes a new Summary of Deposits (each fall):
     python3 scripts/build-dfw-markets.py
@@ -65,6 +66,10 @@ BOOKED_THRESHOLD = 1_500_000  # $ thousands
 COMMUNITY_ASSETS = 10_000_000  # $ thousands: community bank = under $10 billion in assets
 UA = {'User-Agent': 'pauldrago.com market research'}
 OUT = Path(__file__).resolve().parent.parent / 'src' / 'data' / 'dfw-markets.json'
+MAP_OUT = OUT.with_name('dfw-map.json')
+MAP_COUNTIES = ('Kaufman', 'Ellis')  # the counties the plan enters
+MAP_WIDTH = 600  # SVG units; height follows each county's shape
+TIGER = 'https://tigerweb.geo.census.gov/arcgis/rest/services/TIGERweb'
 
 
 def get(url):
@@ -189,6 +194,45 @@ def zbp(year):
     return {r['zip']: (int(r['est']), int(r['emp'])) for r in csv.DictReader(io.StringIO(text))}
 
 
+def boundaries(layer, where):
+    # Census TIGERweb, generalized to about 100 meters, as GeoJSON in longitude and latitude.
+    q = urllib.parse.urlencode({'where': where, 'outFields': 'GEOID,COUNTY', 'outSR': 4326, 'maxAllowableOffset': 0.001, 'f': 'geojson'})
+    return json.loads(get(f'{TIGER}/{layer}/query?{q}'))['features']
+
+
+def rings(geometry):
+    return geometry['coordinates'] if geometry['type'] == 'Polygon' else [r for poly in geometry['coordinates'] for r in poly]
+
+
+def county_map(name, fips, tracts, purchases, branches):
+    outline = boundaries('State_County/MapServer/1', f"STATE='48' AND COUNTY='{fips}'")[0]['geometry']
+    shapes = boundaries('Tracts_Blocks/MapServer/0', f"STATE='48' AND COUNTY='{fips}'")
+    points = [pt for ring in rings(outline) for pt in ring]
+    lon0, lon1 = min(p[0] for p in points), max(p[0] for p in points)
+    lat0, lat1 = min(p[1] for p in points), max(p[1] for p in points)
+    squeeze = math.cos(math.radians((lat0 + lat1) / 2))
+    scale = MAP_WIDTH / ((lon1 - lon0) * squeeze)
+    xy = lambda lon, lat: (round((lon - lon0) * squeeze * scale, 1), round((lat1 - lat) * scale, 1))
+    path = lambda g: ' '.join('M' + 'L'.join(f'{x},{y}' for x, y in (xy(*pt) for pt in ring)) + 'Z' for ring in rings(g))
+    lmi = {t for t, v in tracts.items() if v['income'] < 80}
+    return {
+        'county': name,
+        'width': MAP_WIDTH,
+        'height': round((lat1 - lat0) * scale),
+        'milePx': round(scale / 69, 2),  # one mile of latitude, in SVG units
+        'outline': path(outline),
+        'tracts': [{
+            'geoid': f['properties']['GEOID'],
+            'd': path(f['geometry']),
+            'purchasesPer1000': round(purchases[f['properties']['GEOID']] / tracts[f['properties']['GEOID']]['population'] * 1000, 1) if f['properties']['GEOID'] in tracts else None,
+            'lmi': f['properties']['GEOID'] in lmi,
+        } for f in shapes],
+        'branches': [{'x': xy(r['SIMS_LONGITUDE'], r['SIMS_LATITUDE'])[0], 'y': xy(r['SIMS_LONGITUDE'], r['SIMS_LATITUDE'])[1],
+                      'community': r['ASSET'] < COMMUNITY_ASSETS} for r in branches if r['SIMS_LATITUDE']],
+        'towns': [{'town': town, 'x': xy(lon, lat)[0], 'y': xy(lon, lat)[1]} for town, ((lat, lon), _) in TOWNS[name].items()],
+    }
+
+
 def miles(a, b):
     return 69 * math.hypot(a[0] - b[0], (a[1] - b[1]) * math.cos(math.radians(a[0])))
 
@@ -212,7 +256,7 @@ gaz_raw = get('https://www2.census.gov/geo/docs/maps-data/data/gazetteer/2025_Ga
 tract_location = {r['GEOID']: (float(r['INTPTLAT']), float(r['INTPTLONG'].strip())) for r in csv.DictReader(io.StringIO(gaz_raw), delimiter='|')}
 
 business = {year: zbp(year) for year in ZBP_YEARS}
-markets, towns = [], []
+markets, towns, maps = [], [], []
 for name, fips in COUNTIES.items():
     now, then = local(sod(name, SOD_YEAR)), local(sod(name, SOD_BASE_YEAR))
     dep_now, dep_then = sum(r['DEPSUMBR'] for r in now), sum(r['DEPSUMBR'] for r in then)
@@ -248,7 +292,10 @@ for name, fips in COUNTIES.items():
     tracts, purchases, metro_mfi = hmda_tracts(fips)
     lmi = {t for t, x in tracts.items() if x['income'] < 80}
     minority = {t for t, x in tracts.items() if x['minority'] > 50}
-    branch_tracts = [tract_of(r['SIMS_LATITUDE'], r['SIMS_LONGITUDE']) for r in sod(name, SOD_YEAR)]
+    all_branches = sod(name, SOD_YEAR)
+    branch_tracts = [tract_of(r['SIMS_LATITUDE'], r['SIMS_LONGITUDE']) for r in all_branches]
+    if name in MAP_COUNTIES:
+        maps.append(county_map(name, fips, tracts, purchases, all_branches))
     people = sum(x['population'] for x in tracts.values())
     owners = sum(x['owner'] for x in tracts.values())
     bought = sum(purchases.values())
@@ -301,4 +348,9 @@ OUT.write_text(json.dumps({
     'towns': towns,
     'ramp': ramp(),
 }, indent=2) + '\n')
-print(f'Wrote {OUT}')
+MAP_OUT.write_text(json.dumps({
+    'asOf': f'Census TIGERweb tract boundaries; HMDA {HMDA_YEAR} owner-occupied home purchases per 1,000 residents; FDIC Summary of Deposits branch locations, June {SOD_YEAR}',
+    'radiusMiles': TOWN_RADIUS_MILES,
+    'counties': sorted(maps, key=lambda m: MAP_COUNTIES.index(m['county'])),
+}, separators=(',', ':')) + '\n')
+print(f'Wrote {OUT} and {MAP_OUT}')

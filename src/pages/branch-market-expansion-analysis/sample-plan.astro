@@ -4,6 +4,7 @@
 // pipeline from src/data/dfw-signals.json, and the plan from src/data/branch-plan.ts.
 import Base from '../../layouts/Base.astro';
 import MarketTable from '../../components/MarketTable.astro';
+import CountyMaps from '../../components/CountyMaps.astro';
 import data from '../../data/dfw-markets.json';
 import signals from '../../data/dfw-signals.json';
 import { INSTITUTION, PRESETS, scoreMarkets } from '../../data/market-scoring';
@@ -116,6 +117,8 @@ const SOURCES = {
         <div><dt>Data as of</dt><dd>{signals.asOf}</dd></div>
       </dl>
     </div>
+
+    <CountyMaps />
 
     <nav class="report-toc" aria-label="Contents">
       <ol>
