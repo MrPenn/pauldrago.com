@@ -560,13 +560,13 @@
 .fd-tl-bar { fill: var(--paper); opacity: 0.85; transform-origin: bottom; transform: scaleY(0); transition: transform var(--fd-base) var(--fd-ease); }
 .fd-tl-event { fill: var(--brass); transform-origin: bottom; transform: scaleY(0); transition: transform var(--fd-slow) var(--fd-ease); }
 .fd-tl-axis { stroke: var(--hairline); stroke-width: 1; }
-.fd-tl-label { fill: var(--secondary); font-family: 'Inter', sans-serif; font-size: 12px; }
+.fd-tl-label { fill: var(--secondary); font-family: 'Inter', sans-serif; font-size: 14px; }
 .fd-tl-label.is-strong { fill: var(--paper); font-weight: 700; }
-.fd-tl-callout { fill: var(--paper); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
+.fd-tl-callout { fill: var(--paper); font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
 .fd-tl-callout.is-brass { fill: var(--brass); }
-.fd-tl-sub { fill: var(--secondary); font-family: 'Inter', sans-serif; font-size: 12px; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
+.fd-tl-sub { fill: var(--secondary); font-family: 'Inter', sans-serif; font-size: 13px; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
 .fd-tl-marker { stroke: var(--brass); stroke-width: 1; stroke-dasharray: 3 4; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
-.fd-tl-marker-label { fill: var(--brass); font-family: 'Inter', sans-serif; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
+.fd-tl-marker-label { fill: var(--brass); font-family: 'Inter', sans-serif; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease); }
 .fd-g-timeline[data-step="1"] .fd-tl-marker,
 .fd-g-timeline[data-step="1"] .fd-tl-marker-label,
 .fd-g-timeline[data-step="2"] .fd-tl-marker,
@@ -1044,3 +1044,57 @@ figure.fd-stat {
   .fd-calc .fd-ledger-total { padding: 16px 14px; }
   .fd-calc .fd-ledger-total .fd-ledger-value { font-size: 30px; }
 }
+
+/* ---------- Mobile pass ---------- */
+@media (max-width: 1179px) {
+  /* pinned sequences: the graphic is a compact card at the top; steps read like paragraphs beneath it */
+  .fd-sticky { padding: 8px 20px 10px; box-shadow: 0 14px 22px -14px rgba(8, 18, 32, 0.95); }
+  .fd-graphic { padding: 14px 0 12px; }
+  .fd-step { min-height: 0; padding: 18px 0; align-items: flex-start; opacity: 0.55; }
+  .fd-step:first-child { padding-top: 26px; min-height: 0; }
+  .fd-step:last-child { padding-bottom: 12px; min-height: 0; }
+  .fd-step.is-active { opacity: 1; }
+  .fd-steps::after { content: ""; display: block; height: 26vh; }   /* runway so the last step can reach the line */
+  .fd-scrolly { margin-bottom: 8px; }
+}
+@media (max-width: 760px) {
+  /* math graphic: numbers only inside the bars, ledger stays hidden, payback line stays */
+  .fd-g-seg-word { display: none; }
+  .fd-g-seg-label { left: 8px; font-size: 12px; }
+  .fd-g-balance { margin-bottom: 12px; }
+  .fd-g-balance .num { font-size: 30px; }
+  .fd-g-balance .sub { font-size: 12px; }
+  .fd-g-track { height: 28px; }
+  .fd-g-cac span { font-size: 10px; }
+  .fd-g-payback { font-size: 13px; margin-top: 0; max-height: 0; overflow: hidden; transition: opacity var(--fd-base) var(--fd-ease), max-height var(--fd-base) var(--fd-ease), margin var(--fd-base) var(--fd-ease); }
+  .fd-g-payback.is-shown { margin-top: 30px; max-height: 80px; }
+  /* org graphic: three columns, no min-height reserve */
+  .fd-g-org { min-height: 0; }
+  /* pull quotes: mark sits above the quote, quote keeps the full column */
+  .article-body .fd-pq { padding: 30px 0 18px 0; margin: 34px 0 !important; }
+  .article-body .fd-pq::before { font-size: 64px; left: -3px; top: -0.02em; line-height: 1; }
+  .article-body .fd-pq p { font-size: 21px; line-height: 1.38; }
+  /* decisions: number above the text, text keeps the full column */
+  .fd-decisions li { padding: 20px 0 24px; }
+  .fd-decisions li::before { position: static; display: block; margin-bottom: 8px; font-size: 26px; }
+  .fd-decisions strong { font-size: 18px; }
+  /* dialogue: customer lines carry an accent rule instead of an indent */
+  .fd-dialogue { padding-left: 0; border-left: 0; }
+  .fd-dialogue p { padding-left: 14px; border-left: 2px solid var(--hairline); }
+  .fd-dialogue .fd-cust { margin-left: 0; border-left-color: var(--brass); }
+  /* headline and header spacing */
+  .article-title { font-size: clamp(30px, 8.6vw, 38px); line-height: 1.04; }
+  .article-intro { font-size: 19px; }
+  .article-opener { margin-bottom: 30px; }
+  .fd-opener-units { gap: 2px; }
+  /* short version: tighter */
+  .fd-brief li { font-size: 16px; }
+  /* section heads */
+  .article-body h2 { font-size: 23px; }
+  /* calculator: inputs two-up, big type stays */
+  .fd-calc-lede { font-size: 15px; }
+  /* tap targets */
+  [data-footnote-ref] { padding: 6px 4px; margin: -6px -2px; }
+}
+/* timeline labels keep a ground-coloured halo so they stay legible over the bars */
+.fd-tl-callout, .fd-tl-sub, .fd-tl-marker-label { paint-order: stroke fill; stroke: var(--ground); stroke-width: 5px; stroke-linejoin: round; }

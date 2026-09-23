@@ -147,7 +147,29 @@
     }
     seq.setActive = setActive;
 
-    if ('IntersectionObserver' in window) {
+    var stacked = window.matchMedia('(max-width: 1179px)');
+    if (stacked.matches) {
+      // Stacked layout: the graphic is pinned to the top of the screen and the
+      // steps scroll up underneath it. The live step is the last one whose top
+      // has passed a line a little below the graphic.
+      var sticky = sec.querySelector('.fd-sticky');
+      var ticking = false;
+      function pick() {
+        ticking = false;
+        var secR = sec.getBoundingClientRect();
+        if (secR.bottom < 0 || secR.top > window.innerHeight) return;
+        var line = (sticky ? sticky.getBoundingClientRect().bottom : 0) + window.innerHeight * 0.14;
+        var n = 1;
+        for (var i = 0; i < steps.length; i++) {
+          if (steps[i].getBoundingClientRect().top <= line) n = i + 1;
+        }
+        setActive(n);
+      }
+      function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(pick); } }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      pick();
+    } else if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (entries) {
         entries.forEach(function (e) {
           if (e.isIntersecting) setActive(parseInt(e.target.getAttribute('data-step'), 10));
@@ -183,9 +205,9 @@
       '<p class="fd-eyebrow fd-g-eyebrow">One primary checking customer, one year</p>' +
       '<div class="fd-g-balance"><span class="num">' + money(BAL) + '</span><span class="sub">median transaction balance, under 35</span></div>' +
       '<div class="fd-g-bar" data-bar="exempt"><div class="fd-g-bar-head"><span class="fd-g-bar-name">A community bank, under $10B</span><span class="fd-g-bar-val" data-val>$0</span></div>' +
-        '<div class="fd-g-track"><div class="fd-g-seg spread"><span class="fd-g-seg-label">spread ' + money(spread) + '</span></div><div class="fd-g-seg ic"><span class="fd-g-seg-label">interchange ' + money(icEx) + '</span></div><div class="fd-g-cac"><span>' + money(CAC) + ' to acquire</span></div></div></div>' +
+        '<div class="fd-g-track"><div class="fd-g-seg spread"><span class="fd-g-seg-label"><span class="fd-g-seg-word">spread </span>' + money(spread) + '</span></div><div class="fd-g-seg ic"><span class="fd-g-seg-label"><span class="fd-g-seg-word">interchange </span>' + money(icEx) + '</span></div><div class="fd-g-cac"><span>' + money(CAC) + ' to acquire</span></div></div></div>' +
       '<div class="fd-g-bar" data-bar="covered"><div class="fd-g-bar-head"><span class="fd-g-bar-name">The same customer at a bank over $10B</span><span class="fd-g-bar-val" data-val>$0</span></div>' +
-        '<div class="fd-g-track"><div class="fd-g-seg spread"><span class="fd-g-seg-label">spread ' + money(spread) + '</span></div><div class="fd-g-seg ic"><span class="fd-g-seg-label">interchange ' + money(icCov) + '</span></div></div></div>' +
+        '<div class="fd-g-track"><div class="fd-g-seg spread"><span class="fd-g-seg-label"><span class="fd-g-seg-word">spread </span>' + money(spread) + '</span></div><div class="fd-g-seg ic"><span class="fd-g-seg-label"><span class="fd-g-seg-word">interchange </span>' + money(icCov) + '</span></div></div></div>' +
       '<div class="fd-g-ledger">' +
         '<div class="fd-g-row" data-row="spread"><span class="fd-g-row-label">Deposit spread<small>' + money(BAL) + ' × 3.81% net interest margin</small></span><span class="fd-g-row-val">' + money(spread) + '</span></div>' +
         '<div class="fd-g-row" data-row="ic"><span class="fd-g-row-label">Interchange, gross<small>34.6 transactions a month × 12 × $0.51</small></span><span class="fd-g-row-val">' + money(icEx) + '</span></div>' +
@@ -231,7 +253,8 @@
     var endAge = parseInt(g2.getAttribute('data-end'), 10) || 40;
     var eventVal = parseFloat(g2.getAttribute('data-event')) || 973;
     var years = endAge - startAge;
-    var W = 760, H = 330, padL = 58, padR = 20, padT = 54, padB = 44;
+    var narrow = window.innerWidth < 760;
+    var W = narrow ? 440 : 760, H = narrow ? 340 : 330, padL = narrow ? 58 : 58, padR = 20, padT = 54, padB = 44;
     var innerW = W - padL - padR, innerH = H - padT - padB;
     var maxVal = perYear * years;
     var slots = years + 1, slotW = innerW / slots, barW = slotW * 0.62;
@@ -264,16 +287,18 @@
     }
     var xe = padL + years * slotW + (slotW - barW) / 2;
     // the marker at 40 comes first: the wait, before anything has accumulated
-    svg.appendChild(el('line', { x1: xe + barW / 2, x2: xe + barW / 2, y1: padT - 6, y2: padT + innerH, 'class': 'fd-tl-marker' }));
-    svg.appendChild(el('text', { x: xe + barW / 2, y: padT - 14, 'text-anchor': 'end', 'class': 'fd-tl-marker-label' }, 'median first-time buyer'));
+    svg.appendChild(el('line', { x1: xe + barW / 2, x2: xe + barW / 2, y1: padT - 18, y2: padT + innerH, 'class': 'fd-tl-marker' }));
+    svg.appendChild(el('text', { x: xe + barW / 2, y: padT - 26, 'text-anchor': 'end', 'class': 'fd-tl-marker-label' }, 'median first-time buyer'));
     var ev = el('rect', { x: xe, y: y(eventVal), width: barW, height: innerH - (y(eventVal) - padT), 'class': 'fd-tl-event' });
     ev.style.transitionDelay = (reduceMotion ? 0 : 380) + 'ms';   // a beat after the reader lands on the sentence
     svg.appendChild(ev);
     svg.appendChild(el('text', { x: xe + barW / 2, y: H - padB + 22, 'text-anchor': 'middle', 'class': 'fd-tl-label is-strong' }, String(endAge)));
-    svg.appendChild(el('text', { x: padL + (years - 1) * slotW + slotW / 2, y: y(maxVal) - 26, 'text-anchor': 'middle', 'class': 'fd-tl-callout' }, money(maxVal) + ' of checking'));
-    svg.appendChild(el('text', { x: padL + (years - 1) * slotW + slotW / 2, y: y(maxVal) - 10, 'text-anchor': 'middle', 'class': 'fd-tl-sub' }, 'gross, at ' + money(perYear) + ' a year'));
-    svg.appendChild(el('text', { x: xe + barW / 2, y: y(eventVal) - 26, 'text-anchor': 'middle', 'class': 'fd-tl-callout is-brass' }, money(eventVal)));
-    svg.appendChild(el('text', { x: xe + barW / 2, y: y(eventVal) - 10, 'text-anchor': 'middle', 'class': 'fd-tl-sub is-brass' }, 'the mortgage'));
+    // the checking total sits left of the peak, inside the chart; the mortgage label sits above its bar, flush right
+    var peakLeft = padL + (years - 1) * slotW + (slotW - barW) / 2 - 10;
+    svg.appendChild(el('text', { x: peakLeft, y: y(maxVal) + 8, 'text-anchor': 'end', 'class': 'fd-tl-callout' }, money(maxVal) + ' of checking'));
+    svg.appendChild(el('text', { x: peakLeft, y: y(maxVal) + 27, 'text-anchor': 'end', 'class': 'fd-tl-sub' }, 'gross, at ' + money(perYear) + ' a year'));
+    svg.appendChild(el('text', { x: W - padR, y: y(eventVal) - 30, 'text-anchor': 'end', 'class': 'fd-tl-callout is-brass' }, money(eventVal)));
+    svg.appendChild(el('text', { x: W - padR, y: y(eventVal) - 13, 'text-anchor': 'end', 'class': 'fd-tl-sub is-brass' }, 'the mortgage'));
     svg.appendChild(el('line', { x1: padL, x2: W - padR, y1: padT + innerH, y2: padT + innerH, 'class': 'fd-tl-axis', style: 'stroke: var(--secondary)' }));
     g2.appendChild(svg);
   }
