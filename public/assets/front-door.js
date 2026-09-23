@@ -11,14 +11,20 @@
 
   /* ---------- reading progress (trace rail from site-shell.css) ---------- */
   var root = document.documentElement;
-  function updateTrace() {
-    var scrollable = root.scrollHeight - window.innerHeight;
-    var p = scrollable > 0 ? window.scrollY / scrollable : 0;
-    root.style.setProperty('--trace-depth', (Math.max(0, Math.min(1, p)) * 100) + '%');
+  // CSS scroll-driven animation drives the rail where supported (front-door.css); this is the fallback
+  if (!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'))) {
+    var traceTick = null;
+    var updateTrace = function () {
+      traceTick = null;
+      var scrollable = root.scrollHeight - window.innerHeight;
+      var p = scrollable > 0 ? window.scrollY / scrollable : 0;
+      root.style.setProperty('--trace-depth', (Math.max(0, Math.min(1, p)) * 100) + '%');
+    };
+    var scheduleTrace = function () { if (traceTick === null) traceTick = requestAnimationFrame(updateTrace); };
+    window.addEventListener('scroll', scheduleTrace, { passive: true });
+    window.addEventListener('resize', scheduleTrace);
+    updateTrace();
   }
-  window.addEventListener('scroll', updateTrace, { passive: true });
-  window.addEventListener('resize', updateTrace);
-  updateTrace();
 
   /* ---------- helpers ---------- */
   function onEnter(el, cb, threshold) {

@@ -931,3 +931,43 @@ figure.fd-stat {
 
 .fd-durbin-label { margin: 0 0 8px; }
 .fd-ledger-value { font-size: 22px; }
+
+/* ---------- Taste pass ---------- */
+/* headline on two lines at desktop */
+.article-header { max-width: 920px; }
+/* subheads join the decks' voice instead of adding more uppercase labels */
+.article-body h3 {
+  margin: 44px 0 14px;
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 21px;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--paper);
+}
+/* speaker labels, quiet */
+.fd-who { font-size: 12px; font-weight: 600; letter-spacing: 0.02em; text-transform: none; }
+/* reading progress without a scroll listener where the browser supports it */
+@supports (animation-timeline: scroll()) {
+  .trace-fill {
+    height: 100%;
+    transform-origin: top;
+    transform: scaleY(0);
+    animation: fd-trace linear both;
+    animation-timeline: scroll(root);
+  }
+  @keyframes fd-trace { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+}
+
+/* ---------- Impeccable pass ---------- */
+/* close the void: the article's container is sized to the column plus the rail, not the full site width */
+.article .container { max-width: 1060px; }
+.article-opener { width: 100vw; margin-left: calc(50% - 50vw); }
+.article-opener .fd-opener-inner { max-width: 996px; }
+.fd-opener-source { max-width: 70ch; }
+@media (min-width: 1180px) {
+  .fd-scrolly { width: calc(min(1060px, 100vw) - 64px); }
+}
+/* one rule under the header, not two */
+.article-header { border-bottom: 0; }
