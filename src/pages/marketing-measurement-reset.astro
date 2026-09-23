@@ -23,34 +23,26 @@ const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Person",
-      "@id": "https://pauldrago.com/#paul-drago",
-      "name": "Paul Drago",
-      "url": "https://pauldrago.com/",
-      "email": "mailto:paul@pauldrago.com",
-      "sameAs": ["https://www.linkedin.com/in/pauldrago"],
-      "jobTitle": "Financial Services Marketing and Market Analysis Advisor",
-      "knowsAbout": ["Bank marketing measurement", "Funded-balance reporting", "Marketing attribution"]
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://pauldrago.com/#website",
-      "url": "https://pauldrago.com/",
-      "name": "Paul Drago",
-      "publisher": {"@id": "https://pauldrago.com/#paul-drago"}
-    },
-    {
       "@type": "WebPage",
       "@id": "https://pauldrago.com/marketing-measurement-reset#webpage",
       "url": "https://pauldrago.com/marketing-measurement-reset",
       "name": "Bank Marketing Measurement Reset",
       "description": "Connect bank marketing spend to retained accounts, funded balances, and board reporting through a documented four-to-six-week measurement reset.",
-      "dateModified": "2026-09-21",
-      "isPartOf": {"@id": "https://pauldrago.com/#website"},
-      "about": {"@id": "https://pauldrago.com/marketing-measurement-reset#service"},
-      "mainEntity": {"@id": "https://pauldrago.com/marketing-measurement-reset#service"},
-      "breadcrumb": {"@id": "https://pauldrago.com/marketing-measurement-reset#breadcrumb"},
-      "author": {"@id": "https://pauldrago.com/#paul-drago"}
+      "isPartOf": {
+        "@id": "https://pauldrago.com/#website"
+      },
+      "about": {
+        "@id": "https://pauldrago.com/marketing-measurement-reset#service"
+      },
+      "mainEntity": {
+        "@id": "https://pauldrago.com/marketing-measurement-reset#service"
+      },
+      "breadcrumb": {
+        "@id": "https://pauldrago.com/marketing-measurement-reset#breadcrumb"
+      },
+      "author": {
+        "@id": "https://pauldrago.com/#paul-drago"
+      }
     },
     {
       "@type": "Service",
@@ -58,16 +50,31 @@ const jsonld = {
       "name": "Marketing Measurement Reset",
       "serviceType": "Bank marketing measurement consulting",
       "description": "A four-to-six-week engagement that connects acquisition spend to retained accounts, funded balances, and board reporting using documented definitions and assumptions.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Bank and credit union CMOs, CFOs, and executive teams"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Bank and credit union CMOs, CFOs, and executive teams"
+      },
       "areaServed": "United States"
     },
     {
       "@type": "BreadcrumbList",
       "@id": "https://pauldrago.com/marketing-measurement-reset#breadcrumb",
       "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Financial Services", "item": "https://pauldrago.com/financial-services"},
-        {"@type": "ListItem", "position": 2, "name": "Marketing Measurement Reset", "item": "https://pauldrago.com/marketing-measurement-reset"}
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Services",
+          "item": "https://pauldrago.com/financial-services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Marketing Measurement Reset",
+          "item": "https://pauldrago.com/marketing-measurement-reset"
+        }
       ]
     }
   ]

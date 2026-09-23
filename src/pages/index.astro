@@ -32,31 +32,17 @@ const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Person",
-      "@id": "https://pauldrago.com/#paul-drago",
-      "name": "Paul Drago",
-      "url": "https://pauldrago.com/",
-      "email": "mailto:paul@pauldrago.com",
-      "sameAs": ["https://www.linkedin.com/in/pauldrago"],
-      "jobTitle": "Financial Services Marketing and Market Analysis Advisor",
-      "knowsAbout": ["Bank marketing measurement", "Branch and market expansion analysis", "Bank acquisition footprint analysis", "Fractional CMO leadership"]
-    },
-    {
-      "@type": "WebSite",
-      "@id": "https://pauldrago.com/#website",
-      "url": "https://pauldrago.com/",
-      "name": "Paul Drago",
-      "publisher": {"@id": "https://pauldrago.com/#paul-drago"}
-    },
-    {
       "@type": "ProfilePage",
       "@id": "https://pauldrago.com/#webpage",
       "url": "https://pauldrago.com/",
       "name": "Paul Drago",
       "description": "Paul Drago advises banks and credit unions on marketing measurement, market decisions, and the operating work behind growth.",
-      "dateModified": "2026-09-23",
-      "isPartOf": {"@id": "https://pauldrago.com/#website"},
-      "mainEntity": {"@id": "https://pauldrago.com/#paul-drago"}
+      "isPartOf": {
+        "@id": "https://pauldrago.com/#website"
+      },
+      "mainEntity": {
+        "@id": "https://pauldrago.com/#paul-drago"
+      }
     }
   ]
 };

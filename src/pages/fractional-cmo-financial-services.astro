@@ -20,18 +20,24 @@ const meta = {
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
-    {"@type": "Person", "@id": "https://pauldrago.com/#paul-drago", "name": "Paul Drago", "url": "https://pauldrago.com/", "sameAs": ["https://www.linkedin.com/in/pauldrago"]},
     {
       "@type": "WebPage",
       "@id": "https://pauldrago.com/fractional-cmo-financial-services#webpage",
       "url": "https://pauldrago.com/fractional-cmo-financial-services",
       "name": "Fractional CMO for Financial Services",
       "description": "Fractional CMO leadership for banks and regulated financial-services companies that need clear priorities, reporting discipline, and accountable execution.",
-      "dateModified": "2026-09-21",
-      "about": {"@id": "https://pauldrago.com/fractional-cmo-financial-services#service"},
-      "mainEntity": {"@id": "https://pauldrago.com/fractional-cmo-financial-services#service"},
-      "breadcrumb": {"@id": "https://pauldrago.com/fractional-cmo-financial-services#breadcrumb"},
-      "author": {"@id": "https://pauldrago.com/#paul-drago"}
+      "about": {
+        "@id": "https://pauldrago.com/fractional-cmo-financial-services#service"
+      },
+      "mainEntity": {
+        "@id": "https://pauldrago.com/fractional-cmo-financial-services#service"
+      },
+      "breadcrumb": {
+        "@id": "https://pauldrago.com/fractional-cmo-financial-services#breadcrumb"
+      },
+      "author": {
+        "@id": "https://pauldrago.com/#paul-drago"
+      }
     },
     {
       "@type": "Service",
@@ -40,16 +46,31 @@ const jsonld = {
       "name": "Fractional CMO for Regulated Financial Services",
       "serviceType": "Fractional chief marketing officer services",
       "description": "Senior marketing leadership, budget and reporting discipline, and direction for internal teams and outside partners.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Banks and regulated financial-services companies"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Banks and regulated financial-services companies"
+      },
       "areaServed": "United States"
     },
     {
       "@type": "BreadcrumbList",
       "@id": "https://pauldrago.com/fractional-cmo-financial-services#breadcrumb",
       "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Financial Services", "item": "https://pauldrago.com/financial-services"},
-        {"@type": "ListItem", "position": 2, "name": "Fractional CMO", "item": "https://pauldrago.com/fractional-cmo-financial-services"}
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Services",
+          "item": "https://pauldrago.com/financial-services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Fractional CMO",
+          "item": "https://pauldrago.com/fractional-cmo-financial-services"
+        }
       ]
     }
   ]

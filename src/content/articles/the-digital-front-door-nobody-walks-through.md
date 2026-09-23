@@ -4,6 +4,7 @@ description: "Community banks have branches, lenders and local relationships. So
 date: 2026-09-23
 draft: false
 kicker: "Financial services"
+topics: ["Community banking", "Digital banking", "Checking account acquisition", "Deposit economics", "Bank marketing leadership"]
 opener: "fd-grid"
 ogImage: "/assets/front-door-social.png"
 ogImageAlt: "Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks."

@@ -20,18 +20,24 @@ const meta = {
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
-    {"@type": "Person", "@id": "https://pauldrago.com/#paul-drago", "name": "Paul Drago", "url": "https://pauldrago.com/", "sameAs": ["https://www.linkedin.com/in/pauldrago"]},
     {
       "@type": "WebPage",
       "@id": "https://pauldrago.com/acquisition-footprint-analysis#webpage",
       "url": "https://pauldrago.com/acquisition-footprint-analysis",
       "name": "Bank Acquisition and Footprint Analysis",
       "description": "Evaluate acquisition targets through deposits, market fit, branch overlap, retention assumptions, and local-brand risk.",
-      "dateModified": "2026-09-21",
-      "about": {"@id": "https://pauldrago.com/acquisition-footprint-analysis#service"},
-      "mainEntity": {"@id": "https://pauldrago.com/acquisition-footprint-analysis#service"},
-      "breadcrumb": {"@id": "https://pauldrago.com/acquisition-footprint-analysis#breadcrumb"},
-      "author": {"@id": "https://pauldrago.com/#paul-drago"}
+      "about": {
+        "@id": "https://pauldrago.com/acquisition-footprint-analysis#service"
+      },
+      "mainEntity": {
+        "@id": "https://pauldrago.com/acquisition-footprint-analysis#service"
+      },
+      "breadcrumb": {
+        "@id": "https://pauldrago.com/acquisition-footprint-analysis#breadcrumb"
+      },
+      "author": {
+        "@id": "https://pauldrago.com/#paul-drago"
+      }
     },
     {
       "@type": "Service",
@@ -40,16 +46,31 @@ const jsonld = {
       "name": "Acquisition and Footprint Analysis",
       "serviceType": "Bank acquisition footprint analysis",
       "description": "Deposit, market, footprint-overlap, retention, and local-brand analysis for evaluating bank acquisition targets.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Banks and credit unions"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Banks and credit unions"
+      },
       "areaServed": "United States"
     },
     {
       "@type": "BreadcrumbList",
       "@id": "https://pauldrago.com/acquisition-footprint-analysis#breadcrumb",
       "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Financial Services", "item": "https://pauldrago.com/financial-services"},
-        {"@type": "ListItem", "position": 2, "name": "Acquisition and Footprint Analysis", "item": "https://pauldrago.com/acquisition-footprint-analysis"}
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Services",
+          "item": "https://pauldrago.com/financial-services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Acquisition and Footprint Analysis",
+          "item": "https://pauldrago.com/acquisition-footprint-analysis"
+        }
       ]
     }
   ]

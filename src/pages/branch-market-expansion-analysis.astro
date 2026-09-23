@@ -21,23 +21,23 @@ const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Person",
-      "@id": "https://pauldrago.com/#paul-drago",
-      "name": "Paul Drago",
-      "url": "https://pauldrago.com/",
-      "sameAs": ["https://www.linkedin.com/in/pauldrago"]
-    },
-    {
       "@type": "WebPage",
       "@id": "https://pauldrago.com/branch-market-expansion-analysis#webpage",
       "url": "https://pauldrago.com/branch-market-expansion-analysis",
       "name": "Bank Branch and Market Expansion Analysis",
       "description": "Compare markets using deposit share, growth, customer geography, branch economics, CRA context, and fair-lending considerations.",
-      "dateModified": "2026-09-21",
-      "about": {"@id": "https://pauldrago.com/branch-market-expansion-analysis#service"},
-      "mainEntity": {"@id": "https://pauldrago.com/branch-market-expansion-analysis#service"},
-      "breadcrumb": {"@id": "https://pauldrago.com/branch-market-expansion-analysis#breadcrumb"},
-      "author": {"@id": "https://pauldrago.com/#paul-drago"}
+      "about": {
+        "@id": "https://pauldrago.com/branch-market-expansion-analysis#service"
+      },
+      "mainEntity": {
+        "@id": "https://pauldrago.com/branch-market-expansion-analysis#service"
+      },
+      "breadcrumb": {
+        "@id": "https://pauldrago.com/branch-market-expansion-analysis#breadcrumb"
+      },
+      "author": {
+        "@id": "https://pauldrago.com/#paul-drago"
+      }
     },
     {
       "@type": "Service",
@@ -46,16 +46,31 @@ const jsonld = {
       "name": "Branch and Market Expansion Analysis",
       "serviceType": "Bank branch and market analysis",
       "description": "A documented market scorecard, competitor and deposit-share view, customer-geography comparison, CRA and fair-access context, and reusable assumptions model.",
-      "provider": {"@id": "https://pauldrago.com/#paul-drago"},
-      "audience": {"@type": "Audience", "audienceType": "Banks and credit unions"},
+      "provider": {
+        "@id": "https://pauldrago.com/#organization"
+      },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Banks and credit unions"
+      },
       "areaServed": "United States"
     },
     {
       "@type": "BreadcrumbList",
       "@id": "https://pauldrago.com/branch-market-expansion-analysis#breadcrumb",
       "itemListElement": [
-        {"@type": "ListItem", "position": 1, "name": "Financial Services", "item": "https://pauldrago.com/financial-services"},
-        {"@type": "ListItem", "position": 2, "name": "Branch and Market Expansion Analysis", "item": "https://pauldrago.com/branch-market-expansion-analysis"}
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Services",
+          "item": "https://pauldrago.com/financial-services"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Branch and Market Expansion Analysis",
+          "item": "https://pauldrago.com/branch-market-expansion-analysis"
+        }
       ]
     }
   ]
