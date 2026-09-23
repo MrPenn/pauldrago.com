@@ -705,3 +705,62 @@
   .article-body h2 { margin-top: 52px; }
   .fd-stat-num { font-size: 34px; }
 }
+
+/* ---------- Magazine furniture: lede, numerals, subheads, margin quotes ---------- */
+.fd-lede { font-size: 21px; line-height: 1.5; color: var(--paper); }
+.fd-lede::first-letter {
+  float: left;
+  margin: 6px 12px 0 0;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 78px;
+  line-height: 0.78;
+  color: var(--brass);
+}
+.article-body h2 { position: relative; counter-increment: sec; }
+.article-body { counter-reset: sec; }
+.article-body h2::before {
+  content: counter(sec, upper-roman);
+  display: block;
+  margin-bottom: 10px;
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: var(--brass);
+}
+.article-body h2.fd-colophon { counter-increment: none; }
+.article-body h2.fd-colophon::before { content: none; }
+.article-body h3 {
+  margin: 44px 0 14px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--secondary);
+}
+.fd-mq {
+  margin: 36px 0 !important;
+  padding-top: 16px;
+  border-top: 2px solid var(--brass);
+  font-family: 'Archivo Black', sans-serif;
+  font-size: 20px;
+  line-height: 1.2;
+  text-transform: uppercase;
+  color: var(--paper);
+  max-width: 34ch;
+}
+@media (min-width: 1180px) {
+  .fd-mq {
+    position: absolute;
+    left: calc(100% + 84px);
+    width: 280px;
+    margin: 0 !important;
+    font-size: 19px;
+  }
+}
+@media (max-width: 760px) {
+  .fd-lede { font-size: 19px; }
+  .fd-lede::first-letter { font-size: 62px; }
+  .fd-mq { font-size: 18px; }
+}

@@ -311,6 +311,18 @@
     update();
   }
 
+  /* ---------- Lede and colophon ---------- */
+  (function () {
+    var b = document.querySelector('.article-body');
+    if (!b) return;
+    var ps = b.children;
+    for (var i = 0; i < ps.length; i++) {
+      if (ps[i].tagName === 'P' && !ps[i].className) { ps[i].classList.add('fd-lede'); break; }
+      if (ps[i].tagName !== 'ASIDE') break;
+    }
+    b.querySelectorAll('h2').forEach(function (hd) { if (/about the numbers/i.test(hd.textContent)) hd.classList.add('fd-colophon'); });
+  })();
+
   /* ---------- Sidenotes ---------- */
   var body = document.querySelector('.article-body');
   var notesSection = body && body.querySelector('section[data-footnotes]');
@@ -375,14 +387,32 @@
       });
     });
 
+    // margin quotes share the rail; each is anchored to the paragraph before it
+    Array.prototype.slice.call(body.querySelectorAll('.fd-mq')).forEach(function (q) {
+      var prev = q.previousElementSibling;
+      while (prev && !/^(P|UL|OL|DIV|SECTION|FIGURE)$/.test(prev.tagName)) prev = prev.previousElementSibling;
+      marginNotes.push({ el: q, anchor: prev || q, quote: true });
+    });
     function layoutSidenotes() {
       if (!isWide()) return;
       var bodyTop = body.getBoundingClientRect().top + window.scrollY;
-      var gap = 18, prevBottom = -Infinity;
+      var gap = 22, prevBottom = -Infinity;
+      marginNotes.sort(function (a, b) { return a.anchor.getBoundingClientRect().top - b.anchor.getBoundingClientRect().top; });
+      // the pinned sequences own the rail while they are on screen; nothing else may sit beside them
+      var blocks = Array.prototype.slice.call(body.querySelectorAll('[data-fd="scrolly"]')).map(function (el) {
+        var r = el.getBoundingClientRect();
+        return { top: r.top + window.scrollY - bodyTop, bottom: r.bottom + window.scrollY - bodyTop };
+      });
       marginNotes.forEach(function (s) {
         var top = s.anchor.getBoundingClientRect().top + window.scrollY - bodyTop;
         var hh = s.el.offsetHeight;
         if (top < prevBottom + gap) top = prevBottom + gap;
+        blocks.forEach(function (bk) {
+          if (top < bk.bottom + gap && top + hh > bk.top - gap) {
+            var above = bk.top - gap - hh;
+            top = (above >= prevBottom + gap) ? above : bk.bottom + gap;
+          }
+        });
         s.el.style.top = Math.max(0, top) + 'px';
         prevBottom = top + hh;
       });
