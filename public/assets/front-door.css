@@ -911,3 +911,17 @@ figure.fd-stat {
   .fd-stat .fd-stat-label { font-size: 17px; }
   .fd-stat-units[data-cols="50"] { grid-template-columns: repeat(25, 1fr); }
 }
+
+/* ---------- The bank in a hoodie ---------- */
+.fd-illo { margin: 36px 0 44px; padding: 0; border: 0; }
+.fd-illo svg { display: block; width: min(100%, 560px); height: auto; margin: 0 auto; overflow: visible; }
+.illo-est { fill: var(--paper); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; }
+.illo-hood { transform: translateY(-40px); opacity: 0; transition: transform var(--fd-slow) var(--fd-ease), opacity var(--fd-base) var(--fd-ease); }
+.illo-string { opacity: 0; transition: opacity var(--fd-base) var(--fd-ease) 520ms; }
+.illo-board { transform-box: fill-box; transform-origin: 50% 100%; opacity: 0; transition: opacity var(--fd-base) var(--fd-ease) 700ms, transform var(--fd-slow) var(--fd-ease) 700ms; }
+.fd-illo.is-in .illo-hood { transform: none; opacity: 1; }
+.fd-illo.is-in .illo-string { opacity: 1; }
+.fd-illo.is-in .illo-board { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .illo-hood, .illo-string, .illo-board { transition: none !important; transform: none; opacity: 1; }
+}

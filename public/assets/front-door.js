@@ -116,6 +116,11 @@
     }, 0.5);
   });
 
+  /* ---------- The bank in a hoodie: the hood drops on, then the board arrives ---------- */
+  document.querySelectorAll('[data-fd="illo"]').forEach(function (fig) {
+    onEnter(fig, function () { fig.classList.add('is-in'); }, 0.55);
+  });
+
   /* ---------- Pinned sequences: step observer ---------- */
   var sequences = [];
   document.querySelectorAll('[data-fd="scrolly"]').forEach(function (sec) {
