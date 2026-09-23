@@ -306,38 +306,11 @@ That meeting is harder. The temptation is to return to the lever that can move w
 
 The photography gets younger. The palette gets brighter. Someone wants TikTok. The copy turns conspicuously casual, and a hundred-year-old bank puts on a hoodie and picks up a skateboard.
 
-<figure class="fd-illo" data-fd="illo" role="img" aria-label="A century-old bank building with a hood pulled over its pediment and a skateboard leaning against its steps.">
-<svg viewBox="0 0 800 470" xmlns="http://www.w3.org/2000/svg">
-  <g class="illo-bank" fill="none" stroke="var(--paper)" stroke-width="2.5" stroke-linejoin="round">
-    <rect x="160" y="420" width="480" height="20"/>
-    <rect x="170" y="400" width="460" height="20"/>
-    <rect x="180" y="380" width="440" height="20"/>
-    <rect x="190" y="360" width="420" height="20"/>
-    <g class="illo-columns">
-      <rect x="224" y="200" width="52" height="14"/><rect x="230" y="214" width="40" height="146"/>
-      <rect x="324" y="200" width="52" height="14"/><rect x="330" y="214" width="40" height="146"/>
-      <rect x="424" y="200" width="52" height="14"/><rect x="430" y="214" width="40" height="146"/>
-      <rect x="524" y="200" width="52" height="14"/><rect x="530" y="214" width="40" height="146"/>
-    </g>
-    <path d="M382 360 V300 A18 18 0 0 1 418 300 V360" />
-    <rect x="200" y="170" width="400" height="30"/>
-    <path d="M200 170 L400 88 L600 170 Z"/>
-    <line x1="60" y1="440" x2="740" y2="440" stroke="var(--hairline)"/>
-  </g>
-  <text class="illo-est" x="400" y="150" text-anchor="middle">EST. 1907</text>
-  <g class="illo-hood">
-    <path fill-rule="evenodd" d="M176 190 C176 92 300 40 400 40 C500 40 624 92 624 190 L624 224 L176 224 Z M216 190 C216 112 320 82 400 82 C480 82 584 112 584 190 L584 224 L216 224 Z" fill="var(--brass)"/>
-    <path class="illo-string" d="M214 222 c-2 30 6 50 0 82" fill="none" stroke="var(--paper)" stroke-width="3" stroke-linecap="round"/>
-    <path class="illo-string" d="M586 222 c2 30 -6 50 0 82" fill="none" stroke="var(--paper)" stroke-width="3" stroke-linecap="round"/>
-    <rect class="illo-string" x="210" y="302" width="8" height="12" fill="var(--paper)"/>
-    <rect class="illo-string" x="582" y="302" width="8" height="12" fill="var(--paper)"/>
-  </g>
-  <g class="illo-board" transform="translate(690 372) rotate(-64)">
-    <rect x="-78" y="-9" width="156" height="18" rx="9" fill="var(--paper)"/>
-    <circle cx="-44" cy="19" r="8" fill="var(--brass)"/>
-    <circle cx="44" cy="19" r="8" fill="var(--brass)"/>
-  </g>
-</svg>
+<figure class="fd-illo" data-fd="illo">
+<picture>
+<source srcset="/assets/bank-hoodie.webp" type="image/webp">
+<img src="/assets/bank-hoodie.jpg" width="1200" height="1207" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a brass hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">
+</picture>
 </figure>
 
 The problem was never age. A bank should not be embarrassed that it has existed for a century. Longevity signals stability, and stability matters when someone is deciding where to send a paycheck. The problem is confusing looking young with understanding someone who is young.
