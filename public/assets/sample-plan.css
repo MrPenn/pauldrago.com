@@ -60,7 +60,7 @@
 .report-towns thead th:not(:first-child):not(:last-child) { text-align: right; }
 .report-towns .report-county { display: block; color: var(--secondary); font-size: 13px; font-weight: 500; }
 .report-towns tr.is-plan th { color: var(--paper); font-weight: 700; }
-.report-towns .report-tags { min-width: 170px; }
+
 
 .sample-plan .market-finding h3 { font-size: 18px; line-height: 1.3; }
 .pipe-columns.report-pipe { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -87,6 +87,9 @@
   .report-plan-table tr { padding: 12px 0; border-top: 1px solid var(--hairline); }
   .report-plan-table th, .report-plan-table td { padding: 2px 0; border: 0; }
   .report-plan-table td:first-child::before { content: "Year "; }
+  .report-plan-table td.crit { display: inline-block; width: auto !important; margin-right: 14px; text-align: left !important; }
+  .report-plan-table td.crit:empty { display: none; }
+  .report-plan-table td.crit::after { content: " " attr(data-label); }
   .brief-options, .brief-options tbody, .brief-options tr, .brief-options th, .brief-options td { display: block; width: auto !important; }
   .brief-options tr { padding: 10px 0; border-top: 1px solid var(--hairline); }
   .brief-options th, .brief-options td { padding: 2px 0 !important; border: 0 !important; }
@@ -133,6 +136,13 @@
 .appendix-divider { display: flex; gap: 16px; align-items: center; margin-top: 88px; color: var(--secondary); font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
 .appendix-divider::before, .appendix-divider::after { content: ""; flex: 1; border-top: 2px solid var(--paper); }
 .report-appendix:first-of-type { margin-top: 32px; }
+
+/* Criteria columns: an X where the town meets the criterion. */
+.market-table th.crit, .market-table td.crit { width: 72px; text-align: center !important; }
+.market-table td.crit { color: var(--paper); font-weight: 700; }
+.market-table th.crit-group { text-align: center !important; border-bottom: 1px solid var(--hairline); padding-bottom: 4px; }
+.market-table thead tr + tr th { border-top: 0; }
+.report-rules li strong { color: var(--paper); margin-right: 6px; }
 
 /* County maps: tracts shaded by home purchases, low/mod-income hatched, branches, review areas. */
 .county-maps { margin: 40px 0 0; }
@@ -343,8 +353,8 @@
   .pace-block { break-inside: avoid; }
   .report-appendix .report-p, .report-appendix .local-questions li, .report-appendix .report-risks li, .report-appendix .market-finding p, .report-appendix .pipe-detail { line-height: 1.34 !important; }
   .report-appendix .local-questions li { padding: 3px 0 3px 4px !important; }
-  .report-rules li { display: grid; grid-template-columns: 0.95in 1fr; padding: 1pt 0 !important; }
-  .report-rules .tag { margin: 0; }
+  .report-rules li { display: grid; grid-template-columns: 1.1in 1fr; padding: 1pt 0 !important; }
+  .market-table th.crit, .market-table td.crit { width: 0.6in; }
   .report-appendix :is(.report-p, .market-table-note, figcaption, .report-small) { max-width: none !important; }
   .market-table-note, figcaption, .report-figure-note, .report-sources li { line-height: 1.3 !important; }
 

@@ -61,6 +61,9 @@ const ramp = data.ramp;
 const model = planModel(ramp);
 const planTowns = PLAN.map((b) => ({ ...b, ...town(b.site), tags: tagsFor(town(b.site)) }));
 const tagLabel = Object.fromEntries(TAGS.map((t) => [t.key, t.label]));
+// One column per criterion; an X where the town meets it.
+const critLabel = (t) => (PICKING_TAGS.includes(t.key) ? t.label : `${t.label} check`);
+const marks = (town) => TAGS.map((t) => tagsFor(town).includes(t.key));
 const incumbent = Kaufman.leaders[0];
 const shortName = (name) => name.replace(/, National Association$/, '').replace(/ Bank$/, '');
 const collinLeaders = Collin.leaders.map((l) => shortName(l.bank));
@@ -228,21 +231,21 @@ const SOURCES = {
 
     <section class="report-section report-appendix" id="sites" aria-labelledby="sites-h">
       <h2 class="report-h2" id="sites-h"><span>B</span> Why these towns</h2>
-      <p class="report-p">Each candidate town is tagged for what a branch there would do. Deposits and Business pick the sites; CRA is the check the network has to pass (appendix D).</p>
+      <p class="report-p">Each candidate town is marked against three criteria. Deposits and Business pick the sites; CRA is the check the network has to pass (appendix D).</p>
       <ul class="report-rules">
-        {TAGS.map((t) => <li><span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t.key) }]}>{t.label}</span> {t.rule}.</li>)}
+        {TAGS.map((t) => <li><strong>{critLabel(t)}</strong> {t.rule}.</li>)}
       </ul>
         <div class="appendix-plan">
           <h3 class="report-h3" id="plan">The sequence</h3>
           <div class="market-table-wrap">
             <table class="market-table report-plan-table">
               <caption class="sr-only">The branch sequence</caption>
-              <thead><tr><th scope="col">Year</th><th scope="col">Site</th><th scope="col">Tags</th><th scope="col">Why here</th></tr></thead>
+              <thead><tr><th scope="col" rowspan="2">Year</th><th scope="col" rowspan="2">Site</th><th scope="colgroup" colspan="3" class="crit-group">Criteria met</th><th scope="col" rowspan="2">Why here</th></tr><tr>{TAGS.map((t) => <th scope="col" class="crit">{critLabel(t)}</th>)}</tr></thead>
               <tbody>
-                <tr><td>1</td><th scope="row">{first.town}</th><td>{tagsFor(first).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits +{pct(first.depositGrowthPct)} since 2021, jobs +{pct(first.jobGrowthPct)} since 2019. A hospital opens on US-80 in 2027.</td></tr>
-                <tr><td>2</td><th scope="row">{second.town}</th><td>{tagsFor(second).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits +{pct(second.depositGrowthPct)}, jobs +{pct(second.jobGrowthPct)}. Medline opens in 2027; the highest home-purchase tract on either map.</td></tr>
-                <tr><td>3</td><th scope="row">{third.town}</th><td>{tagsFor(third).map((t) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t) }]}>{tagLabel[t]}</span>)}</td><td>Deposits +{pct(third.depositGrowthPct)}, the fastest studied, all in {third.branches === 1 ? 'one branch' : `${third.branches} branches`} of the county's largest bank. Gated on {first.town}.</td></tr>
-                <tr><td>5</td><th scope="row">Review</th><td></td><td>{REVIEW_SITES.join(' and ')}, decided on actual results.</td></tr>
+                <tr><td>1</td><th scope="row">{first.town}</th>{marks(first).map((m, i) => <td class="crit" data-label={critLabel(TAGS[i])}>{m ? 'X' : ''}</td>)}<td>Deposits +{pct(first.depositGrowthPct)} since 2021, jobs +{pct(first.jobGrowthPct)} since 2019. A hospital opens on US-80 in 2027.</td></tr>
+                <tr><td>2</td><th scope="row">{second.town}</th>{marks(second).map((m, i) => <td class="crit" data-label={critLabel(TAGS[i])}>{m ? 'X' : ''}</td>)}<td>Deposits +{pct(second.depositGrowthPct)}, jobs +{pct(second.jobGrowthPct)}. Medline opens in 2027; the highest home-purchase tract on either map.</td></tr>
+                <tr><td>3</td><th scope="row">{third.town}</th>{marks(third).map((m, i) => <td class="crit" data-label={critLabel(TAGS[i])}>{m ? 'X' : ''}</td>)}<td>Deposits +{pct(third.depositGrowthPct)}, the fastest studied, all in {third.branches === 1 ? 'one branch' : `${third.branches} branches`} of the county's largest bank. Gated on {first.town}.</td></tr>
+                <tr><td>5</td><th scope="row">Review</th><td class="crit"></td><td class="crit"></td><td class="crit"></td><td>{REVIEW_SITES.join(' and ')}, decided on actual results.</td></tr>
               </tbody>
             </table>
           </div>
@@ -252,7 +255,7 @@ const SOURCES = {
       <div class="market-table-wrap">
         <table class="market-table report-towns">
           <caption class="sr-only">Candidate towns in Kaufman and Ellis counties</caption>
-          <thead><tr><th scope="col">Town</th><th scope="col">Deposits</th><th scope="col">Growth</th><th scope="col">Per branch</th><th scope="col">Job growth</th><th scope="col">Low/mod-income residents</th><th scope="col">Tags</th></tr></thead>
+          <thead><tr><th scope="col" rowspan="2">Town</th><th scope="col" rowspan="2">Deposits</th><th scope="col" rowspan="2">Growth</th><th scope="col" rowspan="2">Per branch</th><th scope="col" rowspan="2">Job growth</th><th scope="col" rowspan="2">Low/mod-income residents</th><th scope="colgroup" colspan="3" class="crit-group">Criteria met</th></tr><tr>{TAGS.map((t) => <th scope="col" class="crit">{critLabel(t)}</th>)}</tr></thead>
           <tbody>
             {towns.map((t) => (
               <tr class:list={[{ 'is-plan': PLAN.some((b) => b.site === t.town) }]}>
@@ -262,7 +265,7 @@ const SOURCES = {
                 <td>${t.depositsPerBranch}M</td>
                 <td>{t.jobGrowthPct >= 0 ? '+' : ''}{pct(t.jobGrowthPct)}</td>
                 <td>{pct(t.lmiPopulationShare)}</td>
-                <td class="report-tags">{tagsFor(t).map((k) => <span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(k) }]}>{tagLabel[k]}</span>)}</td>
+                {marks(t).map((m) => <td class="crit">{m ? 'X' : ''}</td>)}
               </tr>
             ))}
           </tbody>
@@ -276,7 +279,7 @@ const SOURCES = {
         </div>
         <div class="market-finding">
           <h3>{third.town}: the fastest deposit growth, and one incumbent branch to take on</h3>
-          <p>With no other town tagged for both, the third site goes to the fastest deposit growth: {third.town}'s grew {pct(third.depositGrowthPct)} since 2021, all of it held by {third.branches === 1 ? 'one branch' : `${third.branches} branches`} of {third.largestBank}. Waxahachie grew {pct(town('Waxahachie').depositGrowthPct)} with {town('Waxahachie').branches} branches competing; Terrell has Amazon's payroll coming but slower deposits. Both wait for the year 5 review.</p>
+          <p>With no other town meeting both, the third site goes to the fastest deposit growth: {third.town}'s grew {pct(third.depositGrowthPct)} since 2021, all of it held by {third.branches === 1 ? 'one branch' : `${third.branches} branches`} of {third.largestBank}. Waxahachie grew {pct(town('Waxahachie').depositGrowthPct)} with {town('Waxahachie').branches} branches competing; Terrell has Amazon's payroll coming but slower deposits. Both wait for the year 5 review.</p>
         </div>
       </div>
     </section>
@@ -437,7 +440,7 @@ const SOURCES = {
         <li><a href="https://ffiec.cfpb.gov/data-browser/">HMDA</a>: tract income and minority data, and home-purchase lending, 2025.</li>
         <li><a href="https://www.fdic.gov/board/federal-register-notice-branch-final-rule.pdf">FDIC branch application rule</a>, effective February 27, 2026.</li>
       </ol>
-      <p class="report-p report-small">{data.notes.join(' ')} Towns are measured by branch city for deposits, ZIP code for jobs, and census tracts within five miles of the town center for income. Tag thresholds are judgments, stated so they can be argued with. The bank and its capital, income, and hurdle rate are illustrative; this plan supports a business decision; it is not legal advice, a fair-lending analysis, or a CRA compliance determination.</p>
+      <p class="report-p report-small">{data.notes.join(' ')} Towns are measured by branch city for deposits, ZIP code for jobs, and census tracts within five miles of the town center for income. The criteria thresholds are judgments, stated so they can be argued with. The bank and its capital, income, and hurdle rate are illustrative; this plan supports a business decision; it is not legal advice, a fair-lending analysis, or a CRA compliance determination.</p>
     </section>
 
     <aside class="report-cta">
