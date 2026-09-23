@@ -1,0 +1,15 @@
+---
+// Opener for "The Digital Front Door Nobody Walks Through": 100 units above the headline.
+// Rendered at build time so it holds its space on first paint; front-door.js only animates it.
+---
+<div class="article-opener" data-opener="fd-grid" role="figure" aria-label="Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks.">
+  <div class="fd-opener-inner">
+    <div class="fd-opener-units" aria-hidden="true">{Array.from({ length: 100 }, () => <div class="fd-cell"></div>)}</div>
+    <div class="fd-opener-legend">
+      <div class="fd-legend-row"><span class="fd-swatch fd-swatch-fintech"></span><span class="fd-legend-num" data-count="44">0</span><span class="fd-legend-label">of every 100 new checking accounts opened in 2024 went to digital banks and fintechs</span></div>
+      <div class="fd-legend-row"><span class="fd-swatch fd-swatch-community"></span><span class="fd-legend-num" data-count="4">0</span><span class="fd-legend-label">went to community banks</span></div>
+      <div class="fd-legend-row"><span class="fd-swatch"></span><span class="fd-legend-num">52</span><span class="fd-legend-label">went to everyone else</span></div>
+    </div>
+    <p class="fd-opener-source">Cornerstone Advisors, <a href="https://www.crnrstone.com/hubfs/Cornerstone-Advisors-2025-Research-Recap_Beyond-the-Paycheck-Motel.pdf" target="_blank" rel="noopener">Beyond the Paycheck Motel</a>, 2025 research recap, Figure 6. New checking accounts across all ages; community banks defined as institutions under $100 billion in assets.</p>
+  </div>
+</div>

@@ -59,20 +59,9 @@
   var opener = document.querySelector('.article-opener[data-opener="fd-grid"]');
   if (opener) {
     var FINTECH = 44, COMMUNITY = 4;
-    var inner = h('div', 'fd-opener-inner');
-    var units = h('div', 'fd-opener-units');
-    for (var i = 0; i < 100; i++) units.appendChild(h('div', 'fd-cell'));
-    var legend = h('div', 'fd-opener-legend',
-      '<div class="fd-legend-row"><span class="fd-swatch fd-swatch-fintech"></span><span class="fd-legend-num" data-count="44">0</span><span class="fd-legend-label">of every 100 new checking accounts opened in 2024 went to digital banks and fintechs</span></div>' +
-      '<div class="fd-legend-row"><span class="fd-swatch fd-swatch-community"></span><span class="fd-legend-num" data-count="4">0</span><span class="fd-legend-label">went to community banks</span></div>' +
-      '<div class="fd-legend-row"><span class="fd-swatch"></span><span class="fd-legend-num">52</span><span class="fd-legend-label">went to everyone else</span></div>');
-    var src = h('p', 'fd-opener-source', 'Cornerstone Advisors, <a href="https://www.crnrstone.com/hubfs/Cornerstone-Advisors-2025-Research-Recap_Beyond-the-Paycheck-Motel.pdf" target="_blank" rel="noopener">Beyond the Paycheck Motel</a>, 2025 research recap, Figure 6. New checking accounts across all ages; community banks defined as institutions under $100 billion in assets.');
-    inner.appendChild(units); inner.appendChild(legend); inner.appendChild(src);
-    opener.appendChild(inner);
-    opener.removeAttribute('aria-hidden');
-    opener.setAttribute('role', 'figure');
-    opener.setAttribute('aria-label', 'Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks.');
-    units.setAttribute('aria-hidden', 'true');
+    // The markup is rendered at build time (FrontDoorOpener.astro); this only animates it.
+    var units = opener.querySelector('.fd-opener-units');
+    var legend = opener.querySelector('.fd-opener-legend');
 
     var cells = units.children;
     var per = reduceMotion ? 0 : 16;           // the brass fill runs left to right in about 0.7s

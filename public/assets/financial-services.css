@@ -44,7 +44,7 @@ input):focus-visible {
     position: absolute;
     inset: 0;
     z-index: -2;
-    background-image: url("evidence-table.png");
+    background-image: image-set(url('evidence-table.avif') type('image/avif'), url('evidence-table.png') type('image/png'));
     background-size: cover;
     background-position: center right;
     opacity: 0.72;
@@ -136,7 +136,7 @@ input):focus-visible {
   }
 
   .brief-question {
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
     font-size: clamp(25px, 3vw, 38px);
     line-height: 1.05;
     letter-spacing: 0;
@@ -394,7 +394,7 @@ input):focus-visible {
 }
 
   .router-question {
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
     color: var(--paper);
     font-size: clamp(25px, 2.7vw, 36px);
     line-height: 1.05;
@@ -704,7 +704,7 @@ input):focus-visible {
   }
 
   .proof-statement {
-    font-family: 'Archivo Black', sans-serif;
+    font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
     font-size: clamp(30px, 3.3vw, 46px);
     line-height: 1.08;
     letter-spacing: 0;
