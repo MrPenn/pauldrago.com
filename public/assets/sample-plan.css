@@ -178,6 +178,7 @@
 .legend-keys { display: grid; grid-template-columns: repeat(2, auto); gap: 6px 24px; margin: 0; padding: 0; list-style: none; }
 .legend-keys svg { width: 20px; height: 20px; flex: none; overflow: hidden; }
 .legend-hatch-bg { fill: var(--ground); stroke: var(--hairline); }
+.legend-scale-print { display: none !important; }
 .county-maps-note { margin-top: 12px; color: var(--secondary); font-size: 13px; }
 @media (max-width: 760px) {
   .county-maps-grid { grid-template-columns: 1fr; gap: 28px; }
@@ -296,7 +297,11 @@
 
   /* Maps: same printed height, so both counties are at the same scale; labels sized to print at 8.5pt */
   .brief-page-two .county-maps { margin-top: 0; }
-  .county-maps-grid { grid-template-columns: auto auto !important; justify-content: center; gap: 0.6in; margin-top: 4px !important; }
+  .county-maps-grid { grid-template-columns: auto auto !important; justify-content: space-between; margin-top: 4px !important; }
+  .map-scale { display: none; }
+  .legend-scale-print { display: flex !important; }
+  .legend-scale-print svg { width: calc(5 * 0.0669in) !important; height: 8px !important; }
+  .legend-scale-bar { fill: none; stroke: #000; stroke-width: 1.5; }
   .county-map svg { height: calc(var(--miles) * 0.0669in); width: auto; max-width: 100%; margin-top: 2px; }
   .county-map svg text { font-size: calc(var(--mile) * 1.76px) !important; stroke-width: calc(var(--mile) * 0.53px) !important; }
   .map-site circle { r: calc(var(--mile) * 0.99px); }
@@ -308,7 +313,6 @@
   .tag-check { color: #333; }
   .tag-check::after { content: " (check)"; font-weight: 400; }
   .report-rules { break-inside: avoid; }
-  #pipeline { break-inside: avoid; }
   .report-appendix .local-questions li, .report-appendix .report-risks li { padding-top: 3px; padding-bottom: 3px; }
   .report-appendix .local-questions { margin-top: 6px; }
   .report-sources { margin-top: 6px; }
@@ -338,7 +342,11 @@
   .pipe-detail a { color: #444 !important; }
   .pace-block { break-inside: avoid; }
   .report-appendix .report-p, .report-appendix .local-questions li, .report-appendix .report-risks li, .report-appendix .market-finding p, .report-appendix .pipe-detail { line-height: 1.34 !important; }
-  .report-appendix .local-questions li { padding-top: 1px !important; padding-bottom: 1px !important; }
+  .report-appendix .local-questions li { padding: 3px 0 3px 4px !important; }
+  .report-rules li { display: grid; grid-template-columns: 0.95in 1fr; padding: 1pt 0 !important; }
+  .report-rules .tag { margin: 0; }
+  .report-appendix :is(.report-p, .market-table-note, figcaption, .report-small) { max-width: none !important; }
+  .market-table-note, figcaption, .report-figure-note, .report-sources li { line-height: 1.3 !important; }
 
   .report-sources { padding-left: 18px; }
   .report-sources li::after { content: ""; }

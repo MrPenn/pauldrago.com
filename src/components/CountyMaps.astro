@@ -73,10 +73,10 @@ const maps = mapData.counties.map((c) => {
               <g class:list={['map-site', { 'is-review': site.review }]}>
                 <circle cx={t.x} cy={t.y} r="15" />
                 <text x={t.x} y={t.y} dy="0.36em">{site.review ? '5' : site.n}</text>
-                <text class="map-site-label" x={t.x} y={t.y - 24} text-anchor={anchor(t.x, m.width)}>{t.town}</text>
+                <text class="map-site-label" x={t.x} y={t.y < 40 ? t.y + 36 : t.y - 24} text-anchor={anchor(t.x, m.width)}>{t.town}</text>
               </g>
             ) : (
-              <text class="map-town" x={t.x} y={t.y - 12} text-anchor={anchor(t.x, m.width)}>{t.town}</text>
+              <text class="map-town" x={t.x} y={t.y < 40 ? t.y + 26 : t.y - 12} text-anchor={anchor(t.x, m.width)}>{t.town}</text>
             );
           })}
         </svg>
@@ -96,6 +96,7 @@ const maps = mapData.counties.map((c) => {
       <li><svg viewBox="0 0 20 20" aria-hidden="true"><path d={diamond(10, 10, 7)} class="map-branch is-large" /></svg>Branch of a bank over $10 billion</li>
       <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" class="map-radius" /></svg>Five-mile review area, planned branch</li>
       <li><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8" class="map-radius is-review" /></svg>Five-mile review area, year 5 review</li>
+      <li class="legend-scale-print"><svg viewBox="0 0 40 10" aria-hidden="true"><path d="M1,2V8M1,5H39M39,2V8" class="legend-scale-bar" /></svg>{mapData.radiusMiles} miles, both maps</li>
     </ul>
   </div>
   <p class="county-maps-note">{mapData.asOf}. Tract boundaries generalized to about 100 meters.</p>

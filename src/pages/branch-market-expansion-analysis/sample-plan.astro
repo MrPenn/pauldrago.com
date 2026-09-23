@@ -228,7 +228,7 @@ const SOURCES = {
 
     <section class="report-section report-appendix" id="sites" aria-labelledby="sites-h">
       <h2 class="report-h2" id="sites-h"><span>B</span> Why these towns</h2>
-      <p class="report-p">Each candidate town is tagged for what a branch there would do. Deposits and Business pick the sites; the CRA tag, dashed, is the check the network has to pass (appendix D).</p>
+      <p class="report-p">Each candidate town is tagged for what a branch there would do. Deposits and Business pick the sites; CRA is the check the network has to pass (appendix D).</p>
       <ul class="report-rules">
         {TAGS.map((t) => <li><span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t.key) }]}>{t.label}</span> {t.rule}.</li>)}
       </ul>
@@ -248,6 +248,7 @@ const SOURCES = {
           </div>
         </div>
 
+      <h3 class="report-h3">The candidate towns</h3>
       <div class="market-table-wrap">
         <table class="market-table report-towns">
           <caption class="sr-only">Candidate towns in Kaufman and Ellis counties</caption>
@@ -412,7 +413,6 @@ const SOURCES = {
     <section class="report-section report-appendix" id="risks" aria-labelledby="risks-h">
       <h2 class="report-h2" id="risks-h"><span>F</span> Other risks and questions before the vote</h2>
       <ul class="report-risks">
-        <li><strong>The incumbent may hold its customers.</strong> {incumbent.bank} holds {pct(incumbent.share)} of Kaufman's deposits{third.largestBank === incumbent.bank ? ` and ${pct(third.largestBankShare)} of ${third.town}'s` : ''}. Entry depends on lenders who already know those customers.</li>
         <li><strong>The pipeline slips.</strong> The Forney hospital (fall 2027) and Medline's Midlothian distribution center (second quarter of 2027) anchor the first two sites. A delay of a year moves each ramp by a year.</li>
         <li><strong>Margins narrow.</strong> At the all-bank margin of {ramp.nimIndustry}% instead of {ramp.nim}%, operating break-even moves to ${industryBreakeven}M and the payback level to ${industryPayback}M.</li>
       </ul>
