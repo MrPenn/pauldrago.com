@@ -12,6 +12,8 @@ const { Content } = await render(article);
 const iso = (d) => d.toISOString().slice(0, 10);
 const long = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 const path = `/articles/${article.id}`;
+const words = (article.body ?? '').replace(/\[\^\d+\]:.*$/gm, '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const minutes = Math.max(1, Math.round(words / 230));
 const jsonld = {
   '@context': 'https://schema.org',
   '@type': 'Article',
@@ -31,7 +33,8 @@ const jsonld = {
   subline="Articles"
   ogType="article"
   footerNote="Writing on marketing measurement, markets, and accountable growth."
-  stylesheets={['/assets/personal-site.css']}
+  stylesheets={['/assets/personal-site.css', ...article.data.stylesheets]}
+  scripts={article.data.scripts}
   lastUpdated={iso(article.data.updated ?? article.data.date)}
   jsonld={jsonld}
 >
@@ -39,10 +42,10 @@ const jsonld = {
     <article class="article">
       <div class="container">
         <header class="article-header">
-          <p class="article-kicker"><a href="/articles">Articles</a></p>
+          <p class="article-kicker"><a href="/articles">Articles</a>{article.data.kicker && <span class="article-kicker-sep" aria-hidden="true"> / </span>}{article.data.kicker && <span>{article.data.kicker}</span>}</p>
           <h1 class="display-title article-title">{article.data.title}</h1>
           <p class="article-intro">{article.data.description}</p>
-          <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time></p>
+          <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time><span class="article-meta-sep" aria-hidden="true"> · </span><span>{minutes} minute read</span></p>
         </header>
         <div class="article-body">
           <Content />
