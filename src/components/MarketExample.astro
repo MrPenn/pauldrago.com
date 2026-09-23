@@ -20,6 +20,7 @@ const num = (n) => Math.round(n).toLocaleString('en-US');
 const shortName = (name) => name.replace(/, National Association$/, '').replace(/ Bank$/, '');
 const collinLeaders = Collin.leaders.map((l) => shortName(l.bank));
 const collinLeaderShare = Collin.leaders.reduce((sum, l) => sum + l.share, 0);
+const branchRatio = (Kaufman.medianCommunityBranch / Collin.medianCommunityBranch).toFixed(1);
 const growthVsKaufman = (Collin.depositGrowth / Kaufman.deposits).toFixed(1);
 const groups = [...new Set(CRITERIA.map((c) => c.group))];
 const model = planModel(data.ramp);
@@ -72,18 +73,18 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
 
     <div class="market-findings market-findings-two">
       <div class="market-finding">
-        <h3>Where the answer flipped</h3>
+        <h3>Collin's growth went to the national banks</h3>
         <p>Collin added {money(Collin.depositGrowth)} of deposits in five years, {growthVsKaufman} times Kaufman's entire deposit base. But community banks captured only {money(Collin.communityGrowth)} of it across {Collin.communityBranches} branches. {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of Collin between them, and a typical community-bank branch there holds ${Collin.medianCommunityBranch}M.</p>
       </div>
       <div class="market-finding">
-        <h3>Why Kaufman leads on the numbers</h3>
-        <p>Kaufman's population grew {pct(Kaufman.populationGrowthPct)} since 2020, the fastest of the three, and it has the most households per branch ({num(Kaufman.householdsPerBranch)}). Its residents bank locally: community banks hold {pct(Kaufman.communityShare)} of deposits, and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M, nearly three times Collin's.</p>
+        <h3>A community-bank branch in Kaufman holds {branchRatio} times Collin's</h3>
+        <p>Kaufman's population grew {pct(Kaufman.populationGrowthPct)} since 2020, the fastest of the three, and it has the most households per branch ({num(Kaufman.householdsPerBranch)}). Its residents bank locally: community banks hold {pct(Kaufman.communityShare)} of deposits, and a typical community-bank branch holds ${Kaufman.medianCommunityBranch}M against ${Collin.medianCommunityBranch}M in Collin.</p>
       </div>
     </div>
 
     <div class="market-recommendation">
       <p class="band-label">The full analysis</p>
-      <p>The comparison is step one. The sample plan takes it to the board: three branches over five years ({sites.slice(0, -1).join(', ')}, and {sites.at(-1)}), placed where deposits and business are growing, with CRA and fair lending as a check. It covers how new branches in Dallas-Fort Worth actually ramp, and what the network carries: {mUSD(model.totalBuildOut * 1000)} of build-out, with {mUSD(-model.cumulative[4])} still to earn back at the end of year five.</p>
+      <p>The comparison is step one. The sample plan takes it to the board: three branches over five years ({sites.slice(0, -1).join(', ')}, and {sites.at(-1)}), placed where deposits and business are growing, with CRA and fair lending as a check. It covers how new branches in Dallas-Fort Worth ramp, and what the network carries: {mUSD(model.totalBuildOut * 1000)} of build-out, with {mUSD(-model.cumulative[4])} still to earn back at the end of year five.</p>
       <p class="market-sample-link"><a href="/branch-market-expansion-analysis/sample-plan">Read the sample five-year plan</a></p>
     </div>
   </div>

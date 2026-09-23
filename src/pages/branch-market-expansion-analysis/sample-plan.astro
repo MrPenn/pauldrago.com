@@ -127,10 +127,10 @@ const SOURCES = {
     <section class="report-brief" aria-label="Two-page brief">
       <section class="brief-block" id="recommendation" aria-labelledby="recommendation-h">
         <h2 class="brief-h2" id="recommendation-h">Recommendation</h2>
-        <p class="report-lede">Open three branches over five years where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 once {first.town} is on plan. The network covers its running cost from year {model.firstPositiveYear}; the build-out takes longer to earn back. CRA and fair lending are checked, not used to pick: Kaufman passes, and Ellis passes with decision 4 (<a href="#cra">appendix D</a>).</p>
+        <p class="report-lede">Open three branches over five years where deposits and business are growing: {first.town} in year 1, {second.town} in year 2, and {third.town} in year 3 once {first.town} is on plan. The network covers its running cost from year {model.firstPositiveYear}; the build-out takes longer to earn back. Kaufman passes the CRA and fair-lending check as planned; Ellis passes with the lending commitment in decision 4 (<a href="#cra">appendix D</a>).</p>
         <dl class="report-figures">
           <div><dt>Build-out</dt><dd><span class="report-figure">{mUSD(model.totalBuildOut * 1000)}</span><span class="report-figure-note">{PLAN.length} branches at ${ramp.buildOut}M each, plus launch marketing</span></dd></div>
-          <div><dt>Operations turn positive</dt><dd><span class="report-figure">Year {model.firstPositiveYear}</span><span class="report-figure-note">if each branch follows the median ramp</span></dd></div>
+          <div><dt>Covers its running cost</dt><dd><span class="report-figure">Year {model.firstPositiveYear}</span><span class="report-figure-note">the network, if each branch follows the median ramp</span></dd></div>
           <div><dt>Still to earn back, end of year 5</dt><dd><span class="report-figure">{mUSD(model.cumulative[4])}</span><span class="report-figure-note">with the network returning {mUSD(model.operating[4])} a year</span></dd></div>
           <div><dt>New branches failing at year 5</dt><dd><span class="report-figure">{pct(failing(age(5)))}</span><span class="report-figure-note">closed or below operating break-even, Dallas-Fort Worth</span></dd></div>
         </dl>
@@ -161,7 +161,7 @@ const SOURCES = {
             </tbody>
           </table>
         </div>
-        <h3 class="brief-h3">How fast to go</h3>
+        <h3 class="brief-h3">Going faster pays back in the same year and puts {mUSD(planPace.peak - fasterPace.peak)} more at risk</h3>
         <div class="market-table-wrap">
           <table class="market-table brief-pace">
             <caption class="sr-only">Two paces compared over ten years</caption>
@@ -180,7 +180,7 @@ const SOURCES = {
             </tbody>
           </table>
         </div>
-        <p class="brief-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. Going faster doesn't delay payback; it puts {mUSD(planPace.peak - fasterPace.peak)} more at risk. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one): that is what the gates are for (<a href="#economics">appendix E</a>).</p>
+        <p class="brief-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one): that is what the gates are for (<a href="#economics">appendix E</a>).</p>
       </section>
 
       <div class="brief-page-two">
@@ -205,7 +205,7 @@ const SOURCES = {
         <section class="brief-block" aria-labelledby="change-h">
           <h2 class="brief-h2" id="change-h">What would change it</h2>
           <ul class="report-risks brief-risks">
-            <li><strong>Slow ramps.</strong> Only {pct(age(5).atTargetShare)} of new branches in the metro reach ${ramp.target}M by year 5. If all three ramp like the bottom quarter, operations are {mUSD(model.downside[4])} a year short in year 5; the {third.town} gate holds exposure to two branches until then.</li>
+            <li><strong>Slow ramps.</strong> Only {pct(age(5).atTargetShare)} of new branches in the metro hold ${ramp.target}M at year 5. If all three ramp like the bottom quarter, operations are {mUSD(model.downside[4])} a year short in year 5; the {third.town} gate holds exposure to two branches until then.</li>
             <li><strong>A different CRA outcome.</strong> If the proposal isn't finalized as written, or the bank is supervised by the Federal Reserve, a $2 billion bank is a large bank and Waxahachie moves ahead of {third.town}.</li>
             <li><strong>{first.town} and {third.town} overlap.</strong> They are about {siteGap} miles apart. Site {third.town} southwest of town, toward the growth along the Dallas County line.</li>
           </ul>
@@ -227,7 +227,7 @@ const SOURCES = {
 
     <section class="report-section report-appendix" id="sites" aria-labelledby="sites-h">
       <h2 class="report-h2" id="sites-h"><span>B</span> Why these towns</h2>
-      <p class="report-p">Each candidate town is tagged for what a branch there would do. Deposits and Business pick the sites. CRA is shown as a check the network has to pass, not a reason to pick a site.</p>
+      <p class="report-p">Each candidate town is tagged for what a branch there would do. Deposits and Business pick the sites; the CRA tag, dashed, is the check the network has to pass (appendix D).</p>
       <ul class="report-rules">
         {TAGS.map((t) => <li><span class:list={['tag', { 'tag-check': !PICKING_TAGS.includes(t.key) }]}>{t.label}</span> {t.rule}.</li>)}
       </ul>
@@ -253,12 +253,12 @@ const SOURCES = {
       </div>
       <div class="market-findings market-findings-two">
         <div class="market-finding">
-          <h3>Two towns do both</h3>
-          <p>{first.town} and {second.town} are the only towns where deposits and jobs both grew past the thresholds. {first.town} goes first because the county's growth is arriving along US-80. {second.town} is the Ellis entry and has the strongest home-purchase activity on either map.</p>
+          <h3>{first.town} goes first: faster growth, fewer national banks</h3>
+          <p>{first.town} and {second.town} both pass on deposits and jobs. {first.town}'s jobs grew {pct(first.jobGrowthPct)} to {second.town}'s {pct(second.jobGrowthPct)}, and community banks hold {pct(first.communityShare)} of its deposits against {pct(second.communityShare)} in {second.town}, where the national banks are already established.</p>
         </div>
         <div class="market-finding">
-          <h3>The third site is {third.town}</h3>
-          <p>No other town passes both thresholds, so the third site is the strongest on deposits. {third.town}'s deposits grew {pct(third.depositGrowthPct)} since 2021, the fastest of any town studied, and {third.branches === 1 ? 'one branch serves' : `${third.branches} branches serve`} the town today. Waxahachie also carries Deposits but has {town('Waxahachie').branches} branches competing for them. Terrell carries Business, with Amazon's payroll arriving. Both are decided at the year 5 review.</p>
+          <h3>{third.town}: the fastest deposit growth, and one branch to compete with</h3>
+          <p>No other town passes on both, so the third site is the strongest on deposits. {third.town}'s grew {pct(third.depositGrowthPct)} since 2021, and {third.branches === 1 ? 'one branch serves' : `${third.branches} branches serve`} the town. Waxahachie grew {pct(town('Waxahachie').depositGrowthPct)} with {town('Waxahachie').branches} branches competing; Terrell has Amazon's payroll coming but slower deposits. Both wait for the year 5 review.</p>
         </div>
       </div>
     </section>
@@ -301,14 +301,14 @@ const SOURCES = {
         </table>
         <p class="market-table-note">{data.asOf.fairAccess}. Home-purchase loans are owner-occupied originations by all lenders in {data.asOf.fairAccess.match(/HMDA (\d{4})/)?.[1]}.</p>
       </div>
-      <h3 class="report-h3">The check</h3>
-      <p class="report-p">Kaufman passes. {pct(first.minorityPopulationShare)} of the people within five miles of {first.town} live in majority-minority tracts, and {pct(third.lmiPopulationShare)} of those near {third.town} live in low- or moderate-income tracts. Home-purchase lending in the county's low- or moderate-income tracts ({pct(Kaufman.fairAccess.purchaseLoansInLmiShare)} of loans) runs below those tracts' share of owner-occupied homes ({pct(Kaufman.fairAccess.ownerHomesInLmiShare)}), which leaves room for the lending test to show results.</p>
-      <p class="report-p">Ellis does not pass on branches alone. No one within five miles of {second.town} lives in a low- or moderate-income tract, and {pct(second.minorityPopulationShare)} live in majority-minority tracts. The plan answers that with lending: a mortgage and small-business lending commitment in the low- or moderate-income tracts around Waxahachie ({pct(town('Waxahachie').lmiPopulationShare)} of nearby residents) and Ennis ({pct(town('Ennis').lmiPopulationShare)}) from year 2, with Waxahachie at the year 5 review.</p>
+      <h3 class="report-h3">Kaufman passes the check; Ellis needs a lending commitment</h3>
+      <p class="report-p">In Kaufman, {pct(first.minorityPopulationShare)} of the people within five miles of {first.town} live in majority-minority tracts, and {pct(third.lmiPopulationShare)} of those near {third.town} live in low- or moderate-income tracts. Home-purchase lending in the county's low- or moderate-income tracts ({pct(Kaufman.fairAccess.purchaseLoansInLmiShare)} of loans) runs below those tracts' share of owner-occupied homes ({pct(Kaufman.fairAccess.ownerHomesInLmiShare)}), which leaves room for the lending test to show results.</p>
+      <p class="report-p">In Ellis, no one within five miles of {second.town} lives in a low- or moderate-income tract, and {pct(second.minorityPopulationShare)} live in majority-minority tracts. The plan answers that with lending: a mortgage and small-business lending commitment in the low- or moderate-income tracts around Waxahachie ({pct(town('Waxahachie').lmiPopulationShare)} of nearby residents) and Ennis ({pct(town('Ennis').lmiPopulationShare)}) from year 2, with Waxahachie at the year 5 review.</p>
     </section>
 
     <section class="report-section report-appendix" id="economics" aria-labelledby="economics-h">
       <h2 class="report-h2" id="economics-h"><span>E</span> Economics</h2>
-      <h3 class="report-h3">How new branches ramp in Dallas-Fort Worth</h3>
+      <h3 class="report-h3">Fewer than half of new branches hold ${ramp.target}M at year 5</h3>
       <div class="plan-ramp">
         <figure class="plan-chart">
           <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="ramp-chart-title">
@@ -339,7 +339,7 @@ const SOURCES = {
         </div>
       </div>
 
-      <h3 class="report-h3">The plan, by branch</h3>
+      <h3 class="report-h3">Each branch runs a loss for its first two years</h3>
       <div class="market-table-wrap">
         <table class="market-table plan-network">
           <caption class="sr-only">Operating contribution by branch and year under the plan</caption>
@@ -355,7 +355,7 @@ const SOURCES = {
         <p class="market-table-note">Launch marketing is ${LAUNCH_MARKETING[0]}K in a branch's first year and ${LAUNCH_MARKETING[1]}K in its second. Published first-year budgets for a new branch run $50K to $150K (<a href="https://www.chatterbuzzmedia.com/blog/credit-union-new-branch-opening-playbook/" target="_blank" rel="noopener noreferrer">Chatter Buzz Media, 2026</a>), and a branch in a new market needs 18 to 24 months of marketing (<a href="http://bankingjournal.aba.com/2026/08/bank-marketings-essential-role-in-successful-branch-expansion/" target="_blank" rel="noopener noreferrer">ABA Banking Journal, August 2026</a>); the second-year figure is our assumption.</p>
       </div>
 
-      <h3 class="report-h3">Two paces, cumulative over ten years</h3>
+      <h3 class="report-h3">Both paces pay back in year {planPace.paybackYear}; the faster one earns more by year 10</h3>
       <div class="market-table-wrap">
         <table class="market-table plan-network pace-table">
           <caption class="sr-only">Cumulative cash by year for two paces</caption>
