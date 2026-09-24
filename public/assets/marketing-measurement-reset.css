@@ -834,3 +834,17 @@ input):focus-visible {
 .section-d-cta-row { margin-top: 28px; }
 .closing-band-section .headline-96 { font-size: clamp(36px, 4.5vw, 58px); }
 @media (max-width: 700px) { .closing-band-section .headline-96 { font-size: 30px; } }
+
+/* Calculator alignment: the three fields share rows (label, box, note), so the boxes line up
+   whatever the label or note length; everything below runs off the same left edge. */
+@media (min-width: 640px) {
+  .calc-inputs-grid { grid-template-rows: auto auto auto; align-items: stretch; row-gap: 0; }
+  .calc-field-group { display: grid; grid-row: span 3; grid-template-rows: subgrid; }
+  .calc-field-label { min-height: 0; align-self: end; }
+  .calc-field-source { align-self: start; }
+}
+.calc-field-label { font-size: 12px; font-weight: 700; letter-spacing: 0; text-transform: none; }
+.calc-ledger { padding: 2px 0; background: none; }
+.calc-output-sentence, .calc-source-carry, .calc-callout-text { padding-left: 0; }
+.calc-compare { padding: 6px 0 0; }
+.calc-assumption { padding: 0 0 16px; }
