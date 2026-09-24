@@ -5,12 +5,8 @@ input):focus-visible {
     outline-offset: 4px;
   }
 
-  /* BUTTON: Brass fill with navy text, hard 6px offset shadow in paper, no rounding */
-  
-
   .calc-cta-btn:active {
-    transform: translate(4px, 4px);
-    box-shadow: 2px 2px 0 0 var(--paper);
+    background-color: color-mix(in srgb, var(--brass) 74%, #000);
   }
 
   /* SECTION RULE: 4px brass rule across full width */
@@ -106,27 +102,37 @@ input):focus-visible {
     border-top: 1px solid var(--hairline);
   }
 
+  /* Four stages joined by a drawn connector: one row on wide screens, a column on phones. */
   .reporting-line {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 22px;
     margin-top: 28px;
     color: var(--paper);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
   }
 
   .reporting-line span {
+    position: relative;
     border: 1px solid var(--hairline);
     padding: 8px 10px;
+    white-space: nowrap;
   }
 
-  .reporting-line .arrow {
-    border: none;
-    color: var(--brass);
-    padding: 8px 0;
+  .reporting-line span + span::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: -22px;
+    width: 22px;
+    border-top: 2px solid var(--brass);
+  }
+
+  @media (max-width: 700px) {
+    .reporting-line { flex-direction: column; align-items: flex-start; gap: 14px; }
+    .reporting-line span + span::before { top: -15px; left: 16px; width: 0; height: 14px; border-top: 0; border-left: 2px solid var(--brass); }
   }
 
   /* COHORT CALCULATOR */
@@ -146,6 +152,7 @@ input):focus-visible {
   }
   .calc-inputs-grid {
     display: grid;
+    align-items: end;
     grid-template-columns: 1fr;
     gap: 20px;
     margin-bottom: 32px;
@@ -283,12 +290,10 @@ input):focus-visible {
     letter-spacing: 0;
     text-transform: none;
     text-decoration: none;
-    box-shadow: 6px 6px 0 0 var(--paper);
-    transition: transform 0.1s ease, box-shadow 0.1s ease;
+    transition: background-color 120ms ease;
   }
   .calc-cta-btn:hover {
-    transform: translate(2px, 2px);
-    box-shadow: 4px 4px 0 0 var(--paper);
+    background-color: color-mix(in srgb, var(--brass) 86%, #000);
   }
 
   /* SECTION A */
@@ -659,12 +664,14 @@ input):focus-visible {
       order: 1;
     }
 }
+  /* On phones the heading comes first, then what to bring. */
   @media (max-width: 859px) {.closing-photo-col {
-      order: 1;
-    }
-    .closing-text-col {
       order: 2;
     }
+    .closing-text-col {
+      order: 1;
+    }
+    .call-prep-panel { max-width: none; }
 }
   .call-prep-panel {
     width: 100%;
@@ -756,7 +763,7 @@ input):focus-visible {
   .calc-input { font-size: 22px; font-weight: 700; cursor: text; caret-color: var(--brass); }
   .calc-field-affix { font-size: 20px; }
   .calc-field-label { color: var(--paper); min-height: 2.7em; display: flex; align-items: flex-end; }
-  .calc-ledger { background: color-mix(in srgb, var(--brass) 6%, transparent); padding: 2px 14px; border-left: 3px solid var(--brass); }
+  .calc-ledger { background: color-mix(in srgb, var(--brass) 6%, transparent); padding: 2px 14px; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
   .calc-output-sentence,
 .calc-source-carry,
 .calc-callout-text { padding-left: 14px; }
@@ -816,3 +823,28 @@ input):focus-visible {
   .section-a-row { grid-template-columns: 1fr; }
   .section-a-figure { font-size: 30px; }
 }
+
+/* Same heading ladder as the other service pages: the title outranks the section headings. */
+.hero-section .headline-96 { font-size: clamp(40px, 5vw, 64px); }
+.headline-84 { font-size: clamp(32px, 4.2vw, 52px); }
+@media (max-width: 700px) { .headline-84 { font-size: 30px; } .hero-section .headline-96 { font-size: 34px; } }
+
+/* The illustrative report sits under both offers, so neither column is left empty beside it. */
+.section-d .artifact-preview { max-width: 760px; margin-top: 40px; }
+.section-d-cta-row { margin-top: 28px; }
+.closing-band-section .headline-96 { font-size: clamp(36px, 4.5vw, 58px); }
+@media (max-width: 700px) { .closing-band-section .headline-96 { font-size: 30px; } }
+
+/* Calculator alignment: the three fields share rows (label, box, note), so the boxes line up
+   whatever the label or note length; everything below runs off the same left edge. */
+@media (min-width: 640px) {
+  .calc-inputs-grid { grid-template-rows: auto auto auto; align-items: stretch; row-gap: 0; }
+  .calc-field-group { display: grid; grid-row: span 3; grid-template-rows: subgrid; }
+  .calc-field-label { min-height: 0; align-self: end; }
+  .calc-field-source { align-self: start; }
+}
+.calc-field-label { font-size: 12px; font-weight: 700; letter-spacing: 0; text-transform: none; }
+.calc-ledger { padding: 2px 0; background: none; }
+.calc-output-sentence, .calc-source-carry, .calc-callout-text { padding-left: 0; }
+.calc-compare { padding: 6px 0 0; }
+.calc-assumption { padding: 0 0 16px; }

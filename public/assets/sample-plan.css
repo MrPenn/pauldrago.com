@@ -95,7 +95,10 @@
   .brief-options th, .brief-options td { padding: 2px 0 !important; border: 0 !important; }
   .report-cta { padding: 22px 20px; }
   .market-table-wrap:has(.report-towns, .plan-network) .market-table-note { position: sticky; left: 0; max-width: calc(100vw - 40px); }
-  .report-towns th:first-child, .plan-network th:first-child { position: sticky; left: 0; z-index: 1; max-width: 132px; background: var(--ground); box-shadow: 1px 0 0 var(--hairline); }
+  .report-towns th:first-child, .plan-network th:first-child, .brief-econ th:first-child, .brief-pace th:first-child { position: sticky; left: 0; z-index: 1; max-width: 132px; background: var(--ground); box-shadow: 1px 0 0 var(--hairline); }
+  .report-towns thead th, .plan-network thead th, .brief-pace thead th, .brief-econ thead th { white-space: nowrap; }
+  .brief-econ, .brief-pace { min-width: 560px; }
+  .market-table-wrap:has(.report-towns, .plan-network, .brief-econ, .brief-pace)::after { content: "Scroll for more \2192"; position: sticky; left: 0; display: block; margin-top: 6px; color: var(--secondary); font-size: 12px; }
 }
 
 /* The two-page brief */
@@ -110,6 +113,9 @@
 .brief-resolution { margin-top: 24px; padding: 14px 16px; border: 1px solid var(--paper); }
 .brief-resolution p:last-child { margin-top: 6px; color: var(--paper); font-size: 15px; line-height: 1.55; }
 .brief-resolution .brief-h2 { padding-top: 0; border-top: 0; }
+.brief-sign { display: flex; gap: 32px; margin-top: 18px; }
+.brief-sign span { flex: 1; padding-top: 22px; border-bottom: 1px solid var(--paper); color: var(--secondary); font-size: 13px; }
+.resolved { font-variant: small-caps; font-weight: 700; letter-spacing: 0.02em; }
 
 .report-brief { margin-top: 8px; }
 .brief-block { margin-top: 36px; }
@@ -133,8 +139,12 @@
 .brief-risks li { padding: 7px 0; font-size: 15px; }
 .brief-appendix { margin-top: 28px; padding: 14px 16px; border: 1px solid var(--hairline); color: var(--secondary); font-size: 14px; line-height: 1.7; }
 .brief-appendix strong { color: var(--paper); }
-.appendix-divider { display: flex; gap: 16px; align-items: center; margin-top: 88px; color: var(--secondary); font-size: 13px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
-.appendix-divider::before, .appendix-divider::after { content: ""; flex: 1; border-top: 2px solid var(--paper); }
+.brief-label { margin-top: 28px; color: var(--secondary); font-size: 14px; font-weight: 700; }
+.appendix-open { margin-top: 96px; padding-top: 28px; border-top: 3px solid var(--paper); }
+.appendix-title { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(30px, 4vw, 44px); line-height: 1; text-transform: uppercase; }
+.appendix-index { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 16px; }
+.appendix-index a { padding: 4px 0; color: var(--paper); font-size: 15px; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--hairline); }
+.appendix-index a:hover { border-bottom-color: var(--brass); }
 .report-appendix:first-of-type { margin-top: 32px; }
 
 /* Criteria columns: an X where the town meets the criterion. */
@@ -261,7 +271,7 @@
     @bottom-left { content: "Five-year branch plan \00B7  Board, October 2026 \00B7  Confidential"; font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
     @bottom-right { content: counter(page) " of " counter(pages); font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
   }
-  header, footer, .trace-rail, .skip-link, .sample-banner, .report-cta, #cc-main, .appendix-divider, .brief-appendix, .county-maps-head p, .county-maps-note, .county-map-sub { display: none !important; }
+  header, footer, .trace-rail, .skip-link, .sample-banner, .report-cta, #cc-main, .appendix-open, .brief-label, .county-maps-head p, .county-maps-note, .county-map-sub { display: none !important; }
   :root { --paper: #000; --secondary: #333; --hairline: #bbb; --brass: #8a2f14; --dark-navy: #fff; --ground: #fff; }
   body { background: #fff !important; font-size: 9.5pt; }
   .sample-plan { padding: 0; }

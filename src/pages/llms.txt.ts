@@ -10,7 +10,7 @@ export async function GET() {
 
   const body = `# Paul Drago
 
-> Paul Drago advises banks and credit unions on marketing measurement, market decisions, and the operating work behind growth. He works through Glass Vase, LLC, his advisory company, and spent eight years in digital and marketing at a community bank holding company.
+> Paul Drago advises banks and credit unions on marketing measurement, marketing operations, and market decisions. He works through Glass Vase, LLC, his advisory company, and spent eight years in digital and marketing at a community bank holding company.
 
 Services are for U.S. banks and credit unions. Engagements are scoped on a 20-minute introductory call, booked from any page on the site, or by email to paul@pauldrago.com.
 

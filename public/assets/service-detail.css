@@ -6,10 +6,9 @@ button):focus-visible {
 
 .eyebrow {
   color: var(--secondary);
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
 }
 
 .service-hero {
@@ -26,8 +25,7 @@ button):focus-visible {
   inset: 0;
   z-index: -2;
   background-image:
-    linear-gradient(90deg, color-mix(in srgb, var(--ground) 100%, transparent) 0%, color-mix(in srgb, var(--ground) 96%, transparent) 50%, color-mix(in srgb, var(--ground) 72%, transparent) 100%),
-    image-set(url('evidence-table.avif') type('image/avif'), url('evidence-table.png') type('image/png'));
+    linear-gradient(90deg, color-mix(in srgb, var(--ground) 100%, transparent) 0%, color-mix(in srgb, var(--ground) 96%, transparent) 50%, color-mix(in srgb, var(--ground) 72%, transparent) 100%);
   background-position: center;
   background-size: cover;
 }
@@ -232,7 +230,6 @@ button):focus-visible {
 }
 
 /* Supporting sections: sentence case, so the display voice is kept for the headline sections. */
-.section-title-plain { max-width: 34ch; font-size: clamp(26px, 3vw, 36px); font-weight: 700; line-height: 1.2; text-wrap: balance; }
 .section-link { color: var(--paper); font-weight: 700; text-decoration: underline; text-decoration-color: var(--brass); text-decoration-thickness: 2px; text-underline-offset: 4px; }
 .section-link::after { content: " \2192"; color: var(--brass); }
 .call-prep-copy { margin-top: 10px; color: var(--secondary); font-size: 16px; line-height: 1.55; }
@@ -255,8 +252,8 @@ button):focus-visible {
 
 .signal {
   display: grid;
-  grid-template-columns: minmax(210px, 0.45fr) minmax(0, 1fr);
-  gap: 44px;
+  grid-template-columns: minmax(230px, 0.75fr) minmax(0, 1.25fr);
+  gap: 30px;
   padding: 22px 0;
   border-bottom: 1px solid var(--hairline);
 }
@@ -425,12 +422,16 @@ button):focus-visible {
 }
 
 .call-prep ul {
-  margin: 18px 0 24px;
-  padding-left: 20px;
+  margin: 14px 0 24px;
+  padding: 0;
+  list-style: none;
   color: var(--secondary);
 }
 
-.call-prep li + li { margin-top: 9px; }
+.call-prep li { padding: 9px 0; border-top: 1px solid var(--hairline); }
+.call-prep li:last-child { border-bottom: 1px solid var(--hairline); }
+.call-prep .btn { margin-top: 20px; }
+.call-prep ul + .btn { margin-top: 0; }
 
 .sources-section {
   padding-top: 48px;
@@ -490,8 +491,7 @@ button):focus-visible {
 
   .service-hero::before {
     background-image:
-      linear-gradient(180deg, color-mix(in srgb, var(--ground) 90%, transparent) 0%, color-mix(in srgb, var(--ground) 98%, transparent) 74%, color-mix(in srgb, var(--ground) 100%, transparent) 100%),
-      image-set(url('evidence-table.avif') type('image/avif'), url('evidence-table.png') type('image/png'));
+      linear-gradient(180deg, color-mix(in srgb, var(--ground) 90%, transparent) 0%, color-mix(in srgb, var(--ground) 98%, transparent) 74%, color-mix(in srgb, var(--ground) 100%, transparent) 100%);
     background-position: 72% center;
   }
 
@@ -588,7 +588,6 @@ button):focus-visible {
   padding: 32px;
   border: 1px solid var(--hairline);
   background: var(--dark-navy);
-  box-shadow: 6px 6px 0 var(--paper);
 }
 .market-weights-title { color: var(--brass); font-size: 13px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; }
 .market-presets { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 6px; }
@@ -620,7 +619,7 @@ button):focus-visible {
 @media (prefers-reduced-motion: reduce) { .market-rank-bar span { transition: none; } }
 
 @media (max-width: 900px) {
-  .market-scorecard { grid-template-columns: 1fr; gap: 32px; padding: 22px; box-shadow: 3px 3px 0 var(--paper); }
+  .market-scorecard { grid-template-columns: 1fr; gap: 32px; padding: 22px; }
   .market-findings { grid-template-columns: 1fr; gap: 24px; }
 }
 @media (max-width: 640px) {
@@ -674,3 +673,10 @@ button):focus-visible {
   .market-recommendation { padding: 22px 20px; }
   .market-recommendation p:not(.band-label) { font-size: 17px; }
 }
+
+/* Fractional CMO hero: a quiet cadence table in the same figure frame as the other service pages. */
+.cadence-table { width: 100%; margin-top: 18px; border-collapse: collapse; font-size: 15px; line-height: 1.45; }
+.cadence-table th, .cadence-table td { padding: 12px 0; border-top: 1px solid var(--hairline); text-align: left; vertical-align: top; }
+.cadence-table th { width: 118px; padding-right: 16px; color: var(--paper); font-weight: 700; white-space: nowrap; }
+.cadence-table td { color: var(--secondary); }
+.cadence-table tr:last-child th, .cadence-table tr:last-child td { border-bottom: 1px solid var(--hairline); }

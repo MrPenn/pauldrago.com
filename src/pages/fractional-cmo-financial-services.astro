@@ -81,12 +81,26 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <main id="main">
   <section class="service-hero">
     <div class="container">
-      <div class="hero-grid">
+      <div class="hero-grid hero-grid-with-model">
         <div>
           <p class="eyebrow">For banks and regulated financial-services companies</p>
           <h1 class="display-title hero-title">Put a senior marketing operator <span class="accent">in the seat</span>.</h1>
           <p class="hero-subhead">Set priorities, direct the team, align finance and compliance, and report clearly to leadership.</p>
         </div>
+        <figure class="decision-model" aria-labelledby="cadence-model-title">
+          <p class="model-label">What leadership sees</p>
+          <p class="model-title" id="cadence-model-title">The first quarter, and every month after</p>
+          <table class="cadence-table">
+            <caption class="sr-only">An illustrative first quarter and monthly reporting rhythm</caption>
+            <tbody>
+              <tr><th scope="row">Weeks 1 to 4</th><td>Priorities set, decision rights written down, the team's work re-planned against them.</td></tr>
+              <tr><th scope="row">Weeks 5 to 8</th><td>One marketing report that finance agrees with; compliance review built into the calendar.</td></tr>
+              <tr><th scope="row">Weeks 9 to 12</th><td>Agencies and vendors held to the plan; the first quarter reviewed with leadership.</td></tr>
+              <tr><th scope="row">Every month</th><td>Results against plan, what changed, and the next decision leadership owns.</td></tr>
+            </tbody>
+          </table>
+          <figcaption class="model-note">Illustration, not client data. The cadence is set with the executive team in the first two weeks.</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -94,7 +108,7 @@ import OtherDecisions from '../components/OtherDecisions.astro';
   <hr class="section-divider">
   <section class="problem-band">
     <div class="container">
-      <h2 class="display-title section-title">A leadership gap does not need another strategy deck.</h2>
+      <h2 class="section-title section-title-plain">A leadership gap does not need another strategy deck.</h2>
       <p class="section-intro">It needs someone accountable for choosing what matters, giving the team direction, keeping finance and compliance in the room, and carrying decisions through execution.</p>
       <div class="signal-grid">
         <div class="signal"><h3 class="signal-title">Decision rights</h3><p class="signal-copy">Clarify what marketing owns, what requires leadership approval, and what finance, compliance, product, and sales need to decide together.</p></div>
@@ -106,7 +120,7 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 
   <section class="build-section">
     <div class="container">
-      <h2 class="display-title section-title">A marketing function with clear owners and reporting.</h2>
+      <h2 class="section-title section-title-plain">A marketing function with clear owners and reporting.</h2>
       <div class="deliverables">
         <div class="deliverable-row"><div class="deliverable-num">01</div><h3 class="deliverable-title">Priorities and decision register</h3><p class="deliverable-copy">A short, maintained view of the work that matters, the owner, the decision needed, and what can wait.</p></div>
         <div class="deliverable-row"><div class="deliverable-num">02</div><h3 class="deliverable-title">Finance and board reporting</h3><p class="deliverable-copy">Reporting that shows what was spent, what changed, what remains uncertain, and what leadership needs to decide next.</p></div>
