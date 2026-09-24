@@ -13,7 +13,7 @@ const icons = {
 const latest = (await getCollection('articles', ({ data }) => !data.draft)).sort((a, b) => b.data.date - a.data.date)[0];
 const meta = {
   "title": "Paul Drago | Financial Services Advisor",
-  "description": "Paul Drago advises banks and credit unions on marketing measurement, market decisions, and the operating work behind growth.",
+  "description": "Paul Drago advises banks and credit unions on marketing measurement, marketing operations, and market decisions.",
   "path": "/",
   "variant": "home",
   "subline": "Advisor and operator",
@@ -36,7 +36,7 @@ const jsonld = {
       "@id": "https://pauldrago.com/#webpage",
       "url": "https://pauldrago.com/",
       "name": "Paul Drago",
-      "description": "Paul Drago advises banks and credit unions on marketing measurement, market decisions, and the operating work behind growth.",
+      "description": "Paul Drago advises banks and credit unions on marketing measurement, marketing operations, and market decisions.",
       "isPartOf": {
         "@id": "https://pauldrago.com/#website"
       },
@@ -52,7 +52,7 @@ const jsonld = {
   <section class="home-hero">
     <div class="container">
       <h1 class="display-title home-title">I'm Paul Drago.</h1>
-      <p class="home-intro">I advise banks and credit unions on marketing measurement, market decisions, and the operating work behind growth.</p>
+      <p class="home-intro">I advise banks and credit unions on marketing measurement, marketing operations, and market decisions.</p>
       {latest && <p class="home-latest">If you'd like to see how I think about financial services, read the most recent article I wrote: <a href={`/articles/${latest.id}`}>{latest.data.title}</a>.</p>}
 
       <nav class="link-groups" aria-label="Selected links">
@@ -60,7 +60,7 @@ const jsonld = {
           <h2 class="link-group-title" id="work-links">Work</h2>
           <a class="plain-link" href="/financial-services">
             <svg class="plain-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['landmark']} />
-            <span><span class="plain-link-title">Services</span><span class="plain-link-description">Marketing measurement, market analysis, acquisition footprints, and fractional leadership.</span></span>
+            <span><span class="plain-link-title">Services</span><span class="plain-link-description">Marketing measurement and operations, market analysis, acquisition footprints, and fractional leadership.</span></span>
           </a>
           <a class="plain-link" href="/marketing-measurement-reset">
             <svg class="plain-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['chart-no-axes-combined']} />
