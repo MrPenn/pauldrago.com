@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "build:drafts": "SHOW_DRAFTS=1 astro build"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
