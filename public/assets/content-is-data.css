@@ -326,8 +326,8 @@ details.cd-parts > summary { cursor: pointer; padding: 12px 0; font-weight: 600;
 .cd-map-row.is-on .cd-map-item { border-color: var(--brass); }
 .cd-map-row.is-sel .cd-map-item { background: var(--paper); color: var(--ground); border-color: var(--paper); }
 .cd-map-group.is-orphan .cd-map-item { color: var(--secondary); }
-.cd-map-used { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 0 14px; padding: 8px 0 6px; }
-.cd-map-sec { padding: 2px 0; font: 500 13px/1.45 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; text-align: left; color: var(--paper); background: none; border: 0; text-decoration: underline; text-decoration-color: var(--hairline); text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: pointer; }
+.cd-map-used { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 4px 14px; padding: 6px 0 4px; }
+.cd-map-sec { min-height: 26px; padding: 3px 0; font: 500 13px/1.45 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; text-align: left; color: var(--paper); background: none; border: 0; text-decoration: underline; text-decoration-color: var(--hairline); text-decoration-thickness: 1px; text-underline-offset: 3px; cursor: pointer; }
 .cd-map-sec:hover { text-decoration-color: var(--paper); }
 .cd-map-sec.is-on { color: var(--brass); text-decoration-color: var(--brass); }
 .cd-map-sec.is-sel { background: var(--brass); color: var(--ground); text-decoration: none; padding: 2px 4px; margin: 0 -4px; }
@@ -474,7 +474,6 @@ details.cd-parts > summary { cursor: pointer; padding: 12px 0; font-weight: 600;
 .cd-focus-answers ol { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 20px; }
 .cd-focus-answers li { margin: 0; padding: 5px 0; font-size: 13px; line-height: 1.35; color: var(--paper); border-bottom: 1px solid color-mix(in srgb, var(--hairline) 60%, transparent); }
 .cd-focus-answers li b { display: block; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--secondary); }
-.cd-focus-answers li[data-empty] b { opacity: 0.65; }
 .cd-focus-answers li.is-current b { color: var(--brass); opacity: 1; }
 @container (max-width: 520px) { .cd-focus-answers ol { grid-template-columns: minmax(0, 1fr); } }
 
@@ -559,3 +558,8 @@ details.cd-parts > summary { cursor: pointer; padding: 12px 0; font-weight: 600;
 :root { --illo-blend: multiply; }
 @media (prefers-color-scheme: dark) { :root { --illo-blend: normal; } }
 .cd-img img { mix-blend-mode: var(--illo-blend); }
+
+/* Hidden copies used to measure every state of a figure in one layout pass. */
+.cd-widget-stage, .cd-map-wrap { position: relative; }
+.cd-probe { position: absolute; left: 0; right: 0; top: 0; z-index: -1; visibility: hidden; pointer-events: none; }
+.cd-probe-copy { display: flow-root; }

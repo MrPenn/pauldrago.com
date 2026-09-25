@@ -84,17 +84,24 @@
     function settle() {
       var saved = range.value, keptMax = 0, currentMax = 0, dateMax = 0;
       kept.style.minHeight = current.style.minHeight = out.style.minWidth = '';
-      for (var i = 0; i <= days; i++) {
-        range.value = String(i);
+      // The boxes change only with the version, so one state per version covers them.
+      V.forEach(function (x) {
+        range.value = String(Math.round((d(x.from) - start) / 864e5));
         draw();
-        dateMax = Math.max(dateMax, out.getBoundingClientRect().width);
-        keptMax = Math.max(keptMax, kept.offsetHeight);
-        currentMax = Math.max(currentMax, current.offsetHeight);
-      }
+        keptMax = Math.max(keptMax, kept.getBoundingClientRect().height);
+        currentMax = Math.max(currentMax, current.getBoundingClientRect().height);
+      });
       range.value = saved;
       draw();
-      kept.style.minHeight = keptMax + 'px';
-      current.style.minHeight = currentMax + 'px';
+      // Every date the slider can show, laid out once in a hidden row and measured together.
+      var seen = {}, labels = [];
+      for (var i = 0; i <= days; i++) { var s = fmt(new Date(start.getTime() + i * 864e5)); if (!seen[s]) { seen[s] = 1; labels.push('<output>' + s + '</output>'); } }
+      var probe = h('div', { class: 'cd-asof-date cd-probe', 'aria-hidden': 'true' }, labels.join(''));
+      stage.appendChild(probe);
+      probe.querySelectorAll('output').forEach(function (o) { dateMax = Math.max(dateMax, o.getBoundingClientRect().width); });
+      stage.removeChild(probe);
+      kept.style.minHeight = Math.ceil(keptMax) + 'px';
+      current.style.minHeight = Math.ceil(currentMax) + 'px';
       out.style.minWidth = Math.ceil(dateMax) + 'px';
     }
     range.addEventListener('input', draw);
@@ -657,30 +664,51 @@
       var saved = { ans: ans, mode: mode, focusId: document.activeElement && fig.contains(document.activeElement) ? document.activeElement.id : null };
       stage.style.minHeight = ''; lead.style.minHeight = '';
       leadMin = 0; cardMin = 0; rowMin = {};
-      function measureLead() { leadMin = Math.max(leadMin, hgt(lead)); }
-      // Each question card, plain and in change mode, and the answer rows at each option's length.
-      ans = {};
-      STEPS.forEach(function (S) {
-        [false, true].forEach(function (c) { renderQ(S, c); cardMin = Math.max(cardMin, hgt(main.querySelector('.cd-focus-card'))); measureLead(); });
-      });
-      [0, 1, 2, 3].forEach(function (k) {
-        ans = {};
-        STEPS.forEach(function (S) { ans[S.id] = k; });
-        ans.reach = k || 1;
-        renderQ(STEPS[0], false);
-        main.querySelectorAll('[data-row]').forEach(function (li) { var id = li.getAttribute('data-row'); rowMin[id] = Math.max(rowMin[id] || 0, hgt(li)); });
-      });
       // Reports with the longest rules and languages text, and headlines with the most names.
       var fills = [
         function () { return 0; }, function () { return 1; }, function () { return 2; },
         function (i) { return i % 2 ? 3 : 0; }, function (i) { return i ? 'skip' : 0; },
       ];
       function synth(fill) { ans = { inst: 1, reach: 3 }; LINKS.forEach(function (L, i) { ans[L.id] = fill(i); }); }
-      fills.forEach(function (f) { synth(f); renderReport(); measureLead(); });
-      // With every slot held at its size, compare the questions with the report.
-      ans = {}; renderQ(STEPS[0], false);
-      var qa = hgt(stage), rep = 0;
-      fills.forEach(function (f) { synth(f); renderReport(); rep = Math.max(rep, hgt(stage)); });
+      // Every state is laid out once in a hidden copy and measured together, so measuring never
+      // holds up the page. Copies carry no ids or radio names, so they touch nothing real.
+      function inert(s) { return s.replace(/ (id|for|name)="/g, ' data-p$1="'); }
+      var probe = h('div', { class: 'cd-probe', 'aria-hidden': 'true' });
+      stage.appendChild(probe);
+      // Pass 1: each question card (plain and in change mode), the answer rows at each option's
+      // length, and every lead.
+      var leads = '<div class="cd-focus-lead"><p class="cd-focus-intro">' + INTRO + '</p></div>';
+      fills.forEach(function (f) { synth(f); leads += '<div class="cd-focus-lead">' + leadReport(compute()) + ACTIONS + '</div>'; });
+      ans = {};
+      var cards = '';
+      STEPS.forEach(function (S) { cards += cardHtml(S, false) + cardHtml(S, true); });
+      var rows = '';
+      [0, 1, 2, 3].forEach(function (k) {
+        ans = {};
+        STEPS.forEach(function (S) { ans[S.id] = k; });
+        ans.reach = k || 1;
+        rows += answersHtml(null);
+      });
+      probe.innerHTML = inert(leads + '<div class="cd-focus-main">' + cards + rows + '</div>');
+      probe.querySelectorAll('.cd-focus-lead').forEach(function (el) { leadMin = Math.max(leadMin, hgt(el)); });
+      probe.querySelectorAll('.cd-focus-card').forEach(function (el) { cardMin = Math.max(cardMin, hgt(el)); });
+      probe.querySelectorAll('[data-row]').forEach(function (li) { var id = li.getAttribute('data-row'); rowMin[id] = Math.max(rowMin[id] || 0, hgt(li)); });
+      // Pass 2: the questions and each report, with every slot held at its size.
+      function held(html) {
+        return html.replace('<div class="cd-focus-card">', '<div class="cd-focus-card" style="min-height:' + Math.ceil(cardMin) + 'px">')
+          .replace(/<li data-row="([^"]+)"/g, function (m, id) { return m + ' style="min-height:' + Math.ceil(rowMin[id] || 0) + 'px"'; });
+      }
+      function copy(leadHtml, chainHtmlStr, mainHtml) {
+        return '<div class="cd-probe-copy"><div class="cd-focus-lead" style="min-height:' + Math.ceil(leadMin) + 'px">' + leadHtml + '</div>' +
+          '<div class="cd-chainviz">' + chainHtmlStr + '</div><div class="cd-focus-main">' + mainHtml + '</div></div>';
+      }
+      ans = {};
+      var copies = copy('<p class="cd-focus-intro">' + INTRO + '</p>', chainHtml(STEPS[0].id, null), held(cardHtml(STEPS[0], false) + answersHtml(STEPS[0].id)));
+      fills.forEach(function (f) { synth(f); var r = compute(); copies += copy(leadReport(r) + ACTIONS, chainHtml(null, r.min), reportHtml(r, false)); });
+      probe.innerHTML = inert(copies);
+      var hs = Array.prototype.map.call(probe.querySelectorAll('.cd-probe-copy'), hgt);
+      stage.removeChild(probe);
+      var qa = hs[0], rep = Math.max.apply(null, hs.slice(1));
       // When the report is much taller than the questions, the tool grows once, when the reader opens
       // the report, instead of leaving that much blank space under the questions for everyone else.
       reserve = rep - qa <= 120 ? Math.max(qa, rep) : qa;
@@ -926,7 +954,7 @@
             G.items.map(function (c) {
               return '<div class="cd-map-row" data-id="' + c.id + '"><button type="button" class="cd-map-item" data-pick="' + c.id + '">' + title(c) + '</button>' +
                 '<div class="cd-map-used">' + sectionsOf(c.id).map(function (s) {
-                  return '<button type="button" class="cd-map-sec" data-sec="' + esc(s.id) + '" aria-label="' + esc(s.title) + '">' + esc(SHORT[s.id] || s.title) + '</button>';
+                  return '<button type="button" class="cd-map-sec" data-sec="' + esc(s.id) + '">' + esc(SHORT[s.id] || s.title) + '</button>';
                 }).join('') + '</div></div>';
             }).join('') + '</div></div>';
         }).join('');
@@ -1037,11 +1065,12 @@
     // Space: the map is held at the height of its longest tab, so switching tabs moves nothing below.
     function settle() {
       map.style.minHeight = '';
-      var keep = tabIx, tallest = 0;
-      TABS.forEach(function (t, i) { map.innerHTML = mapHtml(t); tallest = Math.max(tallest, map.getBoundingClientRect().height); });
-      map.innerHTML = mapHtml(TABS[keep]);
+      var probe = h('div', { class: 'cd-probe', 'aria-hidden': 'true' }, TABS.map(function (t) { return '<div class="cd-probe-copy">' + mapHtml(t) + '</div>'; }).join(''));
+      probe.style.width = map.getBoundingClientRect().width + 'px';
+      wrap.appendChild(probe);
+      var tallest = Math.max.apply(null, Array.prototype.map.call(probe.querySelectorAll('.cd-probe-copy'), function (el) { return el.getBoundingClientRect().height; }));
+      wrap.removeChild(probe);
       map.style.minHeight = Math.ceil(tallest) + 'px';
-      paint();
     }
 
     // Going to a sentence, and back to the map.
@@ -1130,7 +1159,16 @@
     figs.forEach(build);
   }
   // Anything the reader has not scrolled to yet is built once the page is quiet, so it is ready at rest.
+  // One figure per idle moment, so no single task holds up the page.
   window.addEventListener('load', function () {
-    setTimeout(function () { figs.forEach(build); }, 2500);
+    var queue = figs.slice();
+    var idle = window.requestIdleCallback || function (fn) { return setTimeout(fn, 200); };
+    function next() {
+      var f = queue.shift();
+      if (!f) return;
+      build(f);
+      idle(next, { timeout: 3000 });
+    }
+    setTimeout(function () { idle(next, { timeout: 3000 }); }, 2500);
   });
 })();
