@@ -8,20 +8,16 @@ topics: ["Community banking", "Digital banking", "Checking account acquisition",
 opener: "fd-grid"
 ogImage: "/assets/front-door-social.png"
 ogImageAlt: "Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks."
+brief:
+  - "Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts."
+  - "The customer they lost is worth having now. A 25-year-old with the median balance earns a community bank a little over $400 a year before any loan, and covers a typical acquisition cost inside the first year."
+  - "The bank's pitch waits for the mortgage anyway. The median first-time buyer is 40, and the industry earned $973 per loan when it finally arrived."
+  - "Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year."
+  - "What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter."
+notes: "custom"
 stylesheets: ["/assets/front-door.css"]
 scripts: ["/assets/front-door.js"]
 ---
-
-<aside class="fd-brief" aria-label="The short version">
-<p class="fd-eyebrow">The short version</p>
-<ol>
-<li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li>
-<li>The customer they lost is worth having now. A 25-year-old with the median balance earns a community bank a little over $400 a year before any loan, and covers a typical acquisition cost inside the first year.</li>
-<li>The bank’s pitch waits for the mortgage anyway. The median first-time buyer is 40, and the industry earned $973 per loan when it finally arrived.</li>
-<li>Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year.</li>
-<li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li>
-</ol>
-</aside>
 
 For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket. Add mobile deposit, card controls, digital wallets, person-to-person payments and a better app, and the trip to the branch stops being a reason to choose someone else.
 
@@ -54,16 +50,16 @@ Those sound similar. Strategically, they are not close. One is about access; the
 
 <blockquote class="fd-pq"><p>Removing a reason to choose someone else is not the same as creating a reason to choose you.</p></blockquote>
 
-Even Cornerstone, whose research produced the 44% figure, describes the challenge as a product problem that digital investment alone will not solve.[^1] I would go one step further. The issue is not simply that community banks need better checking products. It is that a bank can manage every product it offers without ever managing the institution itself as a product.
+Even Cornerstone, whose research produced the 44% figure, describes the challenge as a product problem that digital investment alone will not solve.[^1] I would go one step further: a bank can manage every product it offers without ever managing the institution itself as a product.
 
 
 ## The 4.8-star trap
 
-<p class="fd-deck">Everyone’s app is fine. Fine is where everyone already is.</p>
+<p class="fd-deck">Everyone's app is fine. Fine is where everyone already is.</p>
 
 Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars. I have said that sentence in a boardroom. It was true, and it was beside the point.
 
-<figure class="fd-stat" data-fd="stat" data-value="19" data-of="20"><div class="fd-stat-head"><span class="fd-stat-num">95%</span><span class="fd-stat-label">of consumers rate their bank’s online and mobile experience good, very good or excellent.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">ABA and Morning Consult, 2025 Preferred Banking Methods survey, 4,403 U.S. adults.</figcaption></figure>
+<figure class="fd-stat" data-fd="stat" data-value="19" data-of="20"><div class="fd-stat-head"><span class="fd-stat-num">95%</span><span class="fd-stat-label">of consumers rate their bank's online and mobile experience good, very good or excellent.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">ABA and Morning Consult, 2025 Preferred Banking Methods survey, 4,403 U.S. adults.</figcaption></figure>
 
 Both things can be true and still leave the competitive question unanswered. In the ABA survey, nearly everyone rated their bank's online and mobile experience as good, very good or excellent.[^2] When nearly everyone's customers say the same thing, "ours works fine" describes the whole industry.
 
@@ -88,19 +84,19 @@ Your benchmark should not stop at the bank across town. It should include the be
 Strip away the campaign and have the conversation with a 25-year-old deciding where to send a paycheck.
 
 <div class="fd-dialogue" role="group" aria-label="The conversation">
-  <p class="fd-bank"><span class="fd-who">Bank</span>Because we’re local.</p>
+  <p class="fd-bank"><span class="fd-who">Bank</span>Because we're local.</p>
   <p class="fd-cust"><span class="fd-who">Customer</span>Okay. How does that make my life better?</p>
   <p class="fd-bank"><span class="fd-who">Bank</span>Because we have great service.</p>
-  <p class="fd-cust"><span class="fd-who">Customer</span>So does every bank’s advertising.</p>
-  <p class="fd-bank"><span class="fd-who">Bank</span>We can help when you’re ready to buy a home.</p>
+  <p class="fd-cust"><span class="fd-who">Customer</span>So does every bank's advertising.</p>
+  <p class="fd-bank"><span class="fd-who">Bank</span>We can help when you're ready to buy a home.</p>
   <p class="fd-cust"><span class="fd-who">Customer</span>Maybe. Rocket Mortgage will be waiting too.</p>
-  <p class="fd-bank"><span class="fd-who">Bank</span>Someday, if you start a business, you’ll appreciate having a relationship with a local lender.</p>
+  <p class="fd-bank"><span class="fd-who">Bank</span>Someday, if you start a business, you'll appreciate having a relationship with a local lender.</p>
   <p class="fd-cust"><span class="fd-who">Customer</span>I am currently trying to get $2,000 into an emergency fund.</p>
 </div>
 
 <blockquote class="fd-pq"><p>A relationship bank should have something meaningful to offer when the customer has $500, not only when the customer needs $500,000.</p></blockquote>
 
-I have written every one of the bank’s lines above into a campaign brief. None of those advantages has to be false for the pitch to fail. They are distant. And behind the pitch sits an assumption the bank rarely says out loud: the younger customer is a small balance to tolerate until a mortgage or business loan makes the relationship worth having.
+I have written every one of the bank's lines above into a campaign brief. None of those advantages has to be false for the pitch to fail. They are distant. And behind the pitch sits an assumption the bank rarely says out loud: the younger customer is a small balance to tolerate until a mortgage or business loan makes the relationship worth having.
 
 <figure class="fd-img" data-fd="illo">
 <picture>
@@ -115,7 +111,7 @@ I have written every one of the bank’s lines above into a campaign brief. None
 <div class="fd-steps">
 <div class="fd-step" data-step="1">
 
-The public numbers do not support that. The Fed’s Survey of Consumer Finances puts the median transaction account balance for households under 35 at $5,400.[^3]
+The public numbers do not support that. The Fed's Survey of Consumer Finances puts the median transaction account balance for households under 35 at $5,400.[^3]
 
 </div>
 <div class="fd-step" data-step="2">
@@ -125,7 +121,7 @@ Community banks earned a 3.81% net interest margin in the second quarter of 2026
 </div>
 <div class="fd-step" data-step="3">
 
-Then the debit card. Banks under $10 billion in assets are exempt from the Durbin interchange cap, and the Fed’s Regulation II data shows exempt issuers earning an average of $0.51 per debit transaction against $0.23 for covered banks.[^5] At the 34.6 transactions a month PULSE measured for an active debit card,[^6] that is roughly another $200 a year.
+Then the debit card. Banks under $10 billion in assets are exempt from the Durbin interchange cap, and the Fed's Regulation II data shows exempt issuers earning an average of $0.51 per debit transaction against $0.23 for covered banks.[^5] At the 34.6 transactions a month PULSE measured for an active debit card,[^6] that is roughly another $200 a year.
 
 </div>
 <div class="fd-step" data-step="4">
@@ -140,7 +136,7 @@ So the 25-year-old with $5,400 and a paycheck is profitable now, and profitable 
 </div>
 <div class="fd-step" data-step="6">
 
-Chime’s partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank’s assets below $10 billion for the foreseeable future.[^8] Every community bank has the exemption. Few build the product around it.
+Chime's partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank's assets below $10 billion for the foreseeable future.[^8] Every community bank has the exemption. Few build the product around it.
 
 </div>
 </div>
@@ -152,7 +148,7 @@ Chime’s partner banks are small enough to have the exemption too, and it is mo
 
 <figure class="fd-figure fd-wide fd-calc" id="fd-calc" data-fd="calc">
   <div class="fd-calc-head">
-    <p class="fd-calc-title">Run your bank’s numbers</p>
+    <p class="fd-calc-title">Run your bank's numbers</p>
     <p class="fd-calc-lede">The five fields hold the public figures from the sequence above. Type over any of them and everything below the line recalculates.</p>
   </div>
   <div class="fd-calc-inputs">
@@ -200,7 +196,7 @@ Which makes the standard pitch worse than distant. The median first-time homebuy
 </div>
 <div class="fd-step" data-step="2">
 
-A bank that tells a 25-year-old “we’ll be there when you buy a house” is proposing a fifteen-year wait.
+A bank that tells a 25-year-old "we'll be there when you buy a house" is proposing a fifteen-year wait.
 
 </div>
 <div class="fd-step" data-step="3">
@@ -241,7 +237,7 @@ A full-service community bank has a broader set of capabilities to assemble. Alo
 
 Having more capabilities does not automatically produce a more compelling experience.
 
-<figure class="fd-stat" data-fd="stat" data-value="16" data-of="25"><div class="fd-stat-head"><span class="fd-stat-num">64%</span><span class="fd-stat-label">of Chime’s revenue in the second quarter of 2026 was payments, most of it debit interchange.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">Chime reported results, Q2 2026: $430 million of $670 million.</figcaption></figure>
+<figure class="fd-stat" data-fd="stat" data-value="16" data-of="25"><div class="fd-stat-head"><span class="fd-stat-num">64%</span><span class="fd-stat-label">of Chime's revenue in the second quarter of 2026 was payments, most of it debit interchange.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">Chime reported results, Q2 2026: $430 million of $670 million.</figcaption></figure>
 
 Chime does not literally have one product. It has multiple accounts, credit products and banking partners; Chime itself is a financial technology company, not a chartered bank. Its banking services are provided by The Bancorp Bank or Stride Bank, and Chime has agreed to acquire Stride, pending regulatory approval, with closing expected in the first half of 2027.[^8]
 
@@ -306,14 +302,14 @@ The comparison with Chime is whether the features add up to one recognizable pro
 
 ## Everyone can hit their goals and the bank can still lose
 
-<p class="fd-deck">A third of new accounts leave inside a year, and no department’s number moves.</p>
+<p class="fd-deck">A third of new accounts leave inside a year, and no department's number moves.</p>
 
 Once you see the problem this way, good enough becomes understandable. If the app is treated as a servicing channel, uptime, adoption and satisfaction are sensible measures. If checking is a deposit product, balances and cost of funds matter. If Marketing owns acquisition, applications and cost per account matter.
 
 No individual executive needs to be making a bad decision. The failure happens between the decisions.
 
 
-<figure class="fd-stat" data-fd="stat" data-value="34" data-of="100"><div class="fd-stat-head"><span class="fd-stat-num">34%</span><span class="fd-stat-label">of activated new checking customers went inactive or left within their first year, by the institutions’ own estimate.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">Digital Banking Report for Pinwheel, The Power of Primacy, March 2024.</figcaption></figure>
+<figure class="fd-stat" data-fd="stat" data-value="34" data-of="100"><div class="fd-stat-head"><span class="fd-stat-num">34%</span><span class="fd-stat-label">of activated new checking customers went inactive or left within their first year, by the institutions' own estimate.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">Digital Banking Report for Pinwheel, The Power of Primacy, March 2024.</figcaption></figure>
 
 In March 2024 research published in *The Power of Primacy*, financial institutions estimated that a third of activated new customers became inactive or churned within their first year. The report also presented an estimated direct-deposit penetration rate of 55%.[^11] These were institution-reported estimates, not an audit of individual account histories. They are useful here because they distinguish an account opened from a relationship established.
 
@@ -336,7 +332,7 @@ That is a product-management question, and it does not get answered merely becau
 
 <p class="fd-deck">Advertising is the only lever one department can pull alone.</p>
 
-<blockquote class="fd-pq"><p>The skateboard is not a creative problem. It is what a structural problem looks like after it has been handed to the one department that can ship something by Friday.</p></blockquote>
+<blockquote class="fd-pq"><p>The skateboard is what a structural problem looks like after it has been handed to the one department that can ship something by Friday.</p></blockquote>
 
 Suppose Marketing does the research properly. YouGov's U.S. research among employed Gen Z consumers places low or no maintenance fees, security and reliability, and brand trustworthiness among the leading account-selection factors. Digital usability matters too.[^12] Separate YouGov research found that building an emergency fund was Gen Z's most frequently cited savings goal.[^13]
 
@@ -344,7 +340,7 @@ That points toward a more useful conversation than how to make an existing check
 
 Now build that.
 
-Suddenly the conversation is not about Marketing. It is about fee income and product economics, funds availability and fraud controls, credit policy, core capabilities, vendor contracts, staffing and data. It is about whether a new offer cannibalizes an existing one, who funds the work and who can resolve a disagreement.
+Suddenly the conversation moves past Marketing to fee income and product economics, funds availability and fraud controls, credit policy, core capabilities, vendor contracts, staffing and data. It is about whether a new offer cannibalizes an existing one, who funds the work and who can resolve a disagreement.
 
 That meeting is harder. I have been the marketing executive in it. The advertising budget was mine to move; the fee schedule was not. So the temptation is to return to the lever that moves without changing the rest of the institution: the advertising.
 
@@ -360,7 +356,7 @@ The photography gets younger. The palette gets brighter. Someone wants TikTok. T
 
 Age is the wrong diagnosis. A bank should not be embarrassed that it has existed for a century. Longevity signals stability, and stability matters when someone is deciding where to send a paycheck. The problem is confusing looking young with understanding someone who is young.
 
-Modern and young are different things, and customer-centric means building for the customer, which is a different job from casting them.
+Modern and young are different things. Building for the customer is a different job from casting them.
 
 
 ## What if the bank actually used all of its advantages?
@@ -371,7 +367,7 @@ Imagine the same community bank behaving as a single product.
 
 A 24-year-old moves direct deposit into the bank. The app notices the first paycheck and offers to set aside $25 of it, once, with one tap and no appointment. The customer does not have to discover a separate product or repeat anything the bank already knows.
 
-When money gets tight, the bank says so before the overdraft, on Tuesday, when Friday’s rent will not clear, and offers a small bridge at a stated price. If the customer wants to build credit, the app shows the two products that would do it, what each costs, and what happens next. Routine banking stays digital because routine banking should be easy.
+When money gets tight, the bank says so before the overdraft, on Tuesday, when Friday's rent will not clear, and offers a small bridge at a stated price. If the customer wants to build credit, the app shows the two products that would do it, what each costs, and what happens next. Routine banking stays digital because routine banking should be easy.
 
 Then something goes wrong. A payment is delayed, fraud appears or a financial decision requires more explanation than a screen can provide. A person enters the experience with the customer's context intact, takes ownership of the problem and explains what happens next. The bank does not require the customer to start the story again at every handoff.
 
@@ -394,7 +390,7 @@ A bank has several ways to do that. Digital provides speed, people provide judgm
 Getting there requires more than a rebrand or a new box on the organizational chart. These are the three decisions I could not make from the marketing seat, and the ones I would ask for first if I were back in it.
 
 <ol class="fd-decisions">
-<li><strong>Someone owns the proposition.</strong> Give a senior leader responsibility for the chosen younger-customer proposition across product, digital, retail and marketing, with the budget and decision rights to resolve tradeoffs. The title matters less than the authority. The work stays within the bank’s risk and compliance framework, but it cannot depend on a committee whose members are accountable only for their own departments.</li>
+<li><strong>Someone owns the proposition.</strong> Give a senior leader responsibility for the chosen younger-customer proposition across product, digital, retail and marketing, with the budget and decision rights to resolve tradeoffs. The title matters less than the authority. The work stays within the bank's risk and compliance framework, but it cannot depend on a committee whose members are accountable only for their own departments.</li>
 <li><strong>The scorecard measures the relationship and its economics.</strong> Keep uptime and app satisfaction, but stop treating them as sufficient evidence of competitiveness. Track new-to-bank acquisition, direct-deposit activation, meaningful account use and twelve-month retention alongside acquisition cost per activated relationship and contribution by acquisition cohort. Agree on funding, servicing, fraud and acquisition-cost assumptions with Finance, so the number the owner is judged on is one Finance already believes.</li>
 <li><strong>Start with one journey.</strong> Take the first paycheck arriving in a newly opened account and manage the surrounding experience as a single product for one quarter. Bring the relevant functions together, give the owner authority to decide and test the redesigned journey against a credible baseline. Use the quarter to evaluate execution and early activation, then follow those customers long enough to assess retention and economics. Prove that the bank can behave as one thing in one place before asking it to do so everywhere.</li>
 </ol>
@@ -415,10 +411,9 @@ Community banks have built digital front doors. The question is no longer simply
 
 ## About the numbers
 
-Sources sit beside the passages they support, or open beneath them on a phone. Research and product descriptions checked September 22, 2026. The organizational diagnosis, proposed scorecard and customer journey are analysis and recommendations; the cited surveys support the figures, and the conclusions are mine. The customer journey described above is a proposition to design and test, not a claim that every bank already has the necessary capabilities, and the survey findings cited do not make every younger customer identical. The $400-a-year figure is gross: it is spread on the median balance plus interchange at exempt rates, before servicing, fraud and network costs, which vary by bank and which a bank's own numbers should replace.
+Sources sit beside the passages they support, or open beneath them on a phone. Research and product descriptions checked September 22, 2026. The organizational diagnosis, proposed scorecard and customer journey are analysis and recommendations; the cited surveys support the figures, and the conclusions are mine. The one-journey plan in "What if the bank actually used all of its advantages?" is a proposition to design and test, not a claim that every bank already has the necessary capabilities, and the survey findings cited do not make every younger customer identical. The $400-a-year figure is gross: it is spread on the median balance plus interchange at exempt rates, before servicing, fraud and network costs, which vary by bank and which a bank's own numbers should replace.
 
 
-<p class="fd-cta">I run this model with a bank's own numbers in about a week, and the conversation that follows is usually the interesting part. If you want that, <a href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"}'>book twenty minutes</a>.</p>
 
 [^1]: **Cornerstone Advisors.** Beyond the Paycheck Motel: Strategic Imperatives for Community Banking, a recap of 2025 research, pp. 17-18, Figure 6. Reports the 2024 estimates of 44% for digital banks/fintechs and 4% for community banks. These are shares of new checking accounts across age groups, not Gen Z-only figures, Chime market share, primary relationships or profitability. The chart defines community banks as institutions below $100 billion in assets, not by the FDIC's community-bank definition. [Read the Cornerstone report](https://www.crnrstone.com/hubfs/Cornerstone-Advisors-2025-Research-Recap_Beyond-the-Paycheck-Motel.pdf)
 [^2]: **American Bankers Association / Morning Consult.** 2025 Preferred Banking Methods. Online survey conducted October 1-6, 2025, with a weighted sample of 4,403 U.S. adults. Supports the Gen Z most-used-channel figures of 63% mobile and 3% branches, and the 95% favorable digital-experience rating. Most-used banking channel is not the same as preferred account-opening channel. The 95% figure is not an app-store rating. [Read the ABA findings](https://www.aba.com/news-research/analysis-guides/preferred-banking-methods)

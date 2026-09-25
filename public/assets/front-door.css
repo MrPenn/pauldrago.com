@@ -652,31 +652,7 @@
 .fd-sidenote.is-open .fd-note-brief { display: none; }
 .fd-sticky-notes .fd-sidenote.is-current.is-open { max-height: 600px; }
 
-/* ---------- Scanability: short version, decks, stat lines, section air ---------- */
-.fd-brief {
-  margin: 0 0 44px;
-  padding: 22px 0 8px;
-  border-top: 4px solid var(--brass);
-  border-bottom: 1px solid var(--hairline);
-}
-.fd-brief ol { list-style: none; margin: 0; padding: 0; counter-reset: brief; }
-.fd-brief li {
-  counter-increment: brief;
-  position: relative;
-  padding: 0 0 14px 34px;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--paper);
-}
-.fd-brief li::before {
-  content: counter(brief);
-  position: absolute;
-  left: 0;
-  top: 1px;
-  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: 15px;
-  color: var(--brass);
-}
+/* ---------- Scanability: decks, stat lines, section air ---------- */
 .article-body h2 { margin-top: 72px; padding-top: 22px; border-top: 1px solid var(--hairline); }
 .fd-deck {
   margin: -6px 0 24px !important;
@@ -790,7 +766,6 @@
   line-height: 1.45;
   color: var(--secondary);
 }
-.fd-brief li { font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 17px; }
 .fd-dialogue p { font-size: 18px; }
 .fd-decisions li { font-size: 18.5px; }
 
@@ -1078,8 +1053,6 @@ figure.fd-stat {
   .article-intro { font-size: 19px; }
   .article-opener { margin-bottom: 30px; }
   .fd-opener-units { gap: 2px; }
-  /* short version: tighter */
-  .fd-brief li { font-size: 16px; }
   /* section heads */
   .article-body h2 { font-size: 23px; }
   /* calculator: inputs two-up, big type stays */
@@ -1128,10 +1101,6 @@ figure.fd-stat {
 }
 @media (max-width: 760px) { .fd-one img { max-height: 200px; } .fd-one-cap { font-size: 13px; margin-top: 8px; } }
 
-/* Closing line: what to do with the model */
-.article-body .fd-cta { margin: 36px 0 0; padding: 22px 0 0; border-top: 1px solid var(--hairline); font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 19px; line-height: 1.5; max-width: 60ch; }
-.article-body .fd-cta a { color: var(--brass); text-decoration: none; border-bottom: 2px solid var(--brass); font-weight: 600; }
-.article-body .fd-cta a:hover { color: var(--paper); }
 
 /* Accessibility pass: links in running text keep an underline; the opener is a figure, its cells decorative */
 .fd-sidenote a, .fd-note-inline a, .fd-sticky-notes .fd-sidenote a { text-decoration: underline; text-underline-offset: 3px; }

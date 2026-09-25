@@ -14,6 +14,10 @@ const articles = defineCollection({
     ogImage: z.string().optional(),
     ogImageAlt: z.string().optional(),
     opener: z.string().optional(),
+    // The short version: shown at the top of every article under the same heading.
+    brief: z.array(z.string()).default([]),
+    // Sources beside the text: the template's rail, or an article's own system.
+    notes: z.enum(['rail', 'custom']).default('rail'),
     stylesheets: z.array(z.string()).default([]),
     scripts: z.array(z.string()).default([]),
   }),

@@ -1,0 +1,114 @@
+/* Shared article template: pieces every article carries, whatever its own styles.
+   Tokens come from site-shell.css (--paper, --brass, --hairline). */
+
+/* The short version */
+.article-brief {
+  margin: 0 0 44px;
+  padding: 22px 0 8px;
+  border-top: 4px solid var(--brass);
+  border-bottom: 1px solid var(--hairline);
+}
+.article-brief-label {
+  margin: 0 0 20px;
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.55;
+  color: var(--brass);
+}
+.article-brief ol { list-style: none; margin: 0; padding: 0; counter-reset: brief; }
+.article-brief li {
+  counter-increment: brief;
+  position: relative;
+  margin: 0;
+  padding: 0 0 14px 34px;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.5;
+  color: var(--paper);
+}
+.article-brief li::before {
+  content: counter(brief);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: 15px;
+  color: var(--brass);
+}
+
+/* Closing line: the one booking offer every article ends on */
+.article-body .article-cta {
+  margin: 36px 0 0;
+  padding: 22px 0 0;
+  border-top: 1px solid var(--hairline);
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.5;
+  max-width: 60ch;
+  color: var(--paper);
+}
+.article-body .article-cta a { color: var(--brass); text-decoration: none; border-bottom: 2px solid var(--brass); font-weight: 600; }
+.article-body .article-cta a:hover { color: var(--paper); }
+
+@media (max-width: 760px) {
+  .article-brief li { font-size: 16px; }
+}
+
+/* Sources beside the text (article.js, data-notes="rail"). The list stays in the page for print
+   and for readers without scripts; with scripts it moves into the rail or opens inline. */
+.article-body[data-notes="rail"] { position: relative; }
+.article-body [data-footnote-ref] {
+  color: var(--brass);
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 0 1px;
+}
+.article-body sup { line-height: 0; }
+.article-body [data-footnote-ref]:hover,
+.article-body [data-footnote-ref].is-active { text-decoration: underline; text-underline-offset: 2px; }
+.sidenote, .note-inline {
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: var(--secondary);
+  line-height: 1.5;
+}
+.sidenote {
+  display: none;
+  position: absolute;
+  left: calc(100% + 84px);
+  width: 280px;
+  padding-top: 10px;
+  border-top: 1px solid var(--hairline);
+  font-size: 12.5px;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+.sidenote-num { color: var(--brass); font-weight: 700; margin-right: 6px; }
+.sidenote p, .note-inline p { display: inline; margin: 0; }
+.sidenote strong, .note-inline strong { font-weight: 600; color: var(--paper); }
+.sidenote a, .note-inline a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+.sidenote .data-footnote-backref, .note-inline .data-footnote-backref { display: none; }
+.sidenote.is-active, .sidenote:hover { color: var(--paper); border-top-color: var(--brass); }
+.note-inline {
+  margin: -8px 0 22px;
+  padding: 12px 14px;
+  border-left: 2px solid var(--brass);
+  background: color-mix(in srgb, var(--paper) 4%, transparent);
+  font-size: 13.5px;
+}
+.article-body[data-notes="rail"] section[data-footnotes] { margin-top: 48px; }
+.article-body[data-notes="rail"] section[data-footnotes] h2 { font-size: 18px; }
+@media (scripting: enabled) {
+  .article-body[data-notes="rail"] section[data-footnotes] { display: none; }
+}
+@media (min-width: 1180px) {
+  .sidenote { display: block; }
+}
+@media (max-width: 760px) {
+  .article-body [data-footnote-ref] { padding: 6px 4px; margin: -6px -2px; }
+}
+@media print {
+  .article-body[data-notes="rail"] section[data-footnotes] { display: block; }
+  .sidenote, .note-inline { display: none !important; }
+}

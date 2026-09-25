@@ -3,9 +3,12 @@ import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { AUTHOR } from '../../data/author';
 import FrontDoorOpener from '../../components/FrontDoorOpener.astro';
+import BookingLine from '../../components/BookingLine.astro';
+import { curlHtml } from '../../integrations/smart-quotes.mjs';
 
 export async function getStaticPaths() {
-  const articles = await getCollection('articles', ({ data }) => !data.draft);
+  // `npm run build:drafts` also builds drafts, for previewing locally; they are never listed or indexed.
+  const articles = await getCollection('articles', ({ data }) => !data.draft || process.env.SHOW_DRAFTS === '1');
   return articles.map((article) => ({ params: { slug: article.id }, props: { article } }));
 }
 
@@ -14,10 +17,15 @@ const { Content } = await render(article);
 const iso = (d) => d.toISOString().slice(0, 10);
 const long = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 const path = `/articles/${article.id}`;
-const words = (article.body ?? '').replace(/\[\^\d+\]:.*$/gm, '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+const words = [...article.data.brief, article.body ?? ''].join(' ').replace(/\[\^\d+\]:.*$/gm, '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
 const minutes = Math.max(1, Math.round(words / 230));
 // Footnotes become schema.org citations: "[^n]: **Publisher.** Title. ... [link](url)".
-const citations = [...(article.body ?? '').matchAll(/^\[\^\d+\]:\s*\*\*(.+?)\*\*\s*(.*)$/gm)].map(([, who, rest]) => {
+// Footnote text is markdown, so inline tags (component marks) are dropped and named entities decoded.
+const ENTITIES = { amp: '&', quot: '"', sect: '\u00a7', times: '\u00d7', iacute: '\u00ed', auml: '\u00e4', eacute: '\u00e9' };
+const clean = (s) => s.replace(/<[^>]+>/g, '').replace(/&([a-z]+);/gi, (m, n) => ENTITIES[n] ?? m);
+const citations = [...(article.body ?? '').matchAll(/^\[\^\d+\]:\s*\*\*(.+?)\*\*\s*(.*)$/gm)].map(([, rawWho, rawRest]) => {
+  const who = clean(rawWho);
+  const rest = clean(rawRest);
   const url = rest.match(/\]\((https?:\/\/[^)\s]+)\)/)?.[1];
   // The title is the first sentence; abbreviations such as "pp." or "p." don't end it.
   const title = rest.replace(/\[[^\]]*\]\([^)]*\)/g, '').split(/(?<!\b(?:pp|p|No|Vol|vs|U\.S))\.\s+(?=[A-Z0-9])/)[0].trim();
@@ -80,13 +88,14 @@ const jsonld = {
   variant="articles"
   subline="Articles"
   ogType="article"
+  robots={article.data.draft ? 'noindex, nofollow' : ''}
   ogImage={article.data.ogImage ? `https://pauldrago.com${article.data.ogImage}` : undefined}
   ogImageAlt={article.data.ogImageAlt}
   published={iso(article.data.date)}
   modified={iso(article.data.updated ?? article.data.date)}
   footerNote="Writing on marketing measurement, markets, and accountable growth."
-  stylesheets={['/assets/personal-site.css', ...article.data.stylesheets]}
-  scripts={article.data.scripts}
+  stylesheets={['/assets/personal-site.css', '/assets/article.css', ...article.data.stylesheets]}
+  scripts={['/assets/article.js', ...article.data.scripts]}
   lastUpdated={iso(article.data.updated ?? article.data.date)}
   jsonld={jsonld}
 >
@@ -98,13 +107,20 @@ const jsonld = {
           <p class="article-kicker"><a href="/articles">Articles</a>{article.data.kicker && <span class="article-kicker-sep" aria-hidden="true"> / </span>}{article.data.kicker && <span>{article.data.kicker}</span>}</p>
           <h1 class="display-title article-title">{article.data.title}</h1>
           <p class="article-intro">{article.data.description}</p>
-          <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time><span class="article-meta-sep" aria-hidden="true"> · </span><span>{minutes}-minute read</span></p>
-          <p class="article-byline">By <a href="/">{AUTHOR.name}</a>, {AUTHOR.byline}</p>
+          <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time><span class="article-meta-sep" aria-hidden="true"> / </span><span>{minutes}-minute read</span></p>
+          <p class="article-byline" data-c="author-byline">By <a href="/">{AUTHOR.name}</a>, {AUTHOR.byline}</p>
         </header>
-        <div class="article-body">
+        <div class="article-body" data-notes={article.data.notes}>
+          {article.data.brief.length > 0 && (
+            <aside class="article-brief" aria-label="The short version" data-c="short-version">
+              <p class="article-brief-label">The short version</p>
+              <ol>{article.data.brief.map((item) => <li set:html={curlHtml(item)} />)}</ol>
+            </aside>
+          )}
           <Content />
+          <BookingLine />
         </div>
-        <aside class="article-author" aria-label="About the author">
+        <aside class="article-author" aria-label="About the author" data-c="author-bio">
           <p class="article-author-label">About the author</p>
           <p class="article-author-bio">{AUTHOR.bio}</p>
           <p class="article-author-links">
