@@ -16,6 +16,7 @@
   }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function money(n) {
+    if (n >= 1e9) return '$' + (n / 1e9).toFixed(n >= 1e10 ? 1 : 2).replace(/\.?0+$/, '') + ' billion';
     if (n >= 1e6) return '$' + (n / 1e6).toFixed(n >= 1e7 ? 1 : 2).replace(/\.?0+$/, '') + ' million';
     return '$' + Math.round(n).toLocaleString('en-US');
   }
@@ -141,17 +142,22 @@
       triage: { label: 'How many minutes to find an existing asset?', v: 20, note: 'Example. The person at intake finds it and sends it instead of making a new one.' },
     };
     var inputs = {};
+    var AFFIX = { rate: ['$', ''], tRate: ['$', ''], lineage: ['', '%'], diff: ['', '%'] };
     function show(n) { return n >= 1000 && n % 1 === 0 ? n.toLocaleString('en-US') : String(n); }
     function field(key) {
-      var f = F[key];
+      var f = F[key], a = AFFIX[key] || ['', ''];
       var id = 'cd-calc-' + key;
-      var wrap = h('label', { class: 'cd-field', for: id }, '<span>' + esc(f.label) + '</span>');
+      var wrap = h('label', { class: 'cd-field', for: id }, '<span class="cd-field-label">' + esc(f.label) + '</span>');
+      var box = h('span', { class: 'cd-input-wrap' });
       var inp = h('input', { id: id, type: 'text', inputmode: 'decimal', autocomplete: 'off', value: show(f.v) });
       inp.addEventListener('input', draw);
       inp.addEventListener('blur', function () { var x = num(inp); inp.value = show(x); });
       inputs[key] = inp;
-      wrap.appendChild(inp);
-      wrap.appendChild(h('small', null, esc(f.note)));
+      if (a[0]) box.appendChild(h('span', { class: 'cd-affix', 'aria-hidden': 'true' }, a[0]));
+      box.appendChild(inp);
+      if (a[1]) box.appendChild(h('span', { class: 'cd-affix', 'aria-hidden': 'true' }, a[1]));
+      wrap.appendChild(box);
+      wrap.appendChild(h('small', { class: 'cd-field-src' }, esc(f.note)));
       return wrap;
     }
     function num(inp) { var x = parseFloat(String(inp.value).replace(/[,$%\s]/g, '')); return isFinite(x) && x >= 0 ? x : 0; }
@@ -159,17 +165,15 @@
 
     var stage = fig.querySelector('.cd-widget-stage');
     stage.innerHTML = '';
-    var head = h('div', { class: 'cd-calc-head', 'aria-live': 'polite' });
-    var mix = h('div', { class: 'cd-calc-mix' });
-    ['assets', 'lineage'].forEach(function (k) { mix.appendChild(field(k)); });
-    var lanes = h('div', { class: 'cd-lanes' });
-    var key = h('div', { class: 'cd-lane-key', 'aria-hidden': 'true' }, '<span><i class="k-create"></i>Creation</span><span><i class="k-review"></i>Review</span><span><i class="k-trans"></i>Translation</span><span><i class="k-rework"></i>Rework</span>');
-    var parts = h('details', { class: 'cd-parts' }, '<summary>Change the numbers behind each price</summary>');
+    // The six numbers that move the prices most sit in view; the rest wait one click away, grouped
+    // under the same colours as the price bars.
+    var main = h('div', { class: 'cd-calc-inputs' });
+    ['assets', 'lineage', 'rate', 'create', 'reviewers', 'rounds'].forEach(function (k) { main.appendChild(field(k)); });
+    var parts = h('details', { class: 'cd-parts' }, '<summary>Change the other 12 numbers</summary>');
     var grid = h('div', { class: 'cd-parts-grid' });
-    // Grouped under the same colours as the price bars, so each number sits with the cost it drives.
     [
-      ['k-create', 'Creation', ['rate', 'create', 'createVar']],
-      ['k-review', 'Review', ['reviewers', 'minutes', 'rounds', 'roundsVar', 'diff']],
+      ['k-create', 'Creation', ['createVar']],
+      ['k-review', 'Review', ['minutes', 'roundsVar', 'diff']],
       ['k-trans', 'Translation', ['words', 'langs', 'tRate', 'wphNew', 'wphMem']],
       ['k-rework', 'Rework', ['rework', 'reworkVar']],
       ['k-reuse', 'Reuse', ['triage']],
@@ -178,8 +182,20 @@
       g[2].forEach(function (k) { grid.appendChild(field(k)); });
     });
     parts.appendChild(grid);
-    stage.appendChild(head); stage.appendChild(mix); stage.appendChild(lanes); stage.appendChild(key); stage.appendChild(parts);
-    stage.appendChild(h('p', { class: 'cd-note' }, 'Numbers marked Example are stand-ins set to match the $5.4 million example above. Replace them with your own. The rest were measured by the source named in the note.'));
+    var results = h('div', { class: 'cd-calc-results' }, '<h3>What each one costs</h3>');
+    var lanes = h('div', { class: 'cd-lanes' });
+    var key = h('div', { class: 'cd-lane-key', 'aria-hidden': 'true' }, '<span><i class="k-create"></i>Creation</span><span><i class="k-review"></i>Review</span><span><i class="k-trans"></i>Translation</span><span><i class="k-rework"></i>Rework</span>');
+    var total = h('div', { class: 'cd-calc-total', 'aria-live': 'polite' });
+    results.appendChild(lanes); results.appendChild(key); results.appendChild(total);
+    var foot = h('div', { class: 'cd-calc-foot' });
+    var reset = h('button', { type: 'button', class: 'cd-calc-reset', hidden: '' }, 'Reset to the article\u2019s numbers');
+    reset.addEventListener('click', function () {
+      Object.keys(inputs).forEach(function (k) { inputs[k].value = show(F[k].v); });
+      draw();
+    });
+    foot.appendChild(h('p', { class: 'cd-note' }, 'Numbers marked Example are stand-ins set to match the $5.4 million example above. Replace them with your own. The rest were measured by the source named under the field.'));
+    foot.appendChild(reset);
+    stage.appendChild(main); stage.appendChild(parts); stage.appendChild(results); stage.appendChild(foot);
 
     function prices() {
       var rate = val('rate'), tRate = val('tRate'), words = val('words'), langs = val('langs');
@@ -200,10 +216,11 @@
     function draw() {
       var p = prices();
       var dark = val('assets') * (1 - val('lineage') / 100) * p.N;
-      head.innerHTML = '<p class="cd-calc-big">' + money(dark) + '</p><p class="cd-calc-say">a year spent on assets with no parent on file, each at the price of a new piece.</p>';
       lanes.innerHTML = lane('New piece', p.N, p.n, p.N, 'The whole chain: one to two months') +
         lane('Variant', p.V, p.v, p.N, 'The variant lane: a day or two') +
         lane('Reuse', p.R, p.r, p.N, 'Linked at intake: the same day');
+      total.innerHTML = '<p class="cd-calc-say">A year spent on assets with no parent on file, each at the price of a new piece</p><p class="cd-calc-big">' + money(dark) + '</p>';
+      reset.hidden = Object.keys(inputs).every(function (k) { return num(inputs[k]) === F[k].v; });
     }
     draw();
   }
@@ -879,9 +896,9 @@
     var SHORT = {
       'short-version': 'The short version', 'two-to-three-months-then-two-weeks': 'Two to three months',
       'most-stages-are-never-measured': 'Most stages are never measured', 'content-is-data': 'Content is data',
-      'pharma-already-runs-it-this-way': 'Pharma runs it this way', 'content-with-no-parent-costs-money-and-invites-fines': 'No parent costs money',
+      'pharma-already-runs-review-this-way': 'Pharma runs review this way', 'content-with-no-parent-costs-money-and-invites-fines': 'No parent costs money',
       'dark-content': 'Dark content', 'the-regulators-question': 'The regulator\u2019s question', 'reuse-is-the-default': 'Reuse is the default',
-      'language-and-voice': 'Language and voice', 'review-reads-the-diff': 'Review reads the diff',
+      'language-and-voice': 'Language and voice', 'shorten-the-review-cycle-by-letting-legal-focus-on-whats-changed': 'Shorten the review cycle',
       'buy-generation-last': 'Buy generation last', 'about-the-numbers': 'About the numbers', sources: 'Sources',
     };
     var TABS = [
