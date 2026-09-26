@@ -43,7 +43,8 @@ export const YOUR_CONTENT_HAS_NO_PARENT: Registry = {
       ],
     },
     { id: 'census-languages', kind: 'figure', label: 'People who speak another language at home', value: '74 million', status: 'sourced', sources: [41], match: ['74 million'] },
-    { id: 'translation-throughput', kind: 'figure', label: 'Translation words per hour', value: '1,100 / 2,460', status: 'sourced', sources: [23], match: ['1,100', '2,460', '60%', '2.2x'] },
+    { id: 'census-by-language', kind: 'figure', label: 'Languages spoken at home, by language', value: 'Spanish 44.9 million; Chinese 3.7 million', status: 'sourced', sources: [41], match: ['44.9', '3.7', '1.9', '1.6', '1.5', '1.2'] },
+    { id: 'translation-throughput', kind: 'figure', label: 'Translation words per hour', value: '1,100 / 2,460', status: 'sourced', sources: [23], match: ['1,100', '2,460', '1,099', '2,461', '1,297', '1,329', '60%', '2.2x'] },
     { id: 'typeface-speed', kind: 'figure', label: 'Campaigns taking one to two months', value: '34%', status: 'sourced', sources: [27], match: ['34', '92', 'Typeface'] },
 
     // Rules and enforcement
