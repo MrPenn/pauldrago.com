@@ -219,128 +219,121 @@
         opts: ['Anyone asks anyone, and it all gets made', 'A request form, and everything is accepted', 'A form, and the library is checked first', 'A plan with capacity; triage can say no'],
         now: ['Work arrives from anywhere, and every request gets made.', 'Requests come through a form, and all of them are accepted.', 'Someone checks the library first, but the plan and the capacity are not connected.', 'Work comes from a plan with capacity behind it, and triage can close a request.'],
         moves: [
-          ['Put every request through one form with a requester, a date, and the audience it is for.', 'Keep the list of requests where the people who approve work can see it.'],
-          ['Before anything is made, have someone search the library and link what already exists to the request.', 'Count how many requests last quarter asked for something that already existed.'],
-          ['Give one person the authority to close a request as fulfilled when a usable asset exists.', 'Cap work in progress at what the slowest stage can take, and plan against that number.'],
+          [{ do: 'Put every request through one form that records who is asking, the date it is needed, and the audience it is for.', get: 'Every open request sits in one list with a due date, and you can decide what gets made first.' }, { do: 'Have whoever takes requests count them every month, including the ones never made, and share the count with the people who approve work.', get: 'You can set the monthly count against the team\u2019s hours and see whether requests run past what the team can make.' }],
+          [{ do: 'Before anything is made, have someone search the library for each request and link anything that already exists to it.', get: 'Some requests close the same day on an existing asset, at $25 of triage time in the calculator\u2019s example.' }, { do: 'Pull last quarter\u2019s requests and count how many asked for something the library already had.', get: 'You know how much of last quarter was rebuilt work, a number to show requesters when triage sends them to the library.' }],
+          [{ do: 'Give one named person at intake the authority to close a request as fulfilled when a usable asset exists, and log the reason each time.', get: 'Duplicate requests end at intake, and the reason log shows which regions keep pushing for new work.' }, { do: 'Cap work in progress at what the slowest stage can take, and plan each quarter against that number.', get: 'Work stops piling up in front of the slowest stage, and a request in the plan gets a date the team can keep.' }],
         ] },
       { id: 'create', group: 'stage', name: 'Creation', q: 'How are new assets made?',
         opts: ['From a blank page', 'By copying an old file', 'From templates, regulated parts typed in', 'Assembled from approved parts'],
         now: ['Every asset starts from a blank page.', 'New assets start as copies of old files, and the link to the original is lost.', 'Templates exist, but the regulated parts are typed in each time.', 'Assets are assembled from approved parts, and only the connective copy is new.'],
         moves: [
-          ['Build a template for the asset you make most often, with the brand and layout locked.', 'Keep finished files where the next person can find them.'],
-          ['Replace copying an old file with a template that pulls from the library, so the original stays linked.', 'Write down what a variant is: an image swap, a call to action, a market line.'],
-          ['Lock the regulated slots in each template and point them at approved components.', 'Move whichever you make most, the sell sheet or the sales deck, into a locked template.'],
+          [{ do: 'Build a template for the asset you make most often, with the brand and layout locked, and start every new one there.', get: 'The next piece of that kind starts with the layout finished, and design hours go into the copy and the image.' }, { do: 'Time the next five new pieces from brief to first draft, and write down the hours each one took.', get: 'You have your own hours for a new piece, the number that replaces the calculator\u2019s example of 8 hours.' }],
+          [{ do: 'Replace copying old files with a template that pulls from the library, so every new asset keeps a link to its original.', get: 'Designers start from the current approved version each time, and nobody copies last year\u2019s file with last year\u2019s rate.' }, { do: 'Write down in one paragraph what counts as a variant: an image swap, a call to action, a market line, nothing that touches an approved claim.', get: 'Small changes go down the variant lane, priced in the calculator\u2019s example at $257 against $1,800 for a new piece.' }],
+          [{ do: 'Lock the regulated slots in each template, the rate, the disclosure and the claim, and point them at approved components in the library.', get: 'Nobody retypes a rate or a disclosure, and a change to the approved component reaches every template that points at it.' }, { do: 'Count each month how many new pieces were built in a locked template and how many started somewhere else.', get: 'You see how much work still skips the templates, and which team or asset type to move next.' }],
         ] },
       { id: 'approve', group: 'stage', name: 'Approval', q: 'What does legal approve?',
         opts: ['Every piece and every variation, in full', 'Every piece, checked against approved claims', 'Approved parts once, then every new piece', 'Parts and templates once, then only changes'],
         now: ['Legal reads every piece and every variation in full.', 'Legal reads every piece in full, checking it against a list of approved claims.', 'Legal approves parts once, and still reads every new piece in full.', 'Legal approves parts and templates once, and reads only what changed after that.'],
         moves: [
-          ['List the claims, disclosures and rates legal approves most often, and keep each with its approver and date.', 'Send a variation to legal as the lines that changed, next to the approved piece it came from.'],
-          ['Have legal approve each of the 20 most-used components once, so it is approved in every asset that uses it.', 'Keep every approved component with its approver, its date and its expiry.'],
-          ['Pre-approve the templates and allowed combinations with legal, so review reads only what changed.', 'Agree with legal, in writing, which changes count as a variant.'],
+          [{ do: 'Have legal list the claims, disclosures and rates it approves most often, each with the approver\u2019s name and the approval date.', get: 'Writers start from wording legal has already cleared, and legal checks new copy against its own list.' }, { do: 'Send each variation to legal as a marked copy of the approved piece it came from, with only the changed lines highlighted.', get: 'Legal clears a variation by reading a handful of changed lines, and the approved piece stays on file as its parent.' }],
+          [{ do: 'Have legal approve each of the 20 most-used components once, so the approval carries into every asset that uses it.', get: 'Those 20 components drop out of every legal read, and review time goes to the new copy around them.' }, { do: 'Ask legal to log its review hours per piece for one month, split between rereading approved language and reading new copy.', get: 'You can show legal how much of its week goes to language it already approved, and pick the next components from that.' }],
+          [{ do: 'Have legal pre-approve each template and the combinations of components it allows, so a piece built inside it gets a read of what changed.', get: 'A piece built in a template gets one read of its new copy, the setup behind pharma\u2019s 1.3 review cycles per asset (Veeva).' }, { do: 'Write the rule for novel combinations with legal: triage flags anything off the approved list, and every assembled piece carries its builder\u2019s name.', get: 'Legal\u2019s first objection to reading only the changes has an answer, and a misleading combination traces back to one person.' }],
         ] },
       { id: 'review', group: 'stage', name: 'Review', q: 'How many review rounds does a typical asset take?',
         opts: ['Six or more', 'Four or five', 'Two or three', 'About one'],
         now: ['A typical asset goes through six or more review rounds.', 'A typical asset takes four or five rounds, around the marketing benchmark (Filestage: 4).', 'A typical asset takes two or three rounds.', 'A typical asset takes about one round, close to pharma\u2019s 1.3.'],
         moves: [
-          ['Put a deadline on every review and publish who is holding what.', 'Collect feedback in one round per reviewer group instead of passing the piece from one to the next.'],
-          ['Time-stamp every handoff to see how long work waits in front of each reviewer.', 'Send comments back as one list per round, with conflicts settled before they go.'],
-          ['Count rounds per asset every month, and name the reviewer group that adds the most.', 'Send variants through the variant lane, where review reads only what changed.'],
+          [{ do: 'Put a deadline on every review round, and publish a list each week of who is holding which piece.', get: 'The weekly list shows who has each piece and how late it is.' }, { do: 'Send each piece to everyone in a reviewer group at once, with one due date for all of their comments.', get: 'A round takes as long as the slowest reader in the group, and the writer revises once per group.' }],
+          [{ do: 'Have whoever routes reviews record the date each reviewer gets a piece and the date it comes back.', get: 'You can name the reviewer who holds pieces longest, with the dates to back it up.' }, { do: 'Send comments back to the writer as one list per round, with conflicts between reviewers settled before it goes.', get: 'The writer makes one set of changes per round, and fewer rounds go to reviewers undoing each other\u2019s edits.' }],
+          [{ do: 'Count review rounds per asset every month, and name the reviewer group that adds the most.', get: 'You see each month whether rounds are falling, and which reviewer group to work with next.' }, { do: 'Name one person on each piece who decides when review is done, so a late comment waits for the next version.', get: 'Pieces stop going around again for every late comment, and each one ships when its named person says it is done.' }],
         ] },
-      { id: 'local', group: 'stage', name: 'Localization', q: 'How does a market get its version?',
-        opts: ['The market rebuilds it', 'Translated, then rewritten outside the system', 'Translation memory, market reviews', 'Attached to components; markets own the law'],
-        now: ['Each market rebuilds the asset on its own.', 'Assets are translated word for word, and the market\u2019s rewrite never comes back into the system.', 'Translation memory is used, and the market reviews the result.', 'Translation is attached to components, and markets own the records that differ by law.'],
+      { id: 'local', group: 'stage', name: 'Translation', q: 'How does a Spanish or other-language version get made?', na: 'We only market in English',
+        opts: ['Each branch or team translates on its own', 'Sent out for translation, then edited outside the system', 'Translation memory, and a native speaker reviews it', 'Translations attached to approved components'],
+        now: ['Each branch or team gets its own translation, and none of them come back into the library.', 'Assets go out for translation, and the edits made afterward never come back into the system.', 'Translation memory is used, and a native speaker reviews the result.', 'Translations are attached to approved components and reused wherever the component runs.'],
         moves: [
-          ['Send markets the approved source with its translation, instead of letting them start over.', 'Record which markets have a version of each asset.'],
-          ['Get each market\u2019s final version back into the system as its own record.', 'For every regulated component, ask whether a market differs by language, by voice, or by law.'],
-          ['Make the components that differ by law separate records, owned by that market\u2019s legal team.', 'Connect translation to the components, so a translated component stays translated.'],
+          [{ do: 'Send every translation request through one queue, with the approved English asset attached.', get: 'Each language starts from approved copy, and you can see which assets already have a Spanish version before paying for another.' }, { do: 'Keep a list of which products you market in which language, and who made each version.', get: 'You can show which products you market in Spanish and which only in English, the gap CFPB examiners flagged as a fair lending risk in card marketing.' }],
+          [{ do: 'Get each final translation back into the library as its own record, linked to the English asset it came from.', get: 'The next translation reuses the wording that ran, about 2,460 words an hour against 1,100 from scratch in a 2015 study of ten translators.' }, { do: 'Add a notice, in each language you market in, of which services you offer in that language.', get: 'Customers know what help they can get in their language, which the CFPB\u2019s 2021 statement says may lower compliance risk.' }],
+          [{ do: 'Link every translated disclosure to its English original in the library.', get: 'When a customer asks for the English version, which Regulation DD and the NCUA rule require you to have, anyone can find it in a minute.' }, { do: 'Attach translations to the components in the library, so a translated claim or disclosure stays translated everywhere it is reused.', get: 'A translated disclosure is reviewed once, and every asset that reuses it carries the approved wording with no new read.' }],
         ] },
       { id: 'store', group: 'stage', name: 'Storage', q: 'Does each asset in your library record where it came from?',
         opts: ['There is no one library', 'There is a library, but nothing records it', 'Every upload has to name its parent', 'Parents are recorded automatically'],
         now: ['Assets live in drives and inboxes, and finding one means asking someone.', 'There is a library, but fields are optional and nothing records where an asset came from.', 'Uploads carry required fields, and every asset declares a parent.', 'Assets record their parts automatically, and search works by component, rights and expiry.'],
         moves: [
-          ['Pick one library and move the finished assets into it.', 'Pull an export and count the assets that shipped last year.'],
-          ['Make a parent field required at upload: every asset declares its parent, or declares that it is new.', 'Make the governance fields required from controlled lists, starting from FINRA 2210\u2019s: approver, dates of use, the source of every figure.'],
-          ['Build templates that reference components instead of copies, so the parent is recorded without anyone typing it.', 'Block publishing any regulated asset that has no parent.'],
+          [{ do: 'Pick one system as the library and have marketing ops move finished assets into it, starting with the products you market most.', get: 'Finding an asset stops depending on who you ask, and anyone can search one place before requesting something new.' }, { do: 'Pull an export from every drive and system that holds assets, and count the ones that shipped last year.', get: 'You learn how many assets shipped last year and how many places they sit in, which sizes the move into one library.' }],
+          [{ do: 'Make a parent field required at upload: every asset names the asset it came from, or is marked as new.', get: 'Your real share of assets with a parent on file replaces the calculator\u2019s example of 40 percent.' }, { do: 'Make the governance fields required from controlled lists, starting with FINRA 2210\u2019s: approver, dates of use, and the source of every figure.', get: 'When a statistic\u2019s source is updated, you can pull every asset that cites it and fix them in one pass.' }],
+          [{ do: 'Build templates that link to library components, so the parent is recorded when an asset is assembled and nobody types it in.', get: 'You can list every asset carrying a claim or rate, which 81 percent of life sciences companies Veeva surveyed in 2016 could not.' }, { do: 'Block publishing on any regulated asset that has no parent on record.', get: 'Every regulated piece that reaches a channel has a parent, and dark content in regulated work drops to zero.' }],
         ] },
       { id: 'deliver', group: 'stage', name: 'Delivery', q: 'How do assets reach the channels?',
         opts: ['Downloaded and uploaded again', 'Some channels pull from the library', 'Most channels pull by reference', 'Expire once, it stops everywhere'],
         now: ['Every channel gets its own downloaded copy.', 'Some channels pull from the library; the rest get copies.', 'Most channels pull approved assets by reference.', 'Channels pull by reference, and an expired asset stops rendering everywhere at once.'],
         moves: [
-          ['List every place an asset goes live, and who uploads it there.', 'Give every shipped asset an ID that follows it into each channel.'],
-          ['Connect the web and email to the library so they pull the approved version instead of a copy.', 'Send agencies and partners links to the approved version instead of files.'],
-          ['Serve assets through an approved-only delivery link, so expiring one pulls it everywhere.', 'Find the channels that still hold copies and move them to references, one at a time.'],
+          [{ do: 'List every place an asset goes live, including the website, email, branches, social and agencies, and who uploads it to each.', get: 'When something has to come down fast, you know every place it lives and who can pull it.' }, { do: 'Give every shipped asset an ID, and put it in the file name and metadata that travel into each channel.', get: 'You can match any copy found in a channel to its approved version and tell whether it is out of date.' }],
+          [{ do: 'Connect the website and email platform to the library, so pages and emails pull the current approved version straight from it.', get: 'One update in the library reaches every connected page and email, including the FDIC digital sign insured banks need online by April 1, 2027.' }, { do: 'Send agencies and partners a link to the approved version in the library on every job, and stop sending files.', get: 'Agencies always work from the current approved version, and a withdrawn asset leaves their hands the day you withdraw it.' }],
+          [{ do: 'Serve assets through an approved-only delivery link, so expiring an asset in the library pulls it from every channel at once.', get: 'An expired rate or offer comes down everywhere the same day, with no cleanup channel by channel.' }, { do: 'Find the channels that still hold downloaded copies, and connect them to the library one at a time, busiest channel first.', get: 'You can report each month how many channels still run copies, and the list shrinks until expiry reaches everywhere.' }],
         ] },
       { id: 'measure', group: 'stage', name: 'Measurement', q: 'How do you know how much of what you make gets used?',
         opts: ['We don\u2019t', 'We guess', 'We measured it once', 'We report it every month'],
         now: ['Nobody knows how much of what gets made is used.', 'There is a guess at how much gets used.', 'Use was measured once.', 'Use is reported every month.'],
         moves: [
-          ['Count the assets made last year and the ones anyone used. A rough ratio is enough to start.', 'Tag every shipped asset with an ID your analytics can read.'],
-          ['Compute a first dark content number: assets with no parent, times cost per asset.', 'Have finance build a fully loaded cost per asset. No public benchmark exists.'],
-          ['Report the dark content number and the reopen reasons every month to whoever funds the function.', 'Put reuse rate next to component performance, to see whether reused parts do as well as new ones.'],
+          [{ do: 'Pick twenty assets from last year, check whether each one ran in any channel, and write down the share that did.', get: 'You learn roughly how much of last year\u2019s work never ran, a share CreativeX put at 52 percent of core assets at large brands.' }, { do: 'Have the web and email teams report views and clicks by asset each month, using the asset\u2019s ID in the tracking tag.', get: 'You can say which assets people looked at, and stop remaking the ones that never drew a click.' }],
+          [{ do: 'Work out a first dark content number: assets with no parent on file, times a cost per asset.', get: 'Leadership sees the spend outside the system in dollars, the same math behind the article\u2019s $5.4 million example.' }, { do: 'Have finance build a fully loaded cost per asset: agency fees, internal hours, translation, review time and rework, divided by what shipped.', get: 'Your cost and reuse figures run on a number finance built and will stand behind in a budget meeting.' }],
+          [{ do: 'Report the dark content number and the reopen reasons every month to whoever funds the content function.', get: 'Whoever funds the work sees each month whether spend outside the system is falling, and why regions reopen requests.' }, { do: 'Put reuse rate next to component performance each month, to see whether reused parts do as well as new ones.', get: 'You can answer a region\u2019s claim that new work performs better with your own numbers.' }],
         ] },
       { id: 'owner', group: 'base', name: 'Ownership', q: 'Who owns the chain from end to end?',
         opts: ['Nobody; each team owns its stage', 'A coordinator, without authority', 'One owner, other stages out of reach', 'One owner who can change any stage'],
         now: ['Each team owns its own stage, and nobody owns the whole chain.', 'Someone tracks the chain but cannot change how any stage works.', 'One person owns the chain, but other teams\u2019 stages are out of reach.', 'One person owns the chain and can change any stage, with an executive behind them.'],
         moves: [
-          ['Map the chain by interviewing the people who do the work, with a timestamp at every handoff.', 'Name the stage with the longest queue in front of it.'],
-          ['Ask an executive to make one person accountable for the chain, from request to use.', 'Publish the map with the waiting times on it.'],
-          ['Get the executive to say, in front of the regions, that reuse is the default.', 'Each quarter, name the slowest stage again and choose the next fix against it.'],
+          [{ do: 'Map the chain by interviewing the people who do the work, and write down how long work waits at each handoff.', get: 'You have one picture of how work moves today, drawn from the people doing it, with the handoffs where it stalls.' }, { do: 'From the map, name the stage with the longest queue of work in front of it.', get: 'You know which stage to fix first, and you have the wait in days to make the case.' }],
+          [{ do: 'Ask an executive to name, in writing, one person accountable for the chain from request to use.', get: 'When a piece stalls anywhere, one person answers for it, from the request that sat to the review that ran late.' }, { do: 'Publish the map with the waiting times on it, and send it to every team in the chain.', get: 'Each team sees where its work waits on someone else, and arguments about who is slow start from one set of numbers.' }],
+          [{ do: 'Get the executive to say at the next regional meeting that reuse is the default, and that triage speaks for them.', get: 'When a region escalates over triage, the executive has already given the answer in public.' }, { do: 'Each quarter, have the owner name the slowest stage again and agree the next fix with that stage\u2019s head.', get: 'Each quarter\u2019s fix lands where work now waits longest, with the head of that stage already signed on.' }],
         ] },
       { id: 'records', group: 'base', name: 'Records and rights', q: 'If a regulator asked what a customer saw on a past date, how long would it take to show them?',
         opts: ['We could not show them', 'Weeks', 'Days', 'Minutes'],
         now: ['You could not show what a customer saw on a past date.', 'You could, after weeks of digging.', 'You could in days.', 'You could in minutes.'],
         moves: [
-          ['Keep every version that went live, with the dates it was live, not only the current one.', 'For email, keep what each recipient received, not only the template. H2C was fined for keeping one copy.'],
-          ['Record first and last use dates on every regulated asset, the dates FINRA 2210 asks broker-dealers to keep.', 'Put expiry dates and rights on every regulated component, with an owner who gets the notice.'],
-          ['Log which component versions went into each page or email when it was published.', 'Turn on native expiry so expired assets unpublish, and scope the rest with compliance.'],
+          [{ do: 'Have marketing ops keep every version that went live with the dates it was live, starting with rate and disclosure pages.', get: 'You can show what ran on any past date, with the ad copies Regulation DD asks a bank to keep for two years.' }, { do: 'For email, keep the version each recipient received, starting with your highest-volume campaign.', get: 'You keep the copy each recipient got, the record H2C Securities lacked when FINRA fined it $250,000 in 2024.' }],
+          [{ do: 'Add first-use and last-use dates to every regulated asset in the library, the dates FINRA 2210 asks broker-dealers to keep.', get: 'When a regulator asks when a piece ran, the answer is a lookup, and the weeks of digging stop.' }, { do: 'Put an expiry date and a rights owner on every regulated component, and have the library notify that owner before it lapses.', get: 'A named owner hears before a rate, offer or image license lapses, with time to renew it or pull it.' }],
+          [{ do: 'Have the publishing system log which component versions went into each page or email at the moment it goes live.', get: 'You can rebuild any past page or email from its log in minutes, down to the version of each disclosure.' }, { do: 'Turn on the library\u2019s built-in expiry, and agree with compliance who pulls the assets it cannot reach, like print and branch displays.', get: 'Print and branch displays, which the library cannot expire, each have a named person and a pull date on record.' }],
         ] },
       { id: 'systems', group: 'base', name: 'Systems', q: 'How does work move between your tools?',
         opts: ['By email and shared drives', 'Between separate tools, by hand', 'The workflow tool writes to the library', 'Every handoff is time-stamped'],
         now: ['Work moves by email and shared drives.', 'The tools are separate, and people move work between them by hand.', 'The workflow tool writes to the library.', 'Every handoff between tools is time-stamped automatically.'],
         moves: [
-          ['Put requests and approvals in one workflow tool, even a simple one.', 'List the tools work passes through, and who moves it between them.'],
-          ['Connect intake to the library so request fields become the asset\u2019s metadata.', 'Have the workflow tool record who approved what, and when.'],
-          ['Time-stamp every handoff automatically, so waiting becomes a measurement.', 'Report the waiting time in front of each stage every month.'],
+          [{ do: 'Put requests and approvals in one workflow tool, even a simple one, and stop taking requests by email.', get: 'Anyone can see where a request sits without asking, and every request has a status.' }, { do: 'List every tool work passes through from request to publish, and who moves it from one to the next.', get: 'You can see each place a person carries work between tools by hand, the handoffs to connect first.' }],
+          [{ do: 'Connect the intake form to the library, so the fields a requester fills in become the new asset\u2019s metadata.', get: 'New assets arrive already tagged with product, audience and requester, and search works on them from day one.' }, { do: 'Have the workflow tool record who approved each piece and when, on the piece\u2019s own record.', get: 'Who approved any piece, and on what date, sits on its record, and nobody searches old email to prove it.' }],
+          [{ do: 'Have the tools time-stamp every handoff automatically, so the wait in front of each stage becomes a measurement.', get: 'The system tracks every wait between stages, which the postcard executive could only do by sitting in every meeting.' }, { do: 'Once the tools show where every piece is, retire the status spreadsheet and the weekly status meeting.', get: 'The hours spent reporting status go back to the work, and the status everyone sees is current.' }],
         ] },
       { id: 'ai', group: 'base', name: 'Generative AI', q: 'Where does generative AI make content today?',
         opts: ['Wherever people like', 'One-off pieces', 'Drafts inside templates', 'Variants from approved parts only'],
         now: ['AI is used however people like.', 'AI makes one-off pieces, and each one goes through full review.', 'AI drafts inside templates.', 'AI assembles variants only from approved parts.'],
         moves: [
-          ['Write down where AI may and may not be used, starting with regulated copy.', 'Keep AI away from any field that decides approval, jurisdiction or rights.'],
-          ['Move AI from one-off pieces into templates with the brand and layout locked.', 'Count the AI pieces that went through full review last quarter.'],
-          ['Point generation at the approved components, so it assembles from approved parts.', 'Send AI variants down the variant lane, where review reads only what changed.'],
+          [{ do: 'Write a one-page rule with legal on where AI may and may not be used, starting with rates, disclosures and other regulated copy.', get: 'Staff know which uses of AI are allowed, and legal knows where generated copy could show up in regulated work.' }, { do: 'Keep AI out of any field that decides approval or rights, such as the approver, the market or the expiry date.', get: 'A named person makes every approval, market and rights call, and the record shows who.' }],
+          [{ do: 'Move AI from one-off pieces into templates with the brand and layout locked, so generation fills slots in an approved design.', get: 'AI output arrives in the approved layout, so reviewers check the words and skip the brand check.' }, { do: 'Count the AI-made pieces that went through full review last quarter, and the reviewer hours they took.', get: 'You can put a review-hours cost on one-off AI work, the sign-off struggle 88 percent of marketing leaders reported to Typeface in 2026.' }],
+          [{ do: 'Point generation at the approved components in the library, so AI assembles from approved parts and writes only the sentences that join them.', get: 'AI can work on regulated products, because every claim and disclosure in its draft was approved before it ran.' }, { do: 'Record each AI variant in the library with its parent asset and the components it used.', get: 'Each AI variant expires with its parent, so it comes down the day the offer it was built on ends.' }],
         ] },
     ];
-    var PROFILE = [
-      { id: 'inst', name: 'Institution', q: 'Are you a bank or a credit union, and do you have a broker-dealer or investment adviser arm?',
-        opts: ['Bank, no broker-dealer or adviser arm', 'Bank with a broker-dealer or adviser arm', 'Credit union, no broker-dealer or adviser arm', 'Credit union with a broker-dealer or adviser arm'] },
-      { id: 'reach', name: 'Markets', q: 'Where does your marketing run, and in which languages?',
-        opts: ['The US, in English only', 'The US, in English and Spanish', 'The US, in several languages', 'More than one country'] },
-    ];
+    var PROFILE = [];
     var STEPS = PROFILE.concat(LINKS);
     var byId = {};
     STEPS.forEach(function (S) { byId[S.id] = S; });
     var stages = LINKS.filter(function (L) { return L.group === 'stage'; });
     var base = LINKS.filter(function (L) { return L.group === 'base'; });
-    var INTRO = 'Two questions about your institution, then one about each link in your content chain. Pick an answer and the next question appears. At the end you get a report with where each link stands, what to work on next, and the rules that apply to you.';
+    var INTRO = 'One question about each of the twelve links in your content chain. Pick an answer and the next question appears. At the end you get the next things to work on, what each one gets you, and where each link stands.';
     var WORDS = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    var ans = {}, cur = 0, mode = 'q', changeId = null, changeFrom = null, prevReach = null;
+    var ans = {}, cur = 0, mode = 'q', changeId = null, changeFrom = null;
     var viaPointer = false, wasChecked = false, pending = null, started = false, reported = false;
     var leadMin = 0, cardMin = 0, rowMin = {}, reserve = 0, tallest = 0;
 
     function hgt(el) { return el.getBoundingClientRect().height; }
     function track(name, props) { try { if (window.posthog && window.posthog.capture) window.posthog.capture(name, props || {}); } catch (e) { /* analytics is optional */ } }
     function isNum(v) { return typeof v === 'number'; }
-    function asked(id) { return id !== 'local' || ans.reach !== 0; }
-    function nextStep(i) { for (var j = i + 1; j < STEPS.length; j++) if (asked(STEPS[j].id)) return j; return -1; }
-    function prevStep(i) { for (var j = i - 1; j >= 0; j--) if (asked(STEPS[j].id)) return j; return -1; }
+    function answered(v) { return isNum(v) || v === 'na'; }
+    function nextStep(i) { return i + 1 < STEPS.length ? i + 1 : -1; }
+    function prevStep(i) { return i - 1; }
     function eyebrow(S) {
-      var i = PROFILE.indexOf(S);
-      if (i >= 0) return 'About you, ' + (i + 1) + ' of 2';
-      i = stages.indexOf(S);
+      var i = stages.indexOf(S);
       if (i >= 0) return 'How work moves, ' + (i + 1) + ' of ' + stages.length;
       return 'What holds it up, ' + (base.indexOf(S) + 1) + ' of ' + base.length;
     }
@@ -360,7 +353,7 @@
     /* ---- The chain and the question card */
     function linkCls(L, currentId, weakMin) {
       var v = ans[L.id], c = '';
-      if (!asked(L.id) || v === 'skip') c += ' is-skipped';
+      if (v === 'skip' || v === 'na') c += ' is-skipped';
       else if (!isNum(v)) c += ' is-blank';
       if (L.id === currentId) c += ' is-current';
       if (weakMin != null && weakMin < 3 && v === weakMin) c += ' is-weak';
@@ -375,13 +368,13 @@
     }
     function answerText(S) {
       var v = ans[S.id];
-      if (!asked(S.id)) return 'Not asked';
+      if (v === 'na') return esc(S.na);
       if (v === 'skip') return 'Skipped';
       return isNum(v) ? esc(S.opts[v]) : '';
     }
     function answersHtml(currentId) {
       return '<div class="cd-focus-answers"><h3>Your answers</h3><ol>' + STEPS.map(function (S) {
-        var filled = isNum(ans[S.id]) || ans[S.id] === 'skip' || !asked(S.id);
+        var filled = answered(ans[S.id]) || ans[S.id] === 'skip';
         return '<li data-row="' + S.id + '"' + (S.id === currentId ? ' class="is-current" aria-current="step"' : '') + (filled ? '' : ' data-empty') +
           '><b>' + S.name + '</b> <span>' + answerText(S) + '</span></li>';
       }).join('') + '</ol></div>';
@@ -391,12 +384,12 @@
       var opts = S.opts.map(function (o, k) {
         var id = 'cd-focus-' + S.id + '-' + k;
         return '<label class="cd-opt" for="' + id + '"><input type="radio" id="' + id + '" name="cd-focus-' + S.id + '" value="' + k + '"' + (v === k ? ' checked' : '') + '><span>' + esc(o) + '</span></label>';
-      }).join('');
+      }).join('') + (S.na ? '<label class="cd-opt is-na" for="cd-focus-' + S.id + '-na"><input type="radio" id="cd-focus-' + S.id + '-na" name="cd-focus-' + S.id + '" value="na"' + (v === 'na' ? ' checked' : '') + '><span>' + esc(S.na) + '</span></label>' : '');
       var controls = isChange
         ? '<span class="cd-focus-spacer"></span><button type="button" class="cd-btn is-primary" data-act="done">Back to report</button>'
         : '<button type="button" class="cd-btn" data-act="back"' + (prevStep(i) < 0 ? ' hidden' : '') + '>Back</button><span class="cd-focus-spacer"></span>' +
           '<button type="button" class="cd-link-btn" data-act="skip">Skip</button>' +
-          '<button type="button" class="cd-btn is-primary" data-act="next"' + (isNum(v) ? '' : ' aria-disabled="true"') + '>' + (nextStep(i) < 0 ? 'See your report' : 'Next') + '</button>';
+          '<button type="button" class="cd-btn is-primary" data-act="next"' + (answered(v) ? '' : ' aria-disabled="true"') + '>' + (nextStep(i) < 0 ? 'See your report' : 'Next') + '</button>';
       return '<div class="cd-focus-card"><fieldset class="cd-focus-q"><legend><span class="cd-focus-eyebrow">' + eyebrow(S) + '</span><b>' + S.name + '.</b> ' + esc(S.q) + '</legend>' +
         '<div class="cd-focus-opts">' + opts + '</div></fieldset><div class="cd-focus-controls">' + controls + '</div><p class="cd-focus-msg" role="status"></p></div>';
     }
@@ -415,20 +408,23 @@
 
     /* ---- The report */
     function compute() {
-      var ask = LINKS.filter(function (L) { return asked(L.id); });
+      var ask = LINKS.filter(function (L) { return ans[L.id] !== 'na'; });
       var answered = ask.filter(function (L) { return isNum(ans[L.id]); });
       var order = answered.filter(function (L) { return ans[L.id] < 3; }).sort(function (a, b) {
         return ans[a.id] - ans[b.id] || (a.group === b.group ? 0 : a.group === 'base' ? -1 : 1) || LINKS.indexOf(a) - LINKS.indexOf(b);
       });
       var picks = [];
       [0, 1].forEach(function (k) {
-        order.forEach(function (L) { if (picks.length < 5) picks.push({ name: L.name, text: L.moves[ans[L.id]][k] }); });
+        order.forEach(function (L) {
+          var m = L.moves[ans[L.id]][k];
+          if (typeof m === 'string') m = { do: m, get: '' };
+          if (picks.length < 5) picks.push({ name: L.name, do: m.do, get: m.get });
+        });
       });
       var min = answered.length ? Math.min.apply(null, answered.map(function (L) { return ans[L.id]; })) : null;
       var notAns = [];
-      PROFILE.forEach(function (S) { if (ans[S.id] === 'skip') notAns.push({ S: S, text: 'Skipped.', change: S.id }); });
       ask.forEach(function (L) { if (!isNum(ans[L.id])) notAns.push({ S: L, text: ans[L.id] === 'skip' ? 'Skipped.' : 'Not answered.', change: L.id }); });
-      if (!asked('local')) notAns.push({ S: byId.local, text: 'Not asked, because your marketing runs in the US in English only.', change: 'reach' });
+      if (ans.local === 'na') notAns.push({ S: byId.local, text: 'Not needed: you only market in English.', change: 'local' });
       return {
         ask: ask, answered: answered, picks: picks, min: min, notAns: notAns,
         startHere: order.slice(0, 5), afterThat: order.slice(5),
@@ -450,32 +446,6 @@
       if (!r.picks.length) return 'What to keep doing';
       return 'The next ' + (r.picks.length === 1 ? 'thing' : WORDS[r.picks.length] + ' things') + ' to work on';
     }
-    // What the rules ask, restated from "The regulator's question" and notes 15 to 18. If the article's
-    // rules text or the FDIC date changes, change these sentences in the same pass.
-    function rules() {
-      var inst = ans.inst, bank = inst === 0 || inst === 1, cu = inst === 2 || inst === 3, arm = inst === 1 || inst === 3;
-      var head = ['What the rules ask of a bank', 'What the rules ask of a bank with a broker-dealer or adviser arm', 'What the rules ask of a credit union', 'What the rules ask of a credit union with a broker-dealer or adviser arm'][inst] || 'What the rules ask';
-      var t = ['A regulator can pick a past date and ask what a customer saw on it.'];
-      if (bank) t.push('Regulation DD asks you to keep copies of your advertisements for two years and to be able to reconstruct the required disclosures.');
-      if (bank && new Date() < new Date(2027, 3, 1)) t.push('Insured banks have until April 1, 2027 to put the FDIC\u2019s digital sign on their websites and apps. A sign that repeats across a site and an app is a component: approved once, placed everywhere, with the date it took effect.');
-      if (cu) t.push('Credit unions sit outside Regulation DD and follow the NCUA\u2019s version, Part 707.');
-      if (!bank && !cu) t.push('Banks work under Regulation DD, which asks for copies of advertisements for two years and the ability to reconstruct the required disclosures. Credit unions follow the NCUA\u2019s version, Part 707.');
-      if (arm) t.push('If your arm is a broker-dealer, it answers to FINRA Rule 2210: every retail communication kept for three years, with a copy, the dates of first and last use, the approving principal\u2019s name and the date they approved it, and the source of any statistic. If it is an investment adviser, it keeps a copy of each advertisement for five years from its last use.');
-      t.push('Regulation Z exempts advertising from its retention rule, so proving what an ad said rests on your own records.');
-      t.push('In 2024 FINRA fined H2C Securities $250,000 for failing to preserve 1.25 million communications, mostly mass marketing emails. The firm kept one copy of many of them and did not keep the message each customer received.');
-      return { head: head, items: t };
-    }
-    // slop-ok: x-not-y-contrast (Paul chose this line, 2026-09-24)
-    var LEGAL = 'This is a summary of the rules the article cites, not legal advice.';
-    // Languages, restated from "Jurisdiction, language, and voice" and note 38.
-    function languages() {
-      var CFPB = 'The CFPB\u2019s 2021 statement on customers with limited English suggests a notice, ';
-      var ASK = 'For each component, ask whether a version differs because of language, because of voice, or because of law.';
-      if (ans.reach === 1) return { head: 'Marketing in English and Spanish', text: 'US compliance owns the disclosures in English and in Spanish. Voice belongs to the branches that know the customers. ' + CFPB + 'in Spanish, of the extent and limits of any language services you offer. ' + ASK };
-      if (ans.reach === 2) return { head: 'Marketing in several languages', text: 'US compliance owns the disclosures in every language you market in. Voice belongs to the branches that know the customers. ' + CFPB + 'in each of those languages, of the extent and limits of any language services you offer. ' + ASK };
-      if (ans.reach === 3) return { head: 'Marketing in more than one country', text: 'A market whose law differs gets its own record, owned by that market\u2019s legal team, with its own version history. Group legal reads it for brand and enterprise risk. ' + ASK + ' If you also market in Spanish or other languages in the US, ' + 'the' + CFPB.slice(3) + 'in those languages, of the extent and limits of any language services you offer.' };
-      return null;
-    }
     function changeBtn(id, print) {
       return print ? '' : '<button type="button" class="cd-link-btn" data-change="' + id + '" aria-label="Change your ' + byId[id].name + ' answer">Change</button>';
     }
@@ -488,18 +458,18 @@
     }
     function reportHtml(r, print) {
       var now = function (cls) { return function (L) { return rowHtml(L, esc(L.now[ans[L.id]]), cls, L.id, print); }; };
-      var stand = '<section class="cd-rep-stand"><h3>Where you stand</h3>' +
+      var next = !r.answered.length ? '' : '<section class="cd-rep-next"><h3>' + nextHeading(r) + '</h3>' + (r.picks.length
+        ? '<ol>' + r.picks.map(function (p) {
+          return '<li><p class="cd-rep-link">' + p.name + '</p><p class="cd-rep-do">' + esc(p.do) + '</p>' +
+            (p.get ? '<p class="cd-rep-get"><b>What you get</b> ' + esc(p.get) + '</p>' : '') + '</li>';
+        }).join('') + '</ol>'
+        : '<p class="cd-rep-keep">Read the numbers every month, and name the slowest stage again each quarter.</p>') + '</section>';
+      var stand = '<details class="cd-rep-stand"' + (print || !r.answered.length ? ' open' : '') + '><summary>Where each link stands</summary>' +
         group('Start here', 'is-start', r.startHere.map(now('is-weak'))) +
         group('After that', '', r.afterThat.map(now(''))) +
         group('Holding', '', r.holding.map(now(''))) +
-        group('Not answered', '', r.notAns.map(function (x) { return rowHtml(x.S, x.text, '', x.change, print); })) + '</section>';
-      var next = !r.answered.length ? '' : '<section class="cd-rep-next"><h3>' + nextHeading(r) + '</h3>' + (r.picks.length
-        ? '<ol>' + r.picks.map(function (p) { return '<li><b>' + p.name + '</b> ' + esc(p.text) + '</li>'; }).join('') + '</ol>'
-        : '<p>Read the numbers every month, and name the slowest stage again each quarter.</p>') + '</section>';
-      var ru = rules(), la = languages();
-      var law = '<section class="cd-rep-rules"><div class="cd-rep-head"><h3>' + ru.head + '</h3>' + changeBtn('inst', print) + '</div><ul>' + ru.items.map(function (x) { return '<li>' + esc(x) + '</li>'; }).join('') + '</ul><p class="cd-rep-legal">' + LEGAL + '</p></section>';
-      var lang = la ? '<section class="cd-rep-lang"><div class="cd-rep-head"><h3>' + la.head + '</h3>' + changeBtn('reach', print) + '</div><p>' + esc(la.text) + '</p></section>' : '';
-      return '<div class="cd-focus-report"><div class="cd-rep-col">' + stand + '</div><div class="cd-rep-col">' + next + law + lang + '</div></div>';
+        group('Not answered', '', r.notAns.map(function (x) { return rowHtml(x.S, x.text, '', x.change, print); })) + '</details>';
+      return '<div class="cd-focus-report">' + next + stand + '</div>';
     }
     var ACTIONS = '<div class="cd-rep-actions"><button type="button" class="cd-btn" data-act="print">Print or save as PDF</button>' +
       '<button type="button" class="cd-btn" data-act="copy">Copy as text</button><button type="button" class="cd-link-btn" data-act="restart">Start over</button>' +
@@ -564,21 +534,16 @@
       if (!pending) pending = setTimeout(advance, 250);
     }
     function openChange(id) {
-      mode = 'change'; changeId = id; changeFrom = ans[id]; prevReach = ans.reach;
+      mode = 'change'; changeId = id; changeFrom = ans[id];
       swap(function () { renderQ(byId[id], true); hold(); bring(main.querySelector('.cd-focus-card'), 'start'); focusRadio(); });
     }
     function finishChange() {
       var id = changeId;
-      // Moving off English only makes Localization askable; ask it before going back.
-      if (id === 'reach' && prevReach === 0 && asked('local') && ans.local === undefined) {
-        changeId = 'local'; changeFrom = undefined; prevReach = null;
-        swap(function () { renderQ(byId.local, true); hold(); focusRadio(); });
-        return;
-      }
       if (ans[id] !== changeFrom) track('content_chain_answer_changed');
       mode = 'report'; changeId = null;
       swap(function () {
         renderReport(); hold();
+        var d = main.querySelector('details.cd-rep-stand'); if (d) d.open = true;
         var b = main.querySelector('[data-change="' + id + '"]') || main.querySelector('[data-change]');
         if (b) { b.focus({ preventScroll: true }); bring(b, 'center'); }
       });
@@ -608,7 +573,13 @@
       window.print();
     }
     function reportText() {
-      var r = compute(), out = ['Your content chain', headline(r, false), r.answered.length + ' of ' + r.ask.length + ' answered.', '', 'Where you stand'];
+      var r = compute(), out = ['Your content chain', headline(r, false), r.answered.length + ' of ' + r.ask.length + ' answered.'];
+      if (r.answered.length) {
+        out.push('', nextHeading(r));
+        if (r.picks.length) r.picks.forEach(function (p, i) { out.push((i + 1) + '. ' + p.name + ': ' + p.do); if (p.get) out.push('   What you get: ' + p.get); });
+        else out.push('Read the numbers every month, and name the slowest stage again each quarter.');
+      }
+      out.push('', 'Where each link stands');
       [['Start here', r.startHere], ['After that', r.afterThat], ['Holding', r.holding]].forEach(function (g) {
         if (!g[1].length) return;
         out.push(g[0]);
@@ -618,16 +589,6 @@
         out.push('Not answered');
         r.notAns.forEach(function (x) { out.push('- ' + x.S.name + ': ' + x.text); });
       }
-      if (r.answered.length) {
-        out.push('', nextHeading(r));
-        if (r.picks.length) r.picks.forEach(function (p, i) { out.push((i + 1) + '. ' + p.name + ': ' + p.text); });
-        else out.push('Read the numbers every month, and name the slowest stage again each quarter.');
-      }
-      var ru = rules(), la = languages();
-      out.push('', ru.head);
-      ru.items.forEach(function (x) { out.push('- ' + x); });
-      out.push(LEGAL);
-      if (la) out.push('', la.head, la.text);
       out.push('', sourceLine());
       return out.join('\n').replace(/[\u2018\u2019]/g, "'").replace(/[\u201c\u201d]/g, '"');
     }
@@ -669,7 +630,7 @@
         function () { return 0; }, function () { return 1; }, function () { return 2; },
         function (i) { return i % 2 ? 3 : 0; }, function (i) { return i ? 'skip' : 0; },
       ];
-      function synth(fill) { ans = { inst: 1, reach: 3 }; LINKS.forEach(function (L, i) { ans[L.id] = fill(i); }); }
+      function synth(fill) { ans = {}; LINKS.forEach(function (L, i) { ans[L.id] = fill(i); }); }
       // Every state is laid out once in a hidden copy and measured together, so measuring never
       // holds up the page. Copies carry no ids or radio names, so they touch nothing real.
       function inert(s) { return s.replace(/ (id|for|name)="/g, ' data-p$1="'); }
@@ -686,7 +647,6 @@
       [0, 1, 2, 3].forEach(function (k) {
         ans = {};
         STEPS.forEach(function (S) { ans[S.id] = k; });
-        ans.reach = k || 1;
         rows += answersHtml(null);
       });
       probe.innerHTML = inert(leads + '<div class="cd-focus-main">' + cards + rows + '</div>');
@@ -738,13 +698,13 @@
     main.addEventListener('keydown', function (e) {
       viaPointer = false;
       if (e.key !== 'Enter' || !e.target.matches || !e.target.matches('.cd-opt input')) return;
-      if (isNum(ans[e.target.name.replace('cd-focus-', '')])) { e.preventDefault(); advance(); }
+      if (answered(ans[e.target.name.replace('cd-focus-', '')])) { e.preventDefault(); advance(); }
     });
     main.addEventListener('change', function (e) {
       var t = e.target;
       if (!t.matches || !t.matches('.cd-opt input')) return;
       var id = t.name.replace('cd-focus-', '');
-      ans[id] = +t.value;
+      ans[id] = t.value === 'na' ? 'na' : +t.value;
       if (!started) { started = true; track('content_chain_started'); }
       chain.innerHTML = chainHtml(id, null);
       var rows = main.querySelector('.cd-focus-answers');
@@ -921,7 +881,7 @@
       'most-stages-are-never-measured': 'Most stages are never measured', 'content-is-data': 'Content is data',
       'pharma-already-runs-it-this-way': 'Pharma runs it this way', 'content-with-no-parent-costs-money-and-invites-fines': 'No parent costs money',
       'dark-content': 'Dark content', 'the-regulators-question': 'The regulator\u2019s question', 'reuse-is-the-default': 'Reuse is the default',
-      'jurisdiction-language-and-voice': 'Jurisdiction and language', 'review-reads-the-diff': 'Review reads the diff',
+      'language-and-voice': 'Language and voice', 'review-reads-the-diff': 'Review reads the diff',
       'buy-generation-last': 'Buy generation last', 'about-the-numbers': 'About the numbers', sources: 'Sources',
     };
     var TABS = [
