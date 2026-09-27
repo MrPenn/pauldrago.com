@@ -40,7 +40,7 @@ const H = heading;
     <iframe src={`/ui/frame/${frameId}`} title={`${component.name} example: ${story.name}`} loading={live ? 'eager' : 'lazy'} data-live={live ? '' : undefined} data-initial-width={story.steps ? '1280' : undefined}></iframe>
   </div>
   <div class="ui-code">
-    <div class="ui-code-head">
+    <div class="label ui-code-head">
       <span>{LANG[lang]}</span>
       <button type="button" class="ui-link-btn" data-copy={codeId}>Copy</button>
       <span class="ui-copy-msg" role="status"></span>

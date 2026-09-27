@@ -31,20 +31,20 @@ She could not sit in every meeting for every postcard, and she did not have to. 
 <figure class="pd-figure pd-stack" data-pd="build" aria-label="Time to ship the same holiday postcard: two to three months from a blank page, two weeks with the executive in every meeting, and under two weeks once componentized, which held for two to three years.">
   <p class="pd-eyebrow">The same postcard, three times</p>
   <div class="pd-stack-bar" data-at="1">
-    <div class="pd-stack-head"><span class="pd-stack-name">Every card<small class="pd-stack-what">From a blank page, through every queue</small></span><span class="pd-stack-val">two to three months</span></div>
+    <div class="pd-stack-head"><span class="label">Every card<small class="pd-stack-what">From a blank page, through every queue</small></span><span class="pd-num is-s">two to three months</span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="1" data-value="8.5" style="left:0.0%;width:58.4%"></div>
       <div class="pd-seg-range" data-at="1" data-to="13" style="left:58.4%;width:30.9%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="2">
-    <div class="pd-stack-head"><span class="pd-stack-name">The executive in the room<small class="pd-stack-what">Same people, same tools; nothing bought, nobody hired</small></span><span class="pd-stack-val">two weeks</span></div>
+    <div class="pd-stack-head"><span class="label">The executive in the room<small class="pd-stack-what">Same people, same tools; nothing bought, nobody hired</small></span><span class="pd-num is-s">two weeks</span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="2" data-value="2" style="left:0.0%;width:13.7%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="3">
-    <div class="pd-stack-head"><span class="pd-stack-name">Componentized<small class="pd-stack-what">Held for the next two to three years, nobody senior in the room</small></span><span class="pd-stack-val">under two weeks</span></div>
+    <div class="pd-stack-head"><span class="label">Componentized<small class="pd-stack-what">Held for the next two to three years, nobody senior in the room</small></span><span class="pd-num is-s">under two weeks</span></div>
     <div class="pd-stack-track">
       <div class="pd-seg is-accent" data-at="3" data-value="2" style="left:0.0%;width:13.7%"></div>
     </div>
@@ -72,27 +72,27 @@ You will also see "<data value="c:folklore-60-70">60 to 70 percent of B2B conten
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">Content that goes unused</p>
-  <div class="pd-stack-lead"><span class="pd-stack-sub">Share of each source's content</span></div>
+  <p class="pd-stack-sub">Share of each source's content</p>
   <div class="pd-stack-bar" data-at="1">
-    <div class="pd-stack-head"><span class="pd-stack-name">CreativeX<small class="pd-stack-what">Core assets never activated, consumer brands, 2023</small></span><span class="pd-stack-val"><data value="c:creativex-unactivated">52%</data></span></div>
+    <div class="pd-stack-head"><span class="label">CreativeX<small class="pd-stack-what">Core assets never activated, consumer brands, 2023</small></span><span class="pd-num is-s"><data value="c:creativex-unactivated">52%</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg is-accent" data-at="1" data-value="52" style="left:0.0%;width:52.0%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="2">
-    <div class="pd-stack-head"><span class="pd-stack-name">Veeva<small class="pd-stack-what">Pharma field content rarely or never used, 2022</small></span><span class="pd-stack-val"><data value="c:veeva-unused">77%</data></span></div>
+    <div class="pd-stack-head"><span class="label">Veeva<small class="pd-stack-what">Pharma field content rarely or never used, 2022</small></span><span class="pd-num is-s"><data value="c:veeva-unused">77%</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="2" data-value="77" style="left:0.0%;width:77.0%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="3">
-    <div class="pd-stack-head"><span class="pd-stack-name">Veeva<small class="pd-stack-what">The same measure, 2025</small></span><span class="pd-stack-val"><data value="c:veeva-unused">nearly 80%</data></span></div>
+    <div class="pd-stack-head"><span class="label">Veeva<small class="pd-stack-what">The same measure, 2025</small></span><span class="pd-num is-s"><data value="c:veeva-unused">nearly 80%</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="3" data-value="80" style="left:0.0%;width:80.0%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="4">
-    <div class="pd-stack-head"><span class="pd-stack-name">SiriusDecisions<small class="pd-stack-what">B2B content unused, a 2013 remark with no method published</small></span><span class="pd-stack-val"><data value="c:folklore-60-70">60 to 70%</data></span></div>
+    <div class="pd-stack-head"><span class="label">SiriusDecisions<small class="pd-stack-what">B2B content unused, a 2013 remark with no method published</small></span><span class="pd-num is-s"><data value="c:folklore-60-70">60 to 70%</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg is-outline" data-at="4" data-value="60" style="left:0.0%;width:60.0%"></div>
       <div class="pd-seg-range" data-at="4" data-to="70" style="left:60.0%;width:10.0%"></div>
@@ -129,21 +129,21 @@ Pharmaceutical promotion goes through medical, legal, and regulatory review, cal
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">Review rounds per asset</p>
-  <div class="pd-stack-lead"><span class="pd-stack-sub">Pharma counts review cycles; marketing tools count versions sent for review</span></div>
+  <p class="pd-stack-sub">Pharma counts review cycles; marketing tools count versions sent for review</p>
   <div class="pd-stack-bar" data-at="1">
-    <div class="pd-stack-head"><span class="pd-stack-name">Pharma<small class="pd-stack-what">MLR review cycles, 350+ life sciences companies</small></span><span class="pd-stack-val"><data value="c:veeva-review-cycles">1.3</data> cycles</span></div>
+    <div class="pd-stack-head"><span class="label">Pharma<small class="pd-stack-what">MLR review cycles, 350+ life sciences companies</small></span><span class="pd-num is-s"><data value="c:veeva-review-cycles">1.3</data> cycles</span></div>
     <div class="pd-stack-track">
       <div class="pd-seg is-accent" data-at="1" data-value="1.3" style="left:0.0%;width:23.2%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="2">
-    <div class="pd-stack-head"><span class="pd-stack-name">Marketing, Filestage<small class="pd-stack-what">Versions before approval, proofing platform users</small></span><span class="pd-stack-val"><data value="c:review-versions">4 versions</data></span></div>
+    <div class="pd-stack-head"><span class="label">Marketing, Filestage<small class="pd-stack-what">Versions before approval, proofing platform users</small></span><span class="pd-num is-s"><data value="c:review-versions">4 versions</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="2" data-value="4" style="left:0.0%;width:71.4%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="3">
-    <div class="pd-stack-head"><span class="pd-stack-name">Marketing, Ziflow<small class="pd-stack-what">Versions most respondents report</small></span><span class="pd-stack-val"><data value="c:review-versions">3 to 5</data></span></div>
+    <div class="pd-stack-head"><span class="label">Marketing, Ziflow<small class="pd-stack-what">Versions most respondents report</small></span><span class="pd-num is-s"><data value="c:review-versions">3 to 5</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="3" data-value="3" style="left:0.0%;width:53.6%"></div>
       <div class="pd-seg-range" data-at="3" data-to="5" style="left:53.6%;width:35.7%"></div>
@@ -178,7 +178,7 @@ Fully loaded cost per asset, with agency fees, internal hours, translation, revi
 
 <figure class="pd-figure">
 <div class="pd-ledger">
-  <div class="pd-ledger-row pd-ledger-total"><span class="pd-ledger-label">A year outside the system <span class="pd-ledger-src"><data value="c:worked-assets">5,000</data> assets x <data value="c:worked-lineage">60%</data> with no parent x <data value="c:worked-cost">$1,800</data></span></span><span class="pd-ledger-value"><data value="c:dark-content-cost">$5.4 million</data></span></div>
+  <div class="pd-ledger-row pd-ledger-total"><span class="pd-ledger-label">A year outside the system <span class="pd-ledger-src"><data value="c:worked-assets">5,000</data> assets x <data value="c:worked-lineage">60%</data> with no parent x <data value="c:worked-cost">$1,800</data></span></span><span class="pd-num is-l pd-ledger-value"><data value="c:dark-content-cost">$5.4 million</data></span></div>
 </div>
 <figcaption>Two of the three inputs are placeholders: lineage coverage, informed by CreativeX and Veeva, and cost per asset, which is yours to replace. Asset volume is from Adobe's 2025 survey.</figcaption>
 </figure>
@@ -189,66 +189,66 @@ Fully loaded cost per asset, with agency fees, internal hours, translation, revi
     <p class="pd-calc-lede">The fields hold this article's example numbers. Type over any of them and the prices and the total below recalculate.</p>
   </div>
   <div class="pd-calc-inputs">
-    <label class="pd-field"><span class="pd-field-label">How many assets do you ship a year?</span><span class="pd-input-wrap"><input class="pd-input" data-var="assets" type="number" inputmode="decimal" value="5000" min="0" step="100"></span><span class="pd-field-src">Example. Adobe found 70 percent of organizations produce 1,000 or more a year.</span></label>
-    <label class="pd-field"><span class="pd-field-label">What percent of assets have a parent on file?</span><span class="pd-input-wrap"><input class="pd-input" data-var="lineage" type="number" inputmode="decimal" value="40" min="0" step="5"><span class="pd-affix">%</span></span><span class="pd-field-src">Example. A parent is what it was built from. A new asset counts if marked new.</span></label>
-    <label class="pd-field"><span class="pd-field-label">What does an hour of staff time cost?</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" data-var="rate" type="number" inputmode="decimal" value="75" min="0" step="5"></span><span class="pd-field-src">Example. Pay, benefits and overhead, or your agency's hourly rate.</span></label>
-    <label class="pd-field"><span class="pd-field-label">How many hours to make a new piece?</span><span class="pd-input-wrap"><input class="pd-input" data-var="create" type="number" inputmode="decimal" value="8" min="0" step="0.5"></span><span class="pd-field-src">Example. From the brief to a draft ready for review.</span></label>
-    <label class="pd-field"><span class="pd-field-label">How many people review each asset?</span><span class="pd-input-wrap"><input class="pd-input" data-var="reviewers" type="number" inputmode="decimal" value="8" min="0" step="1"></span><span class="pd-field-src">Example. Typeface found 92 percent of marketing leaders need ten or more.</span></label>
-    <label class="pd-field"><span class="pd-field-label">How many review rounds does a new piece take?</span><span class="pd-input-wrap"><input class="pd-input" data-var="rounds" type="number" inputmode="decimal" value="4" min="0" step="0.5"></span><span class="pd-field-src">Filestage measured an average of 4 versions before approval.</span></label>
+    <label class="pd-field"><span class="label">How many assets do you ship a year?</span><span class="pd-input-wrap"><input class="pd-input" data-var="assets" type="number" inputmode="decimal" value="5000" min="0" step="100"></span><span class="pd-field-src">Example. Adobe found 70 percent of organizations produce 1,000 or more a year.</span></label>
+    <label class="pd-field"><span class="label">What percent of assets have a parent on file?</span><span class="pd-input-wrap"><input class="pd-input" data-var="lineage" type="number" inputmode="decimal" value="40" min="0" step="5"><span class="pd-affix">%</span></span><span class="pd-field-src">Example. A parent is what it was built from. A new asset counts if marked new.</span></label>
+    <label class="pd-field"><span class="label">What does an hour of staff time cost?</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" data-var="rate" type="number" inputmode="decimal" value="75" min="0" step="5"></span><span class="pd-field-src">Example. Pay, benefits and overhead, or your agency's hourly rate.</span></label>
+    <label class="pd-field"><span class="label">How many hours to make a new piece?</span><span class="pd-input-wrap"><input class="pd-input" data-var="create" type="number" inputmode="decimal" value="8" min="0" step="0.5"></span><span class="pd-field-src">Example. From the brief to a draft ready for review.</span></label>
+    <label class="pd-field"><span class="label">How many people review each asset?</span><span class="pd-input-wrap"><input class="pd-input" data-var="reviewers" type="number" inputmode="decimal" value="8" min="0" step="1"></span><span class="pd-field-src">Example. Typeface found 92 percent of marketing leaders need ten or more.</span></label>
+    <label class="pd-field"><span class="label">How many review rounds does a new piece take?</span><span class="pd-input-wrap"><input class="pd-input" data-var="rounds" type="number" inputmode="decimal" value="4" min="0" step="0.5"></span><span class="pd-field-src">Filestage measured an average of 4 versions before approval.</span></label>
   </div>
   <details class="pd-calc-more">
     <summary>Change the other 12 numbers</summary>
     <div class="pd-calc-inputs is-more">
-      <p class="pd-calc-group">Creation</p>
-      <label class="pd-field"><span class="pd-field-label">How many hours to make a variant?</span><span class="pd-input-wrap"><input class="pd-input" data-var="createVar" type="number" inputmode="decimal" value="1.5" min="0" step="0.5"></span><span class="pd-field-src">Example. An approved asset with a new image and one line changed.</span></label>
-      <p class="pd-calc-group">Review</p>
-      <label class="pd-field"><span class="pd-field-label">How many minutes per reviewer, per round?</span><span class="pd-input-wrap"><input class="pd-input" data-var="minutes" type="number" inputmode="decimal" value="23" min="0" step="1"></span><span class="pd-field-src">Filestage measured an average of 23 minutes per review on its platform.</span></label>
-      <label class="pd-field"><span class="pd-field-label">How many review rounds does a variant take?</span><span class="pd-input-wrap"><input class="pd-input" data-var="roundsVar" type="number" inputmode="decimal" value="1.3" min="0" step="0.1"></span><span class="pd-field-src">Veeva measured 1.3 rounds in pharma, where parts are approved once, in advance.</span></label>
-      <label class="pd-field"><span class="pd-field-label">What percent of a variant is new?</span><span class="pd-input-wrap"><input class="pd-input" data-var="diff" type="number" inputmode="decimal" value="25" min="0" step="5"><span class="pd-affix">%</span></span><span class="pd-field-src">Example. Reviewers read only this part. The rest is already approved and translated.</span></label>
-      <p class="pd-calc-group">Translation</p>
-      <label class="pd-field"><span class="pd-field-label">How many words are in a typical asset?</span><span class="pd-input-wrap"><input class="pd-input" data-var="words" type="number" inputmode="decimal" value="400" min="0" step="50"></span><span class="pd-field-src">Example. Count all the copy that gets translated.</span></label>
-      <label class="pd-field"><span class="pd-field-label">How many languages do you translate into?</span><span class="pd-input-wrap"><input class="pd-input" data-var="langs" type="number" inputmode="decimal" value="3" min="0" step="1"></span><span class="pd-field-src">Example. For a US bank, often Spanish, sometimes more.</span></label>
-      <label class="pd-field"><span class="pd-field-label">What does an hour of translation cost?</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" data-var="tRate" type="number" inputmode="decimal" value="50" min="0" step="5"></span><span class="pd-field-src">Example. A vendor's hourly rate, or your own translators' full cost.</span></label>
-      <label class="pd-field"><span class="pd-field-label">How many words an hour, translating new copy?</span><span class="pd-input-wrap"><input class="pd-input" data-var="wphNew" type="number" inputmode="decimal" value="1100" min="0" step="50"></span><span class="pd-field-src">Parra Escart&iacute;n and Arcedillo measured about 1,100 in a study of ten translators.</span></label>
-      <label class="pd-field"><span class="pd-field-label">How many words an hour, if translated before?</span><span class="pd-input-wrap"><input class="pd-input" data-var="wphMem" type="number" inputmode="decimal" value="2460" min="0" step="50"></span><span class="pd-field-src">Parra Escart&iacute;n and Arcedillo measured about 2,460 with a past translation offered.</span></label>
-      <p class="pd-calc-group">Rework</p>
-      <label class="pd-field"><span class="pd-field-label">How many hours of rework on a new piece?</span><span class="pd-input-wrap"><input class="pd-input" data-var="rework" type="number" inputmode="decimal" value="3" min="0" step="0.5"></span><span class="pd-field-src">Example. Time spent making the changes reviewers ask for.</span></label>
-      <label class="pd-field"><span class="pd-field-label">How many hours of rework on a variant?</span><span class="pd-input-wrap"><input class="pd-input" data-var="reworkVar" type="number" inputmode="decimal" value="0.5" min="0" step="0.5"></span><span class="pd-field-src">Example. Changes reviewers ask for on a variant.</span></label>
-      <p class="pd-calc-group">Reuse</p>
-      <label class="pd-field"><span class="pd-field-label">How many minutes to find an existing asset?</span><span class="pd-input-wrap"><input class="pd-input" data-var="triage" type="number" inputmode="decimal" value="20" min="0" step="5"></span><span class="pd-field-src">Example. The person at intake finds it and sends it instead of making a new one.</span></label>
+      <p class="label">Creation</p>
+      <label class="pd-field"><span class="label">How many hours to make a variant?</span><span class="pd-input-wrap"><input class="pd-input" data-var="createVar" type="number" inputmode="decimal" value="1.5" min="0" step="0.5"></span><span class="pd-field-src">Example. An approved asset with a new image and one line changed.</span></label>
+      <p class="label">Review</p>
+      <label class="pd-field"><span class="label">How many minutes per reviewer, per round?</span><span class="pd-input-wrap"><input class="pd-input" data-var="minutes" type="number" inputmode="decimal" value="23" min="0" step="1"></span><span class="pd-field-src">Filestage measured an average of 23 minutes per review on its platform.</span></label>
+      <label class="pd-field"><span class="label">How many review rounds does a variant take?</span><span class="pd-input-wrap"><input class="pd-input" data-var="roundsVar" type="number" inputmode="decimal" value="1.3" min="0" step="0.1"></span><span class="pd-field-src">Veeva measured 1.3 rounds in pharma, where parts are approved once, in advance.</span></label>
+      <label class="pd-field"><span class="label">What percent of a variant is new?</span><span class="pd-input-wrap"><input class="pd-input" data-var="diff" type="number" inputmode="decimal" value="25" min="0" step="5"><span class="pd-affix">%</span></span><span class="pd-field-src">Example. Reviewers read only this part. The rest is already approved and translated.</span></label>
+      <p class="label">Translation</p>
+      <label class="pd-field"><span class="label">How many words are in a typical asset?</span><span class="pd-input-wrap"><input class="pd-input" data-var="words" type="number" inputmode="decimal" value="400" min="0" step="50"></span><span class="pd-field-src">Example. Count all the copy that gets translated.</span></label>
+      <label class="pd-field"><span class="label">How many languages do you translate into?</span><span class="pd-input-wrap"><input class="pd-input" data-var="langs" type="number" inputmode="decimal" value="3" min="0" step="1"></span><span class="pd-field-src">Example. For a US bank, often Spanish, sometimes more.</span></label>
+      <label class="pd-field"><span class="label">What does an hour of translation cost?</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" data-var="tRate" type="number" inputmode="decimal" value="50" min="0" step="5"></span><span class="pd-field-src">Example. A vendor's hourly rate, or your own translators' full cost.</span></label>
+      <label class="pd-field"><span class="label">How many words an hour, translating new copy?</span><span class="pd-input-wrap"><input class="pd-input" data-var="wphNew" type="number" inputmode="decimal" value="1100" min="0" step="50"></span><span class="pd-field-src">Parra Escart&iacute;n and Arcedillo measured about 1,100 in a study of ten translators.</span></label>
+      <label class="pd-field"><span class="label">How many words an hour, if translated before?</span><span class="pd-input-wrap"><input class="pd-input" data-var="wphMem" type="number" inputmode="decimal" value="2460" min="0" step="50"></span><span class="pd-field-src">Parra Escart&iacute;n and Arcedillo measured about 2,460 with a past translation offered.</span></label>
+      <p class="label">Rework</p>
+      <label class="pd-field"><span class="label">How many hours of rework on a new piece?</span><span class="pd-input-wrap"><input class="pd-input" data-var="rework" type="number" inputmode="decimal" value="3" min="0" step="0.5"></span><span class="pd-field-src">Example. Time spent making the changes reviewers ask for.</span></label>
+      <label class="pd-field"><span class="label">How many hours of rework on a variant?</span><span class="pd-input-wrap"><input class="pd-input" data-var="reworkVar" type="number" inputmode="decimal" value="0.5" min="0" step="0.5"></span><span class="pd-field-src">Example. Changes reviewers ask for on a variant.</span></label>
+      <p class="label">Reuse</p>
+      <label class="pd-field"><span class="label">How many minutes to find an existing asset?</span><span class="pd-input-wrap"><input class="pd-input" data-var="triage" type="number" inputmode="decimal" value="20" min="0" step="5"></span><span class="pd-field-src">Example. The person at intake finds it and sends it instead of making a new one.</span></label>
     </div>
   </details>
   <div class="pd-bar" data-scale="scale">
-    <div class="pd-stack-head"><span class="pd-stack-name">Cost of a new piece<small class="pd-stack-what">The whole chain: one to two months</small></span><span class="pd-stack-val" data-out="N" data-format="money">$1,800</span></div>
+    <div class="pd-stack-head"><span class="label">Cost of a new piece<small class="pd-stack-what">The whole chain: one to two months</small></span><span class="pd-num is-s" data-out="N" data-format="money">$1,800</span></div>
     <div class="pd-stack-track" aria-hidden="true">
       <div class="pd-seg" data-w="nOther" style="left:0.0%;width:43.7%"><span class="pd-seg-label">Other costs<span class="pd-seg-word">: making, translation and rework</span></span></div>
       <div class="pd-seg is-accent" data-w="nr" style="left:43.7%;width:45.6%"><span class="pd-seg-label">Review</span></div>
     </div>
   </div>
   <div class="pd-bar" data-scale="scale">
-    <div class="pd-stack-head"><span class="pd-stack-name">Cost of a variant<small class="pd-stack-what">The variant lane: a day or two</small></span><span class="pd-stack-val" data-out="V" data-format="money">$257</span></div>
+    <div class="pd-stack-head"><span class="label">Cost of a variant<small class="pd-stack-what">The variant lane: a day or two</small></span><span class="pd-num is-s" data-out="V" data-format="money">$257</span></div>
     <div class="pd-stack-track" aria-hidden="true">
       <div class="pd-seg" data-w="vOther" style="left:0.0%;width:9.0%"></div>
       <div class="pd-seg is-accent" data-w="vr" style="left:9.0%;width:3.7%"></div>
     </div>
   </div>
   <div class="pd-bar" data-scale="scale">
-    <div class="pd-stack-head"><span class="pd-stack-name">Cost of a reuse<small class="pd-stack-what">Linked at intake: the same day</small></span><span class="pd-stack-val" data-out="R" data-format="money">$25</span></div>
+    <div class="pd-stack-head"><span class="label">Cost of a reuse<small class="pd-stack-what">Linked at intake: the same day</small></span><span class="pd-num is-s" data-out="R" data-format="money">$25</span></div>
     <div class="pd-stack-track" aria-hidden="true">
       <div class="pd-seg is-accent" data-w="R" style="left:0.0%;width:1.2%"></div>
     </div>
   </div>
   <div class="pd-calc-row">
-    <button type="button" class="pd-calc-reset" hidden>Reset to the article's numbers</button>
+    <button type="button" class="pd-text-btn" data-reset hidden>Reset to the article's numbers</button>
   </div>
   <div class="pd-ledger">
-    <div class="pd-ledger-row"><span class="pd-ledger-label">Creation <span class="pd-ledger-src">hours x rate</span></span><span class="pd-ledger-value" data-out="nc" data-format="money">$600</span></div>
-    <div class="pd-ledger-row"><span class="pd-ledger-label">Review <span class="pd-ledger-src">rounds x reviewers x minutes</span></span><span class="pd-ledger-value" data-out="nr" data-format="money">$920</span></div>
-    <div class="pd-ledger-row"><span class="pd-ledger-label">Translation <span class="pd-ledger-src">languages x words, at the translator's pace</span></span><span class="pd-ledger-value" data-out="nt" data-format="money">$55</span></div>
-    <div class="pd-ledger-row"><span class="pd-ledger-label">Rework <span class="pd-ledger-src">hours x rate</span></span><span class="pd-ledger-value" data-out="nw" data-format="money">$225</span></div>
-    <div class="pd-ledger-row pd-ledger-total"><span class="pd-ledger-label">A new piece</span><span class="pd-ledger-value" data-out="N" data-format="money" aria-live="polite">$1,800</span></div>
-    <div class="pd-ledger-row"><span class="pd-ledger-label">A reuse <span class="pd-ledger-src">finding it at intake</span></span><span class="pd-ledger-value" data-out="R" data-format="money">$25</span></div>
-    <div class="pd-ledger-row"><span class="pd-ledger-label">A year spent on assets with no parent on file, each at the price of a new piece <span class="pd-ledger-src">assets x share with no parent x a new piece</span></span><span class="pd-ledger-value" data-out="dark" data-format="millions" aria-live="polite">$5.4 million</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">Creation <span class="pd-ledger-src">hours x rate</span></span><span class="pd-num pd-ledger-value" data-out="nc" data-format="money">$600</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">Review <span class="pd-ledger-src">rounds x reviewers x minutes</span></span><span class="pd-num pd-ledger-value" data-out="nr" data-format="money">$920</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">Translation <span class="pd-ledger-src">languages x words, at the translator's pace</span></span><span class="pd-num pd-ledger-value" data-out="nt" data-format="money">$55</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">Rework <span class="pd-ledger-src">hours x rate</span></span><span class="pd-num pd-ledger-value" data-out="nw" data-format="money">$225</span></div>
+    <div class="pd-ledger-row pd-ledger-total"><span class="pd-ledger-label">A new piece</span><span class="pd-num is-l pd-ledger-value" data-out="N" data-format="money" aria-live="polite">$1,800</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">A reuse <span class="pd-ledger-src">finding it at intake</span></span><span class="pd-num pd-ledger-value" data-out="R" data-format="money">$25</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">A year spent on assets with no parent on file, each at the price of a new piece <span class="pd-ledger-src">assets x share with no parent x a new piece</span></span><span class="pd-num pd-ledger-value" data-out="dark" data-format="millions" aria-live="polite">$5.4 million</span></div>
   </div>
   <figcaption>Numbers marked Example are stand-ins set to match the $5.4 million example above. Replace them with your own. The rest were measured by the source named under the field.</figcaption>
 </figure>
@@ -283,10 +283,12 @@ Regulation Z exempts advertising from its retention rule, so a lender's ability 
 <figure class="pd-img is-blend"><picture><source srcset="/assets/march-14-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/march-14.webp" width="1200" height="720" loading="lazy" alt="A tear-off calendar above a full wastebasket; the page on top reads March 14."></picture></figure>
 
 <figure class="pd-figure pd-record">
-  <p class="pd-record-num"><data value="c:h2c-fine">$250,000</data></p>
-  <div class="pd-record-body">
-    <p class="pd-record-lead">FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails. It could not recover most of them.</p>
-    <p class="pd-record-quote">preserved at least one copy of many of the mass marketing communications, but it did not preserve a copy of each message sent to each recipient</p>
+  <div class="pd-head">
+    <span class="pd-num is-xl"><data value="c:h2c-fine">$250,000</data></span>
+    <div class="pd-head-text">
+      <p>FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails. It could not recover most of them.</p>
+      <p class="pd-record-quote">preserved at least one copy of many of the mass marketing communications, but it did not preserve a copy of each message sent to each recipient</p>
+    </div>
   </div>
   <figcaption>FINRA Letter of Acceptance, Waiver and Consent, March 2024.</figcaption>
 </figure>
@@ -295,13 +297,13 @@ H2C kept the template.[^18] The version each customer received was not kept, and
 
 <figure class="pd-figure pd-asof" data-pd="asof" data-rail="block" data-start="2026-01-05" data-end="2026-06-30" data-day="2026-03-14" aria-label="An example rate disclosure with four versions. On March 14 the customer saw version 2, at 4.25% APY; a system that keeps only the current version answers with version 4, at 3.85%.">
   <p class="pd-eyebrow">What rendered on a given day</p>
-  <p class="pd-asof-head"><span class="pd-asof-q">The customer saw the rate disclosure on</span> <output class="pd-asof-day">March 14</output></p>
+  <p class="pd-asof-head"><span class="pd-asof-q">The customer saw the rate disclosure on</span> <output class="pd-num pd-asof-day">March 14</output></p>
   <input class="pd-asof-range" type="range" min="0" max="176" step="1" value="68" aria-label="Day the customer saw the disclosure" hidden>
   <div class="pd-asof-bands is-labeled" aria-hidden="true"><span class="pd-asof-band" style="width:29.9%"><span class="pd-asof-band-label">4.10%</span></span><span class="pd-asof-band is-live" style="width:19.8%"><span class="pd-asof-band-label">4.25%</span></span><span class="pd-asof-band" style="width:27.1%"><span class="pd-asof-band-label">4.00%</span></span><span class="pd-asof-band" style="width:23.2%"><span class="pd-asof-band-label">3.85%</span></span></div>
   <div class="pd-asof-months" aria-hidden="true"><span style="left:0.0%">Jan</span><span style="left:15.3%">Feb</span><span style="left:31.3%">Mar</span><span style="left:48.9%">Apr</span><span style="left:65.9%">May</span><span style="left:83.5%">Jun</span></div>
   <div class="pd-asof-answers">
-    <div class="pd-asof-answer" data-show="live"><p class="pd-asof-label">A system that keeps every version</p><p class="pd-asof-copy">Earn 4.25% APY. $500 minimum to open. Rate may change after the account is opened.</p><p class="pd-asof-meta">Version 2, live February 27 to April 2. Approved by deposit compliance.</p><p class="pd-asof-verdict">This is what the customer saw.</p></div>
-    <div class="pd-asof-answer is-wrong" data-show="latest" data-right="Correct, because the version you picked is still live." data-wrong="Not what the customer saw."><p class="pd-asof-label">A system that keeps only the current version</p><p class="pd-asof-copy">Earn 3.85% APY. $1,000 minimum to open. Rate may change after the account is opened.</p><p class="pd-asof-meta">Version 4, the one published today.</p><p class="pd-asof-verdict">Not what the customer saw.</p></div> <!-- slop-ok: content-duplication (each disclosure version repeats the same fine print) -->
+    <div class="pd-asof-answer" data-show="live"><p class="label">A system that keeps every version</p><p class="pd-asof-copy">Earn 4.25% APY. $500 minimum to open. Rate may change after the account is opened.</p><p class="pd-asof-meta">Version 2, live February 27 to April 2. Approved by deposit compliance.</p><p class="pd-asof-verdict">This is what the customer saw.</p></div>
+    <div class="pd-asof-answer is-wrong" data-show="latest" data-right="Correct, because the version you picked is still live." data-wrong="Not what the customer saw."><p class="label">A system that keeps only the current version</p><p class="pd-asof-copy">Earn 3.85% APY. $1,000 minimum to open. Rate may change after the account is opened.</p><p class="pd-asof-meta">Version 4, the one published today.</p><p class="pd-asof-verdict">Not what the customer saw.</p></div> <!-- slop-ok: content-duplication (each disclosure version repeats the same fine print) -->
   </div>
   <ol class="pd-asof-versions">
     <li data-from="2026-01-05" data-to="2026-02-26"><span class="pd-asof-copy">Earn 4.10% APY. $500 minimum to open. Rate may change after the account is opened.</span> <span class="pd-asof-meta">Version 1, live January 5 to February 26. Approved by deposit compliance.</span></li> <!-- slop-ok: content-duplication (each disclosure version repeats the same fine print) -->
@@ -344,15 +346,15 @@ Put those two next to each other and most people take the asset. Ask them "do ei
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">Languages spoken at home in the US, other than English</p>
-  <div class="pd-stack-lead"><span class="pd-stack-sub">Millions of people age 5 and older, 2024</span></div>
+  <p class="pd-stack-sub">Millions of people age 5 and older, 2024</p>
   <div class="pd-stack-bar" data-at="1">
-    <div class="pd-stack-head"><span class="pd-stack-name">Spanish</span><span class="pd-stack-val"><data value="c:census-by-language">44.9</data></span></div>
+    <div class="pd-stack-head"><span class="label">Spanish</span><span class="pd-num is-s"><data value="c:census-by-language">44.9</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg is-accent" data-at="1" data-value="44.9" style="left:0.0%;width:89.3%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="2">
-    <div class="pd-stack-head"><span class="pd-stack-name">Chinese<small class="pd-stack-what">Including Mandarin and Cantonese</small></span><span class="pd-stack-val"><data value="c:census-by-language">3.7</data></span></div>
+    <div class="pd-stack-head"><span class="label">Chinese<small class="pd-stack-what">Including Mandarin and Cantonese</small></span><span class="pd-num is-s"><data value="c:census-by-language">3.7</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg is-accent" data-at="2" data-value="3.7" style="left:0.0%;width:7.4%"></div>
     </div>
@@ -371,27 +373,27 @@ Voice belongs to the branches that know the customers. The headline can be post-
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">Words translated per hour</p>
-  <div class="pd-stack-lead"><span class="pd-stack-sub">Ten professional translators, English to Spanish, 2015</span></div>
+  <p class="pd-stack-sub">Ten professional translators, English to Spanish, 2015</p>
   <div class="pd-stack-bar" data-at="1">
-    <div class="pd-stack-head"><span class="pd-stack-name">From scratch</span><span class="pd-stack-val"><data value="c:translation-throughput">1,099</data></span></div>
+    <div class="pd-stack-head"><span class="label">From scratch</span><span class="pd-num is-s"><data value="c:translation-throughput">1,099</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="1" data-value="1099" style="left:0.0%;width:39.9%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="2">
-    <div class="pd-stack-head"><span class="pd-stack-name">A close match<small class="pd-stack-what">75 to 84 percent of the words already translated</small></span><span class="pd-stack-val"><data value="c:translation-throughput">1,297</data></span></div>
+    <div class="pd-stack-head"><span class="label">A close match<small class="pd-stack-what">75 to 84 percent of the words already translated</small></span><span class="pd-num is-s"><data value="c:translation-throughput">1,297</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="2" data-value="1297" style="left:0.0%;width:47.1%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="3">
-    <div class="pd-stack-head"><span class="pd-stack-name">Machine translation<small class="pd-stack-what">Post-edited by the translator</small></span><span class="pd-stack-val"><data value="c:translation-throughput">1,329</data></span></div>
+    <div class="pd-stack-head"><span class="label">Machine translation<small class="pd-stack-what">Post-edited by the translator</small></span><span class="pd-num is-s"><data value="c:translation-throughput">1,329</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="3" data-value="1329" style="left:0.0%;width:48.2%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="4">
-    <div class="pd-stack-head"><span class="pd-stack-name">A full match<small class="pd-stack-what">The same sentence, translated before</small></span><span class="pd-stack-val"><data value="c:translation-throughput">2,461</data></span></div>
+    <div class="pd-stack-head"><span class="label">A full match<small class="pd-stack-what">The same sentence, translated before</small></span><span class="pd-num is-s"><data value="c:translation-throughput">2,461</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg is-accent" data-at="4" data-value="2461" style="left:0.0%;width:89.3%"></div>
     </div>
@@ -406,7 +408,7 @@ Voice belongs to the branches that know the customers. The headline can be post-
     <tr><th scope="row">Headline</th><td><strong>Source.</strong> Marketing</td><td><strong>Voice.</strong> Post-edited by the branch team</td></tr>
     <tr><th scope="row">Rate and claim</th><td><strong>Source.</strong> Approved once by compliance</td><td><strong>Language.</strong> Translation of the approved claim</td></tr>
     <tr><th scope="row">Disclosure</th><td><strong>Source.</strong> Compliance</td><td><strong>Language.</strong> Translated; compliance owns both</td></tr>
-    <tr><th scope="row">Language services notice</th><td><strong>Not needed.</strong> The ad is in English</td><td><strong class="pd-accent">Added.</strong> What the bank offers in that language</td></tr>
+    <tr><th scope="row">Language services notice</th><td><strong>Not needed.</strong> The ad is in English</td><td><strong class="accent">Added.</strong> What the bank offers in that language</td></tr>
     <tr><th scope="row">Call to action</th><td><strong>Source.</strong> Marketing</td><td><strong>Language.</strong> Translation</td></tr>
   </tbody>
 </table>
@@ -439,21 +441,21 @@ The variant lane is where AI belongs: image and copy variants, assembled from ap
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">What marketing leaders report, 2026</p>
-  <div class="pd-stack-lead"><span class="pd-stack-sub">Share of 200+ leaders at VP level and above</span></div>
+  <p class="pd-stack-sub">Share of 200+ leaders at VP level and above</p>
   <div class="pd-stack-bar" data-at="1">
-    <div class="pd-stack-head"><span class="pd-stack-name">Sign-off<small class="pd-stack-what">Need ten or more stakeholders to sign off</small></span><span class="pd-stack-val"><data value="c:typeface-speed">92%</data></span></div>
+    <div class="pd-stack-head"><span class="label">Sign-off<small class="pd-stack-what">Need ten or more stakeholders to sign off</small></span><span class="pd-num is-s"><data value="c:typeface-speed">92%</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg is-accent" data-at="1" data-value="92" style="left:0.0%;width:92.0%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="2">
-    <div class="pd-stack-head"><span class="pd-stack-name">Speed<small class="pd-stack-what">Say their teams make content quickly and struggle with sign-off</small></span><span class="pd-stack-val">88%</span></div>
+    <div class="pd-stack-head"><span class="label">Speed<small class="pd-stack-what">Say their teams make content quickly and struggle with sign-off</small></span><span class="pd-num is-s">88%</span></div>
     <div class="pd-stack-track">
       <div class="pd-seg is-accent" data-at="2" data-value="88" style="left:0.0%;width:88.0%"></div>
     </div>
   </div>
   <div class="pd-stack-bar" data-at="3">
-    <div class="pd-stack-head"><span class="pd-stack-name">Launch time<small class="pd-stack-what">Need one to two months to launch a campaign</small></span><span class="pd-stack-val"><data value="c:typeface-speed">34%</data></span></div>
+    <div class="pd-stack-head"><span class="label">Launch time<small class="pd-stack-what">Need one to two months to launch a campaign</small></span><span class="pd-num is-s"><data value="c:typeface-speed">34%</data></span></div>
     <div class="pd-stack-track">
       <div class="pd-seg" data-at="3" data-value="34" style="left:0.0%;width:34.0%"></div>
     </div>

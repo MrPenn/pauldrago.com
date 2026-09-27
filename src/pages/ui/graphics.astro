@@ -81,18 +81,18 @@ const CHOOSE = [
       <li>Write the alt text, and paste the snippet from the <a href="/ui/components/illustration">illustration component</a>.</li>
     </ol>
     <div class="ui-code">
-      <div class="ui-code-head"><span>Dark prompt</span><button type="button" class="ui-link-btn" data-copy="prompt-dark">Copy</button><span class="ui-copy-msg" role="status"></span></div>
+      <div class="label ui-code-head"><span>Dark prompt</span><button type="button" class="ui-link-btn" data-copy="prompt-dark">Copy</button><span class="ui-copy-msg" role="status"></span></div>
       <pre><code id="prompt-dark">{DARK_PROMPT}</code></pre>
     </div>
     <div class="ui-code" style="margin-top:12px">
-      <div class="ui-code-head"><span>Light rebuild prompt</span><button type="button" class="ui-link-btn" data-copy="prompt-light">Copy</button><span class="ui-copy-msg" role="status"></span></div>
+      <div class="label ui-code-head"><span>Light rebuild prompt</span><button type="button" class="ui-link-btn" data-copy="prompt-light">Copy</button><span class="ui-copy-msg" role="status"></span></div>
       <pre><code id="prompt-light">{LIGHT_PROMPT}</code></pre>
     </div>
 
     <h3 class="ui-h3">Sizes</h3>
     <div class="ui-table-wrap">
       <table class="ui-table">
-        <thead><tr><th>Size</th><th>Shape</th><th>On the page</th><th>Class</th></tr></thead>
+        <thead><tr><th class="label">Size</th><th class="label">Shape</th><th class="label">On the page</th><th class="label">Class</th></tr></thead>
         <tbody>
           <tr><td>Full width</td><td>About 16:9 or wider</td><td>The full text column</td><td><code>pd-img</code></td></tr>
           <tr><td>Tall</td><td>Portrait, about 5:8</td><td>Up to 420px wide, centred</td><td><code>pd-img is-tall</code></td></tr>
@@ -122,7 +122,7 @@ const CHOOSE = [
     <p class="ui-p">Pick the figure by what the reader needs to see.</p>
     <div class="ui-table-wrap">
       <table class="ui-table">
-        <thead><tr><th>The reader needs to see</th><th>Use</th></tr></thead>
+        <thead><tr><th class="label">The reader needs to see</th><th class="label">Use</th></tr></thead>
         <tbody>{CHOOSE.map(([need, name, id]) => <tr><td>{need}</td><td><a href={`/ui/components/${id}`}>{name}</a></td></tr>)}</tbody>
       </table>
     </div>

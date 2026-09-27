@@ -104,7 +104,7 @@ const jsonld = {
       <div class="container">
         {article.data.opener === 'fd-grid' ? <FrontDoorOpener /> : article.data.opener && <div class="article-opener" data-opener={article.data.opener} aria-hidden="true"></div>}
         <header class="article-header">
-          <p class="article-kicker"><a href="/articles">Articles</a>{article.data.kicker && <span class="article-kicker-sep" aria-hidden="true"> / </span>}{article.data.kicker && <span>{article.data.kicker}</span>}</p>
+          <p class="label article-kicker"><a href="/articles">Articles</a>{article.data.kicker && <span class="article-kicker-sep" aria-hidden="true"> / </span>}{article.data.kicker && <span>{article.data.kicker}</span>}</p>
           <h1 class="display-title article-title">{article.data.title}</h1>
           <p class="article-intro">{article.data.description}</p>
           <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time><span class="article-meta-sep" aria-hidden="true"> / </span><span>{minutes}-minute read</span></p>
@@ -113,7 +113,7 @@ const jsonld = {
         <div class="article-body" data-notes={article.data.notes}>
           {article.data.brief.length > 0 && (
             <aside class="article-brief" aria-label="The short version" data-c="short-version">
-              <p class="article-brief-label">The short version</p>
+              <p class="label accent article-brief-label">The short version</p>
               <ol>{article.data.brief.map((item) => <li set:html={curlHtml(item)} />)}</ol>
             </aside>
           )}
@@ -121,7 +121,7 @@ const jsonld = {
           <BookingLine />
         </div>
         <aside class="article-author" aria-label="About the author" data-c="author-bio">
-          <p class="article-author-label">About the author</p>
+          <p class="label accent article-author-label">About the author</p>
           <p class="article-author-bio">{AUTHOR.bio}</p>
           <p class="article-author-links">
             <a class="btn btn-small" href={AUTHOR.booking} {...AUTHOR.calAttrs}>Book a 20-minute call</a>

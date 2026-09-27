@@ -1,27 +1,28 @@
 ---
 import Styleguide from '../../layouts/Styleguide.astro';
-import { colorTokens } from '../../styleguide/tokens.mjs';
-import { BREAKPOINTS, COLUMN_BREAKPOINTS } from '../../styleguide/components.mjs';
+import { colorTokens, typeSteps } from '../../styleguide/tokens.mjs';
+import { BREAKPOINTS, COLUMN_BREAKPOINTS, TYPE_SCALE } from '../../styleguide/components.mjs';
 
 const tokens = colorTokens(process.cwd());
-const TYPE = [
-  { role: 'Article title', face: 'Archivo Black, capitals', size: '34 to 56px, 1.05', cls: '.article-title', html: '<p class="display-title article-title" style="margin:0">The Digital Front Door Nobody Walks Through</p>' },
-  { role: 'Section heading', face: 'Archivo Black, numbered in Source Serif', size: '24 to 29px, 1.12', cls: '.article-body h2', html: '<h2 style="margin:0">Chime has fewer levers</h2>' },
-  { role: 'Deck', face: 'Source Serif 4 italic', size: '19px, 1.45', cls: '.pd-deck', html: '<p class="pd-deck" style="margin:0 !important">Fewer capabilities, one experience.</p>' },
-  { role: 'Lede', face: 'Source Serif 4 with an Archivo Black drop cap', size: '22px, 1.5; the cap 84px', cls: '.article-lede', html: '<p class="article-lede" style="margin:0">For most of a decade, community banks heard the same prescription. Make account opening digital.</p>' },
-  { role: 'Body', face: 'Source Serif 4, old-style numerals', size: '19.5px, 1.55; 18px on phones', cls: '.article-body p', html: '<p style="margin:0">Digital banks and fintechs took 44 of every 100 checking accounts opened in 2024. Community banks took 4.</p>' },
-  { role: 'Subhead', face: 'Source Serif 4 italic', size: '21px, 1.3', cls: '.article-body h3', html: '<h3 style="margin:0">What the customer is worth</h3>' },
-  { role: 'Pull quote', face: 'Source Serif 4 italic, the mark hung in the margin', size: '24 to 30px, 1.28; the mark 132px', cls: '.article-body blockquote', html: '<blockquote style="margin:24px 0 0 !important"><p>A relationship bank should have something meaningful to offer when the customer has $500.</p></blockquote>' },
-  { role: 'Big number', face: 'Archivo Black, tabular numerals', size: '48 to 68px, 0.9', cls: '.pd-units-num', html: '<figure class="pd-units" style="margin:0 !important;border:0;padding:0"><div class="pd-units-head"><span class="pd-units-num">95%</span><span class="pd-units-label">of consumers rate their bank\'s app good or better.</span></div></figure>' },
-  { role: 'Eyebrow', face: 'IBM Plex Sans semibold, capitals, tracked', size: '13px', cls: '.pd-eyebrow', html: '<p class="pd-eyebrow" style="margin:0 !important">One primary checking customer, one year</p>' },
-  { role: 'Caption', face: 'IBM Plex Sans', size: '13px, 1.5', cls: 'figcaption', html: '<figure class="pd-figure" style="margin:0;padding:0;border:0"><figcaption style="margin:0">ABA and Morning Consult, 2025 Preferred Banking Methods survey, 4,403 U.S. adults.</figcaption></figure>' },
+// The scale's sizes come from site-shell.css; what each step is for comes from the registry.
+const steps = typeSteps(process.cwd()).map((t) => ({ ...t, ...TYPE_SCALE.find((x) => x.step === t.step) }));
+const minus = (n) => (n < 0 ? `\u2212${Math.abs(n)}` : String(n));
+// Where the reading sizes sit at each width.
+const ROLES = [
+  ['Body text', 'Source Serif 4, old-style numerals', '17', '20', '20'],
+  ['Deck', 'Source Serif 4 italic', '17', '20', '20'],
+  ['Lede and subheads', 'Source Serif 4; the lede opens on an 86px drop cap', '20', '24', '24'],
+  ['Pull quote', 'Source Serif 4 italic, the mark hung in the margin', '20', '24', '29'],
+  ['Section heading', 'Archivo Black, numbered in Source Serif', '24', '24', '29'],
+  ['Article title', 'Archivo Black, capitals', '35', '41', '50, then 60 from 1180'],
+  ['Label and caption', 'IBM Plex Sans', '14', '14', '14'],
 ];
 // What the article itself does at each width, for the table under the scale.
 const ARTICLE = [
   ['1180 and up', 'Sources sit in the rail beside the text. A pinned sequence takes the column and the rail together.'],
   ['Below 1180', 'Sources open under the paragraph that cites them. A pinned graphic becomes a card at the top of the screen with the steps under it.'],
   ['1040 and up', 'A calculator widens past the column to the article container, and its main fields sit in one row.'],
-  ['Below 760', 'Body text drops to 18px and section headings to 23px. The pull quote mark moves above the quote.'],
+  ['Below 760', 'Body text drops a step to 17px, and the lede, subheads and pull quotes to 20px. The pull quote mark moves above the quote.'],
   ['Column under 560', 'Kit components take their compact form: bar labels without their words, stacked answers, smaller numbers.'],
   ['Calculator under 900', 'Its fields sit two across under 560 and three across from 560.'],
 ];
@@ -58,12 +59,26 @@ const ARTICLE = [
   <section class="ui-section" id="type">
     <h2 class="ui-h2">Type</h2>
     <p class="ui-p">Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for figures, labels and controls. All three are self-hosted, and each has a fallback sized to its metrics so nothing shifts when the font arrives.</p>
-    {TYPE.map((t) => (
-      <div class="ui-specimen">
-        <p class="ui-specimen-meta"><strong>{t.role}</strong>. {t.face}, {t.size}. <code>{t.cls}</code></p>
-        <div class="article-body" aria-hidden="true" set:html={t.html}></div>
-      </div>
-    ))}
+    <h3 class="ui-h3">The scale</h3>
+    <p class="ui-p">Every font size on the site is one of these thirteen steps, read here from <code>site-shell.css</code>. Body text is step 0, each step is 1.2 times the one below it, and 14px is the smallest text anywhere. The linter rejects any other size (<code>type-scale</code>). See it set on the <a href="/ui/components/type-scale">type scale</a> page.</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Step</th><th class="label">Token</th><th class="label">Size</th><th class="label">Used for</th></tr></thead>
+        <tbody>{steps.map((t) => <tr><td class="ui-num">{minus(t.step)}</td><td><code>var({t.name})</code></td><td class="ui-num">{t.px}px</td><td>{t.roles}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <h3 class="ui-h3">Reading sizes at each width</h3>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Role</th><th class="label">Face</th><th class="label">Phone</th><th class="label">760 to 1040</th><th class="label">From 1040</th></tr></thead>
+        <tbody>{ROLES.map(([role, face, a, b, c]) => <tr><td>{role}</td><td>{face}</td><td class="ui-num">{a}</td><td class="ui-num">{b}</td><td class="ui-num">{c}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <ul class="ui-list">
+      <li>A size changes only at a breakpoint, so every size is a step at every width.</li>
+      <li>Two things the reader has to tell apart sit at least a step apart, or differ in face or weight.</li>
+      <li>Small capitals are the <a href="/ui/components/label">label</a>, and numbers in the display face are the <a href="/ui/components/number">number</a>, in four sizes. Neither is restyled by the components that use them.</li>
+    </ul>
   </section>
 
   <section class="ui-section" id="rules">
@@ -89,14 +104,14 @@ const ARTICLE = [
     <h3 class="ui-h3">The page</h3>
     <div class="ui-table-wrap">
       <table class="ui-table">
-        <thead><tr><th>Width</th><th>Name</th><th>What changes</th></tr></thead>
+        <thead><tr><th class="label">Width</th><th class="label">Name</th><th class="label">What changes</th></tr></thead>
         <tbody>{BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</tbody>
       </table>
     </div>
     <h3 class="ui-h3">The column</h3>
     <div class="ui-table-wrap">
       <table class="ui-table">
-        <thead><tr><th>Width</th><th>Name</th><th>What changes</th></tr></thead>
+        <thead><tr><th class="label">Width</th><th class="label">Name</th><th class="label">What changes</th></tr></thead>
         <tbody>{COLUMN_BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</tbody>
       </table>
     </div>
@@ -134,7 +149,7 @@ tablet.addEventListener('change', update);`}</code></pre>
     <h3 class="ui-h3">What an article does at each width</h3>
     <div class="ui-table-wrap">
       <table class="ui-table">
-        <thead><tr><th>Width</th><th>What changes</th></tr></thead>
+        <thead><tr><th class="label">Width</th><th class="label">What changes</th></tr></thead>
         <tbody>{ARTICLE.map(([w, t]) => <tr><td class="ui-num">{w}</td><td>{t}</td></tr>)}</tbody>
       </table>
     </div>
@@ -157,7 +172,7 @@ tablet.addEventListener('change', update);`}</code></pre>
     <p class="ui-p">One easing and three durations, used everywhere. Each figure has one moment: it builds once as it arrives, with a beat before the part the reader is meant to notice, and nothing loops.</p>
     <div class="ui-table-wrap">
       <table class="ui-table">
-        <thead><tr><th>Token</th><th>Value</th><th>Used for</th></tr></thead>
+        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
         <tbody>
           <tr><td><code>--pd-ease</code></td><td><code>cubic-bezier(0.22, 1, 0.36, 1)</code></td><td>Every transition: fast out, slow settle.</td></tr>
           <tr><td><code>--pd-fast</code></td><td class="ui-num">260ms</td><td>A unit filling, a label appearing.</td></tr>

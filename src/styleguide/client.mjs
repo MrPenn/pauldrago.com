@@ -222,7 +222,7 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
     box.replaceChildren();
     const top = document.createElement('fieldset');
     top.className = 'ui-controls-top';
-    top.innerHTML = '<legend>Figure</legend>';
+    top.innerHTML = '<legend class="label">Figure</legend>';
     schema.top.forEach((f) => top.append(field(f, state[f.key], (v) => { state[f.key] = v; render(); }, 'top')));
     const rows = document.createElement('div');
     rows.className = 'ui-controls-rows';
@@ -231,6 +231,7 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
       const set = document.createElement('fieldset');
       set.className = 'ui-controls-row';
       const legend = document.createElement('legend');
+      legend.className = 'label';
       legend.textContent = `Row ${i + 1}`;
       set.append(legend);
       schema.row.forEach((f) => set.append(field(f, row[f.key], (v) => { row[f.key] = v; render(); }, `r${i}`)));

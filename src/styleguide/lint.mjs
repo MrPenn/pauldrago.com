@@ -30,7 +30,7 @@ export const RULES = [
 
   // Text
   { id: 'link-text', severity: 'error', group: 'Text', title: 'Link text says where it goes', why: 'Screen readers list links out of context, and "here" tells the reader nothing.', bad: '[here](https://...)', good: '[FINRA Rule 2210](https://...)' },
-  { id: 'pullquote-length', severity: 'warn', group: 'Text', title: 'A pull quote runs 40 words or fewer', why: 'It is set at 30px; a long one fills the screen.', fix: 'Quote the one sentence that states the rule.' },
+  { id: 'pullquote-length', severity: 'warn', group: 'Text', title: 'A pull quote runs 40 words or fewer', why: 'It is set at 29px; a long one fills the screen.', fix: 'Quote the one sentence that states the rule.' },
   { id: 'markdown-in-html', severity: 'warn', group: 'Text', title: 'No markdown inside HTML', why: 'Markdown inside a raw HTML block, or inside a brief item, prints as literal asterisks and brackets.', bad: '<p class="pd-deck">The **finding**.</p>', good: '<p class="pd-deck">The <strong>finding</strong>.</p>' },
 
   // Sources
@@ -68,6 +68,7 @@ export const RULES = [
   { id: 'css-radius', severity: 'warn', group: 'Stylesheets', title: 'Corners stay square', why: 'Rounded cards read as a software template. Bar ends and inputs round by 4px at most; a 50% radius draws a dot and is allowed.' },
   { id: 'css-gradient', severity: 'warn', group: 'Stylesheets', title: 'No gradients', why: 'Flat fills and hard rules. Hatching with repeating-linear-gradient is allowed; it draws ranges.' },
   { id: 'css-shadow', severity: 'warn', group: 'Stylesheets', title: 'No soft shadows', why: 'Depth comes from rules and panels. A zero-blur inset shadow drawing a hairline is allowed.' },
+  { id: 'type-scale', severity: 'error', group: 'Stylesheets', title: 'Font sizes come from the type scale', why: 'Every size on the site is a step of one scale in site-shell.css: body text is step 0 at 20px, each step is 1.2 times the one below, and 14px is the smallest. A size between steps, a clamp() or anything under 14px breaks the hierarchy. A page that has not moved onto the scale yet gets one note with its count instead.', bad: 'font-size: 13px;', good: 'font-size: var(--step--2);' },
   { id: 'css-breakpoint', severity: 'error', group: 'Stylesheets', title: 'Media and container queries use their breakpoint scales', why: 'The page changes layout at four widths: 480, 760, 1040 and 1180, in stylesheets and in scripts that call matchMedia. Range syntax, (width < 760px), cannot leave a 759/760 gap. Components answer to their column with container queries at 560 and 900 instead. A table keeps its columns from 760 up, so its rows turn into cards only below 760 or in print.', fix: 'Write it as (width < 760px) or (width >= 1040px), with a width from the scale.' },
 
   // Across articles
@@ -259,8 +260,29 @@ const phoneOrPrint = (prelude) => /^@media\b/.test(prelude) && prelude.replace(/
   });
 });
 
+// The type scale's steps, --step--2 to --step-10, and the stylesheets not on it yet. Each pending
+// sheet gets one note with its count; once it moves onto the scale, take it off this list.
+const STEPS = new Set(Array.from({ length: 13 }, (_, i) => i - 2));
+export const TYPE_SCALE_PENDING = ['front-door.css', 'financial-services.css', 'marketing-measurement-reset.css', 'personal-site.css', 'privacy.css', 'sample-plan.css', 'service-detail.css'];
+// A size is a step (var(--step-1)), or it takes its parent's (inherit and its kin).
+function offScaleSize(v) {
+  const size = v.replace(/\s*!important\s*$/i, '').trim();
+  if (/^(?:inherit|initial|unset|revert|revert-layer)$/i.test(size)) return null;
+  const step = size.match(/^var\(--step-(-?\d+)\)$/);
+  if (step && STEPS.has(Number(step[1]))) return null;
+  return size;
+}
+// The size inside a font shorthand: the token before the family, or before its /line-height.
+function shorthandSize(v) {
+  if (/^\s*(?:inherit|initial|unset|revert|revert-layer)\s*$/i.test(v)) return null;
+  const m = v.match(/(var\(--[\w-]+\)|-?[\d.]+(?:px|rem|em|%|pt)|clamp\([^)]*\)|calc\([^)]*\))(?:\s*\/\s*[\w.%()-]+)?\s+['"\w]/);
+  return m ? m[1] : null;
+}
+
 export function lintCss(file, text) {
   const { findings, report } = makeReporter(file, text);
+  const pending = TYPE_SCALE_PENDING.includes(basename(file));
+  let offScale = 0;
   const src = text.replace(/\/\*[\s\S]*?\*\//g, blank);
   // Media queries: widths from the scale only, written in range syntax.
   for (const m of src.matchAll(/@media\s+([^{]+)\{/g)) checkQuery(report, m.index, '@media', `@media ${m[1].trim()}`, m[1], SCALE, 'scale');
@@ -284,6 +306,14 @@ export function lintCss(file, text) {
       if (!rule.print && /#[0-9a-f]{3,8}\b|\b(?:rgba?|hsla?|oklch|lab|lch)\(/i.test(v)) {
         report('css-color', d.index, `${d.prop}: ${v.slice(0, 60)} uses a literal colour`);
       }
+      if ((d.prop === 'font-size' || d.prop === 'font') && !rule.print) {
+        const size = d.prop === 'font-size' ? v : shorthandSize(v);
+        const off = size === null ? null : offScaleSize(size);
+        if (off) {
+          offScale += 1;
+          if (!pending) report('type-scale', d.index, `${d.prop}: ${off} is not a step of the type scale`, { fix: 'Use var(--step--2) to var(--step-10); /ui/components/type-scale lists what each step is for.' });
+        }
+      }
       if (d.prop === 'font-family' || d.prop === 'font') {
         const list = d.prop === 'font' ? (v.match(/(?:\d[\w.%/]*\s+)+(.*)$/)?.[1] ?? '') : v;
         for (const f of list.split(',').map((s) => s.trim().replace(/^['"]|['"]$/g, '').toLowerCase()).filter(Boolean)) {
@@ -304,6 +334,7 @@ export function lintCss(file, text) {
       }
     }
   }
+  if (pending && offScale) report('type-scale', 0, `${offScale} font size${offScale === 1 ? ' is' : 's are'} not on the type scale yet; this page moves onto it in its own pass`, { severity: 'info', fix: '' });
   return findings;
 }
 
@@ -399,7 +430,7 @@ function checkUnits(html, where, report) {
   const value = Number(html.match(/data-value="(\d+)"/)?.[1]);
   const of = Number(html.match(/data-of="(\d+)"/)?.[1]);
   if (!Number.isFinite(value) || !Number.isFinite(of) || !of) { report('units-count', where, 'the unit stat has no data-value and data-of'); return; }
-  const printed = Number(html.match(/class="(?:pd-units-num|fd-stat-num)"[^>]*>\s*([\d.]+)\s*%/)?.[1]);
+  const printed = Number(html.match(/class="(?:pd-num is-xl|fd-stat-num)"[^>]*>\s*([\d.]+)\s*%/)?.[1]);
   if (Number.isFinite(printed) && Math.abs((value / of) * 100 - printed) > 1) report('units-count', where, `${value} of ${of} is ${Math.round((value / of) * 1000) / 10}%, but the stat prints ${printed}%`);
   const cells = (html.match(/class="pd-cell\b/g) ?? []).length;
   if (cells) {
@@ -436,9 +467,9 @@ function checkStack(html, where, report) {
       if (last.value !== null && to > last.value) scale.push({ value: segs.reduce((t, sg) => t + (sg.value ?? 0), 0) - last.value + to, width: (left ?? edge) + width, text: `the range to ${to}` });
       else report('stack-scale', where, `a range ends at ${to}, which is not above its segment's ${last.value}`);
     }
-    const mark = bar.match(/<div class="pd-mark\b[^"]*"[^>]*style="([^"]*)"[^>]*><span>([^<]*)<\/span>/);
+    const mark = bar.match(/<div class="pd-mark\b[^"]*"[^>]*style="([^"]*)"[^>]*><span[^>]*>([^<]*)<\/span>/);
     if (mark && money(mark[2])) scale.push({ value: money(mark[2]), width: geom(mark[1], 'left'), text: mark[2] });
-    const shownTotal = (bar.match(/class="pd-stack-val"[^>]*>([\s\S]*?)<\/span><\/div>/)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
+    const shownTotal = (bar.match(/class="pd-num is-s"[^>]*>([\s\S]*?)<\/span><\/div>/)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
     const total = money(shownTotal);
     const sum = segs.reduce((t, sg) => t + (sg.value ?? 0), 0);
     // Each printed part can be off by half its last digit, so the parts may drift that far from the total.

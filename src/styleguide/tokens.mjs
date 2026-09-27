@@ -64,6 +64,16 @@ export function colorTokens(root) {
   });
 }
 
+/** The type scale's steps as site-shell.css defines them: [{ step, name, px }], smallest first. */
+export function typeSteps(root) {
+  const { light } = rootBlocks(readFileSync(join(root, 'public/assets/site-shell.css'), 'utf8'));
+  return Object.entries(light)
+    .map(([name, v]) => ({ name, m: name.match(/^--step-(-?\d+)$/), px: Number(String(v).match(/^([\d.]+)px$/)?.[1]) }))
+    .filter((t) => t.m)
+    .map((t) => ({ step: Number(t.m[1]), name: t.name, px: t.px }))
+    .sort((a, b) => a.step - b.step);
+}
+
 /**
  * CSS that forces a theme on a frame: :root[data-theme="light"] and :root[data-theme="dark"]
  * carry every custom property the given stylesheets define for that theme.

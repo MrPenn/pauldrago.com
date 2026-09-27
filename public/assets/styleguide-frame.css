@@ -31,7 +31,7 @@ body.ui-frame.is-page { padding: 0; }
    the grid at whatever width the frame is. */
 .ui-grid { padding: 24px 0 40px; font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
 .ui-grid .article { padding: 0; }
-.ui-grid-now { margin: 0 auto 18px; max-width: 1240px; padding: 0 32px; font-size: 14px; color: var(--secondary); }
+.ui-grid-now { margin: 0 auto 18px; max-width: 1240px; padding: 0 32px; font-size: var(--step--2); color: var(--secondary); }
 .ui-grid-bp { color: var(--paper); }
 .ui-grid-bp::after { content: "small phone, under 480px"; }
 @media (480px <= width < 760px) { .ui-grid-bp::after { content: "phone, 480 to 760px"; } }
@@ -39,9 +39,9 @@ body.ui-frame.is-page { padding: 0; }
 @media (1040px <= width < 1180px) { .ui-grid-bp::after { content: "desktop, 1040 to 1180px"; } }
 @media (width >= 1180px) { .ui-grid-bp::after { content: "wide, 1180px and up"; } }
 .ui-grid-band { position: relative; min-height: 64px; margin-bottom: 16px; padding-top: 30px; outline: 1px dashed var(--brass); outline-offset: -1px; background: color-mix(in srgb, var(--brass) 5%, transparent); }
-.ui-grid-tag { position: absolute; top: 7px; left: 10px; right: 10px; font-size: 12px; font-weight: 600; line-height: 1.3; color: var(--paper); }
+.ui-grid-tag { position: absolute; top: 7px; left: 10px; right: 10px; font-size: var(--step--2); font-weight: 600; line-height: 1.3; color: var(--paper); }
 .ui-grid-col { padding: 30px 0 12px; }
-.ui-grid-compact { display: none; margin: 8px 10px 12px !important; font-size: 13px; color: var(--secondary); }
+.ui-grid-compact { display: none; margin: 8px 10px 12px !important; font-size: var(--step--2); color: var(--secondary); }
 @container column (width < 560px) { .ui-grid-compact { display: block; } }
 .ui-grid-wide { margin: 12px 0 0; background: color-mix(in srgb, var(--paper) 6%, transparent); }
 @media (width >= 1040px) { .ui-grid-wide { width: calc(min(1060px, 100vw) - 64px); } }
@@ -57,3 +57,29 @@ body.ui-frame.is-page { padding: 0; }
 @media (width < 760px) { .ui-grid-site::after { left: 20px; right: 20px; } }
 /* A widened calculator in a frame keeps clear of the frame's own left padding. */
 @media (width >= 1040px) { body.ui-frame.is-body .pd-calc { width: min(calc(min(1060px, 100vw) - 64px), calc(100vw - 120px)); } }
+
+/* The type scale specimen: every step at its size, in the face its main role uses. */
+.ui-scale { display: grid; gap: 0; font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
+.ui-scale-row { display: grid; grid-template-columns: 13ch minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--hairline); }
+.ui-scale-sample { overflow-wrap: anywhere; line-height: 1.1; color: var(--paper); }
+.ui-scale-sans { font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
+.ui-scale-serif { font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; }
+.ui-scale-display { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; }
+.ui-step-m2 { font-size: var(--step--2); }
+.ui-step-m1 { font-size: var(--step--1); }
+.ui-step-0 { font-size: var(--step-0); }
+.ui-step-1 { font-size: var(--step-1); }
+.ui-step-2 { font-size: var(--step-2); }
+.ui-step-3 { font-size: var(--step-3); }
+.ui-step-4 { font-size: var(--step-4); }
+.ui-step-5 { font-size: var(--step-5); }
+.ui-step-6 { font-size: var(--step-6); }
+.ui-step-7 { font-size: var(--step-7); }
+.ui-step-8 { font-size: var(--step-8); }
+.ui-step-9 { font-size: var(--step-9); }
+.ui-step-10 { font-size: var(--step-10); }
+@media (width < 760px) { .ui-scale-row { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
+/* Specimens side by side: a number or a mark over the label that names it. */
+.ui-specimens { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 20px 36px; }
+.ui-specimens > div { display: grid; gap: 8px; }
+.ui-specimens .label { margin: 0 !important; }

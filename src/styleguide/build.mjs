@@ -37,7 +37,7 @@ export function units({ num: shown = '', label = '', value = 0, of = 20, cols, s
   const cells = Array.from({ length: n }, (_, i) => `<i class="pd-cell${i < v ? ' is-on' : ''}"></i>`).join('');
   return lines([
     `<figure class="pd-units" data-pd="units" data-value="${v}" data-of="${n}">`,
-    `  <div class="pd-units-head"><span class="pd-units-num">${esc(shown)}</span><span class="pd-units-label">${esc(label)}</span></div>`,
+    `  <div class="pd-head"><span class="pd-num is-xl">${esc(shown)}</span><span class="pd-head-text">${esc(label)}</span></div>`,
     `  <div class="pd-units-cells" data-cols="${c}" aria-hidden="true">${cells}</div>`,
     source ? `  <figcaption>${esc(source)}</figcaption>` : null,
     '</figure>',
@@ -57,8 +57,9 @@ export function grid({ variant = 'opener', total = 100, on = 0, alt = 0, altFrom
   const a0 = altFrom === undefined || altFrom === '' ? Number(on) || 0 : Number(altFrom);
   const kind = (i) => (i < on ? ' is-on' : i >= a0 && i < a0 + (Number(alt) || 0) ? ' is-alt' : '');
   const cells = Array.from({ length: n }, (_, i) => `<i class="pd-cell${kind(i)}"></i>`).join('');
-  const sw = { on: ' is-on', alt: ' is-alt' };
-  const rows = legend.map((l) => `      <div class="pd-legend-row"><span class="pd-swatch${sw[l.kind] ?? ''}"></span><span class="pd-legend-num"${l.kind ? ` data-count="${Number(String(l.num).replace(/,/g, ''))}"` : ''}>${esc(l.num)}</span><span class="pd-legend-label">${esc(l.label)}</span></div>`);
+  // Each legend row keys its squares: accent for the `on` squares, ink for the `alt` ones, empty for the rest.
+  const sw = { on: ' is-accent', alt: ' is-ink' };
+  const rows = legend.map((l) => `      <div class="pd-legend-row"><span class="pd-swatch${sw[l.kind] ?? ''}"></span><span class="pd-num is-l"${l.kind ? ` data-count="${Number(String(l.num).replace(/,/g, ''))}"` : ''}>${esc(l.num)}</span><span class="pd-legend-label">${esc(l.label)}</span></div>`);
   if (variant === 'callback') {
     return lines([
       `<figure class="pd-figure pd-grid is-callback" data-pd="grid" data-pace="0" data-alt-pace="300" data-delay="400"${label ? ` aria-label="${esc(label)}"` : ''}>`,
@@ -127,11 +128,11 @@ export function stack({ eyebrow = '', num: lead = '', sub = '', bars = [], ledge
       return html;
     });
     const mark = b.mark && b.mark.value !== undefined && b.mark.value !== ''
-      ? `    <div class="pd-mark${w(b.mark.value) < 40 ? ' is-left' : ''}"${at(b.mark.at)} style="left:${pct(w(b.mark.value))}"><span>${esc(b.mark.label ?? unit(b.mark.value))}</span></div>`
+      ? `    <div class="pd-mark${w(b.mark.value) < 40 ? ' is-left' : ''}"${at(b.mark.at)} style="left:${pct(w(b.mark.value))}"><span class="label">${esc(b.mark.label ?? unit(b.mark.value))}</span></div>`
       : null;
     return lines([
       `<div class="pd-stack-bar"${at(b.at)}>`,
-      `  <div class="pd-stack-head"><span class="pd-stack-name">${esc(b.name)}${b.sub ? `<small class="pd-stack-what">${esc(b.sub)}</small>` : ''}</span><span class="pd-stack-val">${b.html ?? marked(b.text ? esc(b.text) : extra[bi] ? span(totals[bi], totals[bi] + extra[bi]) : unit(totals[bi]), b.ref)}</span></div>`,
+      `  <div class="pd-stack-head"><span class="label">${esc(b.name)}${b.sub ? `<small class="pd-stack-what">${esc(b.sub)}</small>` : ''}</span><span class="pd-num is-s">${b.html ?? marked(b.text ? esc(b.text) : extra[bi] ? span(totals[bi], totals[bi] + extra[bi]) : unit(totals[bi]), b.ref)}</span></div>`,
       '  <div class="pd-stack-track">',
       ...segs,
       mark,
@@ -139,12 +140,13 @@ export function stack({ eyebrow = '', num: lead = '', sub = '', bars = [], ledge
       '</div>',
     ], pad);
   });
-  const rows = ledger.map((r) => `${pad}  <div class="pd-stack-row${r.total ? ' is-total' : ''}"${at(r.at)}><span class="pd-stack-row-label">${esc(r.label)}${r.sub ? `<small>${esc(r.sub)}</small>` : ''}</span><span class="pd-stack-row-val">${marked(r.text ? esc(r.text) : unit(r.value), r.ref)}</span></div>`);
+  const rows = ledger.map((r) => `${pad}  <div class="pd-ledger-row${r.total ? ' pd-ledger-total' : ''}"${at(r.at)}><span class="pd-ledger-label">${esc(r.label)}${r.sub ? ` <span class="pd-ledger-src">${esc(r.sub)}</span>` : ''}</span><span class="pd-num${r.total ? ' is-l' : ''} pd-ledger-value">${marked(r.text ? esc(r.text) : unit(r.value), r.ref)}</span></div>`);
   const inner = [
     eyebrow ? `${pad}<p class="pd-eyebrow">${esc(eyebrow)}</p>` : null,
-    lead || sub ? `${pad}<div class="pd-stack-lead">${lead ? `<span class="pd-stack-num">${esc(lead)}</span>` : ''}<span class="pd-stack-sub">${esc(sub)}</span></div>` : null,
+    // A number to lead with makes a head; a sub line alone says what the bars count.
+    lead ? `${pad}<div class="pd-head"><span class="pd-num is-xl">${esc(lead)}</span>${sub ? `<span class="pd-head-text">${esc(sub)}</span>` : ''}</div>` : sub ? `${pad}<p class="pd-stack-sub">${esc(sub)}</p>` : null,
     ...barHtml,
-    rows.length ? `${pad}<div class="pd-stack-ledger">` : null,
+    rows.length ? `${pad}<div class="pd-ledger">` : null,
     ...rows,
     rows.length ? `${pad}</div>` : null,
     note ? `${pad}<p class="pd-stack-note"${at(noteAt)}>${note}</p>` : null,
@@ -187,7 +189,7 @@ export function cols({ eyebrow = '', values = [], start = 0, step = 1, labelEver
     `${pad}  </div>`,
     `${pad}</div>`,
     `${pad}<div class="pd-cols-x" aria-hidden="true">${xs}</div>`,
-    event?.marker ? `${pad}<p class="pd-cols-marker" data-at="1">${esc(event.marker)}</p>` : null,
+    event?.marker ? `${pad}<p class="label accent pd-cols-marker" data-at="1">${esc(event.marker)}</p>` : null,
     caption ? `${pad}<figcaption>${esc(caption)}</figcaption>` : null,
   ];
   if (graphic) return lines(inner);
@@ -202,10 +204,12 @@ export function cols({ eyebrow = '', values = [], start = 0, step = 1, labelEver
 export function record({ num: shown = '', lead = '', quote = '', source = '', ref, label = '' } = {}) {
   return lines([
     `<figure class="pd-figure pd-record"${label ? ` aria-label="${esc(label)}"` : ''}>`,
-    `  <p class="pd-record-num">${marked(esc(shown), ref)}</p>`,
-    '  <div class="pd-record-body">',
-    `    <p class="pd-record-lead">${esc(lead)}</p>`,
-    quote ? `    <p class="pd-record-quote">${esc(quote)}</p>` : null,
+    '  <div class="pd-head">',
+    `    <span class="pd-num is-xl">${marked(esc(shown), ref)}</span>`,
+    '    <div class="pd-head-text">',
+    `      <p>${esc(lead)}</p>`,
+    quote ? `      <p class="pd-record-quote">${esc(quote)}</p>` : null,
+    '    </div>',
     '  </div>',
     source ? `  <figcaption>${esc(source)}</figcaption>` : null,
     '</figure>',
@@ -250,13 +254,13 @@ export function asof({ eyebrow = '', question = '', slider = 'Pick a day', start
   return lines([
     `<figure class="pd-figure pd-asof" data-pd="asof" data-rail="block" data-start="${esc(start)}" data-end="${esc(end)}" data-day="${esc(day ?? start)}"${label ? ` aria-label="${esc(label)}"` : ''}>`,
     eyebrow ? `  <p class="pd-eyebrow">${esc(eyebrow)}</p>` : null,
-    `  <p class="pd-asof-head"><span class="pd-asof-q">${esc(question)}</span> <output class="pd-asof-day">${dayName(at0)}</output></p>`,
+    `  <p class="pd-asof-head"><span class="pd-asof-q">${esc(question)}</span> <output class="pd-num pd-asof-day">${dayName(at0)}</output></p>`,
     `  <input class="pd-asof-range" type="range" min="0" max="${days}" step="1" value="${Math.round((at0 - t0) / DAY)}" aria-label="${esc(slider)}" hidden>`,
     `  <div class="pd-asof-bands${labeled ? ' is-labeled' : ''}" aria-hidden="true">${bands}</div>`,
     `  <div class="pd-asof-months" aria-hidden="true">${months.join('')}</div>`,
     `  <div class="pd-asof-answers${latest ? '' : ' is-single'}">`,
-    `    <div class="pd-asof-answer" data-show="live">${live.label ? `<p class="pd-asof-label">${esc(live.label)}</p>` : ''}<p class="pd-asof-copy">${esc(now.copy)}</p><p class="pd-asof-meta">${esc(now.meta)}</p>${live.verdict ? `<p class="pd-asof-verdict">${esc(live.verdict)}</p>` : ''}</div>`,
-    latest ? `    <div class="pd-asof-answer${wrong ? ' is-wrong' : ''}" data-show="latest" data-right="${esc(latest.right)}" data-wrong="${esc(latest.wrong)}"><p class="pd-asof-label">${esc(latest.label)}</p><p class="pd-asof-copy">${esc(last.copy)}</p><p class="pd-asof-meta">${esc(latest.meta ?? `Version ${last.n}, the one published today.`)}</p><p class="pd-asof-verdict">${esc(wrong ? latest.wrong : latest.right)}</p></div>` : null,
+    `    <div class="pd-asof-answer" data-show="live">${live.label ? `<p class="label">${esc(live.label)}</p>` : ''}<p class="pd-asof-copy">${esc(now.copy)}</p><p class="pd-asof-meta">${esc(now.meta)}</p>${live.verdict ? `<p class="pd-asof-verdict">${esc(live.verdict)}</p>` : ''}</div>`,
+    latest ? `    <div class="pd-asof-answer${wrong ? ' is-wrong' : ''}" data-show="latest" data-right="${esc(latest.right)}" data-wrong="${esc(latest.wrong)}"><p class="label">${esc(latest.label)}</p><p class="pd-asof-copy">${esc(last.copy)}</p><p class="pd-asof-meta">${esc(latest.meta ?? `Version ${last.n}, the one published today.`)}</p><p class="pd-asof-verdict">${esc(wrong ? latest.wrong : latest.right)}</p></div>` : null,
     '  </div>',
     '  <ol class="pd-asof-versions">',
     ...vs.map((v) => `    <li data-from="${esc(v.from)}" data-to="${esc(v.to ?? '')}"><span class="pd-asof-copy">${esc(v.copy)}</span> <span class="pd-asof-meta">${esc(v.meta)}</span></li>`),
