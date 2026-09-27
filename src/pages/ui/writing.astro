@@ -1,0 +1,135 @@
+---
+import Styleguide from '../../layouts/Styleguide.astro';
+
+// Before and after pairs. Every "after" is published text from The Digital Front Door Nobody Walks Through.
+const PAIRS = {
+  heading: ['## Digital Banking Trends', '## Chime has fewer levers'],
+  deck: ['<p class="pd-deck">Why apps matter more than you think.</p>', '<p class="pd-deck">Everyone\'s app is fine. Fine is where everyone already is.</p>'],
+  numbers: ['Community banks are losing a lot of new accounts to fintechs.', 'Digital banks and fintechs took 44 of every 100 checking accounts opened in 2024. Community banks took 4, by Cornerstone Advisors\' estimate, across all ages.'],
+  // slop-ok: weasel-attribution (the deliberate before example)
+  sources: ['Studies show younger customers prefer mobile banking.', 'Younger customers did go digital: 63% of Gen Z respondents in the American Bankers Association\'s 2025 survey used mobile banking most often, and 3% used branches.'],
+  story: ['At my old bank, we always said our app was great.', 'Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars. I have said that sentence in a boardroom.'],
+  ending: ['In the end, banks need to put the customer first.', 'Community banks have built digital front doors. The question is no longer simply whether a 25-year-old can get in. It is whether anyone inside the building is responsible for what they find when they do.'],
+};
+---
+<Styleguide title="Writing" description="Voice, headings, numbers, sources and the close for articles on pauldrago.com." path="/ui/writing">
+  <h1 class="display-title ui-title">Writing</h1>
+  <p class="ui-lede">An operator who has done the work, talking plainly to another executive. Every sentence carries a fact, every number has a source, and the reader can act on what they read.</p>
+
+  <section class="ui-section" id="voice">
+    <h2 class="ui-h2">Voice</h2>
+    <ul class="ui-list">
+      <li>Say what happened, with the number, and stop. Short plain lines that carry the story stay: "Nobody is being lazy."</li>
+      <li>First person where it is earned: what I ran, what I audited, what I saw.</li>
+      <li>Firsthand stories name the kind of organization ("a bank holding company", "a global industrial manufacturer"), never the employer.</li>
+      <li>A scripted exchange is a signature device: once in a piece at most, and never in two consecutive pieces.</li>
+      <li>Write for a bank or credit union executive who reads with a compliance officer's eye.</li>
+    </ul>
+    <div class="ui-rule-eg">
+      <div class="is-bad"><b>Before</b><pre><code>{PAIRS.story[0]}</code></pre></div>
+      <div><b>After</b><pre><code>{PAIRS.story[1]}</code></pre></div>
+    </div>
+  </section>
+
+  <section class="ui-section" id="headings">
+    <h2 class="ui-h2">Titles, headings and decks</h2>
+    <ul class="ui-list">
+      <li>The article title is short and in title case: "The Digital Front Door Nobody Walks Through".</li>
+      <li>The description under it states the argument in one or two sentences. It is also the search snippet.</li>
+      <li>A section heading is a claim or the reader's own question, in sentence case, twelve words at most: "Chime has fewer levers", "So, why should I bank with you?"</li>
+      <li>The deck under it is one short line that says what the section finds: "Fewer capabilities, one experience."</li>
+      <li>The stylesheet numbers the sections I, II, III. "About the numbers" closes the piece without a numeral.</li>
+    </ul>
+    <div class="ui-rule-eg">
+      <div class="is-bad"><b>Before</b><pre><code>{PAIRS.heading[0]}</code></pre></div>
+      <div><b>After</b><pre><code>{PAIRS.heading[1]}</code></pre></div>
+    </div>
+    <div class="ui-rule-eg">
+      <div class="is-bad"><b>Before</b><pre><code>{PAIRS.deck[0]}</code></pre></div>
+      <div><b>After</b><pre><code>{PAIRS.deck[1]}</code></pre></div>
+    </div>
+  </section>
+
+  <section class="ui-section" id="numbers">
+    <h2 class="ui-h2">Numbers</h2>
+    <ul class="ui-list">
+      <li>Figures keep their sign in running text: "63% of Gen Z respondents", "a 3.81% net interest margin".</li>
+      <li>A share of a whole can read as a count when that is plainer: "44 of every 100 checking accounts".</li>
+      <li>Money is rounded to what the argument needs: "a little over $400 a year", then the exact $418 in the ledger.</li>
+      <li>An estimate says whose it is: "by Cornerstone Advisors' estimate", "by the institutions' own estimate".</li>
+      <li>When a figure says more or less than expected, give the expected number next to it.</li>
+      <li>A figure is stated once in the body. The brief and the charts repeat it through the same data mark, so all three agree.</li>
+    </ul>
+    <div class="ui-rule-eg">
+      <div class="is-bad"><b>Before</b><pre><code>{PAIRS.numbers[0]}</code></pre></div>
+      <div><b>After</b><pre><code>{PAIRS.numbers[1]}</code></pre></div>
+    </div>
+  </section>
+
+  <section class="ui-section" id="sources">
+    <h2 class="ui-h2">Sources</h2>
+    <ul class="ui-list">
+      <li>Every figure has a footnote with a dated primary source. When the primary exists, cite it instead of the report that quoted it.</li>
+      <li>Footnotes follow one form: <code>**Publisher.** Title, date. What was measured, the sample and the dates. What the figure does not show. [Report title](url)</code></li>
+      <li>Say what the publisher sells when it sells something the finding helps: "Veeva sells the CRM."</li>
+      <li>A figure in circulation with no method is named as folklore, with its date, and kept out of the argument.</li>
+      <li>Every article closes on "About the numbers": when the research was checked, which figures are estimates, and which conclusions are the author's own.</li>
+    </ul>
+    <div class="ui-rule-eg">
+      <div class="is-bad"><b>Before</b><pre><code>{PAIRS.sources[0]}</code></pre></div>
+      <div><b>After</b><pre><code>{PAIRS.sources[1]}</code></pre></div>
+    </div>
+  </section>
+
+  <section class="ui-section" id="figures">
+    <h2 class="ui-h2">Figures and tools</h2>
+    <ul class="ui-list">
+      <li>The eyebrow names what a figure shows. The caption names who measured it, the sample and the year, and what the figure leaves out: "Gross figures, before servicing, fraud and network costs."</li>
+      <li>A figure builds in the order the text argues: the balance, then the spread, then interchange, then the cost it has to clear.</li>
+      <li>A field label names the input; the line under it names the source of the default: "SCF median, under 35".</li>
+      <li>A calculator opens on the public figures from the text, so the first thing the reader sees is the article's own answer.</li>
+      <li>A self-check asks one question at a time and ends on a report. The report leads with the next steps, and each step says what the reader gets by taking it.</li>
+      <li>Each part is scored on its own. No single score and no staircase.</li>
+      <li>Alt text describes the picture in one sentence. It does not explain the joke.</li>
+    </ul>
+  </section>
+
+  <section class="ui-section" id="close">
+    <h2 class="ui-h2">The close</h2>
+    <ul class="ui-list">
+      <li>The last paragraph of the argument uses a number, a person or a fact from the piece. If it could close any article, it goes.</li>
+      <li>The booking line is the same on every article: "If you want to see this with your organization's own numbers, book twenty minutes." The template adds it.</li>
+      <li>An ask that belongs to one piece goes in the paragraph above the booking line.</li>
+    </ul>
+    <div class="ui-rule-eg">
+      <div class="is-bad"><b>Before</b><pre><code>{PAIRS.ending[0]}</code></pre></div>
+      <div><b>After</b><pre><code>{PAIRS.ending[1]}</code></pre></div>
+    </div>
+  </section>
+
+  <!-- slop-lint off -->
+  <section class="ui-section" id="cut">
+    <h2 class="ui-h2">What gets cut</h2>
+    <p class="ui-p">The anti-slop linter catches most of these. Run it with <code>npm run lint:style -- --prose</code>.</p>
+    <ul class="ui-list is-avoid">
+      <li>Dashes between clauses, and whatever follows them. Restate a fact it carried as its own sentence.</li>
+      <li>The "it's not X, it's Y" family, including "one is X, the other is Y". Say what the thing is.</li>
+      <li>Lines that announce the point: "the point is", "here's the thing", "worth saying".</li>
+      <li>A clever closing line on a paragraph. Cut it; do not soften it.</li>
+      <li>"Exactly" for emphasis, and the house list: crucial, key, robust, leverage, seamless, landscape, holistic, actionable and the rest.</li>
+      <li>A list padded to three.</li>
+      <li>Exclamation points, capitals for emphasis, and a narrator in interface copy.</li>
+      <li>A restated number with nothing new attached.</li>
+    </ul>
+  </section>
+  <!-- slop-lint on -->
+
+  <section class="ui-section" id="devices">
+    <h2 class="ui-h2">Metaphors and devices</h2>
+    <ul class="ui-list">
+      <li>A spine metaphor or a signature device never runs in two consecutive articles, and comes back a month or more later. The <a href="/ui">overview</a> lists what is on record.</li>
+      <li>When a frame is dropped, every label that depended on it goes too.</li>
+      <li>Declare retired words at the top of a draft so the prose linter finds every leftover: <code>&lt;!-- slop-lint retired: front door --&gt;</code></li>
+    </ul>
+  </section>
+</Styleguide>

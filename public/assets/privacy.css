@@ -172,10 +172,10 @@
 }
 .privacy-toc-label {
   color: var(--brass);
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0;
+  text-transform: none;
 }
 .privacy-toc {
   position: sticky;
@@ -231,7 +231,7 @@
 .privacy-section details ul + p,
 .privacy-section details p + p { margin-top: 10px; }
 .privacy-section details strong { color: var(--paper); }
-.privacy-section code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; color: var(--paper); }
+.privacy-section code { font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 0.9em; color: var(--paper); }
 
 /* Commitments ledger: a table on wide screens, one block per row on phones */
 .ledger-wrap { margin-top: 20px; }
@@ -259,19 +259,36 @@
 }
 .privacy-credit a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 
-@media (max-width: 860px) {
+/* Tablets: both two-column layouts stay. Spacing and ledger type start tight at 761, so the ledger fits
+   beside the contents list, and reach the desktop values by 960. */
+@media (760px <= width < 1040px) {
+  .privacy-columns { grid-template-columns: clamp(184px, calc(28.14vw - 30.1px), 240px) minmax(0, 1fr); gap: clamp(32px, calc(12.06vw - 59.7px), 56px); }
+  .glance-heading, .glance-intro { padding-inline: clamp(28px, calc(6.03vw - 17.85px), 40px); }
+  .glance-columns { gap: 0 clamp(32px, calc(12.06vw - 59.7px), 56px); padding-inline: clamp(28px, calc(6.03vw - 17.85px), 40px); }
+  .glance-item-head h3 { text-wrap: balance; }
+  .ledger { font-size: clamp(14px, calc(0.5vw + 10.2px), 15px); }
+}
+
+/* Tablets and up: on a short screen (a phone held sideways) the stuck contents list scrolls on its own,
+   with room inside for focus rings, and a long word scrolls the ledger instead of the page. */
+@media (width >= 760px) {
+  .privacy-toc { max-height: calc(100vh - 48px); max-height: calc(100svh - 48px); overflow: auto; margin-inline: -8px; padding: 4px 8px 8px; }
+  .ledger-wrap { overflow-x: auto; }
+}
+
+/* Phones: one column throughout, and each ledger row becomes a labeled card. */
+@media (width < 760px) {
   .privacy-page { padding-top: 40px; }
   .privacy-columns { grid-template-columns: 1fr; gap: 32px; }
   .privacy-toc { position: static; }
   .privacy-toc ol { columns: 2; column-gap: 16px; }
   .glance-heading { padding: 28px 20px 0; }
   .glance-intro { padding: 0 20px; }
-  .glance-columns { grid-template-columns: 1fr; padding: 8px 20px 28px; }
+  .glance-columns { grid-template-columns: 1fr; padding: 8px 20px 28px; display: flex; flex-direction: column; }
   .glance-item-head { flex-direction: column; gap: 2px; }
   .glance-item-head a { padding: 4px 0 4px 34px; }
   .timeline { --track: 88px; }
   /* One column on phones, in the same order as the full notice. */
-  .glance-columns { display: flex; flex-direction: column; }
   .glance-column { display: contents; }
   .glance-when { order: 1; }
   .glance-types { order: 2; }

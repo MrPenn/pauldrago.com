@@ -13,5 +13,6 @@ export default defineConfig({
   site: 'https://pauldrago.com',
   trailingSlash: 'never',
   build: { format: 'file' },
-  integrations: [sitemap({ filter: (page) => !drafts.some((d) => page.includes(d)) }), smartQuotes(), lineage()],
+  // The /ui styleguide is a working tool: noindex, and left out of the sitemap too.
+  integrations: [sitemap({ filter: (page) => !drafts.some((d) => page.includes(d)) && !/\/ui(\/|$)/.test(new URL(page).pathname) }), smartQuotes(), lineage()],
 });

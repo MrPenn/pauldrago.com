@@ -1,0 +1,53 @@
+---
+import Styleguide from '../../layouts/Styleguide.astro';
+import { RULES } from '../../styleguide/lint.mjs';
+import { highlight } from '../../styleguide/build.mjs';
+
+const groups = [...new Set(RULES.map((r) => r.group))].map((g) => ({ name: g, rules: RULES.filter((r) => r.group === g) }));
+const SEVERITY = { error: 'Error', warn: 'Warning', info: 'Info' };
+const lang = (s) => (/^\s*</.test(s) ? 'html' : /^[\w-]+:\s|^\s+-\s/.test(s) ? 'yaml' : /^(#|\[\^|\*)/.test(s) ? 'markdown' : 'text');
+const code = (s) => (lang(s) === 'text' ? highlight(s, 'markdown') : highlight(s, lang(s)));
+---
+<Styleguide title="Linter" description="Every rule the styleguide linter checks, with the reason for it and how to fix it." path="/ui/lint">
+  <h1 class="display-title ui-title">Linter</h1>
+  <p class="ui-lede">{RULES.length} rules, checked against every article, every stylesheet and the scripts that read the screen width. Errors fail the run; warnings are for judgment.</p>
+
+  <section class="ui-section">
+    <h2 class="ui-h2">Running it</h2>
+    <pre class="ui-terminal"><code>npm run lint:style                      # every article, the kit and each article's stylesheet
+npm run lint:style -- src/content/articles/my-piece.md
+npm run lint:style -- --prose           # add the anti-slop prose linter
+npm run lint:style -- --strict          # warnings fail the run too
+npm run lint:style -- --format=json
+npm test                                # the linter's own tests</code></pre>
+    <p class="ui-p">Each finding prints as <code>file:line:column severity [rule] message</code>, with the fix under it. The run exits 1 on an error, or on a warning with <code>--strict</code>.</p>
+    <h3 class="ui-h3">Keeping a finding on purpose</h3>
+    <p class="ui-p">Put a comment on the same line or the line above, name the rule, and say why. The linter skips that rule on that line only.</p>
+    <pre class="ui-terminal"><code set:html={highlight('<!-- style-ok: percent-in-prose (quoted from the survey) -->')}></code></pre>
+    <pre class="ui-terminal"><code>/* style-ok: css-gradient (the fade marks a bar that is still running) */</code></pre>
+    <p class="ui-p">The linter lives in <code>src/styleguide/lint.mjs</code>. To add a rule, add it to <code>RULES</code> with its reason, report it from a check, and add a case to <code>tests/styleguide-lint.test.mjs</code>. This page updates on the next build.</p>
+  </section>
+
+  {groups.map((g) => (
+    <section class="ui-section">
+      <h2 class="ui-h2">{g.name}</h2>
+      {g.rules.map((r) => (
+        <article class="ui-rule" id={r.id}>
+          <div class="ui-rule-head">
+            <h3>{r.title}</h3>
+            <code>{r.id}</code>
+            <span class={`ui-chip is-${r.severity}`}>{SEVERITY[r.severity]}</span>
+          </div>
+          <p>{r.why}</p>
+          {r.fix && <p><strong>Fix.</strong> {r.fix}</p>}
+          {(r.bad || r.good) && (
+            <div class="ui-rule-eg">
+              {r.bad && <div class="is-bad"><b>Flagged</b><pre><code set:html={code(r.bad)}></code></pre></div>}
+              {r.good && <div><b>Passes</b><pre><code set:html={code(r.good)}></code></pre></div>}
+            </div>
+          )}
+        </article>
+      ))}
+    </section>
+  ))}
+</Styleguide>

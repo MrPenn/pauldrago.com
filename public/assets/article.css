@@ -51,7 +51,7 @@
 .article-body .article-cta a { color: var(--brass); text-decoration: none; border-bottom: 2px solid var(--brass); font-weight: 600; }
 .article-body .article-cta a:hover { color: var(--paper); }
 
-@media (max-width: 760px) {
+@media (width < 760px) {
   .article-brief li { font-size: 16px; }
 }
 
@@ -102,10 +102,10 @@
 @media (scripting: enabled) {
   .article-body[data-notes="rail"] section[data-footnotes] { display: none; }
 }
-@media (min-width: 1180px) {
+@media (width >= 1180px) {
   .sidenote { display: block; }
 }
-@media (max-width: 760px) {
+@media (width < 760px) {
   .article-body [data-footnote-ref] { padding: 6px 4px; margin: -6px -2px; }
 }
 @media print {

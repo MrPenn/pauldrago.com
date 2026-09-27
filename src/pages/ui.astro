@@ -1,0 +1,97 @@
+---
+import { getCollection } from 'astro:content';
+import Styleguide from '../layouts/Styleguide.astro';
+import { COMPONENTS, LEVELS, STATUSES, SIGNATURE_DEVICES, REFERENCE } from '../styleguide/components.mjs';
+import { RULES } from '../styleguide/lint.mjs';
+
+const articles = await getCollection('articles', ({ data }) => !data.draft);
+const bySlug = Object.fromEntries(articles.map((a) => [a.id, a]));
+const long = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const devices = SIGNATURE_DEVICES.filter((d) => bySlug[d.article]).map((d) => {
+  const a = bySlug[d.article];
+  return { ...d, title: a.data.title, date: a.data.date, free: new Date(a.data.date.valueOf() + 30 * 86400000) };
+});
+const count = (key, id) => COMPONENTS.filter((c) => c[key] === id).length;
+
+const PRINCIPLES = [
+  ['Lead with the decision.', 'The short version, the decks and the report at the end of every tool say what to do next, and what the reader gets by doing it.'],
+  ['One kit.', 'A figure the kit already draws comes from the kit, never a restyled copy. A new kind of figure, one that shows something no component can, is a proposal for the kit, and Paul decides whether it joins.'],
+  ['Every figure has a parent.', 'Each number carries a data mark, a footnote and a dated primary source. Placeholders are labelled as placeholders, and folklore is named as folklore.'],
+  ['A figure explains itself at a glance.', 'The eyebrow names it, every amount is printed on it, and the caption says who measured it and what it leaves out.'],
+  ['One moment per figure.', 'A figure builds once as it arrives, in the order the text argues, with a beat before the part to notice. Nothing loops.'],
+  ['Tools hold still.', 'A calculator keeps its size as the reader types, and the light and dark illustrations share one shape, so nothing shifts when the theme changes. From 760 a tool keeps its controls beside its result, so the reader sees the result move.'],
+  ['Plain words.', 'Labels are questions, notes say where a default came from, and headings state a claim.'],
+  ['Fast in both themes.', 'Stylesheets are inlined, fonts are self-hosted, images are WebP, and figures build when the browser is idle, so PageSpeed stays in the high 90s.'],
+];
+---
+<Styleguide title="Overview" description="The components, rules and linter that articles on pauldrago.com are built from." path="/ui">
+  <h1 class="display-title ui-title">Styleguide</h1>
+  <p class="ui-lede">The parts every article on this site is built from: the tokens, the type, the writing rules, and {COMPONENTS.length} components with the HTML to paste. A linter checks each article against the same rules before it builds.</p>
+  <p class="ui-p">The reference is <a href={`/articles/${REFERENCE.slug}`}>{REFERENCE.title}</a>. Every example is its published text, rendered in its own frame with the stylesheet and script an article loads, so what you see here is what an article shows, motion included.</p>
+
+  <section class="ui-section">
+    <h2 class="ui-h2">Start an article</h2>
+    <ol class="ui-steps">
+      <li>Copy <code>src/content/articles/example-article.md</code> and rename it. The file name becomes the URL, <code>draft: true</code> keeps it off the site, and its front matter already loads the kit's stylesheet and script.</li>
+      <li>Write the brief and the body in markdown, following the <a href="/ui/writing">writing rules</a>. Commission illustrations and pick data graphics with the <a href="/ui/graphics">graphics guide</a>.</li>
+      <li>Paste figures from the <a href="/ui/components/stacked-bar">components</a>. Build stacked bars, rising columns and unit stats with their controls so the scale and the counts are right. If the piece needs a figure the kit does not have, propose it for the kit before building it.</li>
+      <li>Mark every figure with a <a href="/ui/components/data-mark">data mark</a> and add its record to <code>src/data/components</code>.</li>
+      <li>Run <code>npm run lint:style -- --prose</code> and fix what it finds. The <a href="/ui/lint">linter page</a> lists every rule.</li>
+      <li>Run <code>npm run build:drafts</code> and read the page in both themes at 390, 768, 1039 and 1440 wide. Most layout problems show between 760 and 1040.</li>
+    </ol>
+  </section>
+
+  <section class="ui-section">
+    <h2 class="ui-h2">Principles</h2>
+    <ol class="ui-list is-numbered">{PRINCIPLES.map(([b, t]) => <li><strong>{b}</strong> {t}</li>)}</ol>
+  </section>
+
+  <section class="ui-section">
+    <h2 class="ui-h2">How the kit is organized</h2>
+    <p class="ui-p">Components are sorted by size, from a single deck up to the whole page, and by who places them.</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th>Level</th><th>What it holds</th><th>Components</th></tr></thead>
+        <tbody>{LEVELS.map((l) => <tr><td>{l.name}</td><td>{l.about}</td><td class="ui-num">{count('level', l.id)}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th>Status</th><th>What it means</th><th>Components</th></tr></thead>
+        <tbody>{STATUSES.map((s) => <tr><td><span class={`ui-chip is-${s.id}`}>{s.name}</span></td><td>{s.about}</td><td class="ui-num">{count('status', s.id)}</td></tr>)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ui-section">
+    <h2 class="ui-h2">Components</h2>
+    {LEVELS.map((l) => (
+      <div class="ui-index-group">
+        <h3 class="ui-h3">{l.name}</h3>
+        <ul class="ui-index">
+          {COMPONENTS.filter((c) => c.level === l.id).map((c) => (
+            <li><a href={`/ui/components/${c.id}`}>{c.name}</a><span class={`ui-chip is-${c.status}`}>{STATUSES.find((s) => s.id === c.status).name}</span><p>{c.summary}</p></li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </section>
+
+  <section class="ui-section">
+    <h2 class="ui-h2">Signature devices on record</h2>
+    <p class="ui-p">A device that identifies one piece can come back, but never in the next article and not within a month. The linter reads this list and warns when a draft breaks it.</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th>Device</th><th>Article</th><th>Published</th><th>Free again</th></tr></thead>
+        <tbody>
+          {devices.map((d) => <tr><td>{d.name}</td><td><a href={`/articles/${d.article}`}>{d.title}</a></td><td class="ui-num">{long(d.date)}</td><td>After the next article, and not before {long(d.free)}</td></tr>)}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ui-section">
+    <h2 class="ui-h2">The linter</h2>
+    <p class="ui-p"><code>npm run lint:style</code> checks {RULES.length} rules across front matter, headings, sources, figures, images, markup and stylesheets. Add <code>--prose</code> to run the anti-slop linter over the same articles. The <a href="/ui/lint">linter page</a> explains each rule.</p>
+  </section>
+</Styleguide>

@@ -1,10 +1,3 @@
-:where(a,
-button,
-input):focus-visible {
-    outline: 3px solid var(--paper);
-    outline-offset: 4px;
-  }
-
   .btn-secondary {
     display: inline-block;
     color: var(--paper);
@@ -38,34 +31,13 @@ input):focus-visible {
     overflow: hidden;
   }
 
-  .hero::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -2;
-    background-size: cover;
-    background-position: center right;
-    opacity: 0.72;
-    transform: scale(1.015);
-  }
-
-  .hero::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    background:
-      linear-gradient(90deg, color-mix(in srgb, var(--ground) 99%, transparent) 0%, color-mix(in srgb, var(--ground) 94%, transparent) 36%, color-mix(in srgb, var(--ground) 34%, transparent) 72%, color-mix(in srgb, var(--ground) 52%, transparent) 100%),
-      linear-gradient(180deg, color-mix(in srgb, var(--ground) 72%, transparent) 0%, color-mix(in srgb, var(--ground) 50%, transparent) 60%, var(--ground) 100%);
-  }
-
   .hero-layout {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 48px;
   }
 
-  @media (min-width: 1040px) {.hero {
+  @media (width >= 1040px) {.hero {
       min-height: 620px;
       padding-top: 56px;
       padding-bottom: 48px;
@@ -99,16 +71,6 @@ input):focus-visible {
     margin-top: 28px;
   }
 
-  .hero-context {
-    color: var(--secondary);
-    font-size: 16px;
-    line-height: 1.55;
-    max-width: 780px;
-    margin-top: 24px;
-    padding-top: 24px;
-    border-top: 1px solid var(--hairline);
-  }
-
   .hero-actions {
     display: flex;
     flex-wrap: wrap;
@@ -117,161 +79,14 @@ input):focus-visible {
     margin-top: 34px;
   }
 
-  .brief-panel {
-    border: 1px solid color-mix(in srgb, var(--brass) 60%, transparent);
-    background: color-mix(in srgb, var(--dark-navy) 82%, transparent);
-    padding: 24px;
-    backdrop-filter: blur(4px);
-  }
-
-  .brief-label {
-    color: var(--brass);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    margin-bottom: 16px;
-  }
-
-  .brief-question {
-    font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-    font-size: clamp(25px, 3vw, 38px);
-    line-height: 1.05;
-    letter-spacing: 0;
-    text-transform: uppercase;
-    margin-bottom: 22px;
-  }
-
-  @media (min-width: 1040px) {.hero-copy .headline-104 {
+  @media (width >= 1040px) {.hero-copy .headline-104 {
       font-size: clamp(54px, 5.2vw, 68px);
     }
 
     .hero-subhead {
       font-size: clamp(20px, 1.7vw, 25px);
     }
-
-    .brief-question {
-      font-size: clamp(24px, 2.2vw, 34px);
-    }
 }
-
-  .decision-board {
-    border-top: 1px solid var(--hairline);
-  }
-
-  .board-row {
-    display: grid;
-    grid-template-columns: 86px 1fr;
-    gap: 14px;
-    align-items: center;
-    min-height: 72px;
-    padding: 15px 0;
-    border-bottom: 1px solid var(--hairline);
-  }
-
-  .board-label {
-    color: var(--paper);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    line-height: 1.25;
-    text-transform: uppercase;
-  }
-
-  .board-track {
-    display: flex;
-    gap: 6px;
-    align-items: center;
-  }
-
-  .board-block {
-    height: 28px;
-    background: color-mix(in srgb, var(--paper) 12%, transparent);
-    border: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 620ms cubic-bezier(.2, .8, .2, 1);
-  }
-
-  .board-block.brass {
-    background: color-mix(in srgb, var(--brass) 30%, transparent);
-    border-color: color-mix(in srgb, var(--brass) 80%, transparent);
-  }
-
-  .board-map {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 4px;
-  }
-
-  .board-cell {
-    height: 13px;
-    background: color-mix(in srgb, var(--paper) 10%, transparent);
-    opacity: 0.38;
-    transition: opacity 420ms ease, background-color 420ms ease;
-  }
-
-  .board-cell.live {
-    background: color-mix(in srgb, var(--brass) 52%, transparent);
-  }
-
-  .board-overlap {
-    position: relative;
-    height: 58px;
-  }
-
-  .board-circle {
-    position: absolute;
-    top: 1px;
-    width: 56px;
-    height: 56px;
-    border: 2px solid var(--paper);
-    background: color-mix(in srgb, var(--paper) 7%, transparent);
-    transform: translateX(-8px);
-    opacity: 0.45;
-    transition: transform 720ms cubic-bezier(.2, .8, .2, 1), opacity 520ms ease;
-  }
-
-  .board-circle.two {
-    left: 36px;
-    border-color: var(--brass);
-    background: color-mix(in srgb, var(--brass) 18%, transparent);
-  }
-
-  .board-cadence {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: 6px;
-    align-items: end;
-  }
-
-  .board-tick {
-    min-height: 20px;
-    background: color-mix(in srgb, var(--paper) 12%, transparent);
-    border-top: 3px solid color-mix(in srgb, var(--paper) 65%, transparent);
-    transform: scaleY(0.35);
-    transform-origin: bottom;
-    transition: transform 680ms cubic-bezier(.2, .8, .2, 1);
-  }
-
-  .board-tick.live {
-    background: color-mix(in srgb, var(--brass) 22%, transparent);
-    border-color: var(--brass);
-  }
-
-  .brief-panel.is-visible .board-block,
-.brief-panel.is-visible .board-tick {
-    transform: scale(1);
-  }
-
-  .brief-panel.is-visible .board-cell {
-    opacity: 1;
-  }
-
-  .brief-panel.is-visible .board-circle {
-    transform: translateX(0);
-    opacity: 1;
-  }
 
   .decision-nav {
     position: sticky;
@@ -289,7 +104,7 @@ input):focus-visible {
     gap: 0;
   }
 
-  @media (min-width: 760px) {.decision-nav-inner {
+  @media (width >= 760px) {.decision-nav-inner {
       grid-template-columns: repeat(4, 1fr);
     }
 }
@@ -305,7 +120,7 @@ input):focus-visible {
     text-transform: uppercase;
   }
 
-  @media (min-width: 760px) {.decision-nav a {
+  @media (width >= 760px) {.decision-nav a {
       border-bottom: none;
       border-right: 1px solid var(--hairline);
     }
@@ -315,7 +130,7 @@ input):focus-visible {
     }
 }
 
-  @media (max-width: 759px) {.decision-nav-inner {
+  @media (width < 760px) {.decision-nav-inner {
       grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
@@ -363,10 +178,10 @@ input):focus-visible {
 
   .service-group-label {
     color: var(--secondary);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0;
+    text-transform: none;
     padding: 20px 0 12px;
     border-bottom: 1px solid var(--hairline);
   }
@@ -383,8 +198,9 @@ input):focus-visible {
     border-bottom: 1px solid var(--hairline);
   }
 
-  @media (min-width: 920px) {.router-row {
-      grid-template-columns: minmax(260px, 0.85fr) minmax(0, 1.25fr) 240px;
+  /* The question column takes the larger share so the longest question holds to four lines */
+  @media (width >= 1040px) {.router-row {
+      grid-template-columns: minmax(260px, 1.2fr) minmax(0, 1fr) 240px;
       align-items: start;
       gap: 32px;
     }
@@ -399,12 +215,22 @@ input):focus-visible {
     text-transform: uppercase;
   }
 
+  /* 1040 to 1180: the copy column keeps 330px (about 35 characters a line), and the question eases
+     from 26px to 32px so it keeps four lines beside it */
+  @media (1040px <= width < 1180px) {.router-row {
+      grid-template-columns: minmax(260px, 1.2fr) minmax(330px, 1fr) 240px;
+    }
+    .router-question {
+      font-size: clamp(26px, calc(4.2857vw - 18.571px), 32px);
+    }
+}
+
   .router-service {
     color: var(--brass);
-    font-size: 13px;
+    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0;
+    text-transform: none;
     margin-bottom: 10px;
   }
 
@@ -452,10 +278,10 @@ input):focus-visible {
 
   .visual-label {
     color: var(--brass);
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0;
+    text-transform: none;
     margin-bottom: 14px;
   }
 
@@ -609,113 +435,6 @@ input):focus-visible {
     transform: scaleY(1);
   }
 
-  .model-board {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 28px;
-    margin-top: 52px;
-  }
-
-  @media (min-width: 960px) {.model-board {
-      grid-template-columns: 1fr 1fr;
-      gap: 56px;
-    }
-}
-
-  .data-strip {
-    border-top: 1px solid var(--hairline);
-  }
-
-  .model-schematic {
-    border: 1px solid var(--hairline);
-    background: color-mix(in srgb, var(--paper) 2.5%, transparent);
-    padding: 18px;
-    margin-bottom: 24px;
-  }
-
-  .schematic-row {
-    display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 16px;
-    align-items: center;
-    padding: 12px 0;
-    border-bottom: 1px solid var(--hairline);
-  }
-
-  .schematic-row:last-child {
-    border-bottom: none;
-  }
-
-  .schematic-key {
-    color: var(--brass);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .schematic-track {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .schematic-block {
-    height: 24px;
-    background: color-mix(in srgb, var(--paper) 13%, transparent);
-    border: 1px solid color-mix(in srgb, var(--paper) 14%, transparent);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 720ms cubic-bezier(.2, .8, .2, 1);
-  }
-
-  .schematic-block.brass {
-    background: color-mix(in srgb, var(--brass) 28%, transparent);
-    border-color: color-mix(in srgb, var(--brass) 72%, transparent);
-  }
-
-  .model-schematic.is-visible .schematic-block {
-    transform: scaleX(1);
-  }
-
-  .data-row {
-    display: grid;
-    grid-template-columns: 0.9fr 1.2fr;
-    gap: 24px;
-    padding: 18px 0;
-    border-bottom: 1px solid var(--hairline);
-  }
-
-  .data-label {
-    color: var(--brass);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-  }
-
-  .data-value {
-    color: var(--paper);
-    font-size: 16px;
-    line-height: 1.45;
-  }
-
-  .proof-statement {
-    font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-    font-size: clamp(30px, 3.3vw, 46px);
-    line-height: 1.08;
-    letter-spacing: 0;
-    text-transform: uppercase;
-    margin-bottom: 28px;
-  }
-
-  .body-copy {
-    max-width: 760px;
-    color: var(--paper);
-    font-size: 17px;
-    line-height: 1.58;
-  }
-
   .process {
     margin-top: 52px;
     display: grid;
@@ -760,7 +479,7 @@ input):focus-visible {
     gap: 44px;
   }
 
-  @media (min-width: 900px) {.not-agency {
+  @media (width >= 760px) {.not-agency {
       grid-template-columns: 0.8fr 1.2fr;
       align-items: start;
     }
@@ -795,9 +514,15 @@ input):focus-visible {
     gap: 44px;
   }
 
-  @media (min-width: 900px) {.closing-grid {
+  @media (width >= 760px) {.closing-grid {
       grid-template-columns: minmax(0, 1fr) 280px;
       gap: 64px;
+    }
+}
+
+  /* Tablet: the note column keeps its 280px; the gap eases so 761 reads and is back to 64px by about 960 */
+  @media (760px <= width < 1040px) {.closing-grid {
+      gap: clamp(40px, 6.7vw, 64px);
     }
 }
 
@@ -812,10 +537,10 @@ input):focus-visible {
 
   .call-note-label {
     color: var(--brass);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
+    letter-spacing: 0;
+    text-transform: none;
     margin-bottom: 14px;
   }
 
@@ -825,7 +550,7 @@ input):focus-visible {
     line-height: 1.55;
   }
 
-  @media (max-width: 640px) {.hero-copy .headline-104,
+  @media (width < 760px) {.hero-copy .headline-104,
     .headline-104 {
       font-size: clamp(28px, 9.5vw, 42px);
     }
@@ -840,18 +565,8 @@ input):focus-visible {
       min-height: auto;
     }
 
-    .hero::before {
-      background-position: 70% center;
-      opacity: 0.3;
-    }
-
     .decision-nav {
       position: static;
-    }
-
-    .data-row {
-      grid-template-columns: 1fr;
-      gap: 6px;
     }
 
     .router-fit,
@@ -862,11 +577,8 @@ input):focus-visible {
     }
 }
 
-  @media (prefers-reduced-motion: reduce) {.board-block,
-.board-tick,
-.flow-fill,
-.cadence-bar,
-.schematic-block {
+  @media (prefers-reduced-motion: reduce) {.flow-fill,
+.cadence-bar {
       transform: none;
     }
 }
