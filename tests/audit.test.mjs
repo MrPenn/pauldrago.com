@@ -75,18 +75,18 @@ test('the content-is-data article is on the kit, with nothing left to decide', (
   for (const id of ['stacked-bar', 'ledger', 'calculator', 'record', 'as-of', 'illustration']) assert.ok(a.figures.some((f) => f.component === id), id);
 });
 
-test('the reference article maps onto the kit; its undefined class is dead weight', () => {
+test('the reference article maps onto the kit, with nothing left to remove', () => {
   const a = auditArticle(root, resolveArticle(root, 'the-digital-front-door-nobody-walks-through'));
   assert.equal(a.reference, true);
-  assert.deepEqual(byStatus(a, 'remove'), ['Wide figure class']);
+  assert.deepEqual(byStatus(a, 'remove'), []);
+  assert.equal(a.summary.errors, 0);
   assert.equal(a.decisions.length, 0);
   assert.equal(a.summary.rebuild, 0);
   for (const n of ['Unit stat', 'Pinned sequence', 'Stacked bar', 'Rising columns', 'Calculator', 'Org fold', 'Unit grid', 'Pull quote']) {
     assert.ok(byStatus(a, 'equivalent').includes(n), n);
   }
   assert.equal(figure(a, 149).component, 'calculator');
-  assert.match(figure(a, 149).how, /fd-wide does nothing/);
-  assert.ok(a.findings.some((f) => f.rule === 'class-defined' && /fd-wide/.test(f.message)));
+  assert.ok(!a.findings.some((f) => /fd-wide/.test(f.message)));
 });
 
 test('the example draft is on the kit', () => {

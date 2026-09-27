@@ -71,7 +71,7 @@ In the libraries I have audited, somewhere between <data value="c:audited-reuse"
 You will also see "<data value="c:folklore-60-70">60 to 70 percent of B2B content goes unused</data>" in every deck on this subject. It comes from a 2013 conference remark with no method or sample ever published, so it is folklore with a date.[^4] The CreativeX figure is measured, and <data value="c:creativex-unactivated">it says half</data>.[^3]
 
 <figure class="pd-figure pd-stack" data-pd="build">
-  <p class="pd-eyebrow">Content that goes unused, by who counted it</p>
+  <p class="pd-eyebrow">Content that goes unused</p>
   <div class="pd-stack-lead"><span class="pd-stack-sub">Share of each source's content</span></div>
   <div class="pd-stack-bar" data-at="1">
     <div class="pd-stack-head"><span class="pd-stack-name">CreativeX<small class="pd-stack-what">Core assets never activated, consumer brands, 2023</small></span><span class="pd-stack-val"><data value="c:creativex-unactivated">52%</data></span></div>
@@ -370,7 +370,7 @@ Two rules go further. <data value="c:reg-z">Regulation Z</data> calls a mortgage
 Voice belongs to the branches that know the customers. The headline can be post-edited by people who talk to those customers every day, while the rate and the disclosure under it are translated from the approved record and nobody rewrites them. Translation memory makes the repeat work cheap:[^23]
 
 <figure class="pd-figure pd-stack" data-pd="build">
-  <p class="pd-eyebrow">Words translated per hour, by what the translator starts from</p>
+  <p class="pd-eyebrow">Words translated per hour</p>
   <div class="pd-stack-lead"><span class="pd-stack-sub">Ten professional translators, English to Spanish, 2015</span></div>
   <div class="pd-stack-bar" data-at="1">
     <div class="pd-stack-head"><span class="pd-stack-name">From scratch</span><span class="pd-stack-val"><data value="c:translation-throughput">1,099</data></span></div>
