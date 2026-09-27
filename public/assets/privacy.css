@@ -269,7 +269,6 @@
   .glance-heading, .glance-intro { padding-inline: clamp(28px, calc(6.03vw - 17.85px), 40px); }
   .glance-columns { gap: 0 clamp(32px, calc(12.06vw - 59.7px), 56px); padding-inline: clamp(28px, calc(6.03vw - 17.85px), 40px); }
   .glance-item-head h3 { text-wrap: balance; }
-  .ledger { }
 }
 
 /* Tablets and up: on a short screen (a phone held sideways) the stuck contents list scrolls on its own,

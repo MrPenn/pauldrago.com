@@ -656,6 +656,5 @@ input):focus-visible {
    section C statement and the photo column ease down toward 760 and reach full size by 960. */
 @media (760px <= width < 1040px) {
   .section-c-grid { gap: clamp(40px, 6.7vw, 64px); }
-  .section-c-pull { }
   .closing-band-grid { grid-template-columns: 1fr clamp(240px, 30vw, 280px); gap: clamp(40px, 6.7vw, 64px); }
 }

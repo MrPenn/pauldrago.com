@@ -175,7 +175,6 @@
 .ui-rule { padding: 18px 0 20px; border-bottom: 1px solid var(--hairline); scroll-margin-top: 24px; }
 .ui-rule-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 12px; margin: 0 0 6px; }
 .ui-rule-head h3 { margin: 0; font-size: var(--step--1); line-height: var(--leading-snug); }
-.ui-rule-head code { }
 .ui-rule p { max-width: 70ch; margin: 0 0 8px; }
 .ui-rule-eg { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 10px; margin-top: 10px; }
 .ui-rule-eg div { border-top: 2px solid var(--paper); background: var(--panel); }

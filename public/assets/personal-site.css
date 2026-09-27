@@ -150,9 +150,6 @@
 .article-empty-copy {
   text-transform: uppercase;
 }
-@media (width >= 760px) { .article-empty-copy { } }
-@media (width >= 1040px) { .article-empty-copy { } }
-@media (width >= 1180px) { .article-empty-copy { } }
 
 @media (width < 1040px) {
   .home-hero {
@@ -163,7 +160,7 @@
 
 @media (width < 760px) {
   .home-title { font-size: var(--step-6); }
-@media (width >= 480px) { .home-title { } }
+@media (width >= 480px) { .home-title { font-size: var(--step-7); } }
 
   .home-intro {
     margin-top: 26px;

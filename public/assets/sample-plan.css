@@ -251,7 +251,7 @@
 /* Chart beside table from 760: labels grow as the chart narrows and table cells tighten, back to full values by 960. */
 @media (760px <= width < 1040px) {
   .plan-ramp { gap: clamp(32px, 4.2vw, 40px); }
-  .plan-grid text, .plan-axis, .plan-line-label { }
+  .plan-grid text, .plan-axis, .plan-line-label { font-size: var(--step--1); }
   .plan-outcomes th, .plan-outcomes td { padding-right: clamp(8px, calc(2.01vw - 7.3px), 12px); }
 }
 @media (width < 760px) {

@@ -230,8 +230,6 @@
   @media (1040px <= width < 1180px) {.router-row {
       grid-template-columns: minmax(260px, 1.2fr) minmax(330px, 1fr) 240px;
     }
-    .router-question {
-    }
 }
 
   .router-service {
@@ -558,7 +556,7 @@
       font-size: var(--step-3);
     }
 @media (width >= 480px) { .hero-copy .headline-104,
-    .headline-104 { } }
+    .headline-104 { font-size: var(--step-4); } }
 
     .process-step {
       grid-template-columns: 1fr;

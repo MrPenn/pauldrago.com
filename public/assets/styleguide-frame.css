@@ -62,7 +62,6 @@ body.ui-frame.is-page { padding: 0; }
 .ui-scale { display: grid; gap: 0; font-family: var(--font-sans); }
 .ui-scale-row { display: grid; grid-template-columns: 13ch minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--hairline); }
 .ui-scale-sample { overflow-wrap: anywhere; line-height: var(--leading-heading); color: var(--paper); }
-.ui-scale-sans { }
 .ui-scale-serif { font-family: var(--font-serif); }
 .ui-scale-display { font-family: var(--font-display); }
 .ui-step-m2 { font-size: var(--step--2); }

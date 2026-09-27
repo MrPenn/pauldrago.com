@@ -95,7 +95,6 @@
   text-decoration: none;
   padding: 0 1px;
 }
-.article-body sup { }
 .article-body [data-footnote-ref]:hover,
 .article-body [data-footnote-ref].is-active { text-decoration: underline; text-underline-offset: 2px; }
 .sidenote, .note-inline {
