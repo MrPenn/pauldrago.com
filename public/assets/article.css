@@ -3,38 +3,38 @@
 
 /* The page: header, byline and author box. The title climbs one step of the type scale at each
    breakpoint. */
-.article { padding: 64px 0 96px; }
-.article-header { max-width: 760px; margin-bottom: 40px; }
-.article-kicker { margin: 0 0 16px; }
+.article { padding: var(--space-16) 0 var(--space-24); }
+.article-header { max-width: 760px; margin-bottom: var(--space-10); }
+.article-kicker { margin: 0 0 var(--space-4); }
 .article-kicker a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--hairline); opacity: 0.85; }
 .article-kicker a:hover { text-decoration-color: var(--brass); opacity: 1; }
-.article-title { font-size: var(--step-3); line-height: var(--leading-display); margin: 0 0 16px; }
+.article-title { font-size: var(--step-3); line-height: var(--leading-display); margin: 0 0 var(--space-4); }
 @media (width >= 760px) { .article-title { font-size: var(--step-4); } }
 @media (width >= 1040px) { .article-title { font-size: var(--step-5); } }
 @media (width >= 1180px) { .article-title { font-size: var(--step-6); } }
-.article-intro { font-size: var(--step-1); line-height: var(--leading-body); margin: 0 0 12px; max-width: 62ch; }
+.article-intro { font-size: var(--step-1); line-height: var(--leading-body); margin: 0 0 var(--space-3); max-width: var(--measure-0); }
 .article-date { font-size: var(--step--2); opacity: 0.7; margin: 0; }
-.article-byline { margin: 10px 0 0; font-size: var(--step--2); color: var(--secondary); }
+.article-byline { margin: var(--space-3) 0 0; font-size: var(--step--2); color: var(--secondary); }
 .article-byline a { color: var(--paper); font-weight: var(--weight-semibold); text-decoration: none; border-bottom: 1px solid var(--brass); }
 .article-byline a:hover { color: var(--brass); }
 
 /* Author box: who wrote this and how to reach him */
-.article-author { max-width: 68ch; margin: 56px 0 0; padding: 28px 0 0; border-top: 2px solid var(--paper); }
-.article-author-label { margin: 0 0 12px; }
-.article-author-bio { margin: 0 0 20px; font-family: var(--font-serif); }
-.article-author-links { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin: 0; }
+.article-author { max-width: var(--measure-1); margin: var(--space-16) 0 0; padding: var(--space-8) 0 0; border-top: 2px solid var(--paper); }
+.article-author-label { margin: 0 0 var(--space-3); }
+.article-author-bio { margin: 0 0 var(--space-5); font-family: var(--font-serif); }
+.article-author-links { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-4) var(--space-6); margin: 0; }
 .article-author-link { color: var(--paper); font-size: var(--step--2); font-weight: var(--weight-semibold); text-decoration: none; border-bottom: 1px solid var(--hairline); }
 .article-author-link:hover { border-bottom-color: var(--brass); color: var(--brass); }
-.btn-small { padding: 12px 18px; font-size: var(--step--2); }
-@media (width < 760px) { .btn.btn-small { min-height: 0; padding: 12px 16px; } }
+.btn-small { padding: var(--space-3) var(--space-5); font-size: var(--step--2); }
+@media (width < 760px) { .btn.btn-small { min-height: 0; padding: var(--space-3) var(--space-4); } }
 
 /* The body's defaults. The kit and an article's own stylesheet set the reading styles on top. */
-.article-body { max-width: 68ch; font-size: var(--step-0); line-height: var(--leading-body); }
-.article-body h2 { font-family: var(--font-display); font-size: var(--step-1); line-height: var(--leading-heading); margin: 48px 0 16px; }
-.article-body h3 { font-size: var(--step-0); margin: 32px 0 12px; }
-.article-body p, .article-body ul, .article-body ol { margin: 0 0 20px; }
+.article-body { max-width: var(--measure-1); font-size: var(--step-0); line-height: var(--leading-body); }
+.article-body h2 { font-family: var(--font-display); font-size: var(--step-1); line-height: var(--leading-heading); margin: var(--space-12) 0 var(--space-4); }
+.article-body h3 { font-size: var(--step-0); margin: var(--space-8) 0 var(--space-3); }
+.article-body p, .article-body ul, .article-body ol { margin: 0 0 var(--space-5); }
 .article-body a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
-.article-body blockquote { margin: 28px 0; padding-left: 20px; border-left: 3px solid currentColor; opacity: 0.9; }
+.article-body blockquote { margin: var(--space-8) 0; padding-left: var(--space-5); border-left: 3px solid currentColor; opacity: 0.9; }
 .article-body img { max-width: 100%; height: auto; }
 @media (width >= 1040px) { .article-body h2 { font-size: var(--step-2); } }
 @media (width < 760px) {
@@ -44,18 +44,18 @@
 
 /* The short version */
 .article-brief {
-  margin: 0 0 44px;
-  padding: 22px 0 8px;
+  margin: 0 0 var(--space-12);
+  padding: var(--space-6) 0 var(--space-2);
   border-top: 4px solid var(--brass);
   border-bottom: 1px solid var(--hairline);
 }
-.article-brief-label { margin: 0 0 20px; }
+.article-brief-label { margin: 0 0 var(--space-5); }
 .article-brief ol { list-style: none; margin: 0; padding: 0; counter-reset: brief; }
 .article-brief li {
   counter-increment: brief;
   position: relative;
   margin: 0;
-  padding: 0 0 14px 34px;
+  padding: 0 0 var(--space-4) var(--space-8);
   font-family: var(--font-serif);
   font-size: var(--step--1);
   line-height: var(--leading-body);
@@ -73,13 +73,13 @@
 
 /* Closing line: the one booking offer every article ends on */
 .article-body .article-cta {
-  margin: 36px 0 0;
-  padding: 22px 0 0;
+  margin: var(--space-10) 0 0;
+  padding: var(--space-6) 0 0;
   border-top: 1px solid var(--hairline);
   font-family: var(--font-serif);
   font-size: var(--step-0);
   line-height: var(--leading-body);
-  max-width: 60ch;
+  max-width: var(--measure-0);
   color: var(--paper);
 }
 .article-body .article-cta a { color: var(--brass); text-decoration: none; border-bottom: 2px solid var(--brass); font-weight: var(--weight-semibold); }
@@ -105,27 +105,27 @@
 .sidenote {
   display: none;
   position: absolute;
-  left: calc(100% + 84px);
-  width: 280px;
-  padding-top: 10px;
+  left: calc(100% + var(--rail-gap));
+  width: var(--rail);
+  padding-top: var(--space-3);
   border-top: 1px solid var(--hairline);
   font-size: var(--step--2);
   transition: color 180ms ease, border-color 180ms ease;
 }
-.sidenote-num { color: var(--brass); font-weight: var(--weight-bold); margin-right: 6px; }
+.sidenote-num { color: var(--brass); font-weight: var(--weight-bold); margin-right: var(--space-2); }
 .sidenote p, .note-inline p { display: inline; margin: 0; }
 .sidenote strong, .note-inline strong { font-weight: var(--weight-semibold); color: var(--paper); }
 .sidenote a, .note-inline a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .sidenote .data-footnote-backref, .note-inline .data-footnote-backref { display: none; }
 .sidenote.is-active, .sidenote:hover { color: var(--paper); border-top-color: var(--brass); }
 .note-inline {
-  margin: -8px 0 22px;
-  padding: 12px 14px;
+  margin: calc(-1 * var(--space-2)) 0 var(--space-6);
+  padding: var(--space-3) var(--space-4);
   border-left: 2px solid var(--brass);
   background: color-mix(in srgb, var(--paper) 4%, transparent);
   font-size: var(--step--2);
 }
-.article-body[data-notes="rail"] section[data-footnotes] { margin-top: 48px; }
+.article-body[data-notes="rail"] section[data-footnotes] { margin-top: var(--space-12); }
 .article-body[data-notes="rail"] section[data-footnotes] h2 { font-size: var(--step--1); }
 @media (scripting: enabled) {
   .article-body[data-notes="rail"] section[data-footnotes] { display: none; }
@@ -134,7 +134,7 @@
   .sidenote { display: block; }
 }
 @media (width < 760px) {
-  .article-body [data-footnote-ref] { padding: 6px 4px; margin: -6px -2px; }
+  .article-body [data-footnote-ref] { padding: var(--space-2) var(--space-1); margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-half)); }
 }
 @media print {
   .article-body[data-notes="rail"] section[data-footnotes] { display: block; }

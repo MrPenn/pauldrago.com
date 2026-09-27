@@ -1,12 +1,27 @@
 ---
 import Styleguide from '../../layouts/Styleguide.astro';
-import { colorTokens, typeSteps, typeTokens } from '../../styleguide/tokens.mjs';
+import { colorTokens, typeSteps, typeTokens, spaceTokens, gridTokens } from '../../styleguide/tokens.mjs';
 import { BREAKPOINTS, COLUMN_BREAKPOINTS, TYPE_SCALE } from '../../styleguide/components.mjs';
 
 const tokens = colorTokens(process.cwd());
 // The scale's sizes come from site-shell.css; what each step is for comes from the registry.
 const steps = typeSteps(process.cwd()).map((t) => ({ ...t, ...TYPE_SCALE.find((x) => x.step === t.step) }));
 const base = typeTokens(process.cwd());
+const space = spaceTokens(process.cwd());
+const grid = gridTokens(process.cwd());
+const GRID_USE = {
+  '--container-page': 'The page: header, footer, service pages',
+  '--container-article': 'An article, and the width a calculator or pinned sequence widens to',
+  '--gutter': 'Inside each container; 20px below 760',
+  '--rail': 'The source-notes rail, 1180 and up',
+  '--rail-gap': 'Between the reading column and the rail',
+  '--measure--4': 'Pull quotes, short headings',
+  '--measure--3': 'Section headings, legends, captions beside a number',
+  '--measure--2': 'Short notes',
+  '--measure--1': 'Decks, pinned steps, record text',
+  '--measure-0': 'The reading column',
+  '--measure-1': 'Wide text: tables of notes, the styleguide',
+};
 // What each base token is for; the values come from site-shell.css.
 const USE = {
   '--font-display': 'Archivo Black: titles, section headings, big numbers',
@@ -107,8 +122,21 @@ const ARTICLE = [
     </ul>
   </section>
 
+  <section class="ui-section" id="spacing">
+    <h2 class="ui-h2">Spacing</h2>
+    <p class="ui-p">Every margin, padding and gap on the site is a step of one scale, read here from <code>site-shell.css</code>. It sits on a 4px grid, each token is named for how many 4px units it holds, and the steps widen as they grow. The linter rejects any other value (<code>space-tokens</code>).</p>
+    <div class="ui-space">
+      {space.map((t) => <div class="ui-space-row"><code>var({t.name})</code><span class="ui-num">{t.value}</span><i style={`width:${t.value}`}></i></div>)}
+    </div>
+    <ul class="ui-list">
+      <li>Sections open var(--space-20) below the last paragraph, var(--space-12) on phones, with a hairline and the section's numeral.</li>
+      <li>Figures sit var(--space-12) from the text around them.</li>
+      <li>Two things that belong together sit a small step apart; two groups sit at least two steps apart.</li>
+    </ul>
+  </section>
+
   <section class="ui-section" id="rules">
-    <h2 class="ui-h2">Rules and spacing</h2>
+    <h2 class="ui-h2">Rules</h2>
     <p class="ui-p">A few weights of rule carry the structure of every page.</p>
     <div class="ui-rules-demo">
       <div><i style="border-top:1px solid var(--hairline)"></i><span>1px hairline: over every section, above and below figures, between ledger rows.</span></div>
@@ -117,8 +145,6 @@ const ARTICLE = [
       <div><i style="border-top:4px solid var(--brass)"></i><span>4px accent: over the short version.</span></div>
     </div>
     <ul class="ui-list">
-      <li>Sections open 72px below the last paragraph (52px on phones), with a hairline and the section's numeral.</li>
-      <li>Figures sit 40 to 48px from the text around them.</li>
       <li>Corners are square, inputs included.</li>
       <li>No gradients. The one shadow is under the graphic pinned at the top of a phone screen, so the steps scroll under it.</li>
     </ul>
@@ -141,18 +167,23 @@ const ARTICLE = [
         <tbody>{COLUMN_BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</tbody>
       </table>
     </div>
-    <h3 class="ui-h3">Measures</h3>
+    <h3 class="ui-h3">Grid tokens</h3>
+    <p class="ui-p">Read from <code>site-shell.css</code>. Media queries cannot read custom properties, so the breakpoints above stay numbers and the linter holds them; everything else about the grid is a token. Measures step by 1.2 from the reading measure, like the type scale.</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
+        <tbody>{grid.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value.startsWith('var(') ? t.value.replace(/var\((--[\w-]+)\)/, (m, n) => (space.find((x) => x.name === n)?.value ?? m)) : t.value}</td><td>{GRID_USE[t.name] ?? ''}</td></tr>)}</tbody>
+      </table>
+    </div>
     <ul class="ui-list">
-      <li>Page container: 1240px, with 32px gutters, 20px below 760.</li>
-      <li>Article container: 1060px. Reading column: 62 characters.</li>
-      <li>Source-notes rail, 1180 and up: 280px wide, 84px to the right of the column.</li>
-      <li>A calculator, 1040 and up: the width of the article container.</li>
+      <li>The gutter is a step narrower below 760: 20px. Everything that reads it follows, including the pinned card and the opener that run to the page edge.</li>
+      <li>A calculator, 1040 and up, and a pinned sequence, 1180 and up, widen to the article container, less its gutters.</li>
     </ul>
     <h3 class="ui-h3">Choosing the step</h3>
     <ul class="ui-list">
       <li>Pick the lowest step where every column still reads. Two columns sit side by side from 760, and so do three or four short items. Three columns led by a big headline stack until 1040.</li>
       <li>A tool keeps its controls beside its result from 760. A table keeps its columns from 760; below it a site ledger becomes labeled cards.</li>
-      <li>Ease the tablet band. Gaps, fixed widths and big type take clamp() inside (760px &lt;= width &lt; 1040px): smallest at 760, full size by 960.</li>
+      <li>Ease the tablet band. Inside (760px &lt;= width &lt; 1040px) gaps and type take a smaller step of their scale, and only a fixed track width may use clamp().</li>
       <li>A rule scoped to a range has to help at both ends of it.</li>
       <li>Check each change before and after at 759 and 760, 1039 and 1040, and at 768, 820 and 960. Turn a phone sideways (844 by 390) for anything sticky or set by a script.</li>
     </ul>
@@ -161,9 +192,10 @@ const ARTICLE = [
 @media (width < 760px) { ... }
 @media (760px <= width < 1180px) { ... }
 
-/* The tablet band: ease toward the desktop values */
+/* The tablet band: a smaller step of the same scale */
+.closing-band-grid { gap: var(--space-16); }
 @media (760px <= width < 1040px) {
-  .closing-band-grid { gap: clamp(40px, 6.7vw, 64px); }
+  .closing-band-grid { gap: var(--space-12); }
 }
 
 /* A component: the column it sits in */

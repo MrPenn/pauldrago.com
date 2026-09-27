@@ -1,8 +1,8 @@
 /* The root of the cascade. Every page loads this sheet first, and it holds the basics every other
-   sheet builds on: the colours, the three typefaces, the type scale, the weights, the line spacing
-   and the tracking, then the defaults every element inherits. Other sheets use these tokens and
-   set only what differs from what they inherit. The linter holds them to it (type-scale,
-   type-tokens, css-color). */
+   sheet builds on: the colours, the three typefaces, the type scale, the weights, the line spacing,
+   the tracking, the spacing scale and the grid, then the defaults every element inherits. Other
+   sheets use these tokens and set only what differs from what they inherit. The linter holds them
+   to it (type-scale, type-tokens, space-tokens, css-color). */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -70,6 +70,40 @@
 
   /* Tracking: none, except small capitals, which open up. */
   --tracking-caps: 0.1em;
+
+  /* Spacing: a 4px grid. Each token is named for how many 4px units it holds, so --space-5 is
+     20px, and the steps widen as they grow. The half step is for hairline gaps. Every margin,
+     padding and gap on the site is one of these. */
+  --space-half: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  /* The grid. The page and article containers, the gutter inside them (a step narrower on
+     phones), the source-notes rail beside the article column, and the text measures. Measures
+     step by 1.2 from the reading measure, like the type scale. The breakpoints are 480, 760, 1040
+     and 1180; media queries cannot read custom properties, so the linter holds them instead. */
+  --container-page: 1240px;
+  --container-article: 1060px;
+  --gutter: var(--space-8);
+  --rail: 280px;
+  --rail-gap: var(--space-20);
+  --measure--4: 30ch;
+  --measure--3: 36ch;
+  --measure--2: 43ch;
+  --measure--1: 52ch;
+  --measure-0: 62ch;
+  --measure-1: 74ch;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -127,9 +161,9 @@ a {
 
 .container {
   width: 100%;
-  max-width: 1240px;
+  max-width: var(--container-page);
   margin: 0 auto;
-  padding: 0 32px;
+  padding: 0 var(--gutter);
 }
 
 .skip-link {
@@ -137,7 +171,7 @@ a {
   top: 12px;
   left: 24px;
   z-index: 100;
-  padding: 10px 14px;
+  padding: var(--space-3) var(--space-4);
   background: var(--paper);
   color: var(--ground);
   font-weight: var(--weight-bold);
@@ -225,7 +259,7 @@ a {
 }
 
 header {
-  padding: 24px 0;
+  padding: var(--space-6) 0;
   border-bottom: 1px solid var(--hairline);
 }
 
@@ -238,12 +272,12 @@ header {
 .header-inner {
   align-items: center;
   justify-content: space-between;
-  gap: 28px;
+  gap: var(--space-8);
 }
 
 .header-actions {
   align-items: center;
-  gap: 28px;
+  gap: var(--space-8);
 }
 
 .brand-home {
@@ -253,7 +287,7 @@ header {
 
 .brand-group {
   flex-direction: column;
-  gap: 4px;
+  gap: var(--space-1);
 }
 
 .brand-name {
@@ -267,7 +301,7 @@ header {
   font-size: var(--step--2);
   font-weight: var(--weight-bold);
   text-decoration: none;
-  padding: 12px 0 7px;
+  padding: var(--space-3) 0 var(--space-2);
   border-bottom: 2px solid transparent;
 }
 
@@ -278,7 +312,7 @@ header {
 
 .btn {
   display: inline-block;
-  padding: 18px 28px;
+  padding: var(--space-5) var(--space-8);
   border: 0;
   border-radius: 0;
   background: var(--brass);
@@ -309,7 +343,7 @@ header {
 }
 
 footer {
-  padding: 48px 0 34px;
+  padding: var(--space-12) 0 var(--space-8);
   border-top: 1px solid var(--hairline);
   background: var(--ground);
   color: var(--secondary);
@@ -320,7 +354,7 @@ footer {
 .footer-meta {
   display: flex;
   justify-content: space-between;
-  gap: 24px;
+  gap: var(--space-6);
 }
 
 .footer-top {
@@ -335,7 +369,7 @@ footer {
 .footer-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 24px;
+  gap: var(--space-3) var(--space-6);
 }
 
 .footer-links a {
@@ -363,14 +397,15 @@ footer {
 }
 
 .footer-meta {
-  margin-top: 34px;
-  padding-top: 18px;
+  margin-top: var(--space-8);
+  padding-top: var(--space-5);
   border-top: 1px solid var(--hairline);
 }
 
 @media (width < 760px) {
-  .container {
-    padding: 0 20px;
+  /* The gutter is a step narrower on phones; everything that reads it follows. */
+  :root {
+    --gutter: var(--space-5);
   }
 
   .trace-rail {
@@ -378,18 +413,18 @@ footer {
   }
 
   header {
-    padding: 22px 0;
+    padding: var(--space-6) 0;
   }
 
   .header-inner {
     align-items: flex-start;
-    gap: 14px;
+    gap: var(--space-4);
   }
 
   .header-actions {
     width: auto;
     justify-content: flex-end;
-    gap: 14px;
+    gap: var(--space-4);
     padding-top: 0;
     border-top: 0;
   }
@@ -404,7 +439,7 @@ footer {
 
   .btn {
     min-height: 44px;
-    padding: 12px 14px;
+    padding: var(--space-3) var(--space-4);
     font-size: var(--step--2);
     white-space: nowrap;
   }
@@ -435,22 +470,22 @@ footer {
 
 /* Other decisions: sibling services at the end of each product page */
 .other-decisions {
-  padding: 56px 0;
+  padding: var(--space-16) 0;
   border-top: 1px solid var(--hairline);
 }
 
 .other-decisions-list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0 32px;
-  margin-top: 18px;
+  gap: 0 var(--space-8);
+  margin-top: var(--space-5);
   list-style: none;
 }
 
 .other-decisions-list a {
   display: block;
   height: 100%;
-  padding: 18px 0;
+  padding: var(--space-5) 0;
   border-top: 2px solid var(--paper);
   color: inherit;
   text-decoration: none;
@@ -466,7 +501,7 @@ footer {
 
 .other-decisions-question {
   display: block;
-  margin-top: 6px;
+  margin-top: var(--space-2);
   color: var(--secondary);
   font-size: var(--step--2);
   line-height: var(--leading-text);
@@ -478,8 +513,8 @@ footer {
 
 .other-decisions-all {
   display: inline-block;
-  margin-top: 12px;
-  padding: 4px 0;
+  margin-top: var(--space-3);
+  padding: var(--space-1) 0;
   color: var(--paper);
   font-size: var(--step--2);
   font-weight: var(--weight-bold);
@@ -506,6 +541,6 @@ footer {
 
 /* Supporting section headings on service pages: calm, sentence case. The display face is kept
    for the page title, the featured section and the closing call. */
-h2.section-title-plain { max-width: 34ch; font-size: var(--step-1); line-height: var(--leading-heading); text-transform: none; text-wrap: balance; }
+h2.section-title-plain { max-width: var(--measure--3); font-size: var(--step-1); line-height: var(--leading-heading); text-transform: none; text-wrap: balance; }
 @media (width >= 760px) { h2.section-title-plain { font-size: var(--step-2); } }
 @media (width >= 1040px) { h2.section-title-plain { font-size: var(--step-3); } }

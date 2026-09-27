@@ -71,6 +71,18 @@ export function typeTokens(root) {
   return { fonts: group('--font-'), weights: group('--weight-'), leading: group('--leading-'), tracking: group('--tracking-') };
 }
 
+/** The spacing scale as site-shell.css defines it, smallest first. */
+export function spaceTokens(root) {
+  const { light } = rootBlocks(readFileSync(join(root, 'public/assets/site-shell.css'), 'utf8'));
+  return Object.entries(light).filter(([k]) => k.startsWith('--space-')).map(([name, value]) => ({ name, value, px: Number(value.replace('px', '')) })).sort((a, b) => a.px - b.px);
+}
+
+/** The grid tokens: containers, gutter, rail and measures. */
+export function gridTokens(root) {
+  const { light } = rootBlocks(readFileSync(join(root, 'public/assets/site-shell.css'), 'utf8'));
+  return Object.entries(light).filter(([k]) => /^--(?:container|gutter|rail|measure)/.test(k)).map(([name, value]) => ({ name, value }));
+}
+
 /** The type scale's steps as site-shell.css defines them: [{ step, name, px }], smallest first. */
 export function typeSteps(root) {
   const { light } = rootBlocks(readFileSync(join(root, 'public/assets/site-shell.css'), 'utf8'));

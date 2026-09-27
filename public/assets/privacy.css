@@ -1,15 +1,15 @@
 /* Privacy notice: summary cards, then a layered notice with a sticky contents list.
    Patterns adapted from Juro and Stefania Passera's open-source privacy notice design. */
 
-.privacy-page { padding: 64px 0 96px; }
+.privacy-page { padding: var(--space-16) 0 var(--space-24); }
 
-.privacy-header { max-width: 760px; margin-bottom: 56px; }
+.privacy-header { max-width: 760px; margin-bottom: var(--space-16); }
 .privacy-title { font-size: var(--step-4); line-height: var(--leading-display); }
 @media (width >= 760px) { .privacy-title { font-size: var(--step-6); } }
 @media (width >= 1040px) { .privacy-title { font-size: var(--step-7); } }
 @media (width >= 1180px) { .privacy-title { font-size: var(--step-8); } }
-.privacy-intro { margin-top: 24px; font-size: var(--step-0); line-height: var(--leading-body); }
-.privacy-updated { margin-top: 12px; color: var(--secondary); font-size: var(--step--2); }
+.privacy-intro { margin-top: var(--space-6); font-size: var(--step-0); line-height: var(--leading-body); }
+.privacy-updated { margin-top: var(--space-3); color: var(--secondary); font-size: var(--step--2); }
 
 .privacy-icon {
   flex: none;
@@ -24,12 +24,12 @@
 
 /* At a glance: a two-column summary, after Juro's privacy summary pattern */
 .glance {
-  margin-bottom: 80px;
+  margin-bottom: var(--space-20);
   border: 1px solid var(--hairline);
   background: var(--dark-navy);
 }
 .glance-heading {
-  padding: 40px 40px 0;
+  padding: var(--space-10) var(--space-10) 0;
   font-family: var(--font-display);
   font-size: var(--step-2);
   line-height: var(--leading-heading);
@@ -38,39 +38,39 @@
 @media (width >= 1040px) { .glance-heading { font-size: var(--step-3); } }
 @media (width >= 1180px) { .glance-heading { font-size: var(--step-4); } }
 .glance-intro {
-  max-width: 64ch;
-  margin: 14px auto 0;
-  padding: 0 40px;
+  max-width: var(--measure-0);
+  margin: var(--space-4) auto 0;
+  padding: 0 var(--space-10);
   color: var(--secondary);
   text-align: center;
 }
 .glance-columns {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0 56px;
-  padding: 16px 40px 40px;
+  gap: 0 var(--space-16);
+  padding: var(--space-4) var(--space-10) var(--space-10);
 }
 .glance-item {
-  padding: 24px 0;
+  padding: var(--space-6) 0;
   border-bottom: 1px solid var(--hairline);
 }
 .glance-item-head {
   display: flex;
-  gap: 16px;
+  gap: var(--space-4);
   align-items: flex-start;
   justify-content: space-between;
 }
 .glance-item-head h3 {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: flex-start;
   font-size: var(--step-0);
   line-height: var(--leading-snug);
 }
-.glance-item-head h3 .privacy-icon { margin-top: 2px; }
+.glance-item-head h3 .privacy-icon { margin-top: var(--space-half); }
 .glance-item-head a {
   flex: none;
-  padding: 3px 0 4px;
+  padding: var(--space-1) 0 var(--space-1);
   color: var(--brass);
   font-size: var(--step--2);
   font-weight: var(--weight-bold);
@@ -78,13 +78,13 @@
 }
 .glance-item-head a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .glance-item p,
-.glance-item ul { margin-top: 12px; color: var(--secondary); font-size: var(--step--1); line-height: var(--leading-body); }
-.glance-item ul { padding-left: 20px; }
-.glance-item li + li { margin-top: 4px; }
-.glance-contact { padding-top: 24px; color: var(--secondary); font-size: var(--step--2); }
+.glance-item ul { margin-top: var(--space-3); color: var(--secondary); font-size: var(--step--1); line-height: var(--leading-body); }
+.glance-item ul { padding-left: var(--space-5); }
+.glance-item li + li { margin-top: var(--space-1); }
+.glance-contact { padding-top: var(--space-6); color: var(--secondary); font-size: var(--step--2); }
 .glance-settings {
-  margin-top: 14px;
-  padding: 8px 14px;
+  margin-top: var(--space-4);
+  padding: var(--space-2) var(--space-4);
   border: 1px solid var(--brass);
   background: transparent;
   color: var(--brass);
@@ -97,15 +97,15 @@
 .glance-contact a { color: var(--brass); }
 
 /* Two tracks, one per way information arrives; a ring marks each moment on a track. */
-.timeline { margin-top: 20px; --ring: 18px; --track: 80px; }
+.timeline { margin-top: var(--space-5); --ring: 18px; --track: 80px; }
 .timeline-head { display: flex; }
 .timeline-key {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: var(--space-2);
   align-items: center;
   width: var(--track);
-  padding: 0 4px;
+  padding: 0 var(--space-1);
   font-size: var(--step--2);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-caps);
@@ -118,7 +118,7 @@
 .timeline-key-give .privacy-icon { stroke: var(--brass); }
 .timeline-key-auto { color: var(--paper); }
 .timeline-key-auto .privacy-icon { stroke: var(--paper); }
-.timeline-rows { margin-top: 8px !important; padding: 0 !important; list-style: none; }
+.timeline-rows { margin-top: var(--space-2) !important; padding: 0 !important; list-style: none; }
 .timeline-row {
   display: grid;
   grid-template-columns: var(--track) var(--track) 1fr;
@@ -152,11 +152,11 @@
 }
 .timeline-track-give.is-on::after { color: var(--brass); }
 .timeline-track-auto.is-on::after { color: var(--paper); }
-.timeline-label { padding: 8px 0 8px 12px; color: var(--paper); font-size: var(--step--1); line-height: var(--leading-snug); }
+.timeline-label { padding: var(--space-2) 0 var(--space-2) var(--space-3); color: var(--paper); font-size: var(--step--1); line-height: var(--leading-snug); }
 
 .glance-cta {
   display: block;
-  padding: 20px 24px;
+  padding: var(--space-5) var(--space-6);
   background: var(--brass);
   color: var(--on-brass);
   font-size: var(--step-0);
@@ -172,7 +172,7 @@
 .privacy-columns {
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr);
-  gap: 56px;
+  gap: var(--space-16);
   align-items: start;
 }
 .privacy-toc-label {
@@ -184,12 +184,12 @@
 .privacy-toc {
   position: sticky;
   top: 24px;
-  padding-top: 4px;
+  padding-top: var(--space-1);
 }
-.privacy-toc ol { margin-top: 14px; list-style: none; border-left: 1px solid var(--hairline); }
+.privacy-toc ol { margin-top: var(--space-4); list-style: none; border-left: 1px solid var(--hairline); }
 .privacy-toc li a {
   display: block;
-  padding: 6px 0 6px 16px;
+  padding: var(--space-2) 0 var(--space-2) var(--space-4);
   color: var(--secondary);
   font-size: var(--step--2);
   line-height: var(--leading-text);
@@ -199,48 +199,48 @@
 
 .privacy-full { max-width: 720px; }
 .privacy-section {
-  padding: 32px 0;
+  padding: var(--space-8) 0;
   border-top: 1px solid var(--hairline);
   scroll-margin-top: 24px;
 }
 .privacy-section:first-child { padding-top: 0; border-top: 0; }
-.privacy-section h2 .privacy-icon { margin-top: 4px; }
+.privacy-section h2 .privacy-icon { margin-top: var(--space-1); }
 .privacy-section h2 {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: flex-start;
   font-size: var(--step-1);
   line-height: var(--leading-heading);
 }
-.privacy-summary { max-width: 58ch; margin-top: 12px; text-wrap: pretty; }
+.privacy-summary { max-width: var(--measure-0); margin-top: var(--space-3); text-wrap: pretty; }
 .privacy-section a { color: inherit; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 .privacy-section .footer-link-button { text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 
-.privacy-section details { margin-top: 16px; }
+.privacy-section details { margin-top: var(--space-4); }
 .privacy-section summary {
   width: fit-content;
-  padding-block: 4px;
+  padding-block: var(--space-1);
   color: var(--brass);
   font-size: var(--step--2);
   font-weight: var(--weight-bold);
   letter-spacing: var(--tracking-caps);
   cursor: pointer;
 }
-.privacy-section details[open] summary { margin-bottom: 12px; }
+.privacy-section details[open] summary { margin-bottom: var(--space-3); }
 .privacy-section details p,
-.privacy-section details ul { max-width: 60ch; color: var(--secondary); }
-.privacy-section details ul { padding-left: 20px; }
+.privacy-section details ul { max-width: var(--measure-0); color: var(--secondary); }
+.privacy-section details ul { padding-left: var(--space-5); }
 .privacy-section details li + li,
 .privacy-section details p + ul,
 .privacy-section details ul + p,
-.privacy-section details p + p { margin-top: 10px; }
+.privacy-section details p + p { margin-top: var(--space-3); }
 .privacy-section details strong { color: var(--paper); }
 .privacy-section code { color: var(--paper); }
 
 /* Commitments ledger: a table on wide screens, one block per row on phones */
-.ledger-wrap { margin-top: 20px; }
+.ledger-wrap { margin-top: var(--space-5); }
 .ledger { width: 100%; border-collapse: collapse; font-size: var(--step--2); line-height: var(--leading-text); }
-.ledger th, .ledger td { padding: 12px 12px 12px 0; border-top: 1px solid var(--hairline); text-align: left; vertical-align: top; }
+.ledger th, .ledger td { padding: var(--space-3) var(--space-3) var(--space-3) 0; border-top: 1px solid var(--hairline); text-align: left; vertical-align: top; }
 .ledger thead th {
   padding-top: 0;
   border-top: 0;
@@ -253,9 +253,9 @@
 .ledger td { color: var(--secondary); }
 
 .privacy-credit {
-  max-width: 64ch;
-  margin-top: 40px;
-  padding-top: 20px;
+  max-width: var(--measure-0);
+  margin-top: var(--space-10);
+  padding-top: var(--space-5);
   border-top: 1px solid var(--hairline);
   color: var(--secondary);
   font-size: var(--step--2);
@@ -265,30 +265,30 @@
 /* Tablets: both two-column layouts stay. Spacing and ledger type start tight at 761, so the ledger fits
    beside the contents list, and reach the desktop values by 960. */
 @media (760px <= width < 1040px) {
-  .privacy-columns { grid-template-columns: clamp(184px, calc(28.14vw - 30.1px), 240px) minmax(0, 1fr); gap: clamp(32px, calc(12.06vw - 59.7px), 56px); }
-  .glance-heading, .glance-intro { padding-inline: clamp(28px, calc(6.03vw - 17.85px), 40px); }
-  .glance-columns { gap: 0 clamp(32px, calc(12.06vw - 59.7px), 56px); padding-inline: clamp(28px, calc(6.03vw - 17.85px), 40px); }
+  .privacy-columns { grid-template-columns: clamp(184px, calc(28.14vw - 30.1px), 240px) minmax(0, 1fr); gap: var(--space-12); }
+  .glance-heading, .glance-intro { padding-inline: var(--space-10); }
+  .glance-columns { gap: 0 var(--space-12); padding-inline: var(--space-10); }
   .glance-item-head h3 { text-wrap: balance; }
 }
 
 /* Tablets and up: on a short screen (a phone held sideways) the stuck contents list scrolls on its own,
    with room inside for focus rings, and a long word scrolls the ledger instead of the page. */
 @media (width >= 760px) {
-  .privacy-toc { max-height: calc(100vh - 48px); max-height: calc(100svh - 48px); overflow: auto; margin-inline: -8px; padding: 4px 8px 8px; }
+  .privacy-toc { max-height: calc(100vh - 48px); max-height: calc(100svh - 48px); overflow: auto; margin-inline: calc(-1 * var(--space-2)); padding: var(--space-1) var(--space-2) var(--space-2); }
   .ledger-wrap { overflow-x: auto; }
 }
 
 /* Phones: one column throughout, and each ledger row becomes a labeled card. */
 @media (width < 760px) {
-  .privacy-page { padding-top: 40px; }
-  .privacy-columns { grid-template-columns: 1fr; gap: 32px; }
+  .privacy-page { padding-top: var(--space-10); }
+  .privacy-columns { grid-template-columns: 1fr; gap: var(--space-8); }
   .privacy-toc { position: static; }
-  .privacy-toc ol { columns: 2; column-gap: 16px; }
-  .glance-heading { padding: 28px 20px 0; }
-  .glance-intro { padding: 0 20px; }
-  .glance-columns { grid-template-columns: 1fr; padding: 8px 20px 28px; display: flex; flex-direction: column; }
-  .glance-item-head { flex-direction: column; gap: 2px; }
-  .glance-item-head a { padding: 4px 0 4px 34px; }
+  .privacy-toc ol { columns: 2; column-gap: var(--space-4); }
+  .glance-heading { padding: var(--space-8) var(--space-5) 0; }
+  .glance-intro { padding: 0 var(--space-5); }
+  .glance-columns { grid-template-columns: 1fr; padding: var(--space-2) var(--space-5) var(--space-8); display: flex; flex-direction: column; }
+  .glance-item-head { flex-direction: column; gap: var(--space-half); }
+  .glance-item-head a { padding: var(--space-1) 0 var(--space-1) var(--space-8); }
   .timeline { --track: 88px; }
   /* One column on phones, in the same order as the full notice. */
   .glance-column { display: contents; }
@@ -301,9 +301,9 @@
   .glance-contact { order: 7; }
   .ledger thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
   .ledger, .ledger tbody, .ledger tr, .ledger th, .ledger td { display: block; width: auto; }
-  .ledger tr { padding: 14px 0; border-top: 1px solid var(--hairline); }
-  .ledger tbody th, .ledger td { padding: 2px 0; border-top: 0; }
-  .ledger tbody th { width: auto; margin-bottom: 6px; }
+  .ledger tr { padding: var(--space-4) 0; border-top: 1px solid var(--hairline); }
+  .ledger tbody th, .ledger td { padding: var(--space-half) 0; border-top: 0; }
+  .ledger tbody th { width: auto; margin-bottom: var(--space-2); }
   .ledger td::before { content: attr(data-label) ": "; color: var(--paper); font-weight: var(--weight-semibold); }
 }
 

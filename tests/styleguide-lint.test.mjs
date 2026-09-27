@@ -151,6 +151,22 @@ test('stylesheet rules find literal colours, fonts, radii, gradients and soft sh
   assert.deepEqual(found, ['css-color', 'css-gradient', 'css-radius', 'css-shadow', 'type-tokens']);
 });
 
+test('spacing and the grid come from the base tokens', () => {
+  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'space-tokens').map((f) => f.message);
+  assert.deepEqual(rule(`.a { margin: 0 auto var(--space-6); padding: var(--space-half) var(--gutter); gap: var(--space-3) 0; }
+.b { margin: calc(-1 * var(--gutter)) 0 0 calc(50% - 50vw); padding: 4vh 0; margin-top: -1px; max-width: var(--measure-0); }
+.c { margin: 0 10%; padding: inherit; width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter)); }
+@media print { .p { margin: 0.5in; } }
+:root { --space-5: 20px; }`), []);
+  assert.equal(rule('.a { margin: 18px 0; }').length, 1);
+  assert.equal(rule('.a { padding: 0 1.5em; }').length, 1);
+  assert.equal(rule('.a { gap: clamp(40px, 6.7vw, 64px); }').length, 1);
+  assert.equal(rule('.a { margin: calc(-1 * 20px); }').length, 1);
+  assert.equal(rule('.a { max-width: 68ch; }').length, 1);
+  assert.equal(rule('.a { max-width: 1060px; }').length, 1);
+  assert.deepEqual(rule('.a { min-width: 2ch; flex: 1 1 14ch; }'), []);
+});
+
 test('faces, weights, line spacing and tracking come from the base tokens', () => {
   const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'type-tokens').map((f) => f.message);
   assert.deepEqual(rule(`.a { font-family: var(--font-serif); font-weight: var(--weight-bold); line-height: var(--leading-body); letter-spacing: var(--tracking-caps); }
@@ -287,7 +303,7 @@ test('font sizes are steps of the type scale', () => {
 
 test('every stylesheet takes its type from the base', () => {
   for (const f of readdirSync(join(root, 'public/assets')).filter((x) => x.endsWith('.css'))) {
-    assert.deepEqual(lintCss(f, css('/assets/' + f)).filter((x) => ['type-scale', 'type-tokens', 'css-color'].includes(x.rule)), [], f);
+    assert.deepEqual(lintCss(f, css('/assets/' + f)).filter((x) => ['type-scale', 'type-tokens', 'space-tokens', 'css-color'].includes(x.rule)), [], f);
   }
 });
 

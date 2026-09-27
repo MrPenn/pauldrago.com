@@ -65,6 +65,7 @@ export const RULES = [
   // Stylesheets
   { id: 'css-color', severity: 'error', group: 'Stylesheets', title: 'Colours come from tokens', why: 'A literal colour does not switch with the theme. The print block and token definitions are exempt.', bad: 'color: #0A192F;', good: 'color: var(--paper);' },
   { id: 'type-tokens', severity: 'error', group: 'Stylesheets', title: 'Faces, weights, line spacing and tracking come from the base', why: 'site-shell.css is the root of the cascade: it names the three typefaces and their fallbacks, three weights, five kinds of line spacing and the tracking for small capitals. Every other sheet uses those tokens, so one change at the root moves the whole site, and nothing drifts a shade off.', bad: "font-family: 'IBM Plex Sans', sans-serif;\nline-height: 1.42;\nfont-weight: 500;", good: 'font-family: var(--font-sans);\nline-height: var(--leading-text);\nfont-weight: var(--weight-regular);' },
+  { id: 'space-tokens', severity: 'error', group: 'Stylesheets', title: 'Spacing and the grid come from the base', why: 'Every margin, padding and gap is a step of the 4px spacing scale in site-shell.css, and the containers, gutter, rail and text measures are grid tokens, so the rhythm holds from page to page and one change at the root moves it everywhere. 0, auto, percentages, viewport units and a 1px hairline pass.', bad: 'padding: 18px 22px;\nmax-width: 68ch;', good: 'padding: var(--space-5) var(--space-6);\nmax-width: var(--measure-1);' },
   { id: 'css-radius', severity: 'warn', group: 'Stylesheets', title: 'Corners stay square', why: 'Rounded cards read as a software template. Bar ends and inputs round by 4px at most; a 50% radius draws a dot and is allowed.' },
   { id: 'css-gradient', severity: 'warn', group: 'Stylesheets', title: 'No gradients', why: 'Flat fills and hard rules. Hatching with repeating-linear-gradient is allowed; it draws ranges.' },
   { id: 'css-shadow', severity: 'warn', group: 'Stylesheets', title: 'No soft shadows', why: 'Depth comes from rules and panels. A zero-blur inset shadow drawing a hairline is allowed.' },
@@ -295,6 +296,28 @@ function offScaleSize(v) {
   if (step && STEPS.has(Number(step[1]))) return null;
   return size;
 }
+// Spacing: every part of a margin, padding or gap is a --space step, the gutter, 0, auto, a percentage,
+// a viewport unit or a 1px hairline; a calc() may combine those. Text measures and containers are grid tokens.
+const SPACE_PROP = /^(?:margin|padding)(?:-(?:top|right|bottom|left|block|inline|block-start|block-end|inline-start|inline-end))?$|^(?:gap|row-gap|column-gap)$/;
+function offSpace(value) {
+  const v = value.replace(/\s*!important\s*$/i, '').trim();
+  if (CSS_KEYWORD.test(v)) return [];
+  const bad = [];
+  for (const w of v.match(/(?:[^\s(]+\([^()]*(?:\([^()]*\)[^()]*)*\)[^\s]*|[^\s]+)/g) ?? []) {
+    if (/^(?:0|auto|-?1px|-?[\d.]+(?:%|vh|vw|svh|dvh|lvh))$/.test(w)) continue;
+    if (/^var\(--(?:space-(?:half|\d+)|gutter|rail-gap)\)$/.test(w)) continue;
+    if (/^calc\(/.test(w) && !/\d(?:px|em|rem|ch)\b/.test(w.replace(/\b1px\b/g, ''))) continue;
+    bad.push(w);
+  }
+  return bad;
+}
+const offGrid = (prop, value) => {
+  const bad = [];
+  if (/^(?:max-width|width|min-width)$/.test(prop)) for (const m of value.matchAll(/(\d+(?:\.\d+)?)ch\b/g)) if (Number(m[1]) >= 26) bad.push(`${m[0]} (a text measure: use a --measure token)`);
+  for (const m of value.matchAll(/\b(1240|1060)px\b/g)) bad.push(`${m[0]} (a container: use var(--container-page) or var(--container-article))`);
+  return bad;
+};
+
 // The size inside a font shorthand: the first word that is a length or a step, before any /line-height.
 function shorthandSize(v) {
   if (/^\s*(?:inherit|initial|unset|revert|revert-layer)\s*$/i.test(v)) return null;
@@ -335,6 +358,8 @@ export function lintCss(file, text) {
         const off = size === null ? null : offScaleSize(size);
         if (off) report('type-scale', d.index, `${d.prop}: ${off} is not a step of the type scale`, { fix: 'Use var(--step--2) to var(--step-10); /ui/components/type-scale lists what each step is for.' });
       }
+      if (!rule.print && SPACE_PROP.test(d.prop)) for (const off of offSpace(v)) report('space-tokens', d.index, `${d.prop}: ${off} is not a step of the spacing scale`, { fix: 'Use var(--space-half) to var(--space-32), or var(--gutter); /ui/foundations lists the scale.' });
+      if (!rule.print) for (const off of offGrid(d.prop, v)) report('space-tokens', d.index, `${d.prop}: ${off}`);
       for (const [prop, off] of offTokens(d.prop, v)) {
         report('type-tokens', d.index, `${prop}: ${off} is not a base token`, { fix: `Use ${TYPE_TOKENS[prop][1]}, from site-shell.css.` });
       }
