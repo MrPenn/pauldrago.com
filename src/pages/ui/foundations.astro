@@ -1,0 +1,185 @@
+---
+import Styleguide from '../../layouts/Styleguide.astro';
+import { colorTokens } from '../../styleguide/tokens.mjs';
+import { BREAKPOINTS, COLUMN_BREAKPOINTS } from '../../styleguide/components.mjs';
+
+const tokens = colorTokens(process.cwd());
+const TYPE = [
+  { role: 'Article title', face: 'Archivo Black, capitals', size: '34 to 56px, 1.05', cls: '.article-title', html: '<p class="display-title article-title" style="margin:0">The Digital Front Door Nobody Walks Through</p>' },
+  { role: 'Section heading', face: 'Archivo Black, numbered in Source Serif', size: '24 to 29px, 1.12', cls: '.article-body h2', html: '<h2 style="margin:0">Chime has fewer levers</h2>' },
+  { role: 'Deck', face: 'Source Serif 4 italic', size: '19px, 1.45', cls: '.pd-deck', html: '<p class="pd-deck" style="margin:0 !important">Fewer capabilities, one experience.</p>' },
+  { role: 'Lede', face: 'Source Serif 4 with an Archivo Black drop cap', size: '22px, 1.5; the cap 84px', cls: '.article-lede', html: '<p class="article-lede" style="margin:0">For most of a decade, community banks heard the same prescription. Make account opening digital.</p>' },
+  { role: 'Body', face: 'Source Serif 4, old-style numerals', size: '19.5px, 1.55; 18px on phones', cls: '.article-body p', html: '<p style="margin:0">Digital banks and fintechs took 44 of every 100 checking accounts opened in 2024. Community banks took 4.</p>' },
+  { role: 'Subhead', face: 'Source Serif 4 italic', size: '21px, 1.3', cls: '.article-body h3', html: '<h3 style="margin:0">What the customer is worth</h3>' },
+  { role: 'Pull quote', face: 'Source Serif 4 italic, the mark hung in the margin', size: '24 to 30px, 1.28; the mark 132px', cls: '.article-body blockquote', html: '<blockquote style="margin:24px 0 0 !important"><p>A relationship bank should have something meaningful to offer when the customer has $500.</p></blockquote>' },
+  { role: 'Big number', face: 'Archivo Black, tabular numerals', size: '48 to 68px, 0.9', cls: '.pd-units-num', html: '<figure class="pd-units" style="margin:0 !important;border:0;padding:0"><div class="pd-units-head"><span class="pd-units-num">95%</span><span class="pd-units-label">of consumers rate their bank\'s app good or better.</span></div></figure>' },
+  { role: 'Eyebrow', face: 'IBM Plex Sans semibold, capitals, tracked', size: '13px', cls: '.pd-eyebrow', html: '<p class="pd-eyebrow" style="margin:0 !important">One primary checking customer, one year</p>' },
+  { role: 'Caption', face: 'IBM Plex Sans', size: '13px, 1.5', cls: 'figcaption', html: '<figure class="pd-figure" style="margin:0;padding:0;border:0"><figcaption style="margin:0">ABA and Morning Consult, 2025 Preferred Banking Methods survey, 4,403 U.S. adults.</figcaption></figure>' },
+];
+// What the article itself does at each width, for the table under the scale.
+const ARTICLE = [
+  ['1180 and up', 'Sources sit in the rail beside the text. A pinned sequence takes the column and the rail together.'],
+  ['Below 1180', 'Sources open under the paragraph that cites them. A pinned graphic becomes a card at the top of the screen with the steps under it.'],
+  ['1040 and up', 'A calculator widens past the column to the article container, and its main fields sit in one row.'],
+  ['Below 760', 'Body text drops to 18px and section headings to 23px. The pull quote mark moves above the quote.'],
+  ['Column under 560', 'Kit components take their compact form: bar labels without their words, stacked answers, smaller numbers.'],
+  ['Calculator under 900', 'Its fields sit two across under 560 and three across from 560.'],
+];
+---
+<Styleguide title="Foundations" description="Colour tokens, type, rules, layout, accessibility and performance for articles on pauldrago.com." path="/ui/foundations">
+  <h1 class="display-title ui-title">Foundations</h1>
+  <p class="ui-lede">A pale cool ground, navy ink and one terracotta accent; three typefaces; hard rules; one easing for every movement. Both themes share one set of token names, and dark mode follows the reader's browser.</p>
+
+  <section class="ui-section" id="colour">
+    <h2 class="ui-h2">Colour</h2>
+    <p class="ui-p">Read from <code>public/assets/site-shell.css</code> when the site builds. Each chip shows the light value over the dark one. Contrast is measured against the page ground; body text needs 4.5 to 1.</p>
+    <div class="ui-swatches">
+      {tokens.map((t) => (
+        <div class="ui-swatch">
+          <div class="ui-swatch-chips" aria-hidden="true"><span style={`background:${t.light}`}></span><span style={`background:${t.dark}`}></span></div>
+          <div>
+            <b>{t.name}</b>
+            <p>{t.role}</p>
+            <p><span class="ui-num">{t.light}</span> light, <span class="ui-num">{t.dark}</span> dark</p>
+            {t.text && <p>Contrast <span class="ui-num">{t.lightContrast}:1</span> light, <span class="ui-num">{t.darkContrast}:1</span> dark</p>}
+            {t.onBrass && <p>On the accent <span class="ui-num">{t.onBrass[0]}:1</span> light, <span class="ui-num">{t.onBrass[1]}:1</span> dark</p>}
+          </div>
+        </div>
+      ))}
+    </div>
+    <ul class="ui-list">
+      <li>The accent marks what the sentence is about: one bar, one number, the section numbers. Two highlights in a figure only when the sentence names two.</li>
+      <li>Context bars are the secondary colour mixed toward the ground, so they sit below the accent in both themes.</li>
+      <li>Colour never carries a reading alone. Values are printed, hollow and hatched bars carry their own meaning, and forced-colors mode draws bars in the text colour.</li>
+      <li>Illustrations have their own palette: terracotta #D9552B on the light ground and brass #E0A938 on navy.</li>
+    </ul>
+  </section>
+
+  <section class="ui-section" id="type">
+    <h2 class="ui-h2">Type</h2>
+    <p class="ui-p">Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for figures, labels and controls. All three are self-hosted, and each has a fallback sized to its metrics so nothing shifts when the font arrives.</p>
+    {TYPE.map((t) => (
+      <div class="ui-specimen">
+        <p class="ui-specimen-meta"><strong>{t.role}</strong>. {t.face}, {t.size}. <code>{t.cls}</code></p>
+        <div class="article-body" aria-hidden="true" set:html={t.html}></div>
+      </div>
+    ))}
+  </section>
+
+  <section class="ui-section" id="rules">
+    <h2 class="ui-h2">Rules and spacing</h2>
+    <p class="ui-p">A few weights of rule carry the structure of every page.</p>
+    <div class="ui-rules-demo">
+      <div><i style="border-top:1px solid var(--hairline)"></i><span>1px hairline: over every section, above and below figures, between ledger rows.</span></div>
+      <div><i style="border-top:2px solid var(--brass)"></i><span>2px accent: over a unit stat, under a pull quote.</span></div>
+      <div><i style="border-top:2px solid var(--paper)"></i><span>2px ink: over a ledger's total and the author box.</span></div>
+      <div><i style="border-top:4px solid var(--brass)"></i><span>4px accent: over the short version.</span></div>
+    </div>
+    <ul class="ui-list">
+      <li>Sections open 72px below the last paragraph (52px on phones), with a hairline and the section's numeral.</li>
+      <li>Figures sit 40 to 48px from the text around them.</li>
+      <li>Corners are square, inputs included.</li>
+      <li>No gradients. The one shadow is under the graphic pinned at the top of a phone screen, so the steps scroll under it.</li>
+    </ul>
+  </section>
+
+  <section class="ui-section" id="layout">
+    <h2 class="ui-h2">Layout grid</h2>
+    <p class="ui-p">Every page changes layout at four widths and nowhere else, and the linter holds every stylesheet to them (<code>css-breakpoint</code>). Components do not measure the screen: they answer to the column they sit in, so a figure reads the same in an article, a /ui frame or a sidebar. See it move on the <a href="/ui/components/layout-grid">layout grid</a> page.</p>
+    <h3 class="ui-h3">The page</h3>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th>Width</th><th>Name</th><th>What changes</th></tr></thead>
+        <tbody>{BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <h3 class="ui-h3">The column</h3>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th>Width</th><th>Name</th><th>What changes</th></tr></thead>
+        <tbody>{COLUMN_BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <h3 class="ui-h3">Measures</h3>
+    <ul class="ui-list">
+      <li>Page container: 1240px, with 32px gutters, 20px below 760.</li>
+      <li>Article container: 1060px. Reading column: 62 characters.</li>
+      <li>Source-notes rail, 1180 and up: 280px wide, 84px to the right of the column.</li>
+      <li>A calculator, 1040 and up: the width of the article container.</li>
+    </ul>
+    <h3 class="ui-h3">Choosing the step</h3>
+    <ul class="ui-list">
+      <li>Pick the lowest step where every column still reads. Two columns sit side by side from 760, and so do three or four short items. Three columns led by a big headline stack until 1040.</li>
+      <li>A tool keeps its controls beside its result from 760. A table keeps its columns from 760; below it a site ledger becomes labeled cards.</li>
+      <li>Ease the tablet band. Gaps, fixed widths and big type take clamp() inside (760px &lt;= width &lt; 1040px): smallest at 760, full size by 960.</li>
+      <li>A rule scoped to a range has to help at both ends of it.</li>
+      <li>Check each change before and after at 759 and 760, 1039 and 1040, and at 768, 820 and 960. Turn a phone sideways (844 by 390) for anything sticky or set by a script.</li>
+    </ul>
+    <h3 class="ui-h3">How to write it</h3>
+    <pre class="ui-terminal"><code>{`/* The page: a width from the scale, in range syntax */
+@media (width < 760px) { ... }
+@media (760px <= width < 1180px) { ... }
+
+/* The tablet band: ease toward the desktop values */
+@media (760px <= width < 1040px) {
+  .closing-band-grid { gap: clamp(40px, 6.7vw, 64px); }
+}
+
+/* A component: the column it sits in */
+@container column (width < 560px) { ... }
+
+/* A script: the same query, and it listens for changes */
+const tablet = matchMedia('(width >= 760px)');
+tablet.addEventListener('change', update);`}</code></pre>
+    <h3 class="ui-h3">What an article does at each width</h3>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th>Width</th><th>What changes</th></tr></thead>
+        <tbody>{ARTICLE.map(([w, t]) => <tr><td class="ui-num">{w}</td><td>{t}</td></tr>)}</tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="ui-section" id="accessibility">
+    <h2 class="ui-h2">Accessibility</h2>
+    <ul class="ui-list">
+      <li>WCAG 2.2 AA in both themes. The contrast figures above are measured, not assumed.</li>
+      <li>A 3px focus ring on everything that takes focus: ink on links, the accent inside figures.</li>
+      <li>Targets are at least 44px tall on phones.</li>
+      <li>Every figure has a name: a title, a figcaption or an aria-label that states it in a sentence.</li>
+      <li>Interactive figures use native buttons, radios and details, so the keyboard works without extra code.</li>
+      <li>Reduced motion turns every transition off site-wide.</li>
+    </ul>
+  </section>
+
+  <section class="ui-section" id="motion">
+    <h2 class="ui-h2">Motion</h2>
+    <p class="ui-p">One easing and three durations, used everywhere. Each figure has one moment: it builds once as it arrives, with a beat before the part the reader is meant to notice, and nothing loops.</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th>Token</th><th>Value</th><th>Used for</th></tr></thead>
+        <tbody>
+          <tr><td><code>--pd-ease</code></td><td><code>cubic-bezier(0.22, 1, 0.36, 1)</code></td><td>Every transition: fast out, slow settle.</td></tr>
+          <tr><td><code>--pd-fast</code></td><td class="ui-num">260ms</td><td>A unit filling, a label appearing.</td></tr>
+          <tr><td><code>--pd-base</code></td><td class="ui-num">620ms</td><td>A bar or a ledger row arriving, a line dropping in, a column rising.</td></tr>
+          <tr><td><code>--pd-slow</code></td><td class="ui-num">900ms</td><td>A segment growing, an illustration rising into place.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul class="ui-list">
+      <li>Figures below the fold wait for the reader; figures already on screen at load show finished.</li>
+      <li>A built figure shows its parts about 0.7 seconds apart. Columns rise left to right, 55ms apart, and the event lands 0.4 seconds after.</li>
+      <li>Reduced motion shows every figure finished, with no transitions.</li>
+    </ul>
+  </section>
+
+  <section class="ui-section" id="performance">
+    <h2 class="ui-h2">Performance</h2>
+    <ul class="ui-list">
+      <li>Stylesheets are inlined into the page and scripts load with defer, so nothing blocks the first paint.</li>
+      <li>Images are WebP at 1200 wide, lazy-loaded, with width and height set.</li>
+      <li>Every figure ships finished in the HTML; the kit script only takes parts away to bring them back, so nothing is drawn by script above the fold.</li>
+      <li>The standard is PageSpeed in the high 90s on mobile, in every category.</li>
+    </ul>
+  </section>
+</Styleguide>

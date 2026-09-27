@@ -1,0 +1,788 @@
+/* Article kit: the reading styles and figures articles are built from.
+   Ported from "The Digital Front Door Nobody Walks Through" (front-door.css), the reference
+   article, and documented at /ui. An article opts in with
+     stylesheets: ["/assets/article-kit.css"]
+     scripts: ["/assets/article-kit.js"]
+   in its front matter. Tokens come from site-shell.css; every class here is pd-*. */
+
+/* ============================================================
+   Motion: one easing, three durations, used everywhere.
+   ============================================================ */
+:root {
+  --pd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --pd-fast: 260ms;
+  --pd-base: 620ms;
+  --pd-slow: 900ms;
+}
+
+/* ---------- The page ---------- */
+.article .container { max-width: 1060px; }
+.article-header { max-width: 920px; border-bottom: 0; }
+.article-kicker-sep, .article-meta-sep { opacity: 0.5; }
+.article-intro { font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 22px; }
+
+/* ============================================================
+   Three voices. Archivo Black for the headline, section heads and big numbers;
+   Source Serif 4 for reading, decks and pull quotes; IBM Plex Sans for figures,
+   labels, captions, inputs and notes.
+   ============================================================ */
+/* The article column is the container the kit's components answer to (see @container column). */
+.article-body {
+  container: column / inline-size;
+  position: relative;
+  max-width: 62ch;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, 'Times New Roman', serif;
+  font-size: 19.5px;
+  line-height: 1.55;
+  counter-reset: sec;
+}
+.article-body p { font-variant-numeric: oldstyle-nums proportional-nums; }
+.article-body a { color: inherit; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+.pd-figure, .pd-graphic, .pd-calc, .pd-units, .pd-eyebrow, .pd-field, .pd-ledger, .pd-stack, .pd-cols, .pd-record, .pd-asof,
+.pd-sticky-notes, .pd-who, .article-body figcaption, .pd-toggle {
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* The first plain paragraph opens on a drop cap (article.js marks it). */
+.article-lede { font-size: 22px; line-height: 1.5; color: var(--paper); }
+.article-lede::first-letter {
+  float: left;
+  margin: 8px 12px 0 0;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: 84px;
+  line-height: 0.8;
+  color: var(--brass);
+}
+
+/* Sections: a hairline, a roman numeral, the claim. "About the numbers" is not numbered. */
+.article-body h2 {
+  position: relative;
+  margin: 72px 0 16px;
+  padding-top: 22px;
+  border-top: 1px solid var(--hairline);
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: clamp(24px, 2.4vw, 29px);
+  line-height: 1.12;
+  counter-increment: sec;
+}
+.article-body h2::before {
+  content: counter(sec, upper-roman) ".";
+  display: block;
+  margin-bottom: 10px;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: var(--brass);
+}
+.article-body h2.article-colophon, .article-body section[data-footnotes] h2 { counter-increment: none; }
+.article-body h2.article-colophon::before, .article-body section[data-footnotes] h2::before { content: none; }
+/* Subheads take the decks' voice. */
+.article-body h3 {
+  margin: 44px 0 14px;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: 21px;
+  line-height: 1.3;
+  color: var(--paper);
+}
+
+/* The deck: one italic line under a section heading. */
+.pd-deck {
+  margin: -6px 0 24px !important;
+  max-width: 52ch;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-style: italic;
+  font-size: 19px;
+  line-height: 1.45;
+  color: var(--secondary);
+}
+
+/* Pull quotes: an accent rule under the quote, the opening mark hung into the margin.
+   A markdown blockquote takes this style; so does <blockquote class="pd-pq">. */
+.article-body blockquote {
+  position: relative;
+  margin: 48px 0 !important;
+  padding: 0 0 22px;
+  border: 0;
+  border-bottom: 2px solid var(--brass);
+}
+.article-body blockquote p {
+  margin: 0;
+  max-width: 30ch;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(24px, 2.6vw, 30px);
+  line-height: 1.28;
+  color: var(--paper);
+  text-wrap: balance;
+}
+.article-body blockquote::before {
+  content: "\201C";
+  position: absolute;
+  left: -0.55em;
+  top: -0.22em;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-size: 132px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--brass);
+}
+
+/* Footnote markers */
+.article-body sup { line-height: 0; }
+
+/* ---------- Figure parts ---------- */
+.pd-eyebrow {
+  margin: 0 0 14px !important;
+  color: var(--brass);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.pd-figure {
+  margin: 44px 0;
+  padding: 28px 0 18px;
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+}
+.article-body figcaption, .pd-figure figcaption {
+  margin-top: 18px;
+  max-width: 62ch;
+  color: var(--secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.pd-accent { color: var(--brass); }
+
+/* ---------- Unit stat: the number, its sentence, and a row of units that fills ---------- */
+figure.pd-units {
+  display: block;
+  margin: 40px 0 28px !important;
+  padding: 20px 0 16px;
+  border-top: 2px solid var(--brass);
+  border-bottom: 1px solid var(--hairline);
+}
+.pd-units-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: baseline; }
+.pd-units-num {
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: clamp(48px, 5vw, 68px);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+}
+.pd-units-label {
+  max-width: 34ch;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-size: 19px;
+  line-height: 1.4;
+  color: var(--paper);
+}
+.pd-units-cells { display: grid; gap: 4px; margin-top: 18px; grid-template-columns: repeat(20, 1fr); }
+.pd-units-cells[data-cols="10"] { grid-template-columns: repeat(10, 1fr); }
+.pd-units-cells[data-cols="25"] { grid-template-columns: repeat(25, 1fr); }
+.pd-units-cells[data-cols="50"] { grid-template-columns: repeat(50, 1fr); gap: 3px; }
+.pd-cell {
+  display: block;
+  aspect-ratio: 1 / 1;
+  border: 1px solid var(--hairline);
+  background: transparent;
+  transition: background-color var(--pd-fast) var(--pd-ease), border-color var(--pd-fast) var(--pd-ease), transform var(--pd-fast) var(--pd-ease);
+}
+.pd-cell.is-on { background: var(--brass); border-color: var(--brass); }
+.pd-cell.is-alt { background: var(--paper); border-color: var(--paper); }
+.pd-units figcaption { margin-top: 12px; font-size: 12px; line-height: 1.4; max-width: none; }
+
+/* ---------- Unit grid: a hundred squares, and the counts filling in ---------- */
+/* The opener runs the full width of the screen above or at the top of the piece; the callback is
+   the same hundred, small, near the end. */
+.pd-grid { font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
+.pd-grid-cells { display: grid; grid-template-columns: repeat(25, 1fr); gap: 4px; }
+.pd-cell.is-landing { transform: scale(1.35); }
+.pd-grid-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--hairline); }
+.pd-legend-row { display: grid; grid-template-columns: 12px auto minmax(0, 1fr); gap: 12px; align-items: baseline; }
+.pd-swatch { width: 12px; height: 12px; margin-top: 4px; align-self: start; border: 1px solid var(--hairline); }
+.pd-swatch.is-on { background: var(--brass); border-color: var(--brass); }
+.pd-swatch.is-alt { background: var(--paper); border-color: var(--paper); }
+.pd-legend-num { min-width: 2ch; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(30px, 3.4vw, 44px); line-height: 0.95; font-variant-numeric: tabular-nums; color: var(--paper); }
+.pd-legend-label { max-width: 26ch; font-size: 16px; line-height: 1.4; color: var(--secondary); }
+.pd-grid-source { margin: 12px 0 0 !important; max-width: 70ch; font-size: 12px; line-height: 1.5; color: var(--secondary); }
+.pd-grid-source a { color: var(--brass); text-decoration: underline; text-underline-offset: 3px; }
+.pd-grid.is-opener { width: 100vw; margin: 0 0 56px calc(50% - 50vw); padding: 8px 32px 0; }
+.pd-grid.is-opener .pd-grid-inner { max-width: 996px; margin: 0 auto; }
+.pd-grid.is-callback { border-bottom: 0; padding-bottom: 0; }
+.pd-grid.is-callback .pd-grid-cells { grid-template-columns: repeat(10, 1fr); gap: 3px; max-width: 200px; margin: 0 auto; aspect-ratio: 1 / 1; }
+.pd-grid.is-callback .pd-cell { transition-duration: var(--pd-base); }
+.pd-grid.is-callback figcaption { margin: 12px auto 0; text-align: center; }
+
+/* ---------- Org fold: every function on target, folding into the one bank the customer sees ---------- */
+.pd-fold { position: relative; min-height: 540px; }
+.pd-org { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.pd-org-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 92px;
+  padding: 12px;
+  border: 1px solid var(--hairline);
+  background: var(--ground);
+  transition: transform var(--pd-slow) var(--pd-ease), opacity var(--pd-base) var(--pd-ease);
+  transition-delay: var(--d, 0ms);
+}
+.pd-org-name { font-size: 14px; font-weight: 700; line-height: 1.2; color: var(--paper); }
+.pd-org-owns { font-size: 12px; line-height: 1.3; color: var(--secondary); }
+.pd-org-status { margin-top: auto; white-space: nowrap; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--secondary); }
+.pd-org-status::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--ok); }
+.pd-one {
+  position: absolute;
+  inset: 56px 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  transform: scale(0.94);
+  pointer-events: none;
+  transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-slow) var(--pd-ease);
+}
+.pd-one img { display: block; width: auto; max-width: 100%; max-height: 380px; height: auto; margin: 0 auto; }
+.pd-one-cap { margin: 14px 0 0 !important; max-width: 34ch; font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.4; text-align: center; color: var(--secondary); }
+/* The fold is the part with data-at: when its step comes, the boxes head for the centre, the outer
+   ones first, and the one bank arrives a beat later. */
+.is-armed .pd-fold.is-shown .pd-org-box { transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.18); opacity: 0; }
+.is-armed .pd-fold.is-shown .pd-one { opacity: 1; transform: scale(1); transition-delay: 520ms; }
+.pd-fold-cap + .pd-fold-cap { display: none; }
+.is-armed .pd-fold-cap { display: none; }
+.is-armed .pd-fold-cap.is-shown { display: block; }
+
+/* A line from the argument inside a pinned step, in the pull quote's voice. */
+.pd-pull {
+  margin: 0 !important;
+  max-width: 30ch;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-style: italic;
+  font-size: clamp(24px, 2.6vw, 30px);
+  line-height: 1.28;
+  color: var(--paper);
+  text-wrap: balance;
+}
+
+/* ---------- Stacked bar: parts that build a total, a line to beat, and the ledger ---------- */
+.pd-stack-lead { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
+.pd-stack-num {
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: clamp(38px, 4.2vw, 56px);
+  line-height: 0.95;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+}
+.pd-stack-sub { color: var(--secondary); font-size: 13px; }
+.pd-stack-bar { margin-top: 14px; }
+.pd-stack-bar + .pd-stack-bar { margin-top: 36px; }
+.pd-stack-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+.pd-stack-name { color: var(--secondary); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+/* What a bar counts, under its name. */
+.pd-stack-what { display: block; max-width: 44ch; margin-top: 4px; font-size: 13px; font-weight: 400; line-height: 1.35; letter-spacing: 0; text-transform: none; }
+.pd-stack-val {
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--paper);
+}
+.pd-stack-track { position: relative; height: 34px; background: color-mix(in srgb, var(--paper) 6%, transparent); }
+.pd-seg { position: absolute; top: 0; bottom: 0; background: var(--paper); transition: width var(--pd-slow) var(--pd-ease), left var(--pd-slow) var(--pd-ease); }
+.pd-seg.is-accent { background: var(--brass); }
+.pd-seg-label {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--ground);
+  transition: opacity var(--pd-fast) var(--pd-ease) var(--pd-base);
+}
+.pd-seg.is-accent .pd-seg-label { color: var(--on-brass); }
+/* A figure the text doubts, drawn as an outline beside the measured ones. */
+.pd-seg.is-outline { background: transparent; box-shadow: inset 0 0 0 2px var(--paper); }
+.pd-seg.is-outline.is-accent { box-shadow: inset 0 0 0 2px var(--brass); }
+.pd-seg.is-outline .pd-seg-label { color: var(--paper); }
+/* A segment too narrow for its label shows none; the ledger carries the number. */
+.pd-seg.is-tight .pd-seg-label { visibility: hidden; }
+.pd-mark {
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  width: 2px;
+  background: var(--paper);
+  transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease), left var(--pd-slow) var(--pd-ease);
+}
+.pd-mark span {
+  position: absolute;
+  top: 100%;
+  right: -2px;
+  margin-top: 6px;
+  white-space: nowrap;
+  color: var(--secondary);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.pd-mark.is-left span { right: auto; left: -2px; }
+.pd-stack-ledger { margin-top: 34px; }
+.pd-stack-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 10px 0;
+  border-top: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
+  transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease);
+}
+.pd-stack-row-label { font-size: 14px; color: var(--paper); }
+.pd-stack-row-label small { display: block; color: var(--secondary); font-size: 12px; }
+.pd-stack-row-val { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.pd-stack-row.is-total { border-top: 2px solid var(--paper); }
+.pd-stack-row.is-total .pd-stack-row-val { color: var(--brass); }
+.pd-stack-note { margin: 12px 0 0 !important; color: var(--paper); font-size: 14px; transition: opacity var(--pd-base) var(--pd-ease) 300ms; }
+.pd-stack-note strong { color: var(--brass); }
+
+/* ---------- Rising columns: one column per period, the event a beat later ---------- */
+.pd-cols { --plot: 230px; }
+.pd-cols-callouts { display: flex; justify-content: space-between; gap: 16px; min-height: 48px; margin: 0 0 8px 54px; }
+.pd-cols-callout { margin: 0 !important; line-height: 1.2; transition: opacity var(--pd-base) var(--pd-ease); }
+.pd-cols-callout b { display: block; font-size: 18px; font-weight: 700; color: var(--paper); }
+.pd-cols-callout span { display: block; margin-top: 3px; font-size: 13px; color: var(--secondary); }
+.pd-cols-callout.is-accent { text-align: right; }
+.pd-cols-callout.is-accent b, .pd-cols-callout.is-accent span { color: var(--brass); }
+.pd-cols-plot { position: relative; height: var(--plot); margin-left: 54px; border-bottom: 1px solid var(--secondary); }
+.pd-cols-grid span { position: absolute; left: 0; right: 0; height: 0; border-top: 1px solid var(--hairline); }
+.pd-cols-grid span b { position: absolute; right: calc(100% + 8px); top: -9px; font-size: 13px; font-weight: 400; color: var(--secondary); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pd-cols-bars { position: absolute; inset: 0; display: flex; align-items: flex-end; }
+.pd-col { position: relative; flex: 1 1 0; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+.pd-col i {
+  display: block;
+  width: 62%;
+  min-width: 6px;
+  background: var(--paper);
+  opacity: 0.85;
+  transform-origin: bottom;
+  transition: transform var(--pd-base) var(--pd-ease);
+  transition-delay: calc(var(--i, 0) * 55ms);
+}
+.pd-col.is-event i { background: var(--brass); opacity: 1; transition-delay: 380ms; }
+/* The dashed line through the event column comes first: the wait, before anything has built. */
+.pd-col.is-event::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  height: calc(100% + 6px);
+  border-left: 1px dashed var(--brass);
+  transition: opacity var(--pd-base) var(--pd-ease);
+}
+.pd-cols-x { display: flex; margin-left: 54px; }
+.pd-cols-x span { flex: 1 1 0; padding-top: 6px; text-align: center; font-size: 13px; color: var(--secondary); font-variant-numeric: tabular-nums; }
+.pd-cols-x span.is-strong { font-weight: 700; color: var(--paper); }
+.pd-cols-marker { margin: 6px 0 0 !important; text-align: right; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brass); transition: opacity var(--pd-base) var(--pd-ease); }
+
+/* ---------- Build states: parts wait for their step (data-at) ---------- */
+/* article-kit.js adds is-armed to a figure below the fold, or to a pinned graphic, and marks
+   each part is-shown as the reader reaches it. Without the script everything shows. */
+/* A bar takes no room until its step, as in the front door's graphic. */
+.is-armed .pd-stack-bar { max-height: 120px; transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease), max-height var(--pd-base) var(--pd-ease), margin var(--pd-base) var(--pd-ease); }
+.is-armed .pd-stack-bar[data-at]:not(.is-shown) { max-height: 0; margin-top: 0; opacity: 0; transform: translateY(6px); }
+.is-armed .pd-seg[data-at]:not(.is-shown) { width: 0 !important; }
+.is-armed .pd-seg[data-at]:not(.is-shown) .pd-seg-label { opacity: 0; transition-delay: 0ms; }
+.is-armed .pd-mark[data-at]:not(.is-shown) { opacity: 0; transform: translateY(-14px); }
+.is-armed .pd-stack-row[data-at]:not(.is-shown) { opacity: 0; transform: translateY(4px); }
+.is-armed .pd-stack-note[data-at]:not(.is-shown) { opacity: 0; }
+.is-armed .pd-cols-bars[data-at]:not(.is-shown) .pd-col:not(.is-event) i { transform: scaleY(0); }
+.is-armed .pd-col.is-event[data-at]:not(.is-shown)::before { opacity: 0; }
+.is-armed .pd-col.is-event i[data-at]:not(.is-shown) { transform: scaleY(0); }
+.is-armed .pd-cols-callout[data-at]:not(.is-shown), .is-armed .pd-cols-marker[data-at]:not(.is-shown) { opacity: 0; }
+
+/* ---------- Pinned sequence: steps scroll past a graphic that holds still ---------- */
+.pd-scrolly { position: relative; margin: 40px 0 48px; }
+.pd-steps { position: relative; z-index: 2; }
+.pd-step { min-height: 40vh; display: flex; flex-direction: column; justify-content: center; padding: 4vh 0; color: var(--paper); }
+.pd-step > p { margin: 0; max-width: 50ch; }
+.pd-step > p + p { margin-top: 18px; }
+.pd-step:first-child { padding-top: 2vh; min-height: 36vh; }
+.pd-step:last-child { padding-bottom: 6vh; min-height: 40vh; }
+.pd-sticky { position: sticky; top: 5vh; align-self: start; }
+.pd-graphic { padding: 22px 0 18px; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+/* Sources cited inside the steps sit under the graphic and change with the step: the publisher and
+   the first sentence, with the full note a click away. */
+.pd-sticky-notes { margin-top: 14px; }
+.pd-sticky-notes .sidenote { position: static !important; width: auto; margin-top: 10px; display: none; color: var(--secondary); opacity: 1; }
+.pd-note-full { display: none; }
+.sidenote.is-open .pd-note-full { display: inline; }
+.sidenote.is-open .pd-note-brief { display: none; }
+.pd-note-more { margin-left: 4px; padding: 3px 0; border: 0; background: none; color: var(--brass); font: inherit; font-size: 13px; white-space: nowrap; cursor: pointer; }
+.pd-note-more:hover { text-decoration: underline; }
+.pd-note-more:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+@media (width >= 1180px) {
+  .pd-scrolly {
+    width: calc(min(1060px, 100vw) - 64px);
+    display: grid;
+    grid-template-columns: minmax(0, 50ch) minmax(360px, 1fr);
+    column-gap: 80px;
+    align-items: start;
+  }
+  .pd-sticky-notes .sidenote.is-current { display: block; }
+}
+@media (width < 1180px) {
+  /* The graphic is a compact card pinned at the top; the steps read like paragraphs under it. */
+  .pd-scrolly { display: flex; flex-direction: column; margin-bottom: 8px; }
+  .pd-sticky {
+    order: -1;
+    top: 0;
+    z-index: 3;
+    margin: 0 -20px;
+    padding: 8px 20px 10px;
+    background: var(--ground);
+    /* style-ok: css-shadow (the pinned card floats over the steps that scroll under it) */
+    box-shadow: 0 14px 22px -14px var(--shadow);
+  }
+  .pd-graphic { padding: 14px 0 12px; border-top: 0; }
+  .pd-sticky-notes { display: none; }
+  .pd-step { min-height: 0; padding: 18px 0; justify-content: flex-start; }
+  .pd-step:first-child { padding-top: 26px; min-height: 0; }
+  .pd-step:last-child { padding-bottom: 12px; min-height: 0; }
+  /* Runway, so the last step can reach the line under the graphic. */
+  .pd-steps::after { content: ""; display: block; height: 26vh; }
+}
+
+/* ---------- Calculator: the reader's numbers, a bar that moves, and the ledger ---------- */
+.pd-calc { padding: 30px 32px 24px; border: 0; background: var(--panel); box-shadow: inset 0 0 0 1px var(--hairline); }
+.pd-calc .pd-eyebrow { margin-bottom: 8px !important; }
+.pd-calc-head { margin-bottom: 26px; }
+.pd-calc-title {
+  margin: 0 0 8px !important;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: 26px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  color: var(--paper);
+}
+.pd-calc-lede { margin: 0 !important; max-width: 62ch; font-size: 16px; line-height: 1.5; color: var(--paper); opacity: 0.8; }
+.pd-calc-inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 18px 16px; margin-bottom: 26px; }
+.pd-field { display: flex; flex-direction: column; }
+/* In a calculator, fields in a row share their label, box and note lines, so the boxes line up
+   however long a label runs. */
+.pd-calc-inputs .pd-field { display: grid; grid-template-rows: subgrid; grid-row: span 3; row-gap: 0; }
+.pd-field-label {
+  display: flex;
+  align-items: flex-end;
+  min-height: 2.7em;
+  margin: 0 0 8px !important;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper);
+  opacity: 0.75;
+}
+.pd-input-wrap {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+  border: 1.5px solid var(--hairline);
+  background: var(--dark-navy);
+  cursor: text;
+  transition: border-color var(--pd-fast) var(--pd-ease);
+}
+.pd-input-wrap:hover { border-color: var(--secondary); }
+.pd-input-wrap:focus-within { border-color: var(--brass); outline: 3px solid var(--paper); outline-offset: 2px; }
+.pd-input {
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--paper);
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.pd-input::-webkit-outer-spin-button, .pd-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.pd-input[type=number] { -moz-appearance: textfield; appearance: textfield; }
+.pd-affix { color: var(--brass); font-weight: 700; font-size: 18px; opacity: 0.9; }
+.pd-affix:first-child { margin-right: 4px; }
+.pd-affix:last-child { margin-left: 4px; }
+.pd-field-src { margin-top: 7px; color: var(--secondary); font-size: 12px; line-height: 1.35; }
+.pd-calc-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
+.pd-toggle { display: flex; flex-wrap: wrap; gap: 8px; }
+.pd-toggle-btn {
+  min-height: 44px;
+  padding: 11px 14px;
+  border: 1px solid var(--secondary);
+  background: transparent;
+  color: var(--paper);
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.pd-toggle-btn:hover { border-color: var(--paper); }
+.pd-toggle-btn.is-on { border-color: var(--brass); background: var(--brass); color: var(--on-brass); }
+.pd-toggle-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+.pd-calc-reset { min-height: 44px; padding: 8px 0; border: 0; background: none; color: var(--brass); font-family: inherit; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+/* Hidden but still holding its line, so the tool keeps its size when the link appears. */
+.pd-calc-reset[hidden] { display: inline-block; visibility: hidden; }
+.pd-bar { margin: 0 0 8px; }
+.pd-bar .pd-stack-track { background: color-mix(in srgb, var(--paper) 8%, transparent); }
+.pd-bar .pd-seg { transition-duration: 320ms; transition-timing-function: ease; }
+.pd-bar .pd-mark { top: -8px; bottom: -8px; transition-duration: 320ms; }
+.pd-bar .pd-mark span { right: auto; left: 50%; transform: translateX(-50%); margin-top: 4px; font-size: 11px; }
+.pd-calc .pd-key { display: flex; flex-wrap: wrap; gap: 18px; margin: 32px 0 6px; color: var(--secondary); font-size: 13px; }
+.pd-calc-row .pd-key { margin: 0; }
+.pd-calc .pd-bar + .pd-bar { margin-top: 22px; }
+.pd-key span::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; background: var(--paper); }
+.pd-key span.is-accent::before { background: var(--brass); }
+.pd-ledger { margin-top: 22px; }
+.pd-ledger-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 0; border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); }
+.pd-ledger-label { font-size: 17px; line-height: 1.35; }
+.pd-ledger-src { display: block; margin-top: 2px; color: var(--secondary); font-size: 13px; }
+.pd-ledger-value {
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: 30px;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+  transition: color var(--pd-base) var(--pd-ease);
+}
+.pd-ledger-value.is-hot { color: var(--brass); }
+.pd-ledger-total { margin-top: 4px; padding: 20px 18px; border-top: 0; background: var(--dark-navy); box-shadow: inset 0 0 0 1px var(--hairline); }
+.pd-ledger-total .pd-ledger-label { font-size: 18px; font-weight: 600; }
+.pd-ledger-total .pd-ledger-value { font-size: 40px; color: var(--brass); }
+.pd-calc figcaption { margin-top: 20px; font-size: 13px; }
+/* The fields answer to the calculator's own width: two across when it is narrow, three when it has
+   room, one row once it is 900px wide. The calculator widens past the column on a desktop page. */
+.pd-calc { container: calc / inline-size; }
+@container calc (width < 560px) { .pd-calc-inputs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@container calc (560px <= width < 900px) { .pd-calc-inputs { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@container calc (width >= 900px) { .pd-calc-inputs { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: 18px 20px; } }
+@media (width >= 1040px) { .pd-calc { width: calc(min(1060px, 100vw) - 64px); } }
+
+/* ---------- Dialogue: an exchange, each speaker named ---------- */
+.pd-dialogue { margin: 32px 0 36px; padding: 6px 0 6px 22px; border-left: 1px solid var(--hairline); }
+.pd-dialogue p { margin: 0 0 16px; max-width: 52ch; font-size: 18px; line-height: 1.5; }
+.pd-dialogue p:last-child { margin-bottom: 0; }
+.pd-dialogue .pd-them { margin-left: 3ch; color: var(--paper); }
+.pd-dialogue .pd-us { color: var(--secondary); }
+.pd-who { display: block; margin-bottom: 2px; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--brass); }
+.pd-us .pd-who { color: var(--secondary); }
+
+/* ---------- Decisions: the numbered changes to make ---------- */
+.pd-decisions { list-style: none; margin: 28px 0 40px; padding: 0; counter-reset: pdd; }
+.pd-decisions li { counter-increment: pdd; position: relative; margin: 0; padding: 26px 0 26px 76px; border-top: 1px solid var(--hairline); font-size: 18.5px; }
+.pd-decisions li:last-child { border-bottom: 1px solid var(--hairline); }
+.pd-decisions li::before { content: counter(pdd, decimal-leading-zero); position: absolute; left: 0; top: 22px; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 34px; line-height: 1; color: var(--brass); }
+.pd-decisions strong { display: block; margin-bottom: 8px; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-weight: 400; font-size: 20px; line-height: 1.15; text-transform: uppercase; }
+
+/* ---------- Illustrations: they rise into place as they arrive ---------- */
+.pd-img { margin: 40px 0 44px; padding: 0; border: 0; }
+.pd-img img { display: block; width: 100%; height: auto; transition: opacity var(--pd-slow) var(--pd-ease), transform var(--pd-slow) var(--pd-ease); }
+.pd-img.is-tall img { width: min(100%, 420px); margin: 0 auto; }
+.pd-img.is-spot img { width: min(100%, 520px); margin: 0 auto; }
+.pd-img.is-armed img { opacity: 0; transform: translateY(14px); }
+/* A drawing whose ground drifts a shade from the page: in light mode it blends into the page. */
+.pd-img.is-blend img { mix-blend-mode: multiply; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pd-img.is-blend img { mix-blend-mode: normal; } }
+:root[data-theme="dark"] .pd-img.is-blend img { mix-blend-mode: normal; }
+
+/* ---------- Tables ---------- */
+.article-body table { display: block; overflow-x: auto; width: 100%; margin: 28px 0 32px; border-collapse: collapse; font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; font-size: 14px; line-height: 1.45; }
+.article-body th { padding: 10px 16px 10px 0; border-top: 2px solid var(--paper); border-bottom: 1px solid var(--hairline); text-align: left; vertical-align: bottom; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--secondary); }
+.article-body td { padding: 10px 16px 10px 0; border-bottom: 1px solid var(--hairline); vertical-align: top; min-width: 9ch; }
+.article-body td:first-child { font-weight: 600; color: var(--paper); }
+/* A row header in the body reads like the first column, not like the column headings. */
+.article-body tbody th { border-top: 0; vertical-align: top; font-size: inherit; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--paper); }
+
+/* ---------- Narrow screens ---------- */
+@media (width < 1180px) {
+  .pd-fold { min-height: 330px; }
+  .pd-one { inset: 46px 0 0; }
+  .pd-one-cap { font-size: 14px; }
+}
+@media (width < 760px) {
+  .pd-grid.is-opener { margin-bottom: 30px; padding: 4px 20px 0; }
+  .pd-grid.is-opener .pd-grid-cells { grid-template-columns: repeat(20, 1fr); gap: 2px; }
+  .pd-grid-legend { grid-template-columns: 1fr; gap: 12px; }
+  .pd-legend-label { max-width: none; font-size: 15px; }
+  .pd-org { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .pd-org-box { min-height: 70px; padding: 9px; }
+  .pd-org-name { font-size: 12px; }
+  .pd-org-owns { display: none; }
+  .pd-one img { max-height: 200px; }
+  .pd-one-cap { margin-top: 8px !important; font-size: 13px; }
+  .pd-pull { font-size: 21px; line-height: 1.38; }
+  .article-body { font-size: 18px; }
+  .article-intro { font-size: 19px; }
+  .article-title { font-size: clamp(30px, 8.6vw, 38px); line-height: 1.04; }
+  .article-lede { font-size: 19px; }
+  .article-lede::first-letter { font-size: 64px; }
+  .article-body h2 { margin-top: 52px; font-size: 23px; }
+  .pd-figure { margin: 34px 0; padding-top: 22px; }
+  /* Pull quotes: the mark sits above the quote, and the quote keeps the column. */
+  .article-body blockquote { padding: 30px 0 18px; margin: 34px 0 !important; }
+  .article-body blockquote::before { font-size: 64px; left: -3px; top: -0.02em; }
+  .article-body blockquote p { font-size: 21px; line-height: 1.38; }
+  .pd-graphic .pd-stack-ledger { display: none; }
+  /* With the ledger hidden, the payback line clears the label under the line to beat. */
+  .pd-graphic .pd-stack-note { margin-top: 40px !important; font-size: 13px; }
+  .article-body [data-footnote-ref] { padding: 6px 4px; margin: -6px -2px; }
+}
+/* Components answer to the column they sit in, not the screen: the same figure reads the same in
+   an article, a /ui frame or a narrow sidebar. */
+@container column (width < 560px) {
+  .pd-units-num { font-size: 44px; }
+  .pd-units-label { font-size: 17px; }
+  .pd-units-cells[data-cols="50"] { grid-template-columns: repeat(25, 1fr); }
+  .pd-seg-label { left: 8px; }
+  .pd-seg-word { display: none; }
+  .pd-stack-lead { margin-bottom: 12px; }
+  .pd-stack-num { font-size: 30px; }
+  .pd-stack-sub { font-size: 12px; }
+  .pd-stack-track { height: 28px; }
+  .pd-cols { --plot: 180px; }
+  .pd-calc { padding: 22px 18px 18px; }
+  .pd-calc-title { font-size: 22px; }
+  .pd-field-label { min-height: 0; }
+  .pd-input { font-size: 22px; }
+  .pd-ledger-value { font-size: 24px; }
+  .pd-ledger-total { padding: 16px 14px; }
+  .pd-ledger-total .pd-ledger-value { font-size: 30px; }
+  .pd-decisions li { padding: 20px 0 24px; }
+  .pd-decisions li::before { position: static; display: block; margin-bottom: 8px; font-size: 26px; }
+  .pd-decisions strong { font-size: 18px; }
+  .pd-dialogue { padding-left: 0; border-left: 0; }
+  .pd-dialogue p { padding-left: 14px; border-left: 2px solid var(--hairline); }
+  .pd-dialogue .pd-them { margin-left: 0; border-left-color: var(--brass); }
+}
+
+/* ---------- Range segment: a value known only as a range, hatched from its low end to its high end ---------- */
+.pd-seg-range {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--paper) 70%, transparent) 0 2px, transparent 2px 6px);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--paper) 45%, transparent);
+  transition: width var(--pd-base) var(--pd-ease) var(--pd-slow);
+}
+.pd-seg-range.is-accent { background: repeating-linear-gradient(135deg, var(--brass) 0 2px, transparent 2px 6px); box-shadow: inset 0 0 0 1px var(--brass); }
+.is-armed .pd-seg-range[data-at]:not(.is-shown) { width: 0 !important; transition-delay: 0ms; }
+
+/* ---------- Record: one number from a primary record, what it was for, and the record's own words ---------- */
+.pd-record { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 24px; align-items: baseline; }
+.pd-record .pd-record-num {
+  margin: 0;
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-size: clamp(40px, 4.6vw, 58px);
+  line-height: 0.95;
+  font-variant-numeric: lining-nums tabular-nums;
+  white-space: nowrap;
+  color: var(--paper);
+}
+.pd-record-body { max-width: 52ch; }
+.pd-record .pd-record-lead { margin: 0 0 10px; font-size: 17px; font-weight: 600; line-height: 1.4; font-variant-numeric: lining-nums; color: var(--paper); }
+.pd-record .pd-record-quote {
+  margin: 0;
+  padding-left: 14px;
+  border-left: 2px solid var(--brass);
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-size: 17px;
+  font-style: italic;
+  line-height: 1.45;
+  font-variant-numeric: lining-nums;
+  color: var(--secondary);
+}
+.pd-record-quote::before { content: "\201C"; }
+.pd-record-quote::after { content: "\201D"; }
+.pd-record figcaption { grid-column: 1 / -1; }
+@container column (width < 560px) {
+  .pd-record { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .pd-record .pd-record-num { font-size: 40px; }
+}
+
+/* ---------- As-of slider: pick a day and see the version that was live ---------- */
+.pd-asof .pd-asof-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: 0 0 4px; font-size: 15px; line-height: 1.4; color: var(--secondary); }
+.pd-asof-q { color: var(--secondary); }
+.pd-asof-day { display: inline-block; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 28px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: var(--paper); }
+/* Ink, so the accent in this figure only ever marks what the customer saw. */
+.pd-asof-range { display: block; width: 100%; height: 44px; margin: 4px 0 2px; accent-color: var(--paper); cursor: pointer; }
+/* Before the script adds the slider, its line is already held, so nothing moves when it appears. */
+.pd-asof-range[hidden] { display: block; visibility: hidden; }
+.pd-asof-range:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+.pd-asof-bands { display: flex; height: 10px; }
+.pd-asof-band { flex: none; box-sizing: border-box; border-right: 2px solid var(--ground); background: color-mix(in srgb, var(--paper) 22%, transparent); transition: background-color var(--pd-fast) var(--pd-ease); }
+.pd-asof-band:last-child { border-right: 0; }
+.pd-asof-band.is-live { background: var(--brass); }
+/* Each version's value printed on its band, so the strip reads as a history. */
+.pd-asof-bands.is-labeled { height: 24px; }
+.pd-asof-band { overflow: hidden; }
+.pd-asof-band-label { display: block; padding: 0 6px; font-size: 11px; font-weight: 700; line-height: 24px; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; color: var(--paper); }
+.pd-asof-band.is-live .pd-asof-band-label { color: var(--on-brass); }
+.pd-asof-months { position: relative; height: 1.5em; margin-top: 4px; font-size: 11px; color: var(--secondary); }
+.pd-asof-months span { position: absolute; top: 0; }
+.pd-asof-answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
+.pd-asof-answers.is-single { grid-template-columns: minmax(0, 1fr); max-width: 62ch; }
+/* The accent marks an answer that shows what the customer saw, like the live band; a wrong one gets a faint rule. */
+.pd-asof-answer { padding: 14px 16px 16px; border-top: 3px solid var(--brass); background: color-mix(in srgb, var(--paper) 4%, transparent); }
+.pd-asof-answer.is-wrong { border-top-color: color-mix(in srgb, var(--paper) 25%, transparent); }
+.pd-asof .pd-asof-label { margin: 0 0 8px; font-size: 12px; font-weight: 700; line-height: 1.35; letter-spacing: 0.1em; text-transform: uppercase; color: var(--secondary); }
+.pd-asof .pd-asof-copy { margin: 0 0 8px; font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 17px; line-height: 1.4; font-variant-numeric: lining-nums; color: var(--paper); }
+.pd-asof .pd-asof-meta { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--secondary); }
+.pd-asof .pd-asof-verdict { margin: 8px 0 0; font-size: 12px; font-weight: 700; color: var(--paper); }
+/* Every version, listed: what a reader sees without the script, and what the script reads. */
+.pd-asof-versions { margin: 22px 0 0; padding-left: 1.3em; font-size: 14px; line-height: 1.5; }
+.pd-asof-versions li { margin-bottom: 8px; }
+.pd-asof-versions .pd-asof-copy { font-family: inherit; font-size: inherit; margin: 0; }
+.pd-asof-versions .pd-asof-meta { display: block; }
+.pd-asof.is-armed .pd-asof-versions { display: none; }
+@container column (width < 560px) {
+  .pd-asof-answers { grid-template-columns: minmax(0, 1fr); }
+  .pd-asof-day { font-size: 24px; }
+}
+
+/* ---------- Calculator fold: the main fields stay in view, the rest open on request ---------- */
+.pd-calc-more { margin: 0 0 26px; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+.pd-calc-more > summary { display: flex; align-items: center; min-height: 48px; font-size: 15px; font-weight: 700; color: var(--paper); cursor: pointer; list-style: none; }
+.pd-calc-more > summary::-webkit-details-marker { display: none; }
+.pd-calc-more > summary::before { content: "+"; display: inline-block; width: 1.4em; color: var(--brass); font-weight: 700; }
+.pd-calc-more[open] > summary::before { content: "\2212"; }
+.pd-calc-more > summary:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+.pd-calc .pd-calc-inputs.is-more { margin: 4px 0 0; padding-bottom: 22px; }
+/* Wider than a phone, the fold's fields wrap at a readable width instead of sharing one row. */
+@container calc (width >= 560px) { .pd-calc .pd-calc-inputs.is-more { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); } }
+.pd-calc .pd-calc-group { grid-column: 1 / -1; margin: 10px 0 0; font-size: 11px; font-weight: 700; line-height: 1.2; letter-spacing: 0.1em; text-transform: uppercase; color: var(--secondary); }
+.pd-calc .pd-calc-group:first-child { margin-top: 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pd-org-box, .pd-one,
+  .pd-cell, .pd-seg, .pd-seg-label, .pd-mark, .pd-stack-bar, .pd-stack-row, .pd-stack-note, .pd-col i, .pd-col::before,
+  .pd-cols-callout, .pd-cols-marker, .pd-img img, .pd-seg-range, .pd-asof-band { transition: none !important; }
+}
+@media (forced-colors: active) {
+  .pd-seg, .pd-col i, .pd-cell.is-on, .pd-swatch.is-on { background: CanvasText; forced-color-adjust: none; }
+  /* The second fill needs its own system colour, or it reads as an empty square. */
+  .pd-cell.is-alt, .pd-swatch.is-alt { background: Highlight; border-color: Highlight; forced-color-adjust: none; }
+  .pd-seg-range, .pd-seg.is-outline { background: none; box-shadow: inset 0 0 0 2px CanvasText; forced-color-adjust: none; }
+  .pd-asof-band.is-live { background: Highlight; forced-color-adjust: none; }
+}

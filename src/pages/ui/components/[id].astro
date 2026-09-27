@@ -1,0 +1,87 @@
+---
+import Styleguide from '../../../layouts/Styleguide.astro';
+import Story from '../../../components/ui/Story.astro';
+import { COMPONENTS, LEVELS, STATUSES, STACK_DEMO, COLS_DEMO, UNITS_DEMO } from '../../../styleguide/components.mjs';
+import { RULES } from '../../../styleguide/lint.mjs';
+import { inline } from '../../../styleguide/build.mjs';
+
+export function getStaticPaths() {
+  return COMPONENTS.map((c, i) => ({ params: { id: c.id }, props: { c, prev: COMPONENTS[i - 1], next: COMPONENTS[i + 1] } }));
+}
+
+const { c, prev, next } = Astro.props;
+const level = LEVELS.find((l) => l.id === c.level);
+const status = STATUSES.find((s) => s.id === c.status);
+const rules = c.lint.map((id) => RULES.find((r) => r.id === id));
+const DEMOS = { stack: STACK_DEMO, cols: COLS_DEMO, units: UNITS_DEMO };
+const demo = DEMOS[c.controls] ?? null;
+// The controls start from the story built from the same demo data.
+const LIVE = { stack: 'one-bar', cols: 'wait', units: 'twenty' };
+const liveStory = demo ? c.stories.find((s) => s.id === LIVE[c.controls]) : null;
+const WHAT = { stack: 'bar', cols: 'columns', units: 'stat' };
+const HINT = {
+  stack: 'Each segment takes its own step, and the line to clear comes after the last one. The scale is the longest bar or line times 1.12.',
+  cols: 'The event column lands after the rest. The scale top is the highest gridline; leave it blank to use the largest value.',
+  units: 'Twenty or twenty-five units read at a glance. A hundred draw as two rows of fifty.',
+};
+---
+<Styleguide title={c.name} description={c.summary} path={`/ui/components/${c.id}`}>
+  <p class="ui-crumb"><a href="/ui">Styleguide</a> <span aria-hidden="true">/</span> {level.name}</p>
+  <h1 class="display-title ui-title">{c.name}</h1>
+  <p class="ui-meta">
+    <span class={`ui-chip is-${c.status}`} title={status.about}>{status.name}</span>
+    {c.classes.length > 0 && <span class="ui-classes">{c.classes.map((cls) => <code>.{cls}</code>)}</span>}
+  </p>
+  <p class="ui-lede">{c.summary}</p>
+  {c.status === 'template' && <p class="ui-callout">{status.about}</p>}
+  {c.status === 'signature' && <p class="ui-callout">{status.about} The linter warns when it finds one too close to another article that uses it.</p>}
+
+  <div class="ui-stories">
+    {c.stories.map((s) => <Story component={c} story={s} heading="h2" />)}
+  </div>
+
+  {demo && (
+    <section class="ui-section ui-build" aria-labelledby="build-title">
+      <h2 id="build-title" class="ui-h2">Build one</h2>
+      <p class="ui-p">Type the values and the {WHAT[c.controls]} and its HTML update together, ready to paste into an article. {HINT[c.controls]} Press Replay to see it build.</p>
+      <div class="ui-controls" data-controls={c.controls}>
+        <script type="application/json" set:html={JSON.stringify(demo)}></script>
+        <p class="ui-p ui-controls-fallback">The controls need JavaScript. The snippet below is the example above.</p>
+      </div>
+      <Story component={c} story={liveStory} live />
+    </section>
+  )}
+
+  <section class="ui-section ui-usage">
+    <div>
+      <h2 class="ui-h2">Use it for</h2>
+      <ul class="ui-list">{c.use.map((u) => <li set:html={inline(u)} />)}</ul>
+    </div>
+    <div>
+      <h2 class="ui-h2">Leave it out</h2>
+      <ul class="ui-list is-avoid">{c.avoid.map((u) => <li set:html={inline(u)} />)}</ul>
+    </div>
+  </section>
+
+  <section class="ui-section">
+    <h2 class="ui-h2">Rules</h2>
+    <ol class="ui-list is-numbered">{c.rules.map((r) => <li set:html={inline(r)} />)}</ol>
+  </section>
+
+  <section class="ui-section">
+    <h2 class="ui-h2">Accessibility</h2>
+    <ul class="ui-list">{c.a11y.map((r) => <li set:html={inline(r)} />)}</ul>
+  </section>
+
+  {rules.length > 0 && (
+    <section class="ui-section">
+      <h2 class="ui-h2">Checked by the linter</h2>
+      <ul class="ui-rules">{rules.map((r) => <li><a href={`/ui/lint#${r.id}`}><code>{r.id}</code></a> <span>{r.title}</span></li>)}</ul>
+    </section>
+  )}
+
+  <nav class="ui-pager" aria-label="Components">
+    {prev ? <a href={`/ui/components/${prev.id}`}><span>Previous</span>{prev.name}</a> : <span></span>}
+    {next && <a class="is-next" href={`/ui/components/${next.id}`}><span>Next</span>{next.name}</a>}
+  </nav>
+</Styleguide>

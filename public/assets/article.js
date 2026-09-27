@@ -18,7 +18,7 @@
   if (!body) return;
 
   function h(tag, cls, html) { var el = document.createElement(tag); el.className = cls; el.innerHTML = html; return el; }
-  var wide = window.matchMedia('(min-width: 1180px)');
+  var wide = window.matchMedia('(width >= 1180px)');
 
   /* The first plain paragraph opens the piece; "About the numbers" closes it without a number. */
   for (var i = 0; i < body.children.length; i++) {

@@ -84,6 +84,8 @@ export default function lineage(): AstroIntegration {
         const footnotesByPage = new Map<string, Set<number>>();
         for (const file of await htmlFiles(root)) {
           const page = pagePath(root, file);
+          // The styleguide's examples carry real marks; they are specimens, not uses.
+          if (page === '/ui' || page.startsWith('/ui/')) continue;
           const read = readPage(page, await readFile(file, 'utf8'));
           if (!read.marks.length) continue;
           pages.push({ path: page, title: read.title, sections: read.sections });

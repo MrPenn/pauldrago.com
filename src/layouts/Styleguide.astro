@@ -1,0 +1,62 @@
+---
+// The /ui styleguide shell: the site header and footer, a contents rail, and the page.
+// Pages here are kept out of search and the sitemap; the kit stylesheet is loaded so type
+// and figure specimens render inline with the same rules the articles use.
+import Base from './Base.astro';
+import { COMPONENTS, LEVELS } from '../styleguide/components.mjs';
+
+const { title, description, path } = Astro.props;
+const guide = [
+  { href: '/ui', label: 'Overview' },
+  { href: '/ui/foundations', label: 'Foundations' },
+  { href: '/ui/writing', label: 'Writing' },
+  { href: '/ui/graphics', label: 'Graphics' },
+  { href: '/ui/lint', label: 'Linter' },
+];
+const groups = LEVELS.map((l) => ({ ...l, items: COMPONENTS.filter((c) => c.level === l.id) }));
+const current = (href) => (href === path ? 'page' : undefined);
+---
+<Base
+  title={`${title} | Styleguide | Paul Drago`}
+  description={description}
+  path={path}
+  robots="noindex, nofollow"
+  footerNote="The styleguide for articles on pauldrago.com."
+  stylesheets={['/assets/personal-site.css', '/assets/article.css', '/assets/article-kit.css', '/assets/styleguide.css']}
+>
+  <main id="main" class="ui">
+    <div class="container ui-shell">
+      <details class="ui-nav" open>
+        <summary>Styleguide contents</summary>
+        <nav aria-label="Styleguide">
+          <p class="ui-nav-group">Guide</p>
+          <ul>{guide.map((g) => <li><a href={g.href} aria-current={current(g.href)}>{g.label}</a></li>)}</ul>
+          {groups.map((g) => (
+            <Fragment>
+              <p class="ui-nav-group">{g.name}</p>
+              <ul>{g.items.map((c) => <li><a href={`/ui/components/${c.id}`} aria-current={current(`/ui/components/${c.id}`)}>{c.name}</a></li>)}</ul>
+            </Fragment>
+          ))}
+        </nav>
+      </details>
+      <script is:inline>
+        // Contents start closed on narrow screens, before the first paint. Crossing 760 (a phone
+        // turned sideways) opens them, since the rail has no summary to open them with, and closes
+        // them again below; between crossings they stay as the reader left them.
+        (() => {
+          const nav = document.querySelector('.ui-nav');
+          const narrow = window.matchMedia('(width < 760px)');
+          const follow = () => { nav.open = !narrow.matches; };
+          follow();
+          narrow.addEventListener('change', follow);
+        })();
+      </script>
+      <div class="ui-main">
+        <slot />
+      </div>
+    </div>
+    <script>
+      import '../styleguide/client.mjs';
+    </script>
+  </main>
+</Base>

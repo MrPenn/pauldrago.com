@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "build:drafts": "SHOW_DRAFTS=1 astro build"
+    "build:drafts": "SHOW_DRAFTS=1 astro build",
+    "lint:style": "node scripts/lint-style.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "audit:article": "node scripts/audit-article.mjs"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",

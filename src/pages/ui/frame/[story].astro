@@ -1,0 +1,66 @@
+---
+// One story, alone on a page with the site's real stylesheets: the canvas /ui shows in a frame.
+// ?theme=light or ?theme=dark forces a theme; window.uiTheme() switches it without a reload.
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import Fonts from '../../../components/Fonts.astro';
+import { COMPONENTS } from '../../../styleguide/components.mjs';
+import { themeOverrides } from '../../../styleguide/tokens.mjs';
+import { curlHtml } from '../../../integrations/smart-quotes.mjs';
+
+export function getStaticPaths() {
+  return COMPONENTS.flatMap((component) => component.stories.map((story) => ({
+    params: { story: `${component.id}--${story.id}` },
+    props: { component, story },
+  })));
+}
+
+const { component, story } = Astro.props;
+const SHEETS = ['/assets/site-shell.css', '/assets/personal-site.css', '/assets/article.css', '/assets/article-kit.css', '/assets/styleguide-frame.css'];
+const root = process.cwd();
+const css = SHEETS.map((href) => readFileSync(join(root, 'public', href), 'utf8')).join('\n') + '\n' + themeOverrides(root, SHEETS);
+// The build curls quotes in articles; the frame does the same so the example reads as published.
+const html = curlHtml(story.html);
+const wrap = story.wrap ?? 'body';
+---
+<!DOCTYPE html>
+<html lang="en" data-pd-arm>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>{component.name}: {story.name}</title>
+<script is:inline>
+(function () {
+  var root = document.documentElement;
+  // Forces a theme: sets the token override and points each picture at the matching file.
+  window.uiTheme = function (theme) {
+    if (theme === 'light' || theme === 'dark') root.setAttribute('data-theme', theme);
+    else root.removeAttribute('data-theme');
+    document.querySelectorAll('source[media*="prefers-color-scheme"], source[data-media]').forEach(function (s) {
+      if (!s.hasAttribute('data-media')) s.setAttribute('data-media', s.getAttribute('media'));
+      var media = s.getAttribute('data-media');
+      var forDark = /dark/.test(media);
+      s.setAttribute('media', theme === 'dark' ? (forDark ? 'all' : 'not all') : theme === 'light' ? (forDark ? 'not all' : 'all') : media);
+    });
+  };
+  // After the styleguide rebuilds a figure, the kit measures its labels again.
+  window.uiRefresh = function () { if (window.pdKit) window.pdKit.fit(); };
+  var theme = new URLSearchParams(location.search).get('theme');
+  if (theme) {
+    root.setAttribute('data-theme', theme);
+    document.addEventListener('DOMContentLoaded', function () { window.uiTheme(theme); });
+  }
+})();
+</script>
+<Fonts />
+<style is:inline set:html={css}></style>
+</head>
+<body class={`ui-frame is-${wrap}`}>
+{wrap === 'page' && <div class="ui-slot" set:html={html}></div>}
+{wrap === 'article' && <div class="article"><div class="ui-slot" set:html={html}></div></div>}
+{wrap === 'body' && <div class="article"><div class="article-body ui-slot" data-notes={story.notes ? 'rail' : 'custom'} set:html={html}></div></div>}
+{story.notes && <script is:inline defer src="/assets/article.js"></script>}
+<script is:inline defer src="/assets/article-kit.js"></script>
+</body>
+</html>

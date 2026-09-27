@@ -11,7 +11,7 @@ ogImageAlt: "Of 100 new checking accounts opened in 2024, 44 went to digital ban
 brief:
   - "Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts."
   - "The customer they lost is worth having now. A 25-year-old with the median balance earns a community bank a little over $400 a year before any loan, and covers a typical acquisition cost inside the first year."
-  - "The bank's pitch waits for the mortgage anyway. The median first-time buyer is 40, and the industry earned $973 per loan when it finally arrived."
+  - "The bank's pitch waits for the mortgage anyway. The median first-time buyer is 40, and independent mortgage banks earned $973 per loan when it finally arrived."
   - "Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year."
   - "What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter."
 notes: "custom"
@@ -70,7 +70,7 @@ The benchmarking problem runs deeper than the rating. Inside the bank, the compa
 <figure class="fd-img fd-img-tall" data-fd="illo">
 <picture>
 <source srcset="/assets/app-grid-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-<img src="/assets/app-grid.png" width="623" height="1001" loading="lazy" alt="A phone home screen of navy app icons. One pale tile in the middle carries a bank column and four and a half stars.">
+<img src="/assets/app-grid.png" width="623" height="997" loading="lazy" alt="A phone home screen of navy app icons. One pale tile in the middle carries a bank column and four and a half stars.">
 </picture>
 </figure>
 
@@ -101,7 +101,7 @@ I have written every one of the bank's lines above into a campaign brief. None o
 <figure class="fd-img" data-fd="illo">
 <picture>
 <source srcset="/assets/jar-and-key-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-<img src="/assets/jar-and-key.png" width="1200" height="372" loading="lazy" alt="A long desk. At one end a small jar of coins labeled $2,000; at the other, a house key as long as the desk.">
+<img src="/assets/jar-and-key.png" width="1158" height="372" loading="lazy" alt="A long desk. At one end a small jar of coins labeled $2,000; at the other, a house key as long as the desk.">
 </picture>
 </figure>
 
@@ -206,7 +206,7 @@ And when that mortgage finally arrives, independent mortgage banks earned $973 p
 </div>
 <div class="fd-step" data-step="4">
 
-Banks are deferring a customer worth $400 a year for a decade so they can compete on rate, against Rocket, for a $973 event.
+Banks are deferring a customer worth $400 a year for fifteen years so they can compete on rate, against Rocket, for a $973 event.
 
 </div>
 </div>
@@ -320,7 +320,7 @@ Marketing meets its application target and Digital meets its adoption target whi
 <figure class="fd-img fd-img-tall" data-fd="illo">
 <picture>
 <source srcset="/assets/gauges-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-<img src="/assets/gauges.png" width="623" height="993" loading="lazy" alt="Twelve gauges on a wall, every needle in the green. Below them, an exit door standing open.">
+<img src="/assets/gauges.png" width="619" height="963" loading="lazy" alt="Twelve gauges on a wall, every needle in the green. Below them, an exit door standing open.">
 </picture>
 </figure>
 
@@ -400,7 +400,7 @@ Community banks have built digital front doors. The question is no longer simply
 <figure class="fd-img" data-fd="illo">
 <picture>
 <source srcset="/assets/corridor-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-<img src="/assets/corridor.png" width="1109" height="935" loading="lazy" alt="Looking down a long corridor from the open front door: twelve closed office doors with nameplates, and at the far end an empty chair under a spotlight.">
+<img src="/assets/corridor.png" width="1107" height="925" loading="lazy" alt="Looking down a long corridor from the open front door: twelve closed office doors with nameplates, and at the far end an empty chair under a spotlight.">
 </picture>
 </figure>
 
@@ -422,7 +422,7 @@ Sources sit beside the passages they support, or open beneath them on a phone. R
 [^5]: **Federal Reserve Board.** Regulation II, Average Debit Card Interchange Fee by Payment Card Network, 2024 data, published December 19, 2025. All-network average per transaction: $0.51 for exempt issuers (1.21% of transaction value), $0.23 for covered issuers (0.47%). Interchange is gross revenue; network fees and processing costs come out of it. [Fed Regulation II data](https://www.federalreserve.gov/paymentsystems/regii-average-interchange-fee.htm)
 [^6]: **PULSE.** 2024 Debit Issuer Study (2023 data), as reported by ABA Banking Journal, August 9, 2024. Active cardholders completed 34.6 debit transactions per month, including 30.7 point-of-sale transactions. Not age-specific. [ABA Banking Journal summary](https://bankingjournal.aba.com/2024/08/survey-debit-card-use-grew-in-2023/)
 [^7]: **Digital Onboarding, via The Financial Brand.** May 28, 2021: banks and credit unions invest $350 or more to acquire a single checking account. A 2021 figure. Fintel Connect's 2025 Cost-Per-Acquisition Benchmarking Guide, as summarized by eMarketer in March 2025, gives a range of $150 to $780 across financial products, not checking alone. [Financial Brand article](https://thefinancialbrand.com/news/checking-accounts/how-to-maximize-checking-account-activation-rates-115242) | [eMarketer summary](https://www.emarketer.com/content/how-banks-optimize-cost-per-acquisition)
-[^8]: **Chime.** Official checking-account information and Help Center account descriptions, accessed September 22, 2026. Supports the product descriptions, partner-bank disclosure and app-based account structure. Eligibility, limits, timing and fees vary by feature. Describing Chime as one product is an interpretation of its customer-facing proposition, not a claim that it has one legal account, no internal complexity or no human support. Chime announced a definitive agreement to acquire Stride Bank, N.A. for $590 million in cash on September 8, 2026, subject to OCC and Federal Reserve approval, and stated it "will manage its balance sheet and keep its assets below $10 billion for the foreseeable future." The announcement does not mention the Durbin Amendment; the connection to the interchange exemption is analysis, shared by most coverage of the deal. The Q2 2026 payments revenue figure is from Chime's reported results as cited in that coverage. [Chime announcement](https://investors.chime.com/news-releases/news-release-details/chime-announces-agreement-acquire-stride-bank) | [Banking Dive coverage](https://www.bankingdive.com/news/chime-buys-stride-bank-590m-acquisition-fintech/829857/) [Checking-account information](https://www.chime.com/online-banking/checking-account/) | [Account and card descriptions](https://help.chime.com/manage-money-56350c4d/cards-89d3ae0b/what-chime-accounts-do-i-have-and-which-cards-come-with-47ec36db)
+[^8]: **Chime.** Official checking-account information and Help Center account descriptions, accessed September 22, 2026. Supports the product descriptions, partner-bank disclosure and app-based account structure. Eligibility, limits, timing and fees vary by feature. Describing Chime as one product is an interpretation of its customer-facing proposition, not a claim that it has one legal account, no internal complexity or no human support. Chime announced a definitive agreement to acquire Stride Bank, N.A. for $590 million in cash on September 8, 2026, subject to OCC and Federal Reserve approval and expected to close in the first half of 2027, and stated it "will manage its balance sheet and keep its assets below $10 billion for the foreseeable future." The announcement does not mention the Durbin Amendment; the connection to the interchange exemption is analysis, shared by most coverage of the deal. The Q2 2026 figures are from Chime's results released August 5, 2026 and its Form 10-Q for the quarter ended June 30, 2026: payments revenue of $430.0 million of $669.8 million total revenue, with interchange on debit card transactions at 39% of revenue and on credit card transactions at 25%. [Chime announcement](https://investors.chime.com/news-releases/news-release-details/chime-announces-agreement-acquire-stride-bank) | [Q2 2026 results](https://investors.chime.com/news-releases/news-release-details/chime-reports-second-quarter-2026-financial-results) | [Form 10-Q](https://www.sec.gov/Archives/edgar/data/1795586/000179558626000048/chym-20260630.htm) | [Banking Dive coverage](https://www.bankingdive.com/news/chime-buys-stride-bank-590m-acquisition-fintech/829857/) | [Checking-account information](https://www.chime.com/online-banking/checking-account/) | [Account and card descriptions](https://help.chime.com/manage-money-56350c4d/cards-89d3ae0b/what-chime-accounts-do-i-have-and-which-cards-come-with-47ec36db)
 [^9]: **National Association of Realtors.** 2025 Profile of Home Buyers and Sellers, November 4, 2025. Median age of first-time homebuyers: 40, up from 38 the prior year; first-time buyer share 21%. [NAR release](https://www.nar.realtor/press-releases/first-time-home-buyer-share-falls-to-historic-low-of-21-median-age-rises-to-40)
 [^10]: **Mortgage Bankers Association.** Quarterly Mortgage Bankers Performance Report, Second Quarter 2026, released August 18, 2026. Net production income of $973 per loan (25 basis points) for independent mortgage banks and mortgage subsidiaries of chartered banks; total production revenue 333 basis points. A bank that portfolios the loan earns spread over its life instead, which depends on its funding and credit assumptions. [MBA release](https://www.mba.org/news-and-research/newsroom/news/2026/08/18/imbs-production-profits-increase-in-second-quarter-of-2026)
 [^11]: **Jim Marous / Banking Transformed / Digital Banking Report.** The Power of Primacy, March 2024, published with Pinwheel, p. 25, Chart 12, and p. 28, Chart 15. The 34% figure is an institution-reported estimate of activated new customers becoming inactive or churning within a year, not a measured closure rate. The 55% direct-deposit chart is titled for newly acquired customers, but its question refers more broadly to checking customers. Neither figure is Gen Z-specific, and neither establishes lifetime direct-deposit adoption or primary-account status. [Read The Power of Primacy](https://learn.pinwheelapi.com/hubfs/Power%20of%20Primacy%20White%20Paper.pdf)

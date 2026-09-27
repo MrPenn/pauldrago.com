@@ -108,8 +108,8 @@ const fairRows = [
 ];
 const planCounties = ['Kaufman', 'Ellis'];
 
-// Ramp chart: ages 0-5 across, $0-120M up.
-const W = 640, H = 260, L = 76, R = 36, T = 12, B = 32, YMAX = 120;
+// Ramp chart: ages 0-5 across, $0-120M up. L fits "$120M" at its largest size (22px, phones) plus the 8 gap.
+const W = 640, H = 260, L = 81, R = 36, T = 12, B = 32, YMAX = 120;
 const x = (a) => L + (a / 5) * (W - L - R);
 const y = (v) => T + (1 - v / YMAX) * (H - T - B);
 const line = (key) => model.path(key).map((v, a) => `${a ? 'L' : 'M'}${x(a).toFixed(1)},${y(v).toFixed(1)}`).join(' ');

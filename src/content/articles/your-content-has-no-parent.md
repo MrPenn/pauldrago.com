@@ -5,36 +5,56 @@ date: 2026-09-25
 draft: false
 kicker: "Content operations"
 topics: ["Content operations", "Digital asset management", "Marketing compliance", "Data governance", "Marketing leadership"]
-stylesheets: ["/assets/content-is-data.css"]
-scripts: ["/assets/content-is-data.js"]
+ogImage: "/assets/content-is-data-social.png"
+ogImageAlt: "The same holiday postcard took two to three months from a blank page, two weeks with an executive in every meeting, and under two weeks once componentized."
+stylesheets: ["/assets/article-kit.css"]
+scripts: ["/assets/article-kit.js"]
 brief:
-  - 'A four by six <data value="c:postcard">postcard</data> took two to three months. One executive got it to two weeks by sitting in every meeting. Componentizing it kept it under two weeks for three years with nobody senior in the room.'
+  - 'A four by six <data value="c:postcard">postcard</data> took two to three months. One executive got it to two weeks by sitting in every meeting. Componentizing it kept it under two weeks for two to three years with nobody senior in the room.'
   - '<data value="c:reg-dd">Regulation DD</data> says a bank must be able to reconstruct its disclosures. <data value="c:finra-2210">FINRA</data>, which covers a bank''s broker-dealer arm, spells out the whole record. A broker-dealer was fined <data value="c:h2c-fine">$250,000</data> for keeping one copy of its marketing emails and not the version each customer received.'
-  - 'Content is data. Every asset is a record, every approved component is <data value="c:master-data">master data</data>, and the vocabulary for tracking, versioning, and owning records already exists in your data organization. In pharma, with approval attached to the claim, the measured average is <data value="c:veeva-review-cycles">1.3</data> review cycles per asset against the <data value="c:review-versions">3 to 5 versions</data> marketing tools report, a looser count.'
+  - 'Content is data. Every asset is a record, every approved component is <data value="c:master-data">master data</data>, and the vocabulary for tracking, versioning, and owning records already exists in your data organization. In pharma, with approval attached to the claim, the measured average is <data value="c:veeva-review-cycles">1.3</data> review cycles per asset against the <data value="c:review-versions">3 to 5 versions</data> marketing tools report.'
   - 'Dark content is dark data with a cost attached: assets with no declared parent, times cost per asset. As an example, at <data value="c:worked-assets">5,000</data> assets, <data value="c:worked-lineage">40 percent</data> with a parent, and <data value="c:worked-cost">$1,800</data> an asset, it is <data value="c:dark-content-cost">$5.4 million</data> a year. The last two numbers are stand-ins, and every input is yours to replace.'
   - 'Buy generation last. In 2026, <data value="c:typeface-speed">34 percent</data> of marketing leaders needed one to two months to launch a campaign, while <data value="c:typeface-speed">92 percent</data> needed ten or more stakeholders to sign off. The tools made more, and the chain shipped it more slowly.'
   - 'What changes: a person at intake who can close requests, a declared parent on every upload, variants in a day or two with new pieces through the full chain, and generation bought last.'
 ---
 
-## Two to three months, then two weeks
-
-<p class="cd-deck">One executive got a routine postcard out in two weeks instead of two to three months, and componentizing it kept it there for two to three years.</p>
-
 A new marketing executive came in and found out that <data value="c:postcard">a holiday postcard</data>, end to end, was going to take two to three months. Her jaw dropped, and it should have. This was a product we had been promoting for years, on a four by six card, in our standard design system.
 
 Nobody was revolutionizing the postcard. So she sat in every meeting. Brief, copy, design, legal, list pull, proofs. If a review was due Thursday she was in the reviewer's office Thursday, and it went out in two weeks.
 
-<figure class="cd-img"><picture><source srcset="/assets/postcard-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/postcard.webp" width="1200" height="720" loading="lazy" alt="A postcard buried under approval stamps; one corner of the picture still shows."></picture></figure>
+<figure class="pd-img is-blend"><picture><source srcset="/assets/postcard-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/postcard.webp" width="1200" height="720" loading="lazy" alt="A postcard buried under approval stamps; one corner of the picture still shows."></picture></figure>
 
 Same people, same tools, same postcard. Nothing was bought and nobody was hired. It was a Herculean effort, and what it exposed was everything in this piece: a product that had not changed in years still went through the whole chain from a blank page every time, and no stage in that chain measured how long work waited in front of it.
 
 She could not sit in every meeting for every postcard, and she did not have to. With what the first one exposed, we componentized everything on that card that could be componentized, and for the next two to three years the incremental postcard reviews stayed under two weeks without anyone senior in the room. She kept track by hand once. The system kept track after that.
 
-<figure class="cd-tl" id="cd-chain" aria-label="Time to ship the same holiday postcard: two to three months from a blank page, two weeks with the executive in every meeting, and under two weeks once componentized, which held for three years."><p class="cd-widget-title">The same postcard, three times</p><div class="cd-tl-row"><p class="cd-tl-label"><b>Every card</b><span class="cd-tl-v">two to three months</span>From a blank page, through every queue</p><div class="cd-tl-track"><span class="cd-tl-bar" style="width:60.7%"></span><span class="cd-tl-range" style="left:60.7%;width:32.1%"></span></div></div><div class="cd-tl-row"><p class="cd-tl-label"><b>The executive in the room</b><span class="cd-tl-v">two weeks</span>Same people, same tools; nothing bought, nobody hired</p><div class="cd-tl-track"><span class="cd-tl-bar" style="width:14.3%"></span></div></div><div class="cd-tl-row"><p class="cd-tl-label"><b>Componentized</b><span class="cd-tl-v">under two weeks</span>Held for the next two to three years, nobody senior in the room</p><div class="cd-tl-track"><span class="cd-tl-bar is-open" style="width:12.9%"></span></div></div><div class="cd-tl-row cd-tl-axis" aria-hidden="true"><span></span><div class="cd-tl-ticks"><span style="left:0.0%">0</span><span style="left:28.6%">4</span><span style="left:57.1%">8</span><span style="left:85.7%">12 weeks</span></div></div><figcaption>Totals from the story. The people, the tools and the postcard were the same in the first two bars.</figcaption></figure>
+<figure class="pd-figure pd-stack" data-pd="build" aria-label="Time to ship the same holiday postcard: two to three months from a blank page, two weeks with the executive in every meeting, and under two weeks once componentized, which held for two to three years.">
+  <p class="pd-eyebrow">The same postcard, three times</p>
+  <div class="pd-stack-bar" data-at="1">
+    <div class="pd-stack-head"><span class="pd-stack-name">Every card<small class="pd-stack-what">From a blank page, through every queue</small></span><span class="pd-stack-val">two to three months</span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="1" data-value="8.5" style="left:0.0%;width:58.4%"></div>
+      <div class="pd-seg-range" data-at="1" data-to="13" style="left:58.4%;width:30.9%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="2">
+    <div class="pd-stack-head"><span class="pd-stack-name">The executive in the room<small class="pd-stack-what">Same people, same tools; nothing bought, nobody hired</small></span><span class="pd-stack-val">two weeks</span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="2" data-value="2" style="left:0.0%;width:13.7%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="3">
+    <div class="pd-stack-head"><span class="pd-stack-name">Componentized<small class="pd-stack-what">Held for the next two to three years, nobody senior in the room</small></span><span class="pd-stack-val">under two weeks</span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg is-accent" data-at="3" data-value="2" style="left:0.0%;width:13.7%"></div>
+    </div>
+  </div>
+  <figcaption>Totals from the story. The people, the tools and the postcard were the same in the first two bars.</figcaption>
+</figure>
 
 ## Most stages are never measured
 
-<p class="cd-deck">A routine asset took one to two months from request to use, and most of that time it sat in queues nobody measured.</p>
+<p class="pd-deck">A routine asset took one to two months from request to use, and most of that time it sat in queues nobody measured.</p>
 
 I ran the content operation inside marketing at a bank holding company, and before that at a global industrial manufacturer. In both, a routine asset took <data value="c:routine-wait">one to two months</data> from request to use: a landing page, an email, a branch flyer.
 
@@ -50,13 +70,40 @@ In the libraries I have audited, somewhere between <data value="c:audited-reuse"
 
 You will also see "<data value="c:folklore-60-70">60 to 70 percent of B2B content goes unused</data>" in every deck on this subject. It comes from a 2013 conference remark with no method or sample ever published, so it is folklore with a date.[^4] The CreativeX figure is measured, and <data value="c:creativex-unactivated">it says half</data>.[^3]
 
-<figure class="cd-bars"><p class="cd-widget-title">Content that goes unused, by who counted it</p><p class="cd-bars-sub">Share of each source's content</p><div class="cd-bars-row is-key"><p class="cd-bars-label">CreativeX<span>Core assets never activated, consumer brands, 2023</span></p><div class="cd-bars-track"><span class="cd-bars-full" style="width:78.0%" aria-hidden="true"></span><span class="cd-bars-bar" style="width:40.6%" aria-hidden="true"></span><span class="cd-bars-val" style="left:40.6%"><data value="c:creativex-unactivated">52%</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Veeva<span>Pharma field content rarely or never used, 2022</span></p><div class="cd-bars-track"><span class="cd-bars-full" style="width:78.0%" aria-hidden="true"></span><span class="cd-bars-bar" style="width:60.1%" aria-hidden="true"></span><span class="cd-bars-val" style="left:60.1%"><data value="c:veeva-unused">77%</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Veeva<span>The same measure, 2025</span></p><div class="cd-bars-track"><span class="cd-bars-full" style="width:78.0%" aria-hidden="true"></span><span class="cd-bars-bar" style="width:62.4%" aria-hidden="true"></span><span class="cd-bars-val" style="left:62.4%"><data value="c:veeva-unused">nearly 80%</data></span></div></div><div class="cd-bars-row is-hollow"><p class="cd-bars-label">SiriusDecisions<span>B2B content unused, a 2013 remark with no method published</span></p><div class="cd-bars-track"><span class="cd-bars-full" style="width:78.0%" aria-hidden="true"></span><span class="cd-bars-bar" style="width:46.8%" aria-hidden="true"></span><span class="cd-bars-range" style="left:46.8%;width:7.8%" aria-hidden="true"></span><span class="cd-bars-val" style="left:54.6%"><data value="c:folklore-60-70">60 to 70%</data></span></div></div><figcaption>Each source counts something different. CreativeX counts assets never seen in the channels it monitors; Veeva counts field content its CRM logs as rarely or never used. The hollow bar has no published method.</figcaption></figure>
-
-*CreativeX, 2023 data across 1,284 core assets and 422,000 posts, published February 2024; CreativeX sells the measurement. Veeva Pulse, 2022 and 2025; Veeva sells the CRM. SiriusDecisions, 2013, no method published.*[^3][^14][^4]
+<figure class="pd-figure pd-stack" data-pd="build">
+  <p class="pd-eyebrow">Content that goes unused, by who counted it</p>
+  <div class="pd-stack-lead"><span class="pd-stack-sub">Share of each source's content</span></div>
+  <div class="pd-stack-bar" data-at="1">
+    <div class="pd-stack-head"><span class="pd-stack-name">CreativeX<small class="pd-stack-what">Core assets never activated, consumer brands, 2023</small></span><span class="pd-stack-val"><data value="c:creativex-unactivated">52%</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg is-accent" data-at="1" data-value="52" style="left:0.0%;width:52.0%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="2">
+    <div class="pd-stack-head"><span class="pd-stack-name">Veeva<small class="pd-stack-what">Pharma field content rarely or never used, 2022</small></span><span class="pd-stack-val"><data value="c:veeva-unused">77%</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="2" data-value="77" style="left:0.0%;width:77.0%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="3">
+    <div class="pd-stack-head"><span class="pd-stack-name">Veeva<small class="pd-stack-what">The same measure, 2025</small></span><span class="pd-stack-val"><data value="c:veeva-unused">nearly 80%</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="3" data-value="80" style="left:0.0%;width:80.0%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="4">
+    <div class="pd-stack-head"><span class="pd-stack-name">SiriusDecisions<small class="pd-stack-what">B2B content unused, a 2013 remark with no method published</small></span><span class="pd-stack-val"><data value="c:folklore-60-70">60 to 70%</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg is-outline" data-at="4" data-value="60" style="left:0.0%;width:60.0%"></div>
+      <div class="pd-seg-range" data-at="4" data-to="70" style="left:60.0%;width:10.0%"></div>
+    </div>
+  </div>
+  <figcaption>Each source counts something different. CreativeX counts assets never seen in the channels it monitors; Veeva counts field content its CRM logs as rarely or never used. The SiriusDecisions bar is an outline because no method was ever published for it. CreativeX, 2023 data across 1,284 core assets and 422,000 posts, published February 2024; CreativeX sells the measurement. Veeva Pulse, 2022 and 2025; Veeva sells the CRM. SiriusDecisions, 2013, no method published.</figcaption>
+</figure>
 
 ## Content is data
 
-<p class="cd-deck">Every asset is a record and every approved component is master data, and your data team already has the vocabulary and the tools to track both.</p>
+<p class="pd-deck">Every asset is a record and every approved component is master data, and your data team already has the vocabulary and the tools to track both.</p>
 
 **An asset is a file.** Nothing records what the file is made of, and nothing records where it went, so you can count the files and you cannot reconcile them.
 
@@ -76,15 +123,36 @@ Data engineers also <data value="c:pipeline">draw a pipeline as a chain of jobs<
 
 ## Pharma already runs review this way
 
-<p class="cd-deck">With each claim approved once, pharma averages 1.3 review cycles per asset, and most of the field content it approves is rarely or never used.</p>
+<p class="pd-deck">With each claim approved once, pharma averages 1.3 review cycles per asset, and most of the field content it approves is rarely or never used.</p>
 
 Pharmaceutical promotion goes through medical, legal, and regulatory review, called MLR, on every piece. The industry's answer to that load, over the last decade, was to build claims libraries and modular content: each claim approved once with its references, each module a pre-approved block, each asset assembled from modules with the review reading the assembly.
 
-<figure class="cd-bars"><p class="cd-widget-title">Review rounds per asset</p><p class="cd-bars-sub">Pharma counts formal review cycles; marketing tools count versions, a looser measure</p><div class="cd-bars-row is-key"><p class="cd-bars-label">Pharma<span>MLR review cycles, 350+ life sciences companies</span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:20.3%" aria-hidden="true"></span><span class="cd-bars-val" style="left:20.3%"><data value="c:veeva-review-cycles">1.3</data> cycles</span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Marketing, Filestage<span>Versions before approval, proofing platform users</span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:62.4%" aria-hidden="true"></span><span class="cd-bars-val" style="left:62.4%"><data value="c:review-versions">4 versions</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Marketing, Ziflow<span>Versions most respondents report</span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:46.8%" aria-hidden="true"></span><span class="cd-bars-range" style="left:46.8%;width:31.2%" aria-hidden="true"></span><span class="cd-bars-val" style="left:78.0%"><data value="c:review-versions">3 to 5</data></span></div></div></figure>
+<figure class="pd-figure pd-stack" data-pd="build">
+  <p class="pd-eyebrow">Review rounds per asset</p>
+  <div class="pd-stack-lead"><span class="pd-stack-sub">Pharma counts review cycles; marketing tools count versions sent for review</span></div>
+  <div class="pd-stack-bar" data-at="1">
+    <div class="pd-stack-head"><span class="pd-stack-name">Pharma<small class="pd-stack-what">MLR review cycles, 350+ life sciences companies</small></span><span class="pd-stack-val"><data value="c:veeva-review-cycles">1.3</data> cycles</span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg is-accent" data-at="1" data-value="1.3" style="left:0.0%;width:23.2%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="2">
+    <div class="pd-stack-head"><span class="pd-stack-name">Marketing, Filestage<small class="pd-stack-what">Versions before approval, proofing platform users</small></span><span class="pd-stack-val"><data value="c:review-versions">4 versions</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="2" data-value="4" style="left:0.0%;width:71.4%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="3">
+    <div class="pd-stack-head"><span class="pd-stack-name">Marketing, Ziflow<small class="pd-stack-what">Versions most respondents report</small></span><span class="pd-stack-val"><data value="c:review-versions">3 to 5</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="3" data-value="3" style="left:0.0%;width:53.6%"></div>
+      <div class="pd-seg-range" data-at="3" data-to="5" style="left:53.6%;width:35.7%"></div>
+    </div>
+  </div>
+  <figcaption>Veeva Pulse Content Metrics, anonymized system data across 350+ life sciences companies, 2021 through 2023, with an average review and approval time of <data value="c:veeva-approval-days">21 days</data>. Filestage platform data, 2021. Ziflow survey, 2023.</figcaption>
+</figure>
 
-*Veeva Pulse Content Metrics, anonymized system data across 350+ life sciences companies, 2021 through 2023, with an average review and approval time of <data value="c:veeva-approval-days">21 days</data>. Filestage platform data, 2021. Ziflow survey, 2023.*[^9][^10][^2]
-
-A marketing version counts every draft that went back for changes. The claim was approved before the asset existed, so the review has less to read.
+A marketing version counts every draft that went back for changes. The claim was approved before the asset existed, so the review has less to read.[^9][^10][^2]
 
 In 2016, <data value="c:veeva-2016-traceability">81 percent</data> of life sciences companies surveyed could not report where their claims and content were in use, and 70 percent had no central global library.[^13] A decade later they have the benchmarks above.
 
@@ -94,11 +162,11 @@ Approval attached to the component fixes the review. Deciding what to make, and 
 
 ## Content with no parent costs money and invites fines
 
-<p class="cd-deck">An asset with no parent costs as much as any other asset, and no lineage query can find it.</p>
+<p class="pd-deck">An asset with no parent costs as much as any other asset, and no lineage query can find it.</p>
 
 ### Dark content
 
-<figure class="cd-img"><picture><source srcset="/assets/no-parent-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/no-parent.webp" width="1200" height="720" loading="lazy" alt="A stack of identical documents with luggage tags; every tag is blank except one."></picture></figure>
+<figure class="pd-img is-blend"><picture><source srcset="/assets/no-parent-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/no-parent.webp" width="1200" height="720" loading="lazy" alt="A stack of identical documents with luggage tags; every tag is blank except one."></picture></figure>
 
 <data value="c:dark-content">Gartner defines dark data</data> as the information an organization collects, processes, and stores in the course of business and generally fails to use for anything else.[^21] An asset built from a downloaded file has no parent. It went through review and translation and cost what any asset costs, and it is invisible to every lineage query. The share of shipped assets with no parent is your dark content number.
 
@@ -108,11 +176,82 @@ Lineage coverage at a shop that has never had the field is generous at <data val
 
 Fully loaded cost per asset, with agency fees, internal hours, translation, review time, and rework divided by what shipped, is a number finance has to build. No public benchmark for it exists; I looked. <data value="c:worked-cost">$1,800</data> is a round placeholder, and yours replaces it.
 
-<p class="cd-stat"><data value="c:worked-assets">5,000</data> assets &times; <data value="c:worked-lineage">60%</data> with no parent &times; <data value="c:worked-cost">$1,800</data> = <data value="c:dark-content-cost">$5.4 million</data> a year outside the system.</p>
+<figure class="pd-figure">
+<div class="pd-ledger">
+  <div class="pd-ledger-row pd-ledger-total"><span class="pd-ledger-label">A year outside the system <span class="pd-ledger-src"><data value="c:worked-assets">5,000</data> assets x <data value="c:worked-lineage">60%</data> with no parent x <data value="c:worked-cost">$1,800</data></span></span><span class="pd-ledger-value"><data value="c:dark-content-cost">$5.4 million</data></span></div>
+</div>
+<figcaption>Two of the three inputs are placeholders: lineage coverage, informed by CreativeX and Veeva, and cost per asset, which is yours to replace. Asset volume is from Adobe's 2025 survey.</figcaption>
+</figure>
 
-*Two of the three inputs are placeholders: lineage coverage, informed by CreativeX and Veeva, and cost per asset, which is yours to replace. Asset volume is from Adobe's 2025 survey.*[^1][^3][^14]
-
-<figure class="cd-widget cd-calc" id="cd-calc" data-cd="calc" data-rail="block"><p class="cd-widget-title">What a new piece, a variant and a reuse cost</p><p class="cd-calc-title">Run your team's numbers</p><p class="cd-calc-lede">The fields hold this article's example numbers. Type over any of them and the prices and the total below recalculate.</p><div class="cd-widget-stage"><p class="cd-widget-fallback">A new piece, a variant, and a reuse priced from the same parts: creation hours, review rounds, reviewer minutes, translation, and rework.</p></div></figure>
+<figure class="pd-figure pd-calc" data-pd="calc" data-rail="block" data-define="share = min(diff, 100) / 100; nc = create * rate; nr = rounds * reviewers * minutes / 60 * rate; nt = langs * words / max(wphNew, 1) * tRate; nw = rework * rate; N = round(nc) + round(nr) + round(nt) + round(nw); nOther = round(nc) + round(nt) + round(nw); vc = createVar * rate; vr = roundsVar * reviewers * minutes * share / 60 * rate; vt = langs * (words * share / max(wphNew, 1) + words * (1 - share) / max(wphMem, 1)) * tRate; vw = reworkVar * rate; V = vc + vr + vt + vw; vOther = vc + vt + vw; R = triage / 60 * rate; dark = assets * (1 - min(lineage, 100) / 100) * N; scale = max(N, max(V, R)) * 1.12">
+  <div class="pd-calc-head">
+    <p class="pd-calc-title">Run your team's numbers</p>
+    <p class="pd-calc-lede">The fields hold this article's example numbers. Type over any of them and the prices and the total below recalculate.</p>
+  </div>
+  <div class="pd-calc-inputs">
+    <label class="pd-field"><span class="pd-field-label">How many assets do you ship a year?</span><span class="pd-input-wrap"><input class="pd-input" data-var="assets" type="number" inputmode="decimal" value="5000" min="0" step="100"></span><span class="pd-field-src">Example. Adobe found 70 percent of organizations produce 1,000 or more a year.</span></label>
+    <label class="pd-field"><span class="pd-field-label">What percent of assets have a parent on file?</span><span class="pd-input-wrap"><input class="pd-input" data-var="lineage" type="number" inputmode="decimal" value="40" min="0" step="5"><span class="pd-affix">%</span></span><span class="pd-field-src">Example. A parent is what it was built from. A new asset counts if marked new.</span></label>
+    <label class="pd-field"><span class="pd-field-label">What does an hour of staff time cost?</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" data-var="rate" type="number" inputmode="decimal" value="75" min="0" step="5"></span><span class="pd-field-src">Example. Pay, benefits and overhead, or your agency's hourly rate.</span></label>
+    <label class="pd-field"><span class="pd-field-label">How many hours to make a new piece?</span><span class="pd-input-wrap"><input class="pd-input" data-var="create" type="number" inputmode="decimal" value="8" min="0" step="0.5"></span><span class="pd-field-src">Example. From the brief to a draft ready for review.</span></label>
+    <label class="pd-field"><span class="pd-field-label">How many people review each asset?</span><span class="pd-input-wrap"><input class="pd-input" data-var="reviewers" type="number" inputmode="decimal" value="8" min="0" step="1"></span><span class="pd-field-src">Example. Typeface found 92 percent of marketing leaders need ten or more.</span></label>
+    <label class="pd-field"><span class="pd-field-label">How many review rounds does a new piece take?</span><span class="pd-input-wrap"><input class="pd-input" data-var="rounds" type="number" inputmode="decimal" value="4" min="0" step="0.5"></span><span class="pd-field-src">Filestage measured an average of 4 versions before approval.</span></label>
+  </div>
+  <details class="pd-calc-more">
+    <summary>Change the other 12 numbers</summary>
+    <div class="pd-calc-inputs is-more">
+      <p class="pd-calc-group">Creation</p>
+      <label class="pd-field"><span class="pd-field-label">How many hours to make a variant?</span><span class="pd-input-wrap"><input class="pd-input" data-var="createVar" type="number" inputmode="decimal" value="1.5" min="0" step="0.5"></span><span class="pd-field-src">Example. An approved asset with a new image and one line changed.</span></label>
+      <p class="pd-calc-group">Review</p>
+      <label class="pd-field"><span class="pd-field-label">How many minutes per reviewer, per round?</span><span class="pd-input-wrap"><input class="pd-input" data-var="minutes" type="number" inputmode="decimal" value="23" min="0" step="1"></span><span class="pd-field-src">Filestage measured an average of 23 minutes per review on its platform.</span></label>
+      <label class="pd-field"><span class="pd-field-label">How many review rounds does a variant take?</span><span class="pd-input-wrap"><input class="pd-input" data-var="roundsVar" type="number" inputmode="decimal" value="1.3" min="0" step="0.1"></span><span class="pd-field-src">Veeva measured 1.3 rounds in pharma, where parts are approved once, in advance.</span></label>
+      <label class="pd-field"><span class="pd-field-label">What percent of a variant is new?</span><span class="pd-input-wrap"><input class="pd-input" data-var="diff" type="number" inputmode="decimal" value="25" min="0" step="5"><span class="pd-affix">%</span></span><span class="pd-field-src">Example. Reviewers read only this part. The rest is already approved and translated.</span></label>
+      <p class="pd-calc-group">Translation</p>
+      <label class="pd-field"><span class="pd-field-label">How many words are in a typical asset?</span><span class="pd-input-wrap"><input class="pd-input" data-var="words" type="number" inputmode="decimal" value="400" min="0" step="50"></span><span class="pd-field-src">Example. Count all the copy that gets translated.</span></label>
+      <label class="pd-field"><span class="pd-field-label">How many languages do you translate into?</span><span class="pd-input-wrap"><input class="pd-input" data-var="langs" type="number" inputmode="decimal" value="3" min="0" step="1"></span><span class="pd-field-src">Example. For a US bank, often Spanish, sometimes more.</span></label>
+      <label class="pd-field"><span class="pd-field-label">What does an hour of translation cost?</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" data-var="tRate" type="number" inputmode="decimal" value="50" min="0" step="5"></span><span class="pd-field-src">Example. A vendor's hourly rate, or your own translators' full cost.</span></label>
+      <label class="pd-field"><span class="pd-field-label">How many words an hour, translating new copy?</span><span class="pd-input-wrap"><input class="pd-input" data-var="wphNew" type="number" inputmode="decimal" value="1100" min="0" step="50"></span><span class="pd-field-src">Parra Escart&iacute;n and Arcedillo measured about 1,100 in a study of ten translators.</span></label>
+      <label class="pd-field"><span class="pd-field-label">How many words an hour, if translated before?</span><span class="pd-input-wrap"><input class="pd-input" data-var="wphMem" type="number" inputmode="decimal" value="2460" min="0" step="50"></span><span class="pd-field-src">Parra Escart&iacute;n and Arcedillo measured about 2,460 with a past translation offered.</span></label>
+      <p class="pd-calc-group">Rework</p>
+      <label class="pd-field"><span class="pd-field-label">How many hours of rework on a new piece?</span><span class="pd-input-wrap"><input class="pd-input" data-var="rework" type="number" inputmode="decimal" value="3" min="0" step="0.5"></span><span class="pd-field-src">Example. Time spent making the changes reviewers ask for.</span></label>
+      <label class="pd-field"><span class="pd-field-label">How many hours of rework on a variant?</span><span class="pd-input-wrap"><input class="pd-input" data-var="reworkVar" type="number" inputmode="decimal" value="0.5" min="0" step="0.5"></span><span class="pd-field-src">Example. Changes reviewers ask for on a variant.</span></label>
+      <p class="pd-calc-group">Reuse</p>
+      <label class="pd-field"><span class="pd-field-label">How many minutes to find an existing asset?</span><span class="pd-input-wrap"><input class="pd-input" data-var="triage" type="number" inputmode="decimal" value="20" min="0" step="5"></span><span class="pd-field-src">Example. The person at intake finds it and sends it instead of making a new one.</span></label>
+    </div>
+  </details>
+  <div class="pd-bar" data-scale="scale">
+    <div class="pd-stack-head"><span class="pd-stack-name">Cost of a new piece<small class="pd-stack-what">The whole chain: one to two months</small></span><span class="pd-stack-val" data-out="N" data-format="money">$1,800</span></div>
+    <div class="pd-stack-track" aria-hidden="true">
+      <div class="pd-seg" data-w="nOther" style="left:0.0%;width:43.7%"><span class="pd-seg-label">Other costs<span class="pd-seg-word">: making, translation and rework</span></span></div>
+      <div class="pd-seg is-accent" data-w="nr" style="left:43.7%;width:45.6%"><span class="pd-seg-label">Review</span></div>
+    </div>
+  </div>
+  <div class="pd-bar" data-scale="scale">
+    <div class="pd-stack-head"><span class="pd-stack-name">Cost of a variant<small class="pd-stack-what">The variant lane: a day or two</small></span><span class="pd-stack-val" data-out="V" data-format="money">$257</span></div>
+    <div class="pd-stack-track" aria-hidden="true">
+      <div class="pd-seg" data-w="vOther" style="left:0.0%;width:9.0%"></div>
+      <div class="pd-seg is-accent" data-w="vr" style="left:9.0%;width:3.7%"></div>
+    </div>
+  </div>
+  <div class="pd-bar" data-scale="scale">
+    <div class="pd-stack-head"><span class="pd-stack-name">Cost of a reuse<small class="pd-stack-what">Linked at intake: the same day</small></span><span class="pd-stack-val" data-out="R" data-format="money">$25</span></div>
+    <div class="pd-stack-track" aria-hidden="true">
+      <div class="pd-seg is-accent" data-w="R" style="left:0.0%;width:1.2%"></div>
+    </div>
+  </div>
+  <div class="pd-calc-row">
+    <button type="button" class="pd-calc-reset" hidden>Reset to the article's numbers</button>
+  </div>
+  <div class="pd-ledger">
+    <div class="pd-ledger-row"><span class="pd-ledger-label">Creation <span class="pd-ledger-src">hours x rate</span></span><span class="pd-ledger-value" data-out="nc" data-format="money">$600</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">Review <span class="pd-ledger-src">rounds x reviewers x minutes</span></span><span class="pd-ledger-value" data-out="nr" data-format="money">$920</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">Translation <span class="pd-ledger-src">languages x words, at the translator's pace</span></span><span class="pd-ledger-value" data-out="nt" data-format="money">$55</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">Rework <span class="pd-ledger-src">hours x rate</span></span><span class="pd-ledger-value" data-out="nw" data-format="money">$225</span></div>
+    <div class="pd-ledger-row pd-ledger-total"><span class="pd-ledger-label">A new piece</span><span class="pd-ledger-value" data-out="N" data-format="money" aria-live="polite">$1,800</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">A reuse <span class="pd-ledger-src">finding it at intake</span></span><span class="pd-ledger-value" data-out="R" data-format="money">$25</span></div>
+    <div class="pd-ledger-row"><span class="pd-ledger-label">A year spent on assets with no parent on file, each at the price of a new piece <span class="pd-ledger-src">assets x share with no parent x a new piece</span></span><span class="pd-ledger-value" data-out="dark" data-format="millions" aria-live="polite">$5.4 million</span></div>
+  </div>
+  <figcaption>Numbers marked Example are stand-ins set to match the $5.4 million example above. Replace them with your own. The rest were measured by the source named under the field.</figcaption>
+</figure>
 
 Some of that spend was necessary. Nobody can say which part, and that is before the duplication those assets caused, the translation of things that were already translated, and the compliance exposure of disclosures with no record of where they ran.
 
@@ -120,7 +259,7 @@ Some of that spend was necessary. Nobody can say which part, and that is before 
 
 ### The regulator's question
 
-<p class="cd-deck">Regulators ask what each customer received on a given day. FINRA Rule 2210 requires the copy, the dates it ran and who approved it, kept three years, and one firm paid $250,000 for keeping only the template.</p>
+<p class="pd-deck">Regulators ask what each customer received on a given day. FINRA Rule 2210 requires the copy, the dates it ran and who approved it, kept three years, and one firm paid $250,000 for keeping only the template.</p>
 
 A bank with a broker-dealer arm answers to FINRA, and <data value="c:finra-2210">Rule 2210</data> spells out the whole record: every retail communication kept for three years, with a copy, the dates of first and last use, the name of the principal who approved it and the date they did, and the source of any statistical table or chart.[^15]
 
@@ -141,19 +280,41 @@ Regulation Z exempts advertising from its retention rule, so a lender's ability 
 
 <data value="c:fdic-328">FDIC Part 328</data> gives insured banks until April 1, 2027 to put the FDIC's digital sign on their websites and apps. A sign that repeats across a site and an app is a component: approved once, placed everywhere, with the date it took effect.
 
-<figure class="cd-img"><picture><source srcset="/assets/march-14-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/march-14.webp" width="1200" height="720" loading="lazy" alt="A tear-off calendar above a full wastebasket; the page on top reads March 14."></picture></figure>
+<figure class="pd-img is-blend"><picture><source srcset="/assets/march-14-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/march-14.webp" width="1200" height="720" loading="lazy" alt="A tear-off calendar above a full wastebasket; the page on top reads March 14."></picture></figure>
 
-<figure class="cd-record" data-record="h2c-fine"><p class="cd-record-num"><data value="c:h2c-fine">$250,000</data></p><div class="cd-record-body"><p class="cd-record-lead">FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails.</p><p class="cd-record-more">The firm "preserved at least one copy of many of the mass marketing communications, but it did not preserve a copy of each message sent to each recipient," and could not recover most of them.</p></div></figure>
+<figure class="pd-figure pd-record">
+  <p class="pd-record-num"><data value="c:h2c-fine">$250,000</data></p>
+  <div class="pd-record-body">
+    <p class="pd-record-lead">FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails. It could not recover most of them.</p>
+    <p class="pd-record-quote">preserved at least one copy of many of the mass marketing communications, but it did not preserve a copy of each message sent to each recipient</p>
+  </div>
+  <figcaption>FINRA Letter of Acceptance, Waiver and Consent, March 2024.</figcaption>
+</figure>
 
-*FINRA Letter of Acceptance, Waiver and Consent, March 2024.*[^18]
+H2C kept the template.[^18] The version each customer received was not kept, and the record the rule asks for is the version, which is <data value="c:march-14">the March 14 case</data>. M1 Finance paid <data value="c:m1-fine">$850,000</data> the same spring for influencer posts it did not review, approve, or retain.[^19]
 
-H2C kept the template. The version each customer received was not kept, and the record the rule asks for is the version, which is <data value="c:march-14">the March 14 case</data>. M1 Finance paid <data value="c:m1-fine">$850,000</data> the same spring for influencer posts it did not review, approve, or retain.[^19]
-
-<figure class="cd-widget" id="cd-asof" data-cd="asof" data-rail="block"><p class="cd-widget-title">What rendered on a given day</p><div class="cd-widget-stage"><p class="cd-widget-fallback">An example disclosure with four versions, each with the dates it was live. Pick a day and a system that keeps every version answers with the one that ran; a system that keeps only the current version answers with today's.</p></div></figure>
+<figure class="pd-figure pd-asof" data-pd="asof" data-rail="block" data-start="2026-01-05" data-end="2026-06-30" data-day="2026-03-14" aria-label="An example rate disclosure with four versions. On March 14 the customer saw version 2, at 4.25% APY; a system that keeps only the current version answers with version 4, at 3.85%.">
+  <p class="pd-eyebrow">What rendered on a given day</p>
+  <p class="pd-asof-head"><span class="pd-asof-q">The customer saw the rate disclosure on</span> <output class="pd-asof-day">March 14</output></p>
+  <input class="pd-asof-range" type="range" min="0" max="176" step="1" value="68" aria-label="Day the customer saw the disclosure" hidden>
+  <div class="pd-asof-bands is-labeled" aria-hidden="true"><span class="pd-asof-band" style="width:29.9%"><span class="pd-asof-band-label">4.10%</span></span><span class="pd-asof-band is-live" style="width:19.8%"><span class="pd-asof-band-label">4.25%</span></span><span class="pd-asof-band" style="width:27.1%"><span class="pd-asof-band-label">4.00%</span></span><span class="pd-asof-band" style="width:23.2%"><span class="pd-asof-band-label">3.85%</span></span></div>
+  <div class="pd-asof-months" aria-hidden="true"><span style="left:0.0%">Jan</span><span style="left:15.3%">Feb</span><span style="left:31.3%">Mar</span><span style="left:48.9%">Apr</span><span style="left:65.9%">May</span><span style="left:83.5%">Jun</span></div>
+  <div class="pd-asof-answers">
+    <div class="pd-asof-answer" data-show="live"><p class="pd-asof-label">A system that keeps every version</p><p class="pd-asof-copy">Earn 4.25% APY. $500 minimum to open. Rate may change after the account is opened.</p><p class="pd-asof-meta">Version 2, live February 27 to April 2. Approved by deposit compliance.</p><p class="pd-asof-verdict">This is what the customer saw.</p></div>
+    <div class="pd-asof-answer is-wrong" data-show="latest" data-right="Correct, because the version you picked is still live." data-wrong="Not what the customer saw."><p class="pd-asof-label">A system that keeps only the current version</p><p class="pd-asof-copy">Earn 3.85% APY. $1,000 minimum to open. Rate may change after the account is opened.</p><p class="pd-asof-meta">Version 4, the one published today.</p><p class="pd-asof-verdict">Not what the customer saw.</p></div> <!-- slop-ok: content-duplication (each disclosure version repeats the same fine print) -->
+  </div>
+  <ol class="pd-asof-versions">
+    <li data-from="2026-01-05" data-to="2026-02-26"><span class="pd-asof-copy">Earn 4.10% APY. $500 minimum to open. Rate may change after the account is opened.</span> <span class="pd-asof-meta">Version 1, live January 5 to February 26. Approved by deposit compliance.</span></li> <!-- slop-ok: content-duplication (each disclosure version repeats the same fine print) -->
+    <li data-from="2026-02-27" data-to="2026-04-02"><span class="pd-asof-copy">Earn 4.25% APY. $500 minimum to open. Rate may change after the account is opened.</span> <span class="pd-asof-meta">Version 2, live February 27 to April 2. Approved by deposit compliance.</span></li> <!-- slop-ok: content-duplication (each disclosure version repeats the same fine print) -->
+    <li data-from="2026-04-03" data-to="2026-05-20"><span class="pd-asof-copy">Earn 4.00% APY through June 30. $500 minimum to open. Rate may change after the account is opened.</span> <span class="pd-asof-meta">Version 3, live April 3 to May 20. Approved by deposit compliance.</span></li> <!-- slop-ok: content-duplication (each disclosure version repeats the same fine print) -->
+    <li data-from="2026-05-21" data-to=""><span class="pd-asof-copy">Earn 3.85% APY. $1,000 minimum to open. Rate may change after the account is opened.</span> <span class="pd-asof-meta">Version 4, live May 21 to today. Approved by deposit compliance.</span></li> <!-- slop-ok: content-duplication (each disclosure version repeats the same fine print) -->
+  </ol>
+  <figcaption>An example disclosure for an example year. The rates, dates and versions are invented; the question is the one the rules ask.</figcaption>
+</figure>
 
 ## Reuse is the default
 
-<p class="cd-deck">A person at intake with the library in front of them closes requests that existing assets already cover, and small changes ship in a day or two.</p>
+<p class="pd-deck">A person at intake with the library in front of them closes requests that existing assets already cover, and small changes ship in a day or two.</p>
 
 A request queue will accept the same brochure from four regions. What stops that is <data value="c:triage">a person at intake</data> with the library in front of them and the authority to close a request.
 
@@ -177,13 +338,28 @@ Put those two next to each other and most people take the asset. Ask them "do ei
 
 ### Language and voice
 
-<p class="cd-deck">Each translation is a version of the approved English record, and a change to the English rate flags every language it runs in.</p>
+<p class="pd-deck">Each translation is a version of the approved English record, and a change to the English rate flags every language it runs in.</p>
 
 <data value="c:census-languages">About 74 million people</data> in the US speak a language other than English at home, by the Census Bureau's 2024 count: 44.9 million speak Spanish, 3.7 million speak Chinese, and 28.9 million speak English less than very well.[^41]
 
-<figure class="cd-bars"><p class="cd-widget-title">Languages spoken at home in the US, other than English</p><p class="cd-bars-sub">Millions of people age 5 and older, 2024</p><div class="cd-bars-row is-key"><p class="cd-bars-label">Spanish<span></span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:78.0%" aria-hidden="true"></span><span class="cd-bars-val" style="left:78.0%"><data value="c:census-by-language">44.9</data></span></div></div><div class="cd-bars-row is-key"><p class="cd-bars-label">Chinese<span>Including Mandarin and Cantonese</span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:6.5%" aria-hidden="true"></span><span class="cd-bars-val" style="left:6.5%"><data value="c:census-by-language">3.7</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Tagalog<span>Including Filipino</span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:3.3%" aria-hidden="true"></span><span class="cd-bars-val" style="left:3.3%"><data value="c:census-by-language">1.9</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Vietnamese<span></span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:2.8%" aria-hidden="true"></span><span class="cd-bars-val" style="left:2.8%"><data value="c:census-by-language">1.6</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">German<span>Or other West Germanic</span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:2.7%" aria-hidden="true"></span><span class="cd-bars-val" style="left:2.7%"><data value="c:census-by-language">1.5</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Arabic<span></span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:2.6%" aria-hidden="true"></span><span class="cd-bars-val" style="left:2.6%"><data value="c:census-by-language">1.5</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Korean<span></span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:2.0%" aria-hidden="true"></span><span class="cd-bars-val" style="left:2.0%"><data value="c:census-by-language">1.2</data></span></div></div><figcaption>The largest named languages in Census table C16001. The table also groups smaller languages into broader categories, which are not shown.</figcaption></figure>
-
-*U.S. Census Bureau, American Community Survey 2024 1-year estimates, Tables S1601 and C16001.*[^41]
+<figure class="pd-figure pd-stack" data-pd="build">
+  <p class="pd-eyebrow">Languages spoken at home in the US, other than English</p>
+  <div class="pd-stack-lead"><span class="pd-stack-sub">Millions of people age 5 and older, 2024</span></div>
+  <div class="pd-stack-bar" data-at="1">
+    <div class="pd-stack-head"><span class="pd-stack-name">Spanish</span><span class="pd-stack-val"><data value="c:census-by-language">44.9</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg is-accent" data-at="1" data-value="44.9" style="left:0.0%;width:89.3%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="2">
+    <div class="pd-stack-head"><span class="pd-stack-name">Chinese<small class="pd-stack-what">Including Mandarin and Cantonese</small></span><span class="pd-stack-val"><data value="c:census-by-language">3.7</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg is-accent" data-at="2" data-value="3.7" style="left:0.0%;width:7.4%"></div>
+    </div>
+  </div>
+  <p class="pd-stack-note" data-at="3">The next five, in millions: <data value="c:census-by-language">Tagalog 1.9, Vietnamese 1.6, German 1.5, Arabic 1.5 and Korean 1.2</data>.</p>
+  <figcaption>The largest named languages in Census table C16001. The table also groups smaller languages into broader categories, which are not shown. U.S. Census Bureau, American Community Survey 2024 1-year estimates, Tables S1601 and C16001.</figcaption>
+</figure>
 
 A Spanish savings ad in Houston has to meet the same <data value="c:reg-dd">Regulation DD</data> advertising rules as the English one, and so does a Chinese one in San Francisco. The same compliance team owns the rate, the claim and the disclosure in every language, so each translation is a version of the approved English record, with the same owner, and a change to the English rate flags every translation of it.
 
@@ -191,13 +367,51 @@ The rule for account disclosures already assumes a parent. <data value="c:reg-dd
 
 Two rules go further. <data value="c:reg-z">Regulation Z</data> calls a mortgage ad misleading if it gives some required terms, such as the initial rate, only in another language and the rest only in English, and <data value="c:reg-e-language">Regulation E</data> requires remittance and prepaid disclosures in another language when the bank principally uses that language to market, package or sell those products.[^40] So every translated disclosure needs an English original behind it, and a translated mortgage ad cannot split its required terms between two languages.
 
-Voice belongs to the branches that know the customers. The headline can be post-edited by people who talk to those customers every day, while the rate and the disclosure under it are translated from the approved record and nobody rewrites them. Translation memory makes the repeat work cheap:
+Voice belongs to the branches that know the customers. The headline can be post-edited by people who talk to those customers every day, while the rate and the disclosure under it are translated from the approved record and nobody rewrites them. Translation memory makes the repeat work cheap:[^23]
 
-<figure class="cd-bars"><p class="cd-widget-title">Words translated per hour, by what the translator starts from</p><p class="cd-bars-sub">Ten professional translators, English to Spanish, 2015</p><div class="cd-bars-row"><p class="cd-bars-label">From scratch<span></span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:34.8%" aria-hidden="true"></span><span class="cd-bars-val" style="left:34.8%"><data value="c:translation-throughput">1,099</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">A close match<span>75 to 84 percent of the words already translated</span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:41.1%" aria-hidden="true"></span><span class="cd-bars-val" style="left:41.1%"><data value="c:translation-throughput">1,297</data></span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Machine translation<span>Post-edited by the translator</span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:42.1%" aria-hidden="true"></span><span class="cd-bars-val" style="left:42.1%"><data value="c:translation-throughput">1,329</data></span></div></div><div class="cd-bars-row is-key"><p class="cd-bars-label">A full match<span>The same sentence, translated before</span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:78.0%" aria-hidden="true"></span><span class="cd-bars-val" style="left:78.0%"><data value="c:translation-throughput">2,461</data></span></div></div><figcaption>The machine translation in this 2015 study predates neural systems.</figcaption></figure>
+<figure class="pd-figure pd-stack" data-pd="build">
+  <p class="pd-eyebrow">Words translated per hour, by what the translator starts from</p>
+  <div class="pd-stack-lead"><span class="pd-stack-sub">Ten professional translators, English to Spanish, 2015</span></div>
+  <div class="pd-stack-bar" data-at="1">
+    <div class="pd-stack-head"><span class="pd-stack-name">From scratch</span><span class="pd-stack-val"><data value="c:translation-throughput">1,099</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="1" data-value="1099" style="left:0.0%;width:39.9%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="2">
+    <div class="pd-stack-head"><span class="pd-stack-name">A close match<small class="pd-stack-what">75 to 84 percent of the words already translated</small></span><span class="pd-stack-val"><data value="c:translation-throughput">1,297</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="2" data-value="1297" style="left:0.0%;width:47.1%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="3">
+    <div class="pd-stack-head"><span class="pd-stack-name">Machine translation<small class="pd-stack-what">Post-edited by the translator</small></span><span class="pd-stack-val"><data value="c:translation-throughput">1,329</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="3" data-value="1329" style="left:0.0%;width:48.2%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="4">
+    <div class="pd-stack-head"><span class="pd-stack-name">A full match<small class="pd-stack-what">The same sentence, translated before</small></span><span class="pd-stack-val"><data value="c:translation-throughput">2,461</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg is-accent" data-at="4" data-value="2461" style="left:0.0%;width:89.3%"></div>
+    </div>
+  </div>
+  <figcaption>The machine translation in this 2015 study predates neural systems. Parra Escart&iacute;n and Arcedillo, MT Summit 2015, ten professional translators. Small sample, single language pair.</figcaption>
+</figure>
 
-*Parra Escart&iacute;n and Arcedillo, MT Summit 2015, ten professional translators. Small sample, single language pair.*[^23]
-
-<figure class="cd-markets" aria-label="One savings ad in three languages. English is the source record. In Spanish and Simplified Chinese, the rate, the claim and the disclosure are the same approved records, translated, and compliance owns every language. The headline is post-edited by the branch team. Each adds a language services notice the English ad does not need."><p class="cd-widget-title">One savings ad, three languages</p><div class="cd-markets-grid"><div class="cd-sheet"><p class="cd-sheet-name">English</p><div class="cd-slotbox is-source"><span class="cd-slot-name">Headline</span><span class="cd-slot-why">Source</span><span class="cd-slot-owner">Marketing</span></div><div class="cd-slotbox is-source"><span class="cd-slot-name">Rate and claim</span><span class="cd-slot-why">Source</span><span class="cd-slot-owner">Approved once by compliance</span></div><div class="cd-slotbox is-source"><span class="cd-slot-name">Disclosure</span><span class="cd-slot-why">Source</span><span class="cd-slot-owner">Compliance</span></div><div class="cd-slotbox is-none"><span class="cd-slot-name">Language services notice</span><span class="cd-slot-why">Not needed</span><span class="cd-slot-owner">The ad is in English</span></div><div class="cd-slotbox is-source"><span class="cd-slot-name">Call to action</span><span class="cd-slot-why">Source</span><span class="cd-slot-owner">Marketing</span></div></div><div class="cd-sheet"><p class="cd-sheet-name">Spanish</p><div class="cd-slotbox is-voice"><span class="cd-slot-name">Headline</span><span class="cd-slot-why">Voice</span><span class="cd-slot-owner">Post-edited by the branch team</span></div><div class="cd-slotbox is-language"><span class="cd-slot-name">Rate and claim</span><span class="cd-slot-why">Language</span><span class="cd-slot-owner">Translation of the approved claim</span></div><div class="cd-slotbox is-language"><span class="cd-slot-name">Disclosure</span><span class="cd-slot-why">Language</span><span class="cd-slot-owner">Translated; compliance owns both</span></div><div class="cd-slotbox is-added"><span class="cd-slot-name">Language services notice</span><span class="cd-slot-why">Added</span><span class="cd-slot-owner">What the bank offers in Spanish</span></div><div class="cd-slotbox is-language"><span class="cd-slot-name">Call to action</span><span class="cd-slot-why">Language</span><span class="cd-slot-owner">Translation</span></div></div><div class="cd-sheet"><p class="cd-sheet-name">Chinese (Simplified)</p><div class="cd-slotbox is-voice"><span class="cd-slot-name">Headline</span><span class="cd-slot-why">Voice</span><span class="cd-slot-owner">Post-edited by the branch team</span></div><div class="cd-slotbox is-language"><span class="cd-slot-name">Rate and claim</span><span class="cd-slot-why">Language</span><span class="cd-slot-owner">Translation of the approved claim</span></div><div class="cd-slotbox is-language"><span class="cd-slot-name">Disclosure</span><span class="cd-slot-why">Language</span><span class="cd-slot-owner">Translated; compliance owns both</span></div><div class="cd-slotbox is-added"><span class="cd-slot-name">Language services notice</span><span class="cd-slot-why">Added</span><span class="cd-slot-owner">What the bank offers in Chinese</span></div><div class="cd-slotbox is-language"><span class="cd-slot-name">Call to action</span><span class="cd-slot-why">Language</span><span class="cd-slot-owner">Translation</span></div></div></div><p class="cd-markets-key"><span class="k"><span class="is-source">Source</span> the English record</span><span class="k"><span class="is-language">Language</span> the same record, translated</span><span class="k"><span class="is-voice">Voice</span> post-edited by the branch team</span><span class="k"><span class="is-added">Added</span> a slot the English ad does not need</span></p><figcaption>An example. For every slot the question is the same: does the version differ because of language or because of voice, and whose record is it?</figcaption></figure>
+<figure class="pd-figure"><p class="pd-eyebrow">One savings ad, three languages</p>
+<table>
+  <thead><tr><th scope="col">Slot</th><th scope="col">English</th><th scope="col">Spanish and Chinese (Simplified)</th></tr></thead>
+  <tbody>
+    <tr><th scope="row">Headline</th><td><strong>Source.</strong> Marketing</td><td><strong>Voice.</strong> Post-edited by the branch team</td></tr>
+    <tr><th scope="row">Rate and claim</th><td><strong>Source.</strong> Approved once by compliance</td><td><strong>Language.</strong> Translation of the approved claim</td></tr>
+    <tr><th scope="row">Disclosure</th><td><strong>Source.</strong> Compliance</td><td><strong>Language.</strong> Translated; compliance owns both</td></tr>
+    <tr><th scope="row">Language services notice</th><td><strong>Not needed.</strong> The ad is in English</td><td><strong class="pd-accent">Added.</strong> What the bank offers in that language</td></tr>
+    <tr><th scope="row">Call to action</th><td><strong>Source.</strong> Marketing</td><td><strong>Language.</strong> Translation</td></tr>
+  </tbody>
+</table>
+<figcaption>Source is the English record; Language is the same record, translated; Voice is post-edited by the branch team; Added is a slot the English ad does not need. An example. For every slot the question is the same: does the version differ because of language or because of voice, and whose record is it?</figcaption>
+</figure>
 
 <data value="c:cfpb-lep">The CFPB's 2021 statement</data> on customers with limited English proficiency suggests a notice, in the customer's language, of "the extent and limits of any language services" the bank offers, which is a slot the English ad never needed. The statement is guidance rather than a rule, and as of September 2026 it is not on the bureau's list of withdrawn guidance.
 
@@ -207,7 +421,7 @@ Its examples include a 2013 enforcement action against a card issuer that enroll
 
 ## Shorten the review cycle by letting legal focus on what's changed
 
-<p class="cd-deck">Legal approves the template and its allowed combinations once, then gives a full read only to a combination that is new.</p>
+<p class="pd-deck">Legal approves the template and its allowed combinations once, then gives a full read only to a combination that is new.</p>
 
 Two approved components next to each other can make a misleading whole, and a compliant disclosure under a new claim is what a regulator reads. So the template and its allowed combinations get pre-approved, assembly inside the template is covered, and only a novel combination triggers a full read. <data value="c:veeva-review-cycles">Pharma's 1.3 cycles</data> is what that looks like when it holds.
 
@@ -221,30 +435,42 @@ Triage holds only with an executive who has said, in front of the regions, that 
 
 ### Buy generation last
 
-The variant lane is where AI belongs: image and copy variants, assembled from approved parts inside a locked template. The tools that check generated work against brand and product guidelines are only as good as the guidelines they check against. If those guidelines are the approved components, the tools help. Buy them before the model exists and you get one-offs faster, each of which goes through full review and full translation, and the pile in front of legal gets taller.
+The variant lane is where AI belongs: image and copy variants, assembled from approved parts inside a locked template. The tools that check generated work against brand and product guidelines are only as good as the guidelines they check against. If those guidelines are the approved components, the tools help. Buy them before the model exists and you get one-offs faster, each of which goes through full review and full translation, and the pile in front of legal gets taller.[^27]
 
-<figure class="cd-bars"><p class="cd-widget-title">What marketing leaders report, 2026</p><p class="cd-bars-sub">Share of 200+ leaders at VP level and above</p><div class="cd-bars-row is-key"><p class="cd-bars-label">Sign-off<span>Need ten or more stakeholders to sign off</span></p><div class="cd-bars-track"><span class="cd-bars-full" style="width:78.0%" aria-hidden="true"></span><span class="cd-bars-bar" style="width:71.8%" aria-hidden="true"></span><span class="cd-bars-val" style="left:71.8%"><data value="c:typeface-speed">92%</data></span></div></div><div class="cd-bars-row is-key"><p class="cd-bars-label">Speed<span>Say their teams make content quickly and struggle with sign-off</span></p><div class="cd-bars-track"><span class="cd-bars-full" style="width:78.0%" aria-hidden="true"></span><span class="cd-bars-bar" style="width:68.6%" aria-hidden="true"></span><span class="cd-bars-val" style="left:68.6%">88%</span></div></div><div class="cd-bars-row"><p class="cd-bars-label">Launch time<span>Need one to two months to launch a campaign</span></p><div class="cd-bars-track"><span class="cd-bars-full" style="width:78.0%" aria-hidden="true"></span><span class="cd-bars-bar" style="width:26.5%" aria-hidden="true"></span><span class="cd-bars-val" style="left:26.5%"><data value="c:typeface-speed">34%</data></span></div></div></figure>
+<figure class="pd-figure pd-stack" data-pd="build">
+  <p class="pd-eyebrow">What marketing leaders report, 2026</p>
+  <div class="pd-stack-lead"><span class="pd-stack-sub">Share of 200+ leaders at VP level and above</span></div>
+  <div class="pd-stack-bar" data-at="1">
+    <div class="pd-stack-head"><span class="pd-stack-name">Sign-off<small class="pd-stack-what">Need ten or more stakeholders to sign off</small></span><span class="pd-stack-val"><data value="c:typeface-speed">92%</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg is-accent" data-at="1" data-value="92" style="left:0.0%;width:92.0%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="2">
+    <div class="pd-stack-head"><span class="pd-stack-name">Speed<small class="pd-stack-what">Say their teams make content quickly and struggle with sign-off</small></span><span class="pd-stack-val">88%</span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg is-accent" data-at="2" data-value="88" style="left:0.0%;width:88.0%"></div>
+    </div>
+  </div>
+  <div class="pd-stack-bar" data-at="3">
+    <div class="pd-stack-head"><span class="pd-stack-name">Launch time<small class="pd-stack-what">Need one to two months to launch a campaign</small></span><span class="pd-stack-val"><data value="c:typeface-speed">34%</data></span></div>
+    <div class="pd-stack-track">
+      <div class="pd-seg" data-at="3" data-value="34" style="left:0.0%;width:34.0%"></div>
+    </div>
+  </div>
+  <figcaption>Typeface Signal Report, June 2026, 200+ marketing leaders at VP and above. Small sample; an AI content vendor.</figcaption>
+</figure>
 
-*Typeface Signal Report, June 2026, 200+ marketing leaders at VP and above. Small sample; an AI content vendor.*[^27]
+## Give every asset a parent
 
-## Find your weakest link
+<p class="pd-deck">Four changes to make first.</p>
 
-<p class="cd-deck">Four changes to make first, then twelve questions that show which link in your own chain to start with.</p>
-
-<ol class="cd-actions">
+<ol class="pd-decisions">
 <li><strong>Put a person at intake who can close requests.</strong> They search the library before anything is made, link what already exists, and close the request when an existing asset covers it, backed by an executive who has told the regions that reuse is the default.</li>
 <li><strong>Every upload declares a parent, or it does not publish.</strong> New assets are allowed when they are marked new. Everything that ships after that has a parent on record.</li>
 <li><strong>Run two lanes.</strong> A photo swap or a new call to action ships in a day or two, with review reading only what changed. A new claim or a new layout takes the full chain.</li>
 <li><strong>Buy generation last.</strong> Model the 20 components behind most of the volume and have legal approve each one once. Then put AI in the variant lane, inside a locked template.</li>
 </ol>
-
-<figure class="cd-widget" id="cd-focus" data-cd="focus" data-rail="block"><p class="cd-widget-title">Your content chain</p><div class="cd-widget-stage"><p class="cd-widget-fallback">Eight stages an asset moves through (intake, creation, approval, review, translation, storage, delivery, measurement) and four foundations under them (ownership, records and rights, systems, generative AI). Answer one question about each and the weakest links come back, with five things to work on next.</p></div></figure>
-
-## This article keeps its own records
-
-Every figure, rule, and story in this article is a component with a declared parent, and the site will not publish a page that points to a component it cannot find. The map below is read back out of the finished page each time the site builds.
-
-<figure class="cd-widget" id="cd-graph" data-cd="graph" data-rail="block"><p class="cd-widget-title">Every figure in this article, and where it came from</p><div class="cd-widget-stage"><p class="cd-widget-fallback">Every figure, rule, story and term in this article, where it came from, and where it is used. Without scripts, the sources list at the end of the page holds the same lineage.</p></div></figure>
 
 ## About the numbers
 
@@ -252,8 +478,10 @@ Research, rules, and product documentation checked September 23, 2026. Every fig
 
 The <data value="c:dark-content-cost">$5.4 million</data> figure is an illustration: the lineage coverage and the cost per asset are placeholders. The regulatory table is read from the rules as published on eCFR and FINRA's rulebook; the content model and triage are analysis and recommendation from my own work, and the conclusions are mine.
 
+Every figure, rule, and story in this article is a component with a declared parent, and the site will not publish a page that points to a component it cannot find.
+
 [^1]: **Adobe.** "Adobe research finds demand for content will grow 5x by 2027," June 16, 2025. Survey of more than 1,600 marketers; fieldwork dates and survey firm not disclosed. 89 percent report three or more approval stages; 58 percent spend more than 40 percent of time on reviews; 47 percent report 51 to 200 people per asset; 70 percent produce at least 1,000 assets a year (29 percent at 1,000 to 10,000, 23 percent at 10,000 to 100,000, 18 percent at 100,000 to 500,000). Self-reported time shares, and Adobe sells the workflow and generation products the findings motivate. [Adobe research](https://business.adobe.com/blog/71-percent-of-marketers-say-content-demand-to-increase-5x)
-[^2]: **Ziflow with the American Marketing Association.** "State of Creative Workflow 2023," July 11, 2023. Most respondents (57 percent) report three to five versions before a project is done. Sample size and fieldwork dates not published; Ziflow sells proofing software; "versions" is not the same as formal review rounds. [Ziflow findings](https://www.ziflow.com/blog/the-2023-state-of-creative-workflow-report-key-findings-bonus-insights)
+[^2]: **Ziflow with the American Marketing Association.** "State of Creative Workflow 2023," July 11, 2023. Most respondents (57 percent) report three to five versions before a project is done. Sample size and fieldwork dates not published; Ziflow sells proofing software; each version is a draft sent for review, which this piece counts as a review round. [Ziflow findings](https://www.ziflow.com/blog/the-2023-state-of-creative-workflow-report-key-findings-bonus-insights)
 [^3]: **CreativeX.** "Over half of content produced isn't activated," February 21, 2024. Analysis of 1,284 core assets and 422,272 tracked posts across 50+ markets, 2023 data: 52 percent of core assets were never activated. Clients are mostly large consumer brands; "activated" means appearing in channels CreativeX monitors; the $25 million per Fortune 500 company and $100 billion industry figures are modeled estimates. An earlier draft of this piece cited a secondary report of a different cut (<data value="c:creativex-unactivated">90 percent of toolkits unused</data>); the primary figure is used here. [CreativeX analysis](https://www.creativex.com/blog/over-half-of-content-produced-isnt-activated)
 [^4]: **SiriusDecisions.** Summit 2013, as recorded on the Forrester blog: "60 to 70 percent of content churned out by B2B marketing departments today sits unused." No methodology, sample, or dataset has been published for this figure. [Forrester summary](https://www.forrester.com/blogs/summit-2013-highlights-inciting-a-btob-content-revolution/)
 [^7]: **OpenLineage, Marquez, and dbt.** Open-source lineage tools for data pipelines. Applying them to content is my proposal, and nobody ships it for content today. [OpenLineage](https://github.com/OpenLineage/OpenLineage), [Marquez](https://marquezproject.ai/), [dbt lineage graph](https://docs.getdbt.com/docs/explore/explore-projects)

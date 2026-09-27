@@ -7,7 +7,7 @@
 
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var money = function (n) { return '$' + Math.round(n).toLocaleString('en-US'); };
-  var isWide = function () { return window.matchMedia('(min-width: 1180px)').matches; };
+  var isWide = function () { return window.matchMedia('(width >= 1180px)').matches; };
 
   /* ---------- reading progress (trace rail from site-shell.css) ---------- */
   var root = document.documentElement;
@@ -144,7 +144,7 @@
     }
     seq.setActive = setActive;
 
-    var stacked = window.matchMedia('(max-width: 1179px)');
+    var stacked = window.matchMedia('(width < 1180px)');
     if (stacked.matches) {
       // Stacked layout: the graphic is pinned to the top of the screen and the
       // steps scroll up underneath it. The live step is the last one whose top
