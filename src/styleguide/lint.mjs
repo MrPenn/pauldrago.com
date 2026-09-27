@@ -64,11 +64,11 @@ export const RULES = [
 
   // Stylesheets
   { id: 'css-color', severity: 'error', group: 'Stylesheets', title: 'Colours come from tokens', why: 'A literal colour does not switch with the theme. The print block and token definitions are exempt.', bad: 'color: #0A192F;', good: 'color: var(--paper);' },
-  { id: 'css-font', severity: 'error', group: 'Stylesheets', title: 'Three typefaces', why: 'Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for figures and controls. Each has a metric-matched fallback in the base layout.', fix: "font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;" },
+  { id: 'type-tokens', severity: 'error', group: 'Stylesheets', title: 'Faces, weights, line spacing and tracking come from the base', why: 'site-shell.css is the root of the cascade: it names the three typefaces and their fallbacks, three weights, five kinds of line spacing and the tracking for small capitals. Every other sheet uses those tokens, so one change at the root moves the whole site, and nothing drifts a shade off.', bad: "font-family: 'IBM Plex Sans', sans-serif;\nline-height: 1.42;\nfont-weight: 500;", good: 'font-family: var(--font-sans);\nline-height: var(--leading-text);\nfont-weight: var(--weight-regular);' },
   { id: 'css-radius', severity: 'warn', group: 'Stylesheets', title: 'Corners stay square', why: 'Rounded cards read as a software template. Bar ends and inputs round by 4px at most; a 50% radius draws a dot and is allowed.' },
   { id: 'css-gradient', severity: 'warn', group: 'Stylesheets', title: 'No gradients', why: 'Flat fills and hard rules. Hatching with repeating-linear-gradient is allowed; it draws ranges.' },
   { id: 'css-shadow', severity: 'warn', group: 'Stylesheets', title: 'No soft shadows', why: 'Depth comes from rules and panels. A zero-blur inset shadow drawing a hairline is allowed.' },
-  { id: 'type-scale', severity: 'error', group: 'Stylesheets', title: 'Font sizes come from the type scale', why: 'Every size on the site is a step of one scale in site-shell.css: body text is step 0 at 20px, each step is 1.2 times the one below, and 14px is the smallest. A size between steps, a clamp() or anything under 14px breaks the hierarchy. A page that has not moved onto the scale yet gets one note with its count instead.', bad: 'font-size: 13px;', good: 'font-size: var(--step--2);' },
+  { id: 'type-scale', severity: 'error', group: 'Stylesheets', title: 'Font sizes come from the type scale', why: 'Every size on the site is a step of one scale in site-shell.css: body text is step 0 at 20px, each step is 1.2 times the one below, and 14px is the smallest. A size between steps, a clamp() or anything under 14px breaks the hierarchy.', bad: 'font-size: 13px;', good: 'font-size: var(--step--2);' },
   { id: 'css-breakpoint', severity: 'error', group: 'Stylesheets', title: 'Media and container queries use their breakpoint scales', why: 'The page changes layout at four widths: 480, 760, 1040 and 1180, in stylesheets and in scripts that call matchMedia. Range syntax, (width < 760px), cannot leave a 759/760 gap. Components answer to their column with container queries at 560 and 900 instead. A table keeps its columns from 760 up, so its rows turn into cards only below 760 or in print.', fix: 'Write it as (width < 760px) or (width >= 1040px), with a width from the scale.' },
 
   // Across articles
@@ -231,7 +231,32 @@ export const cssClasses = (text) => new Set(
   parseCss(text).flatMap((r) => [...r.selector.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)].map((m) => m[1])),
 );
 
-const FONTS = ['archivo black', 'archivo black fallback', 'source serif 4', 'source serif 4 fallback', 'ibm plex sans', 'ibm plex sans fallback', 'georgia', 'times new roman', '-apple-system', 'blinkmacsystemfont', 'segoe ui', 'sans-serif', 'serif', 'monospace', 'inherit', 'system-ui', 'ui-monospace', 'menlo', 'consolas'];
+// The base tokens site-shell.css defines for faces, weights, line spacing and tracking.
+const CSS_KEYWORD = /^(?:inherit|initial|unset|revert|revert-layer)$/i;
+const TYPE_TOKENS = {
+  'font-family': [/^var\(--font-(?:display|serif|sans|mono)\)$/, 'var(--font-display), var(--font-serif), var(--font-sans) or var(--font-mono)'],
+  'font-weight': [/^var\(--weight-(?:regular|semibold|bold)\)$/, 'var(--weight-regular), var(--weight-semibold) or var(--weight-bold)'],
+  'line-height': [/^(?:0|normal|var\(--leading-(?:display|heading|snug|text|body|cap)\))$/, 'a --leading token, or 0'],
+  'letter-spacing': [/^(?:0|normal|var\(--tracking-caps\))$/, '0 or var(--tracking-caps)'],
+};
+// A declaration's type values that are not base tokens, as [property, value] pairs. The font
+// shorthand is read as weight, size/line-height and family.
+function offTokens(prop, value) {
+  const v = value.replace(/\s*!important\s*$/i, '').trim();
+  if (CSS_KEYWORD.test(v)) return [];
+  if (TYPE_TOKENS[prop]) return TYPE_TOKENS[prop][0].test(v) ? [] : [[prop, v]];
+  if (prop !== 'font') return [];
+  const out = [];
+  const words = v.match(/(?:[^\s(,]+|\([^)]*\))+|,/g) ?? [];
+  const at = words.findIndex((w) => shorthandSize(w) !== null);
+  if (at < 0) return [];
+  for (const w of words.slice(0, at)) if (/^(?:\d+|bold|bolder|lighter|var\(--weight-[\w-]+\))$/.test(w) && !TYPE_TOKENS['font-weight'][0].test(w)) out.push(['font-weight', w]);
+  const lh = words[at].split('/')[1];
+  if (lh && !TYPE_TOKENS['line-height'][0].test(lh)) out.push(['line-height', lh]);
+  const family = words.slice(at + 1).join(' ').replace(/\s+,/g, ',');
+  if (family && !TYPE_TOKENS['font-family'][0].test(family)) out.push(['font-family', family]);
+  return out;
+}
 
 const SCALE = BREAKPOINTS.map((b) => b.px);
 const COLUMN_SCALE = COLUMN_BREAKPOINTS.map((b) => b.px);
@@ -260,10 +285,8 @@ const phoneOrPrint = (prelude) => /^@media\b/.test(prelude) && prelude.replace(/
   });
 });
 
-// The type scale's steps, --step--2 to --step-10, and the stylesheets not on it yet. Each pending
-// sheet gets one note with its count; once it moves onto the scale, take it off this list.
+// The type scale's steps, --step--2 to --step-10.
 const STEPS = new Set(Array.from({ length: 13 }, (_, i) => i - 2));
-export const TYPE_SCALE_PENDING = ['front-door.css', 'financial-services.css', 'marketing-measurement-reset.css', 'personal-site.css', 'privacy.css', 'sample-plan.css', 'service-detail.css'];
 // A size is a step (var(--step-1)), or it takes its parent's (inherit and its kin).
 function offScaleSize(v) {
   const size = v.replace(/\s*!important\s*$/i, '').trim();
@@ -272,17 +295,18 @@ function offScaleSize(v) {
   if (step && STEPS.has(Number(step[1]))) return null;
   return size;
 }
-// The size inside a font shorthand: the token before the family, or before its /line-height.
+// The size inside a font shorthand: the first word that is a length or a step, before any /line-height.
 function shorthandSize(v) {
   if (/^\s*(?:inherit|initial|unset|revert|revert-layer)\s*$/i.test(v)) return null;
-  const m = v.match(/(var\(--[\w-]+\)|-?[\d.]+(?:px|rem|em|%|pt)|clamp\([^)]*\)|calc\([^)]*\))(?:\s*\/\s*[\w.%()-]+)?\s+['"\w]/);
-  return m ? m[1] : null;
+  for (const word of v.match(/(?:[^\s(]+|\([^)]*\))+/g) ?? []) {
+    const size = word.split('/')[0];
+    if (/^(?:var\(--(?!weight-|font-|leading-|tracking-)[\w-]+\)|-?[\d.]+(?:px|rem|em|%|pt)|clamp\(|calc\()/.test(size)) return size;
+  }
+  return null;
 }
 
 export function lintCss(file, text) {
   const { findings, report } = makeReporter(file, text);
-  const pending = TYPE_SCALE_PENDING.includes(basename(file));
-  let offScale = 0;
   const src = text.replace(/\/\*[\s\S]*?\*\//g, blank);
   // Media queries: widths from the scale only, written in range syntax.
   for (const m of src.matchAll(/@media\s+([^{]+)\{/g)) checkQuery(report, m.index, '@media', `@media ${m[1].trim()}`, m[1], SCALE, 'scale');
@@ -309,16 +333,10 @@ export function lintCss(file, text) {
       if ((d.prop === 'font-size' || d.prop === 'font') && !rule.print) {
         const size = d.prop === 'font-size' ? v : shorthandSize(v);
         const off = size === null ? null : offScaleSize(size);
-        if (off) {
-          offScale += 1;
-          if (!pending) report('type-scale', d.index, `${d.prop}: ${off} is not a step of the type scale`, { fix: 'Use var(--step--2) to var(--step-10); /ui/components/type-scale lists what each step is for.' });
-        }
+        if (off) report('type-scale', d.index, `${d.prop}: ${off} is not a step of the type scale`, { fix: 'Use var(--step--2) to var(--step-10); /ui/components/type-scale lists what each step is for.' });
       }
-      if (d.prop === 'font-family' || d.prop === 'font') {
-        const list = d.prop === 'font' ? (v.match(/(?:\d[\w.%/]*\s+)+(.*)$/)?.[1] ?? '') : v;
-        for (const f of list.split(',').map((s) => s.trim().replace(/^['"]|['"]$/g, '').toLowerCase()).filter(Boolean)) {
-          if (!FONTS.includes(f) && !/^var\(/.test(f)) report('css-font', d.index, `"${f}" is not one of the three typefaces or their fallbacks`);
-        }
+      for (const [prop, off] of offTokens(d.prop, v)) {
+        report('type-tokens', d.index, `${prop}: ${off} is not a base token`, { fix: `Use ${TYPE_TOKENS[prop][1]}, from site-shell.css.` });
       }
       if (d.prop.includes('radius')) {
         // 50% draws a circle (a dot or a marker), which is a shape rather than a rounded card.
@@ -334,7 +352,6 @@ export function lintCss(file, text) {
       }
     }
   }
-  if (pending && offScale) report('type-scale', 0, `${offScale} font size${offScale === 1 ? ' is' : 's are'} not on the type scale yet; this page moves onto it in its own pass`, { severity: 'info', fix: '' });
   return findings;
 }
 

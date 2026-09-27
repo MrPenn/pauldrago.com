@@ -1,3 +1,9 @@
+/* The root of the cascade. Every page loads this sheet first, and it holds the basics every other
+   sheet builds on: the colours, the three typefaces, the type scale, the weights, the line spacing
+   and the tracking, then the defaults every element inherits. Other sheets use these tokens and
+   set only what differs from what they inherit. The linter holds them to it (type-scale,
+   type-tokens, css-color). */
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -23,9 +29,17 @@
   --shadow: color-mix(in srgb, var(--ground) 16%, transparent);
   --ok: #1F8A5B;
   color-scheme: light;
+
+  /* Three typefaces: Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for
+     everything else. Each has a fallback sized to its metrics (src/components/Fonts.astro). */
+  --font-display: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  --font-serif: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, 'Times New Roman', serif;
+  --font-sans: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+
   /* The type scale. Every font size on the site is one of these steps. Body text is step 0, and
      each step is 1.2 times the one below it, rounded to the pixel. Step -2 is the smallest text
-     anywhere. The linter holds every stylesheet to it (type-scale). */
+     anywhere. */
   --step--2: 14px;
   --step--1: 17px;
   --step-0: 20px;
@@ -39,6 +53,23 @@
   --step-8: 86px;
   --step-9: 103px;
   --step-10: 124px;
+
+  /* Three weights. Archivo Black has one, which is the regular. */
+  --weight-regular: 400;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* Line spacing, from tight to open: capitals and big numbers, headings, labels and short lines,
+     small text and captions, and reading text. The drop cap's box is its own. */
+  --leading-display: 0.95;
+  --leading-heading: 1.1;
+  --leading-snug: 1.3;
+  --leading-text: 1.45;
+  --leading-body: 1.55;
+  --leading-cap: 0.8;
+
+  /* Tracking: none, except small capitals, which open up. */
+  --tracking-caps: 0.1em;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -65,11 +96,25 @@ body {
   overflow-x: hidden;
   background: var(--ground);
   color: var(--paper);
-  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--step--1);
-  line-height: 1.55;
+  font-weight: var(--weight-regular);
+  line-height: var(--leading-body);
   -webkit-font-smoothing: antialiased;
 }
+
+/* Element defaults. :where() keeps them at zero specificity, so any class a page sets wins, and an
+   element nobody styled still lands on the scale instead of the browser's own sizes. */
+:where(h1, h2, h3, h4, h5, h6) { font-weight: var(--weight-bold); line-height: var(--leading-heading); }
+:where(h1) { font-size: var(--step-4); }
+:where(h2) { font-size: var(--step-2); }
+:where(h3) { font-size: var(--step-0); }
+:where(h4, h5, h6) { font-size: var(--step--1); }
+:where(strong, b, th) { font-weight: var(--weight-bold); }
+:where(small, sup, sub) { font-size: var(--step--2); }
+:where(sup, sub) { line-height: 0; }
+:where(code, kbd, samp, pre) { font-family: var(--font-mono); font-size: var(--step--2); }
+:where(button, input, select, textarea) { font: inherit; letter-spacing: inherit; color: inherit; }
 
 a {
   color: inherit;
@@ -95,7 +140,7 @@ a {
   padding: 10px 14px;
   background: var(--paper);
   color: var(--ground);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   transform: translateY(-160%);
 }
 
@@ -146,14 +191,13 @@ a {
 .display-title,
 .brand-name,
 .footer-brand {
-  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-family: var(--font-display);
   text-transform: uppercase;
 }
 
 .display-title {
   color: var(--paper);
-  line-height: 0.95;
-  letter-spacing: 0;
+  line-height: var(--leading-display);
   /* Long single words never get clipped on narrow screens. */
   overflow-wrap: break-word;
   hyphens: auto;
@@ -166,12 +210,12 @@ a {
 .label,
 .pd-eyebrow,
 .article-body thead th {
-  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
   font-size: var(--step--2);
   font-style: normal;
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: 0.1em;
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-caps);
   text-transform: uppercase;
   color: var(--secondary);
 }
@@ -215,14 +259,13 @@ header {
 .brand-name {
   color: var(--paper);
   font-size: var(--step-1);
-  line-height: 1;
-  letter-spacing: 0;
+  line-height: var(--leading-display);
 }
 
 .header-link {
   color: var(--paper);
   font-size: var(--step--2);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-decoration: none;
   padding: 12px 0 7px;
   border-bottom: 2px solid transparent;
@@ -240,10 +283,9 @@ header {
   border-radius: 0;
   background: var(--brass);
   color: var(--on-brass);
-  font-family: inherit;
   font-size: var(--step--1);
-  font-weight: 700;
-  line-height: 1.55;
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-body);
   text-decoration: none;
   text-transform: none;
   cursor: pointer;
@@ -288,7 +330,6 @@ footer {
 .footer-brand {
   color: var(--paper);
   font-size: var(--step-0);
-  letter-spacing: 0;
 }
 
 .footer-links {
@@ -299,7 +340,7 @@ footer {
 
 .footer-links a {
   color: var(--paper);
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   text-decoration: none;
 }
 
@@ -313,7 +354,7 @@ footer {
   background: none;
   color: var(--paper);
   font: inherit;
-  font-weight: 600;
+  font-weight: var(--weight-semibold);
   cursor: pointer;
 }
 
@@ -375,7 +416,7 @@ footer {
   }
 
   .footer-meta {
-    line-height: 1.5;
+    line-height: var(--leading-body);
   }
 }
 
@@ -419,8 +460,8 @@ footer {
   display: block;
   color: var(--paper);
   font-size: var(--step--1);
-  font-weight: 700;
-  line-height: 1.3;
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
 }
 
 .other-decisions-question {
@@ -428,7 +469,7 @@ footer {
   margin-top: 6px;
   color: var(--secondary);
   font-size: var(--step--2);
-  line-height: 1.5;
+  line-height: var(--leading-text);
 }
 
 .other-decisions-list a:hover .other-decisions-name {
@@ -441,7 +482,7 @@ footer {
   padding: 4px 0;
   color: var(--paper);
   font-size: var(--step--2);
-  font-weight: 700;
+  font-weight: var(--weight-bold);
   text-decoration: underline;
   text-decoration-color: var(--brass);
   text-underline-offset: 4px;
@@ -465,6 +506,6 @@ footer {
 
 /* Supporting section headings on service pages: calm, sentence case. The display face is kept
    for the page title, the featured section and the closing call. */
-h2.section-title-plain { max-width: 34ch; font-size: var(--step-1); font-weight: 700; line-height: 1.2; letter-spacing: 0; text-transform: none; text-wrap: balance; }
+h2.section-title-plain { max-width: 34ch; font-size: var(--step-1); line-height: var(--leading-heading); text-transform: none; text-wrap: balance; }
 @media (width >= 760px) { h2.section-title-plain { font-size: var(--step-2); } }
 @media (width >= 1040px) { h2.section-title-plain { font-size: var(--step-3); } }

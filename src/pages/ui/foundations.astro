@@ -1,11 +1,29 @@
 ---
 import Styleguide from '../../layouts/Styleguide.astro';
-import { colorTokens, typeSteps } from '../../styleguide/tokens.mjs';
+import { colorTokens, typeSteps, typeTokens } from '../../styleguide/tokens.mjs';
 import { BREAKPOINTS, COLUMN_BREAKPOINTS, TYPE_SCALE } from '../../styleguide/components.mjs';
 
 const tokens = colorTokens(process.cwd());
 // The scale's sizes come from site-shell.css; what each step is for comes from the registry.
 const steps = typeSteps(process.cwd()).map((t) => ({ ...t, ...TYPE_SCALE.find((x) => x.step === t.step) }));
+const base = typeTokens(process.cwd());
+// What each base token is for; the values come from site-shell.css.
+const USE = {
+  '--font-display': 'Archivo Black: titles, section headings, big numbers',
+  '--font-serif': 'Source Serif 4: reading text, decks, pull quotes',
+  '--font-sans': 'IBM Plex Sans: everything else, and the body default',
+  '--font-mono': 'Code in the styleguide',
+  '--weight-regular': 'Text',
+  '--weight-semibold': 'Labels, notes that need weight',
+  '--weight-bold': 'Headings, names, emphasis; the default for strong and headings',
+  '--leading-display': 'Capitals in the display face, big numbers',
+  '--leading-heading': 'Headings and titles in mixed case',
+  '--leading-snug': 'Labels, controls, subheads, short lines',
+  '--leading-text': 'Small text: captions, notes, sources',
+  '--leading-body': 'Reading text; the body default',
+  '--leading-cap': 'The drop cap\'s box, so it sits on the lines beside it',
+  '--tracking-caps': 'Small capitals; everything else is 0',
+};
 const minus = (n) => (n < 0 ? `\u2212${Math.abs(n)}` : String(n));
 // Where the reading sizes sit at each width.
 const ROLES = [
@@ -59,6 +77,14 @@ const ARTICLE = [
   <section class="ui-section" id="type">
     <h2 class="ui-h2">Type</h2>
     <p class="ui-p">Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for figures, labels and controls. All three are self-hosted, and each has a fallback sized to its metrics so nothing shifts when the font arrives.</p>
+    <h3 class="ui-h3">One root</h3>
+    <p class="ui-p"><code>site-shell.css</code> loads first on every page and holds the basics: the colours, the three typefaces, the type scale, three weights, five kinds of line spacing and the tracking for small capitals. It also sets the defaults every element inherits, so an element nobody styled still lands on the scale. Every other sheet uses these tokens and sets only what differs from what it inherits. The linter rejects a size, face, weight, line spacing or tracking that is not a token (<code>type-scale</code>, <code>type-tokens</code>).</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
+        <tbody>{[...base.fonts, ...base.weights, ...base.leading, ...base.tracking].map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.name.startsWith('--font-') ? t.value.split(',')[0].replace(/'/g, '') : t.value}</td><td>{USE[t.name] ?? ''}</td></tr>)}</tbody>
+      </table>
+    </div>
     <h3 class="ui-h3">The scale</h3>
     <p class="ui-p">Every font size on the site is one of these thirteen steps, read here from <code>site-shell.css</code>. Body text is step 0, each step is 1.2 times the one below it, and 14px is the smallest text anywhere. The linter rejects any other size (<code>type-scale</code>). See it set on the <a href="/ui/components/type-scale">type scale</a> page.</p>
     <div class="ui-table-wrap">

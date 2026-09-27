@@ -29,7 +29,7 @@ body.ui-frame.is-page { padding: 0; }
 
 /* The layout grid specimen: each band is a real container, outlined and named, so the page shows
    the grid at whatever width the frame is. */
-.ui-grid { padding: 24px 0 40px; font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
+.ui-grid { padding: 24px 0 40px; font-family: var(--font-sans); }
 .ui-grid .article { padding: 0; }
 .ui-grid-now { margin: 0 auto 18px; max-width: 1240px; padding: 0 32px; font-size: var(--step--2); color: var(--secondary); }
 .ui-grid-bp { color: var(--paper); }
@@ -39,7 +39,7 @@ body.ui-frame.is-page { padding: 0; }
 @media (1040px <= width < 1180px) { .ui-grid-bp::after { content: "desktop, 1040 to 1180px"; } }
 @media (width >= 1180px) { .ui-grid-bp::after { content: "wide, 1180px and up"; } }
 .ui-grid-band { position: relative; min-height: 64px; margin-bottom: 16px; padding-top: 30px; outline: 1px dashed var(--brass); outline-offset: -1px; background: color-mix(in srgb, var(--brass) 5%, transparent); }
-.ui-grid-tag { position: absolute; top: 7px; left: 10px; right: 10px; font-size: var(--step--2); font-weight: 600; line-height: 1.3; color: var(--paper); }
+.ui-grid-tag { position: absolute; top: 7px; left: 10px; right: 10px; font-size: var(--step--2); font-weight: var(--weight-semibold); line-height: var(--leading-snug); color: var(--paper); }
 .ui-grid-col { padding: 30px 0 12px; }
 .ui-grid-compact { display: none; margin: 8px 10px 12px !important; font-size: var(--step--2); color: var(--secondary); }
 @container column (width < 560px) { .ui-grid-compact { display: block; } }
@@ -51,7 +51,7 @@ body.ui-frame.is-page { padding: 0; }
   .ui-grid-rail { display: block; position: absolute; top: 0; left: calc(100% + 84px); width: 280px; height: 88px; margin: 0; outline: 1px dashed var(--secondary); background: color-mix(in srgb, var(--secondary) 6%, transparent); }
 }
 @media (width < 760px) { .ui-grid-now { padding: 0 20px; } }
-.ui-grid-tag, .ui-grid-compact { font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
+.ui-grid-tag, .ui-grid-compact { font-family: var(--font-sans); }
 /* The page container's gutters: its content box, dotted inside the outline. */
 .ui-grid-site::after { content: ""; position: absolute; top: 30px; bottom: 8px; left: 32px; right: 32px; outline: 1px dotted var(--secondary); }
 @media (width < 760px) { .ui-grid-site::after { left: 20px; right: 20px; } }
@@ -59,12 +59,12 @@ body.ui-frame.is-page { padding: 0; }
 @media (width >= 1040px) { body.ui-frame.is-body .pd-calc { width: min(calc(min(1060px, 100vw) - 64px), calc(100vw - 120px)); } }
 
 /* The type scale specimen: every step at its size, in the face its main role uses. */
-.ui-scale { display: grid; gap: 0; font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
+.ui-scale { display: grid; gap: 0; font-family: var(--font-sans); }
 .ui-scale-row { display: grid; grid-template-columns: 13ch minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--hairline); }
-.ui-scale-sample { overflow-wrap: anywhere; line-height: 1.1; color: var(--paper); }
-.ui-scale-sans { font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; }
-.ui-scale-serif { font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; }
-.ui-scale-display { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; }
+.ui-scale-sample { overflow-wrap: anywhere; line-height: var(--leading-heading); color: var(--paper); }
+.ui-scale-sans { }
+.ui-scale-serif { font-family: var(--font-serif); }
+.ui-scale-display { font-family: var(--font-display); }
 .ui-step-m2 { font-size: var(--step--2); }
 .ui-step-m1 { font-size: var(--step--1); }
 .ui-step-0 { font-size: var(--step-0); }

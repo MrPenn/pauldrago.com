@@ -1,14 +1,14 @@
 // Tests for the styleguide linter, the kit builders and the registry. Run with `npm test`.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RULES, lintArticle, lintCss, lintScript, lintSite, cssClasses, imageSize, registryIds, frontMatter } from '../src/styleguide/lint.mjs';
 import * as BUILD from '../src/styleguide/build.mjs';
 import { stack, cols, units, offScale, readNumber, highlight } from '../src/styleguide/build.mjs';
 import { COMPONENTS, SIGNATURE_DEVICES, STACK_DEMO, COLS_DEMO, UNITS_DEMO, RECORD_DEMO, ASOF_DEMO, TYPE_SCALE, stepName } from '../src/styleguide/components.mjs';
-import { typeSteps } from '../src/styleguide/tokens.mjs';
+import { typeSteps, typeTokens } from '../src/styleguide/tokens.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const css = (href) => readFileSync(join(root, 'public', href), 'utf8');
@@ -148,7 +148,22 @@ test('stylesheet rules find literal colours, fonts, radii, gradients and soft sh
 .ok { border-radius: 50%; background: repeating-linear-gradient(90deg, var(--paper) 0 3px, transparent 3px 6px); box-shadow: inset 0 0 0 1px var(--hairline); }
 :root { --ground: #F1F2F4; }
 @media print { .p { color: #000; } }`));
-  assert.deepEqual(found, ['css-color', 'css-font', 'css-gradient', 'css-radius', 'css-shadow']);
+  assert.deepEqual(found, ['css-color', 'css-gradient', 'css-radius', 'css-shadow', 'type-tokens']);
+});
+
+test('faces, weights, line spacing and tracking come from the base tokens', () => {
+  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'type-tokens').map((f) => f.message);
+  assert.deepEqual(rule(`.a { font-family: var(--font-serif); font-weight: var(--weight-bold); line-height: var(--leading-body); letter-spacing: var(--tracking-caps); }
+.b { font: var(--weight-semibold) var(--step--2)/var(--leading-snug) var(--font-sans); }
+.c { font: inherit; line-height: 0; letter-spacing: 0; font-weight: inherit; }
+:root { --font-sans: 'IBM Plex Sans', sans-serif; }`), []);
+  assert.equal(rule(".a { font-family: 'IBM Plex Sans', sans-serif; }").length, 1);
+  assert.equal(rule('.a { font-weight: 500; }').length, 1);
+  assert.equal(rule('.a { line-height: 1.42; }').length, 1);
+  assert.equal(rule('.a { line-height: 24px; }').length, 1);
+  assert.equal(rule('.a { letter-spacing: 0.08em; }').length, 1);
+  // The shorthand is read in its parts.
+  assert.deepEqual(rule(".a { font: 600 var(--step--2)/1.2 'IBM Plex Sans', sans-serif; }").map((m) => m.split(':')[0]).sort(), ['font-family', 'font-weight', 'line-height']);
 });
 
 test('image sizes are read from WebP and PNG headers', () => {
@@ -268,16 +283,11 @@ test('font sizes are steps of the type scale', () => {
   assert.equal(rule('.a { font: 600 13px/1.2 \'IBM Plex Sans\', sans-serif; }').length, 1);
   // Print is exempt, and custom properties are the scale itself.
   assert.deepEqual(rule('@media print { .a { font-size: 10pt; } }\n:root { --step-0: 20px; }'), []);
-  // A page not on the scale yet gets one note with its count.
-  const pending = rule('.a { font-size: 13px; }\n.b { font-size: 15px; }', 'public/assets/privacy.css');
-  assert.equal(pending.length, 1);
-  assert.equal(pending[0].severity, 'info');
-  assert.match(pending[0].message, /^2 font sizes/);
 });
 
-test('the article stylesheets are on the type scale', () => {
-  for (const href of ['/assets/site-shell.css', '/assets/article.css', '/assets/article-kit.css', '/assets/styleguide.css', '/assets/styleguide-frame.css']) {
-    assert.deepEqual(lintCss(href, css(href)).filter((f) => f.rule === 'type-scale'), [], href);
+test('every stylesheet takes its type from the base', () => {
+  for (const f of readdirSync(join(root, 'public/assets')).filter((x) => x.endsWith('.css'))) {
+    assert.deepEqual(lintCss(f, css('/assets/' + f)).filter((x) => ['type-scale', 'type-tokens', 'css-color'].includes(x.rule)), [], f);
   }
 });
 
@@ -288,6 +298,15 @@ test('the type scale in the registry is the one site-shell.css defines', () => {
   assert.equal(steps.find((t) => t.step === 0).px, 20);
   // Each step is 1.2 times the one below, rounded to the pixel.
   for (const t of steps) assert.equal(t.px, Math.round(20 * 1.2 ** t.step), stepName(t.step));
+});
+
+test('the base defines every type token the linter accepts', () => {
+  const t = typeTokens(root);
+  const names = new Set([...t.fonts, ...t.weights, ...t.leading, ...t.tracking].map((x) => x.name));
+  for (const n of ['--font-display', '--font-serif', '--font-sans', '--font-mono', '--weight-regular', '--weight-semibold', '--weight-bold', '--leading-display', '--leading-heading', '--leading-snug', '--leading-text', '--leading-body', '--leading-cap', '--tracking-caps']) assert.ok(names.has(n), n);
+  // Line spacing runs from tight to open.
+  const lead = ['display', 'heading', 'snug', 'text', 'body'].map((k) => Number(t.leading.find((x) => x.name === `--leading-${k}`).value));
+  assert.deepEqual([...lead].sort((a, b) => a - b), lead);
 });
 
 test('every part a component names exists, is smaller or the same size, and each class has one owner', () => {

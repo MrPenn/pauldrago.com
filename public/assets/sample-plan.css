@@ -1,12 +1,14 @@
 /* Sample deliverable: the five-year branch plan, laid out as a report and printable as a board packet. */
 .sample-plan { padding: 40px 0 96px; }
 .sample-plan .container { max-width: 1040px; }
-.sample-banner { padding: 10px 14px; border: 1px solid var(--hairline); color: var(--secondary); font-size: 14px; line-height: 1.5; }
-.sample-banner a { margin-left: 6px; color: var(--paper); font-weight: 700; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+.sample-banner { padding: 10px 14px; border: 1px solid var(--hairline); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
+.sample-banner a { margin-left: 6px; color: var(--paper); font-weight: var(--weight-bold); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 
 .report-cover { margin-top: 36px; padding-bottom: 20px; border-bottom: 2px solid var(--paper); }
-.report-title { max-width: 24ch; font-size: clamp(30px, 4.2vw, 46px); line-height: 1; text-wrap: balance; }
-.report-meta { margin-top: 12px; color: var(--secondary); font-size: 15px; line-height: 1.5; }
+.report-title { max-width: 24ch; font-size: var(--step-2); line-height: var(--leading-display); text-wrap: balance; }
+@media (width >= 760px) { .report-title { font-size: var(--step-3); } }
+@media (width >= 1040px) { .report-title { font-size: var(--step-5); } }
+.report-meta { margin-top: 12px; color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
 
 
 .report-section { margin-top: 72px; scroll-margin-top: 24px; }
@@ -16,59 +18,60 @@
   align-items: baseline;
   padding-top: 20px;
   border-top: 2px solid var(--paper);
-  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: clamp(22px, 2.6vw, 30px);
-  line-height: 1.15;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: var(--leading-heading);
   text-transform: uppercase;
   text-wrap: balance;
 }
+@media (width >= 1040px) { .report-h2 { font-size: var(--step-2); } }
 .report-h2 span { color: var(--brass); }
-.report-h3 { margin-top: 36px; font-size: 20px; line-height: 1.3; }
-.report-p, .report-lede { max-width: 70ch; margin-top: 16px; color: var(--secondary); font-size: 17px; line-height: 1.65; text-wrap: pretty; }
-.report-lede { color: var(--paper); font-size: 20px; line-height: 1.55; }
-.report-small { font-size: 14px; }
+.report-h3 { margin-top: 36px; font-size: var(--step-0); line-height: var(--leading-snug); }
+.report-p, .report-lede { max-width: 70ch; margin-top: 16px; color: var(--secondary); font-size: var(--step--1); line-height: var(--leading-body); text-wrap: pretty; }
+.report-lede { color: var(--paper); font-size: var(--step-0); line-height: var(--leading-body); }
+.report-small { font-size: var(--step--2); }
 
 .report-figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 32px 0 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
 .report-figures div { padding: 18px 18px 18px 0; }
 .report-figures div + div { padding-left: 18px; border-left: 1px solid var(--hairline); }
-.report-figures dt { color: var(--secondary); font-size: 13px; font-weight: 600; line-height: 1.35; }
+.report-figures dt { color: var(--secondary); font-size: var(--step--2); font-weight: var(--weight-semibold); line-height: var(--leading-snug); }
 .report-figures dd { margin: 6px 0 0; }
-.report-figure { display: block; color: var(--paper); font-size: 28px; font-weight: 700; line-height: 1.1; font-variant-numeric: tabular-nums; }
-.report-figure-note { display: block; margin-top: 6px; color: var(--secondary); font-size: 13px; line-height: 1.45; }
+.report-figure { display: block; color: var(--paper); font-size: var(--step-2); font-weight: var(--weight-bold); line-height: var(--leading-heading); font-variant-numeric: tabular-nums; }
+.report-figure-note { display: block; margin-top: 6px; color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
 
 .report-risks { max-width: 76ch; margin: 16px 0 0; padding-left: 0; list-style: none; }
-.report-risks li { padding: 10px 0; color: var(--secondary); font-size: 17px; line-height: 1.55; }
+.report-risks li { padding: 10px 0; color: var(--secondary); font-size: var(--step--1); line-height: var(--leading-body); }
 .report-risks li + li { border-top: 1px solid var(--hairline); }
 .report-risks strong { color: var(--paper); }
 
 .report-rules { max-width: 76ch; margin: 14px 0 0; padding: 0; list-style: none; }
-.report-rules li { padding: 6px 0; color: var(--secondary); font-size: 16px; line-height: 1.5; }
+.report-rules li { padding: 6px 0; color: var(--secondary); }
 
 .sample-plan .market-table-wrap { max-width: none; overflow-x: auto; }
 .sample-plan .market-table-note { max-width: 72ch; }
 .report-plan-table th, .report-plan-table td, .report-towns th, .report-towns td { text-align: left; vertical-align: top; }
-.report-plan-table td:first-child { width: 56px; color: var(--brass); font-weight: 700; }
-.report-plan-table tbody th { color: var(--paper); font-weight: 700; white-space: nowrap; }
+.report-plan-table td:first-child { width: 56px; color: var(--brass); font-weight: var(--weight-bold); }
+.report-plan-table tbody th { color: var(--paper); font-weight: var(--weight-bold); white-space: nowrap; }
 .report-plan-table td:nth-child(3) { width: 200px; }
-.report-plan-table td:last-child { color: var(--secondary); line-height: 1.5; }
+.report-plan-table td:last-child { color: var(--secondary); line-height: var(--leading-body); }
 .report-towns { min-width: 720px; }
 /* From 760 the towns table fits its frame; it scrolls, with a sticky first column, only on phones. */
 @media (width >= 760px) { .report-towns { min-width: min(720px, 100%); } }
 .report-towns td { text-align: right; }
 .report-towns thead th:not(:first-child):not(:last-child) { text-align: right; }
-.report-towns .report-county { display: block; color: var(--secondary); font-size: 13px; font-weight: 500; }
-.report-towns tr.is-plan th { color: var(--paper); font-weight: 700; }
+.report-towns .report-county { display: block; color: var(--secondary); font-size: var(--step--2); font-weight: var(--weight-regular); }
+.report-towns tr.is-plan th { color: var(--paper); font-weight: var(--weight-bold); }
 
 
-.sample-plan .market-finding h3 { font-size: 18px; line-height: 1.3; }
+.sample-plan .market-finding h3 { font-size: var(--step--1); line-height: var(--leading-snug); }
 .pipe-columns.report-pipe { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
 .report-sources { max-width: 80ch; margin: 16px 0 0; padding-left: 20px; }
-.report-sources li { padding: 5px 0; color: var(--secondary); font-size: 15px; line-height: 1.55; }
+.report-sources li { padding: 5px 0; color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-body); }
 .report-sources a, .report-p a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 
 .report-cta { max-width: 76ch; margin-top: 72px; padding: 28px 32px; border: 2px solid var(--brass); background: var(--dark-navy); }
-.report-cta p:last-child { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 12px; color: var(--paper); font-size: 18px; line-height: 1.55; }
+.report-cta p:last-child { display: flex; flex-wrap: wrap; gap: 16px; align-items: center; margin-top: 12px; color: var(--paper); font-size: var(--step--1); line-height: var(--leading-body); }
 
 @media (width < 1040px) {
   .report-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -78,8 +81,8 @@
 @media (width < 760px) {
   .sample-plan { padding-top: 24px; }
   .pipe-columns.report-pipe { grid-template-columns: 1fr; }
-  .report-figure { font-size: 24px; }
-  .report-lede { font-size: 18px; }
+  .report-figure { font-size: var(--step-1); }
+  .report-lede { font-size: var(--step--1); }
   .report-plan-table, .report-plan-table tbody, .report-plan-table tr, .report-plan-table th, .report-plan-table td { display: block; width: auto !important; }
   .report-plan-table thead { display: none; }
   .report-plan-table tr { padding: 12px 0; border-top: 1px solid var(--hairline); }
@@ -96,53 +99,55 @@
   .report-towns th:first-child, .plan-network th:first-child, .brief-econ th:first-child, .brief-pace th:first-child { position: sticky; left: 0; z-index: 1; max-width: 132px; background: var(--ground); box-shadow: 1px 0 0 var(--hairline); }
   .report-towns thead th, .plan-network thead th, .brief-pace thead th, .brief-econ thead th { white-space: nowrap; }
   .brief-econ, .brief-pace { min-width: 560px; }
-  .market-table-wrap:has(.report-towns, .plan-network, .brief-econ, .brief-pace)::after { content: "Scroll for more \2192"; position: sticky; left: 0; display: block; margin-top: 6px; color: var(--secondary); font-size: 12px; }
+  .market-table-wrap:has(.report-towns, .plan-network, .brief-econ, .brief-pace)::after { content: "Scroll for more \2192"; position: sticky; left: 0; display: block; margin-top: 6px; color: var(--secondary); font-size: var(--step--2); }
 }
 
 /* The two-page brief */
-.report-status { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-bottom: 14px; color: var(--secondary); font-size: 14px; }
-.report-status strong { padding: 1px 8px; border: 1px solid var(--paper); color: var(--paper); font-size: 13px; letter-spacing: 0.02em; }
-.brief-why { max-width: 76ch; margin-top: 10px; font-size: 16px; }
-.brief-p { max-width: 80ch; margin-top: 8px; font-size: 15px; }
-.brief-options th { width: 220px; color: var(--paper) !important; font-weight: 700 !important; text-align: left; vertical-align: top; }
-.brief-options td { text-align: left; color: var(--secondary); line-height: 1.5; }
+.report-status { display: flex; flex-wrap: wrap; gap: 4px 18px; margin-bottom: 14px; color: var(--secondary); font-size: var(--step--2); }
+.report-status strong { padding: 1px 8px; border: 1px solid var(--paper); color: var(--paper); font-size: var(--step--2); }
+.brief-why { max-width: 76ch; margin-top: 10px; }
+.brief-p { max-width: 80ch; margin-top: 8px; font-size: var(--step--2); }
+.brief-options th { width: 220px; color: var(--paper) !important; font-weight: var(--weight-bold) !important; text-align: left; vertical-align: top; }
+.brief-options td { text-align: left; color: var(--secondary); line-height: var(--leading-body); }
 .brief-options tr.is-plan td { color: var(--paper); }
 .brief-options tbody tr:first-child th, .brief-options tbody tr:first-child td { border-top: 0; }
 .brief-resolution { margin-top: 24px; padding: 14px 16px; border: 1px solid var(--paper); }
-.brief-resolution p:last-child { margin-top: 6px; color: var(--paper); font-size: 15px; line-height: 1.55; }
+.brief-resolution p:last-child { margin-top: 6px; color: var(--paper); font-size: var(--step--2); line-height: var(--leading-body); }
 .brief-resolution .brief-h2 { padding-top: 0; border-top: 0; }
 .brief-sign { display: flex; gap: 32px; margin-top: 18px; }
-.brief-sign span { flex: 1; padding-top: 22px; border-bottom: 1px solid var(--paper); color: var(--secondary); font-size: 13px; }
-.resolved { font-variant: small-caps; font-weight: 700; letter-spacing: 0.02em; }
+.brief-sign span { flex: 1; padding-top: 22px; border-bottom: 1px solid var(--paper); color: var(--secondary); font-size: var(--step--2); }
+.resolved { font-variant: small-caps; font-weight: var(--weight-bold); }
 
 .report-brief { margin-top: 8px; }
 .brief-block { margin-top: 36px; }
 .report-brief > .brief-block:first-child .brief-h2 { padding-top: 0; border-top: 0; }
-.brief-h2 { padding-top: 12px; border-top: 1px solid var(--hairline); color: var(--paper); font-size: 13px; font-weight: 700; letter-spacing: 0.02em; }
+.brief-h2 { padding-top: 12px; border-top: 1px solid var(--hairline); color: var(--paper); font-size: var(--step--2); font-weight: var(--weight-bold); }
 .brief-block .report-lede { margin-top: 10px; }
 .brief-block .report-figures { margin-top: 20px; }
 .brief-pace th, .brief-pace td { font-variant-numeric: tabular-nums; }
 .brief-pace thead th:first-child, .brief-pace tbody th { text-align: left; }
-.brief-pace tr.is-plan th, .brief-pace tr.is-plan td { color: var(--paper); font-weight: 700; }
+.brief-pace tr.is-plan th, .brief-pace tr.is-plan td { color: var(--paper); font-weight: var(--weight-bold); }
 .pace-table { min-width: 640px; }
-.brief-note { max-width: 80ch; margin-top: 10px; color: var(--secondary); font-size: 14px; line-height: 1.55; }
+.brief-note { max-width: 80ch; margin-top: 10px; color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-body); }
 .brief-note a, .report-lede a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 .brief-page-two { margin-top: 12px; }
 .brief-page-two .county-maps { margin-top: 28px; }
-.report-brief .report-plan-table td, .report-brief .report-plan-table th { padding-top: 9px; padding-bottom: 9px; font-size: 15px; }
+.report-brief .report-plan-table td, .report-brief .report-plan-table th { padding-top: 9px; padding-bottom: 9px; }
 .report-brief .market-table-wrap { margin-top: 10px; }
-.brief-risks li { padding: 7px 0; font-size: 15px; }
-.brief-label { margin-top: 28px; color: var(--secondary); font-size: 14px; font-weight: 700; }
+.brief-risks li { padding: 7px 0; font-size: var(--step--2); }
+.brief-label { margin-top: 28px; color: var(--secondary); font-size: var(--step--2); font-weight: var(--weight-bold); }
 .appendix-open { margin-top: 96px; padding-top: 28px; border-top: 3px solid var(--paper); }
-.appendix-title { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(30px, 4vw, 44px); line-height: 1; text-transform: uppercase; }
+.appendix-title { font-family: var(--font-display); font-size: var(--step-2); line-height: var(--leading-display); text-transform: uppercase; }
+@media (width >= 760px) { .appendix-title { font-size: var(--step-3); } }
+@media (width >= 1040px) { .appendix-title { font-size: var(--step-4); } }
 .appendix-index { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 16px; }
-.appendix-index a { padding: 4px 0; color: var(--paper); font-size: 15px; font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--hairline); }
+.appendix-index a { padding: 4px 0; color: var(--paper); font-size: var(--step--2); font-weight: var(--weight-semibold); text-decoration: none; border-bottom: 1px solid var(--hairline); }
 .appendix-index a:hover { border-bottom-color: var(--brass); }
 .report-appendix:first-of-type { margin-top: 32px; }
 
 /* Criteria columns: an X where the town meets the criterion. */
 .market-table th.crit, .market-table td.crit { width: 72px; text-align: center !important; }
-.market-table td.crit { color: var(--paper); font-weight: 700; }
+.market-table td.crit { color: var(--paper); font-weight: var(--weight-bold); }
 .market-table th.crit-group { text-align: center !important; border-bottom: 1px solid var(--hairline); padding-bottom: 4px; }
 .market-table thead tr + tr th { border-top: 0; }
 .report-rules li strong { color: var(--paper); margin-right: 6px; }
@@ -150,11 +155,11 @@
 /* County maps: tracts shaded by home purchases, low/mod-income hatched, branches, review areas. */
 .county-maps { margin: 40px 0 0; }
 .county-maps-head { max-width: 70ch; }
-.county-maps-title { font-size: 22px; line-height: 1.25; }
-.county-maps-head p { margin-top: 8px; color: var(--secondary); font-size: 16px; line-height: 1.55; }
+.county-maps-title { font-size: var(--step-1); line-height: var(--leading-heading); }
+.county-maps-head p { margin-top: 8px; color: var(--secondary); }
 .county-maps-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px; align-items: start; margin-top: 24px; }
-.county-map-name { font-size: 18px; line-height: 1.3; }
-.county-map-sub { margin-top: 2px; color: var(--secondary); font-size: 14px; }
+.county-map-name { font-size: var(--step--1); line-height: var(--leading-snug); }
+.county-map-sub { margin-top: 2px; color: var(--secondary); font-size: var(--step--2); }
 .county-map svg { display: block; width: 100%; height: auto; margin-top: 10px; }
 .map-band--1 { fill: var(--hairline); }
 .map-band-0 { fill: color-mix(in srgb, var(--brass) 3%, var(--ground)); }
@@ -172,16 +177,16 @@
 .map-branch.is-large { fill: var(--ground); stroke: var(--paper); stroke-width: 2.5; stroke-linejoin: miter; }
 .map-site circle { fill: var(--brass); stroke: var(--ground); stroke-width: 3; }
 .map-site.is-review circle { fill: var(--ground); stroke: var(--paper); stroke-width: 2; stroke-dasharray: 4 3; }
-.map-site text { fill: var(--on-brass); font-size: 16px; font-weight: 700; text-anchor: middle; }
+.map-site text { fill: var(--on-brass); font-size: var(--step--1); font-weight: var(--weight-bold); text-anchor: middle; }
 .map-site.is-review text { fill: var(--paper); }
-.map-site .map-site-label, .map-town { fill: var(--paper); font-size: 17px; font-weight: 700; paint-order: stroke; stroke: var(--ground); stroke-width: 5px; stroke-linejoin: round; }
-.map-town { font-size: 15px; font-weight: 600; fill: var(--secondary); }
+.map-site .map-site-label, .map-town { fill: var(--paper); font-size: var(--step--1); font-weight: var(--weight-bold); paint-order: stroke; stroke: var(--ground); stroke-width: 5px; stroke-linejoin: round; }
+.map-town { font-size: var(--step--2); font-weight: var(--weight-semibold); fill: var(--secondary); }
 .map-scale line { stroke: var(--paper); stroke-width: 2; }
-.map-scale text { fill: var(--secondary); font-size: 14px; text-anchor: middle; }
+.map-scale text { fill: var(--secondary); font-size: var(--step--2); text-anchor: middle; }
 .county-maps-legend { display: flex; flex-wrap: wrap; gap: 20px 40px; align-items: flex-start; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--hairline); }
-.legend-title { color: var(--paper); font-size: 13px; font-weight: 700; }
+.legend-title { color: var(--paper); font-size: var(--step--2); font-weight: var(--weight-bold); }
 .legend-scale { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 8px 0 0; padding: 0; list-style: none; }
-.legend-scale li, .legend-keys li { display: flex; gap: 8px; align-items: center; color: var(--secondary); font-size: 13px; }
+.legend-scale li, .legend-keys li { display: flex; gap: 8px; align-items: center; color: var(--secondary); font-size: var(--step--2); }
 .legend-swatch { display: inline-block; width: 22px; height: 14px; }
 .legend-swatch.map-band-0 { background: color-mix(in srgb, var(--brass) 3%, var(--ground)); box-shadow: inset 0 0 0 1px var(--hairline); }
 .legend-swatch.map-band-1 { background: color-mix(in srgb, var(--brass) 22%, var(--ground)); }
@@ -192,30 +197,30 @@
 .legend-keys svg { width: 20px; height: 20px; flex: none; overflow: hidden; }
 .legend-hatch-bg { fill: var(--ground); stroke: var(--hairline); }
 .legend-scale-print { display: none !important; }
-.county-maps-note { margin-top: 12px; color: var(--secondary); font-size: 13px; }
+.county-maps-note { margin-top: 12px; color: var(--secondary); font-size: var(--step--2); }
 @media (width < 760px) {
   .county-maps-grid { grid-template-columns: 1fr; gap: 28px; }
   .legend-keys { grid-template-columns: 1fr; }
-  .map-site .map-site-label { font-size: 24px; }
-  .map-town { font-size: 21px; }
-  .map-site text { font-size: 20px; }
+  .map-site .map-site-label { font-size: var(--step-1); }
+  .map-town { font-size: var(--step-0); }
+  .map-site text { font-size: var(--step-0); }
 }
 
 /* Pipeline, questions, and the ramp chart and economics tables */
 .pipe-columns { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 32px; margin-top: 32px; }
-.pipe-county h3 { padding-bottom: 10px; border-bottom: 1px solid var(--hairline); font-size: 20px; }
+.pipe-county h3 { padding-bottom: 10px; border-bottom: 1px solid var(--hairline); }
 .pipe-list { margin: 0; padding: 0; list-style: none; }
 .pipe { padding: 14px 0; border-bottom: 1px solid var(--hairline); }
-.pipe-meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: var(--secondary); font-size: 13px; }
-.pipe-brings { padding: 1px 8px; border: 1px solid var(--brass); color: var(--brass); font-weight: 700; }
-.pipe-title { margin-top: 6px; color: var(--paper); font-size: 16px; font-weight: 700; line-height: 1.35; }
-.pipe-detail { margin-top: 4px; color: var(--secondary); font-size: 15px; line-height: 1.5; }
+.pipe-meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; color: var(--secondary); font-size: var(--step--2); }
+.pipe-brings { padding: 1px 8px; border: 1px solid var(--brass); color: var(--brass); font-weight: var(--weight-bold); }
+.pipe-title { margin-top: 6px; color: var(--paper); font-size: var(--step--1); font-weight: var(--weight-bold); line-height: var(--leading-snug); }
+.pipe-detail { margin-top: 4px; color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
 .pipe-detail a, .local-questions a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
-.pipe-watch { margin-top: 12px; color: var(--secondary); font-size: 15px; line-height: 1.5; }
+.pipe-watch { margin-top: 12px; color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
 .pipe-watch strong { color: var(--paper); }
 
 .local-questions { max-width: 76ch; margin: 24px 0 0; padding-left: 22px; }
-.local-questions li { padding: 10px 0 10px 6px; color: var(--secondary); font-size: 17px; line-height: 1.55; }
+.local-questions li { padding: 10px 0 10px 6px; color: var(--secondary); }
 .local-questions li + li { border-top: 1px solid var(--hairline); }
 .local-questions strong { color: var(--paper); }
 
@@ -223,21 +228,21 @@
 .plan-ramp .market-table-wrap { margin-top: 20px; }
 .plan-chart { margin: 20px 0 0; }
 .plan-chart svg { display: block; width: 100%; height: auto; }
-.plan-chart figcaption { margin-top: 10px; color: var(--secondary); font-size: 13px; line-height: 1.55; }
+.plan-chart figcaption { margin-top: 10px; color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-body); }
 .plan-grid line { stroke: var(--hairline); stroke-width: 1; }
-.plan-grid text, .plan-axis { fill: var(--secondary); font-size: 15px; font-variant-numeric: tabular-nums; }
+.plan-grid text, .plan-axis { fill: var(--secondary); font-size: var(--step--2); font-variant-numeric: tabular-nums; }
 .plan-grid text { text-anchor: end; }
 .plan-axis { text-anchor: middle; }
 .plan-band { fill: color-mix(in srgb, var(--brass) 20%, transparent); }
 .plan-median { fill: none; stroke: var(--brass); stroke-width: 3; stroke-linejoin: round; }
 .plan-target { stroke: var(--paper); stroke-width: 1.5; }
 .plan-breakeven { stroke: var(--paper); stroke-width: 1.5; stroke-dasharray: 5 4; }
-.plan-line-label { fill: var(--paper); font-size: 15px; font-weight: 700; }
+.plan-line-label { fill: var(--paper); font-size: var(--step--2); font-weight: var(--weight-bold); }
 .plan-line-label-end { text-anchor: end; }
 .plan-outcomes thead th:first-child, .plan-network thead th:first-child { text-align: left; }
 /* Negatives read as accounting figures: ink with a minus sign. Brass stays for emphasis. */
 .market-table td.is-negative { color: var(--paper); }
-.market-table .plan-total th, .market-table .plan-total td { border-top: 2px solid var(--paper); color: var(--paper); font-weight: 700; }
+.market-table .plan-total th, .market-table .plan-total td { border-top: 2px solid var(--paper); color: var(--paper); font-weight: var(--weight-bold); }
 .plan-network { min-width: 560px; }
 .plan-network td { white-space: nowrap; }
 .market-table-wrap:has(.plan-network) { overflow-x: auto; }
@@ -246,13 +251,13 @@
 /* Chart beside table from 760: labels grow as the chart narrows and table cells tighten, back to full values by 960. */
 @media (760px <= width < 1040px) {
   .plan-ramp { gap: clamp(32px, 4.2vw, 40px); }
-  .plan-grid text, .plan-axis, .plan-line-label { font-size: clamp(15px, calc(34.3px - 2.01vw), 19px); }
+  .plan-grid text, .plan-axis, .plan-line-label { }
   .plan-outcomes th, .plan-outcomes td { padding-right: clamp(8px, calc(2.01vw - 7.3px), 12px); }
 }
 @media (width < 760px) {
   .plan-ramp { grid-template-columns: 1fr; gap: 8px; }
-  .plan-grid text, .plan-axis, .plan-line-label { font-size: 22px; }
-  .plan-network { font-size: 14px; }
+  .plan-grid text, .plan-axis, .plan-line-label { font-size: var(--step-1); }
+  .plan-network { font-size: var(--step--2); }
   .pipe-columns { grid-template-columns: 1fr; gap: 24px; }
 }
 
@@ -263,7 +268,9 @@
   @page {
     size: letter;
     margin: 0.55in 0.6in 0.7in;
+    /* style-ok: type-tokens (the page's margin boxes print outside the document, where the tokens do not reach) */
     @bottom-left { content: "Five-year branch plan \00B7  Board, October 2026 \00B7  Confidential"; font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
+    /* style-ok: type-tokens (the page's margin boxes print outside the document, where the tokens do not reach) */
     @bottom-right { content: counter(page) " of " counter(pages); font: 8.5pt "IBM Plex Sans", sans-serif; color: #444; }
   }
   header, footer, .trace-rail, .skip-link, .sample-banner, .report-cta, #cc-main, .appendix-open, .brief-label, .county-maps-head p, .county-maps-note, .county-map-sub { display: none !important; }
@@ -277,14 +284,14 @@
   .report-title { font-size: 22pt; max-width: none; }
   .report-figure { font-size: 18pt !important; }
   .county-maps-title, .report-appendix .report-h2 { font-size: 13pt !important; }
-  .report-lede { font-size: 11pt !important; line-height: 1.4; max-width: none; }
+  .report-lede { font-size: 11pt !important; line-height: var(--leading-text); max-width: none; }
   .report-meta, .brief-why, .brief-p, .brief-note, .report-status, .report-status strong,
   .brief-risks li, .brief-resolution p,
   .report-appendix .report-p, .report-appendix .report-rules li, .report-appendix .local-questions li, .report-appendix .report-risks li,
-  .report-appendix .market-finding p, .report-appendix .pipe-detail, .report-appendix .pipe-watch, .report-appendix .pipe-title { font-size: 9.5pt !important; line-height: 1.42; }
+  .report-appendix .market-finding p, .report-appendix .pipe-detail, .report-appendix .pipe-watch, .report-appendix .pipe-title { font-size: 9.5pt !important; line-height: var(--leading-text); }
   .market-table, .market-table th, .market-table td, .market-table thead th, .market-table-note, figcaption,
   .report-figure-note, .report-figures dt, .legend-scale li, .legend-keys li, .legend-title, .pipe-meta, .report-sources li, .county-map-name, .brief-h2, .report-appendix .report-h3 { font-size: 8.5pt !important; }
-  .brief-h2, .report-appendix .report-h3, .county-map-name, .legend-title { font-weight: 700; }
+  .brief-h2, .report-appendix .report-h3, .county-map-name, .legend-title { font-weight: var(--weight-bold); }
 
   /* Cover and brief */
   .report-cover { margin-top: 0; padding-bottom: 8px; }
@@ -324,7 +331,7 @@
   .legend-keys { grid-template-columns: repeat(3, auto) !important; gap: 3px 18px; }
 
   /* Tags print as text, not pills */
-  .pipe-brings { border: 0; padding: 0; margin-right: 8px; font-size: 8.5pt !important; font-weight: 700; }
+  .pipe-brings { border: 0; padding: 0; margin-right: 8px; font-size: 8.5pt !important; font-weight: var(--weight-bold); }
   .report-rules { break-inside: avoid; }
   .report-appendix .local-questions li, .report-appendix .report-risks li { padding-top: 3px; padding-bottom: 3px; }
   .report-appendix .local-questions { margin-top: 6px; }
@@ -338,9 +345,9 @@
   /* Appendix: one heading style, letters in the display face; sections flow */
   .report-appendix { margin-top: 20px; }
   #markets { break-before: page; margin-top: 0; }
-  .report-appendix .report-h2 { display: block; padding-top: 8px; font-family: "IBM Plex Sans", sans-serif; font-weight: 700; text-transform: none; }
-  .report-appendix .report-h2 span { margin-right: 8px; font-family: "Archivo Black", sans-serif; }
-  .report-appendix .report-h3, .report-appendix .market-finding h3, .pipe-county h3 { margin-top: 12px; font-size: 11pt !important; font-weight: 700; line-height: 1.3; }
+  .report-appendix .report-h2 { display: block; padding-top: 8px; font-family: var(--font-sans); font-weight: var(--weight-bold); text-transform: none; }
+  .report-appendix .report-h2 span { margin-right: 8px; font-family: var(--font-display); }
+  .report-appendix .report-h3, .report-appendix .market-finding h3, .pipe-county h3 { margin-top: 12px; font-size: 11pt !important; font-weight: var(--weight-bold); line-height: var(--leading-snug); }
   .pipe-county h3 { padding-bottom: 4px; }
   .report-appendix .market-table-wrap, .report-appendix .market-findings { margin-top: 8px; }
   .report-appendix .pipe { padding: 5px 0; }
@@ -350,16 +357,16 @@
   .plan-grid text, .plan-axis, .plan-line-label { font-size: 21px !important; }
   .sample-plan .market-table-wrap { overflow: visible; }
   .report-towns tbody th { font-size: 8.5pt !important; }
-  .report-towns .report-county { font-size: 7.5pt !important; color: #555; font-weight: 400; }
+  .report-towns .report-county { font-size: 7.5pt !important; color: #555; font-weight: var(--weight-regular); }
   .report-appendix .report-risks, .report-appendix .local-questions, .report-appendix .report-rules { max-width: none; }
   .pipe-detail a { color: #444 !important; }
   .pace-block { break-inside: avoid; }
-  .report-appendix .report-p, .report-appendix .local-questions li, .report-appendix .report-risks li, .report-appendix .market-finding p, .report-appendix .pipe-detail { line-height: 1.34 !important; }
+  .report-appendix .report-p, .report-appendix .local-questions li, .report-appendix .report-risks li, .report-appendix .market-finding p, .report-appendix .pipe-detail { line-height: var(--leading-snug) !important; }
   .report-appendix .local-questions li { padding: 3px 0 3px 4px !important; }
   .report-rules li { display: grid; grid-template-columns: 1.1in 1fr; padding: 1pt 0 !important; }
   .market-table th.crit, .market-table td.crit { width: 0.6in; }
   .report-appendix :is(.report-p, .market-table-note, figcaption, .report-small) { max-width: none !important; }
-  .market-table-note, figcaption, .report-figure-note, .report-sources li { line-height: 1.3 !important; }
+  .market-table-note, figcaption, .report-figure-note, .report-sources li { line-height: var(--leading-snug) !important; }
 
   .report-sources li::after { content: ""; }
 

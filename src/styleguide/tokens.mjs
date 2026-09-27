@@ -64,6 +64,13 @@ export function colorTokens(root) {
   });
 }
 
+/** The base type tokens site-shell.css defines, other than the scale: faces, weights, line spacing, tracking. */
+export function typeTokens(root) {
+  const { light } = rootBlocks(readFileSync(join(root, 'public/assets/site-shell.css'), 'utf8'));
+  const group = (prefix) => Object.entries(light).filter(([k]) => k.startsWith(prefix)).map(([name, value]) => ({ name, value }));
+  return { fonts: group('--font-'), weights: group('--weight-'), leading: group('--leading-'), tracking: group('--tracking-') };
+}
+
 /** The type scale's steps as site-shell.css defines them: [{ step, name, px }], smallest first. */
 export function typeSteps(root) {
   const { light } = rootBlocks(readFileSync(join(root, 'public/assets/site-shell.css'), 'utf8'));
