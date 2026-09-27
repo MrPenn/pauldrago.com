@@ -1,7 +1,7 @@
 ---
 import Styleguide from '../../../layouts/Styleguide.astro';
 import Story from '../../../components/ui/Story.astro';
-import { COMPONENTS, LEVELS, STATUSES, STACK_DEMO, COLS_DEMO, UNITS_DEMO } from '../../../styleguide/components.mjs';
+import { COMPONENTS, LEVELS, STATUSES, STACK_DEMO, COLS_DEMO, UNITS_DEMO, partsOf, usedIn } from '../../../styleguide/components.mjs';
 import { RULES } from '../../../styleguide/lint.mjs';
 import { inline } from '../../../styleguide/build.mjs';
 
@@ -13,6 +13,10 @@ const { c, prev, next } = Astro.props;
 const level = LEVELS.find((l) => l.id === c.level);
 const status = STATUSES.find((s) => s.id === c.status);
 const rules = c.lint.map((id) => RULES.find((r) => r.id === id));
+// Where it sits in the kit: the smaller parts it is built from, and the larger ones built from it.
+const parts = partsOf(c);
+const users = usedIn(c.id);
+const levelName = (x) => LEVELS.find((l) => l.id === x.level).name.replace(/s$/, '').toLowerCase();
 const DEMOS = { stack: STACK_DEMO, cols: COLS_DEMO, units: UNITS_DEMO };
 const demo = DEMOS[c.controls] ?? null;
 // The controls start from the story built from the same demo data.
@@ -29,10 +33,16 @@ const HINT = {
   <p class="ui-crumb"><a href="/ui">Styleguide</a> <span aria-hidden="true">/</span> {level.name}</p>
   <h1 class="display-title ui-title">{c.name}</h1>
   <p class="ui-meta">
-    <span class={`ui-chip is-${c.status}`} title={status.about}>{status.name}</span>
+    <span class={`label ui-chip is-${c.status}`} title={status.about}>{status.name}</span>
     {c.classes.length > 0 && <span class="ui-classes">{c.classes.map((cls) => <code>.{cls}</code>)}</span>}
   </p>
   <p class="ui-lede">{c.summary}</p>
+  {(parts.length > 0 || users.length > 0) && (
+    <dl class="ui-parts">
+      {parts.length > 0 && <div><dt>Built from</dt><dd>{parts.map((x) => <a href={`/ui/components/${x.id}`}>{x.name} <span>{levelName(x)}</span></a>)}</dd></div>}
+      {users.length > 0 && <div><dt>Used in</dt><dd>{users.map((x) => <a href={`/ui/components/${x.id}`}>{x.name} <span>{levelName(x)}</span></a>)}</dd></div>}
+    </dl>
+  )}
   {c.status === 'template' && <p class="ui-callout">{status.about}</p>}
   {c.status === 'signature' && <p class="ui-callout">{status.about} The linter warns when it finds one too close to another article that uses it.</p>}
 
@@ -81,7 +91,7 @@ const HINT = {
   )}
 
   <nav class="ui-pager" aria-label="Components">
-    {prev ? <a href={`/ui/components/${prev.id}`}><span>Previous</span>{prev.name}</a> : <span></span>}
-    {next && <a class="is-next" href={`/ui/components/${next.id}`}><span>Next</span>{next.name}</a>}
+    {prev ? <a href={`/ui/components/${prev.id}`}><span class="label">Previous</span>{prev.name}</a> : <span></span>}
+    {next && <a class="is-next" href={`/ui/components/${next.id}`}><span class="label">Next</span>{next.name}</a>}
   </nav>
 </Styleguide>

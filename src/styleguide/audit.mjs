@@ -194,7 +194,7 @@ export function auditArticle(root, path) {
     if (status === 'template') continue;
     if (TEXT_TAGS.has(b.tag) && (status === 'kit' || (status === 'equivalent' && component !== 'body-text'))) continue;
     const label = b.attrs.match(/aria-label="([^"]*)"/)?.[1] ?? '';
-    const title = clip((label.length <= 60 ? label : '') || text(b.html.match(/class="[^"]*\b(?:pd-eyebrow|fd-eyebrow|[a-z]+(?:-[a-z]+)*-title|pd-units-label|fd-stat-label)\b[^"]*"[^>]*>([\s\S]*?)<\/p>|class="[^"]*\b(?:pd-units-label|fd-stat-label)\b[^"]*"[^>]*>([\s\S]*?)<\/span>/)?.slice(1).find(Boolean) ?? '')
+    const title = clip((label.length <= 60 ? label : '') || text(b.html.match(/class="[^"]*\b(?:pd-eyebrow|fd-eyebrow|[a-z]+(?:-[a-z]+)*-title|pd-head-text|fd-stat-label)\b[^"]*"[^>]*>([\s\S]*?)<\/p>|class="[^"]*\b(?:pd-head-text|fd-stat-label)\b[^"]*"[^>]*>([\s\S]*?)<\/span>/)?.slice(1).find(Boolean) ?? '')
       || label
       || (b.html.match(/<img\b[^>]*\salt="([^"]*)"/)?.[1] ?? '')
       || text(b.html.match(/<figcaption>([\s\S]*?)<\/figcaption>/)?.[1] ?? '')

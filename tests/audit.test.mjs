@@ -117,7 +117,7 @@ brief:
 
 ${units({ ...UNITS_DEMO, value: 17 })}
 
-${stack(STACK_DEMO).replace('<span class="pd-stack-val">$418</span>', '<span class="pd-stack-val">$450</span>')}
+${stack(STACK_DEMO).replace('<span class="pd-num is-s">$418</span>', '<span class="pd-num is-s">$450</span>')}
 
 <figure class="cd-bars"><p class="cd-widget-title">T</p></figure>
 `);
@@ -188,10 +188,10 @@ test('a percent stack built by the builder passes its own lint, rounding include
 
 test('the stack builder prints a sub line on its own, marks and printed text', () => {
   const html = stack({ sub: 'Share of each source', prefix: '', suffix: '%', bars: [{ name: 'Veeva', ref: 'veeva-unused', segs: [{ value: 80, text: 'nearly 80%', ref: 'veeva-unused' }] }] });
-  assert.match(html, /<div class="pd-stack-lead"><span class="pd-stack-sub">Share of each source<\/span><\/div>/);
+  assert.match(html, /<p class="pd-stack-sub">Share of each source<\/p>/);
   assert.doesNotMatch(html, /pd-seg-label/);
   assert.match(html, /<div class="pd-seg" data-value="80" style="[^"]*"><\/div>/);
-  assert.match(html, /<span class="pd-stack-val"><data value="c:veeva-unused">80%<\/data><\/span>/);
+  assert.match(html, /<span class="pd-num is-s"><data value="c:veeva-unused">80%<\/data><\/span>/);
 });
 
 test('a lone segment prints its value once; the parts of a longer bar keep their labels', () => {

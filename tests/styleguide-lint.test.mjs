@@ -7,7 +7,8 @@ import { fileURLToPath } from 'node:url';
 import { RULES, lintArticle, lintCss, lintScript, lintSite, cssClasses, imageSize, registryIds, frontMatter } from '../src/styleguide/lint.mjs';
 import * as BUILD from '../src/styleguide/build.mjs';
 import { stack, cols, units, offScale, readNumber, highlight } from '../src/styleguide/build.mjs';
-import { COMPONENTS, SIGNATURE_DEVICES, STACK_DEMO, COLS_DEMO, UNITS_DEMO, RECORD_DEMO, ASOF_DEMO } from '../src/styleguide/components.mjs';
+import { COMPONENTS, SIGNATURE_DEVICES, STACK_DEMO, COLS_DEMO, UNITS_DEMO, RECORD_DEMO, ASOF_DEMO, TYPE_SCALE, stepName } from '../src/styleguide/components.mjs';
+import { typeSteps } from '../src/styleguide/tokens.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const css = (href) => readFileSync(join(root, 'public', href), 'utf8');
@@ -47,7 +48,7 @@ test('the builders and the chart checks agree', () => {
 });
 
 test('a stacked bar whose total does not add up is caught', () => {
-  const html = stack(STACK_DEMO).replace('<span class="pd-stack-val">$418</span>', '<span class="pd-stack-val">$450</span>');
+  const html = stack(STACK_DEMO).replace('<span class="pd-num is-s">$418</span>', '<span class="pd-num is-s">$450</span>');
   assert.ok(lint(html).some((f) => f.rule === 'stack-scale' && /\$450/.test(f.message)));
 });
 
@@ -255,6 +256,55 @@ test('the calculator fold keeps its fields in the formulas', () => {
   const fold = COMPONENTS.find((c) => c.id === 'calculator').stories.find((s) => s.id === 'fold').html;
   assert.match(fold, /<details class="pd-calc-more">[\s\S]*data-var="fee"[\s\S]*data-var="cac"[\s\S]*<\/details>/);
   assert.deepEqual(lint(fold).filter((f) => f.rule === 'calc-names'), []);
+});
+
+test('font sizes are steps of the type scale', () => {
+  const rule = (css, file = 'x.css') => lintCss(file, css).filter((f) => f.rule === 'type-scale');
+  assert.deepEqual(rule('.a { font-size: var(--step--2); }\n.b { font-size: var(--step-10) !important; }\n.c { font: inherit; }\n.d { font: 600 var(--step-0)/1.4 \'IBM Plex Sans\', sans-serif; }\n.e { font-size: inherit; }'), []);
+  assert.match(rule('.a { font-size: 13px; }')[0].message, /13px/);
+  assert.equal(rule('.a { font-size: clamp(24px, 2.4vw, 29px); }').length, 1);
+  assert.equal(rule('.a { font-size: 0.88em; }').length, 1);
+  assert.equal(rule('.a { font-size: var(--step-11); }').length, 1);
+  assert.equal(rule('.a { font: 600 13px/1.2 \'IBM Plex Sans\', sans-serif; }').length, 1);
+  // Print is exempt, and custom properties are the scale itself.
+  assert.deepEqual(rule('@media print { .a { font-size: 10pt; } }\n:root { --step-0: 20px; }'), []);
+  // A page not on the scale yet gets one note with its count.
+  const pending = rule('.a { font-size: 13px; }\n.b { font-size: 15px; }', 'public/assets/privacy.css');
+  assert.equal(pending.length, 1);
+  assert.equal(pending[0].severity, 'info');
+  assert.match(pending[0].message, /^2 font sizes/);
+});
+
+test('the article stylesheets are on the type scale', () => {
+  for (const href of ['/assets/site-shell.css', '/assets/article.css', '/assets/article-kit.css', '/assets/styleguide.css', '/assets/styleguide-frame.css']) {
+    assert.deepEqual(lintCss(href, css(href)).filter((f) => f.rule === 'type-scale'), [], href);
+  }
+});
+
+test('the type scale in the registry is the one site-shell.css defines', () => {
+  const steps = typeSteps(root);
+  assert.deepEqual(steps.map((t) => [t.step, t.px]), TYPE_SCALE.map((t) => [t.step, t.px]));
+  assert.equal(steps[0].px, 14);
+  assert.equal(steps.find((t) => t.step === 0).px, 20);
+  // Each step is 1.2 times the one below, rounded to the pixel.
+  for (const t of steps) assert.equal(t.px, Math.round(20 * 1.2 ** t.step), stepName(t.step));
+});
+
+test('every part a component names exists, is smaller or the same size, and each class has one owner', () => {
+  const byId = Object.fromEntries(COMPONENTS.map((c) => [c.id, c]));
+  const rank = { atom: 0, molecule: 1, organism: 2, template: 3 };
+  for (const c of COMPONENTS) {
+    for (const id of c.parts ?? []) {
+      assert.ok(byId[id], `${c.id} names part ${id}`);
+      assert.notEqual(id, c.id);
+      assert.ok(rank[byId[id].level] <= rank[c.level], `${c.id} (${c.level}) is built from ${id} (${byId[id].level})`);
+    }
+  }
+  const owner = new Map();
+  for (const c of COMPONENTS) for (const cls of c.classes) {
+    assert.ok(!owner.has(cls), `${cls} is listed by ${owner.get(cls)} and ${c.id}`);
+    owner.set(cls, c.id);
+  }
 });
 
 test('media queries stay on the breakpoint scale, in range syntax', () => {

@@ -145,7 +145,7 @@
     });
     fig.querySelectorAll('[data-count]').forEach(function (n) {
       var target = +n.getAttribute('data-count');
-      var isAlt = n.closest('.pd-legend-row') && n.closest('.pd-legend-row').querySelector('.pd-swatch.is-alt');
+      var isAlt = n.closest('.pd-legend-row') && n.closest('.pd-legend-row').querySelector('.pd-swatch.is-ink');
       countUp(n, target, isAlt ? alt.length * altPace + 200 : on.length * pace + 200, isAlt ? altStart : start);
     });
   }
@@ -180,7 +180,7 @@
   // Under a pinned graphic there is no room for a whole source: the publisher and the first
   // sentence show, and "Full note" opens the rest.
   function brief(note, li) {
-    if (!li || note.querySelector('.pd-note-more')) return;
+    if (!li || note.querySelector('[data-note-more]')) return;
     var num = note.querySelector('.sidenote-num');
     var strong = li.querySelector('strong');
     var text = li.textContent.replace(/\s*\u21a9\s*$/, '').trim();
@@ -188,9 +188,9 @@
     var m = text.match(/^(.{40,260}?[.!?])(\s|$)/);
     var full = li.innerHTML.replace(/<a[^>]*data-footnote-backref[^>]*>[\s\S]*?<\/a>/g, '').replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '');
     note.innerHTML = (num ? num.outerHTML : '') + (strong ? '<strong>' + strong.textContent + '</strong> ' : '') +
-      '<span class="pd-note-brief"></span><span class="pd-note-full">' + full + '</span> <button type="button" class="pd-note-more" aria-expanded="false">Full note</button>';
+      '<span class="pd-note-brief"></span><span class="pd-note-full">' + full + '</span> <button type="button" class="pd-text-btn" data-note-more aria-expanded="false">Full note</button>';
     note.querySelector('.pd-note-brief').textContent = m ? m[1] : text.slice(0, 200);
-    var more = note.querySelector('.pd-note-more');
+    var more = note.querySelector('[data-note-more]');
     more.addEventListener('click', function () {
       var open = note.classList.toggle('is-open');
       more.setAttribute('aria-expanded', open ? 'true' : 'false');
@@ -299,7 +299,7 @@
     var inputs = Array.prototype.slice.call(calc.querySelectorAll('[data-var]'));
     var defaults = inputs.map(function (el) { return el.value; });
     var defs = (calc.getAttribute('data-define') || '').split(';').map(function (d) { return d.split('='); }).filter(function (d) { return d.length === 2; });
-    var reset = calc.querySelector('.pd-calc-reset');
+    var reset = calc.querySelector('[data-reset]');
     var outs = Array.prototype.slice.call(calc.querySelectorAll('[data-out]'));
     var toggles = Array.prototype.slice.call(calc.querySelectorAll('[data-set]'));
     var hot;

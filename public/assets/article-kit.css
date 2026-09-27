@@ -19,12 +19,13 @@
 .article .container { max-width: 1060px; }
 .article-header { max-width: 920px; border-bottom: 0; }
 .article-kicker-sep, .article-meta-sep { opacity: 0.5; }
-.article-intro { font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 22px; }
+.article-intro { font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; }
 
 /* ============================================================
    Three voices. Archivo Black for the headline, section heads and big numbers;
    Source Serif 4 for reading, decks and pull quotes; IBM Plex Sans for figures,
-   labels, captions, inputs and notes.
+   labels, captions, inputs and notes. Every size is a step of the type scale in
+   site-shell.css; body text is step 0.
    ============================================================ */
 /* The article column is the container the kit's components answer to (see @container column). */
 .article-body {
@@ -32,24 +33,24 @@
   position: relative;
   max-width: 62ch;
   font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, 'Times New Roman', serif;
-  font-size: 19.5px;
+  font-size: var(--step-0);
   line-height: 1.55;
   counter-reset: sec;
 }
 .article-body p { font-variant-numeric: oldstyle-nums proportional-nums; }
 .article-body a { color: inherit; text-decoration-color: var(--brass); text-underline-offset: 3px; }
-.pd-figure, .pd-graphic, .pd-calc, .pd-units, .pd-eyebrow, .pd-field, .pd-ledger, .pd-stack, .pd-cols, .pd-record, .pd-asof,
-.pd-sticky-notes, .pd-who, .article-body figcaption, .pd-toggle {
+.pd-figure, .pd-graphic, .pd-calc, .pd-units, .pd-field, .pd-ledger, .pd-stack, .pd-cols, .pd-record, .pd-asof,
+.pd-sticky-notes, .article-body figcaption, .pd-toggle, .pd-key, .pd-text-btn {
   font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
 }
 
 /* The first plain paragraph opens on a drop cap (article.js marks it). */
-.article-lede { font-size: 22px; line-height: 1.5; color: var(--paper); }
+.article-lede { font-size: var(--step-1); line-height: 1.5; color: var(--paper); }
 .article-lede::first-letter {
   float: left;
   margin: 8px 12px 0 0;
   font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: 84px;
+  font-size: var(--step-8);
   line-height: 0.8;
   color: var(--brass);
 }
@@ -61,16 +62,17 @@
   padding-top: 22px;
   border-top: 1px solid var(--hairline);
   font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: clamp(24px, 2.4vw, 29px);
+  font-size: var(--step-1);
   line-height: 1.12;
   counter-increment: sec;
 }
+@media (width >= 1040px) { .article-body h2 { font-size: var(--step-2); } }
 .article-body h2::before {
   content: counter(sec, upper-roman) ".";
   display: block;
   margin-bottom: 10px;
   font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
-  font-size: 16px;
+  font-size: var(--step--1);
   font-weight: 600;
   letter-spacing: 0.14em;
   color: var(--brass);
@@ -83,7 +85,7 @@
   font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-style: italic;
   font-weight: 400;
-  font-size: 21px;
+  font-size: var(--step-1);
   line-height: 1.3;
   color: var(--paper);
 }
@@ -94,7 +96,7 @@
   max-width: 52ch;
   font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-style: italic;
-  font-size: 19px;
+  font-size: var(--step-0);
   line-height: 1.45;
   color: var(--secondary);
 }
@@ -114,7 +116,7 @@
   font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-style: italic;
   font-weight: 400;
-  font-size: clamp(24px, 2.6vw, 30px);
+  font-size: var(--step-1);
   line-height: 1.28;
   color: var(--paper);
   text-wrap: balance;
@@ -125,7 +127,7 @@
   left: -0.55em;
   top: -0.22em;
   font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
-  font-size: 132px;
+  font-size: var(--step-10);
   font-weight: 600;
   line-height: 1;
   color: var(--brass);
@@ -135,14 +137,10 @@
 .article-body sup { line-height: 0; }
 
 /* ---------- Figure parts ---------- */
+/* The eyebrow is the label (site-shell.css) in the accent, naming the figure under it. */
 .pd-eyebrow {
   margin: 0 0 14px !important;
   color: var(--brass);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.4;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 .pd-figure {
   margin: 44px 0;
@@ -154,10 +152,74 @@
   margin-top: 18px;
   max-width: 62ch;
   color: var(--secondary);
-  font-size: 13px;
+  font-size: var(--step--2);
   line-height: 1.5;
 }
-.pd-accent { color: var(--brass); }
+
+/* ---------- Number: every figure set in the display face, in four sizes ---------- */
+/* The default is a value in a row; is-s a value beside a label; is-l a total or a count; is-xl the
+   number a figure leads with. In a narrow column each size takes the step below. The decisions'
+   numerals are the same number, drawn by the stylesheet. */
+.pd-num, .pd-decisions li::before {
+  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+  font-weight: 400;
+  line-height: 0.95;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--paper);
+}
+.pd-num { font-size: var(--step-2); white-space: nowrap; }
+.pd-num.is-s { font-size: var(--step-1); }
+.pd-num.is-l { font-size: var(--step-4); }
+.pd-num.is-xl { font-size: var(--step-6); }
+@container column (width < 560px) {
+  .pd-num { font-size: var(--step-1); }
+  .pd-num.is-l { font-size: var(--step-2); }
+  .pd-num.is-xl { font-size: var(--step-4); }
+}
+
+/* ---------- Head: the number a figure leads with and the sentence it belongs to ---------- */
+/* The sentence sits beside the number, and wraps under it when fewer than 14 characters fit. */
+.pd-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 20px; margin: 0 0 18px; }
+.pd-head-text {
+  flex: 1 1 14ch;
+  max-width: 44ch;
+  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
+  font-size: var(--step-0);
+  line-height: 1.4;
+  color: var(--paper);
+}
+.pd-head-text > p { margin: 0; }
+@container column (width < 560px) {
+  .pd-head { margin-bottom: 12px; }
+  .pd-head-text { font-size: var(--step--1); }
+}
+
+/* ---------- Swatch: the square that keys a colour in a legend or a key ---------- */
+.pd-swatch { display: inline-block; flex: none; width: 12px; height: 12px; border: 1px solid var(--hairline); }
+.pd-swatch.is-ink { background: var(--paper); border-color: var(--paper); }
+.pd-swatch.is-accent { background: var(--brass); border-color: var(--brass); }
+
+/* ---------- Text button: an action written as a link ---------- */
+.pd-text-btn {
+  position: relative;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brass);
+  font-size: var(--step--2);
+  font-weight: 600;
+  line-height: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+/* A 44px target without making the line taller. */
+.pd-text-btn::after { content: ""; position: absolute; inset: -12px -4px; }
+.pd-text-btn:hover { color: var(--paper); }
+.pd-text-btn:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+/* A button that appears later holds its line, so nothing moves when it does. */
+.pd-text-btn[hidden] { display: inline-block; visibility: hidden; }
 
 /* ---------- Unit stat: the number, its sentence, and a row of units that fills ---------- */
 figure.pd-units {
@@ -167,22 +229,7 @@ figure.pd-units {
   border-top: 2px solid var(--brass);
   border-bottom: 1px solid var(--hairline);
 }
-.pd-units-head { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; align-items: baseline; }
-.pd-units-num {
-  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: clamp(48px, 5vw, 68px);
-  line-height: 0.9;
-  font-variant-numeric: tabular-nums;
-  color: var(--paper);
-}
-.pd-units-label {
-  max-width: 34ch;
-  font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
-  font-size: 19px;
-  line-height: 1.4;
-  color: var(--paper);
-}
-.pd-units-cells { display: grid; gap: 4px; margin-top: 18px; grid-template-columns: repeat(20, 1fr); }
+.pd-units-cells { display: grid; gap: 4px; grid-template-columns: repeat(20, 1fr); }
 .pd-units-cells[data-cols="10"] { grid-template-columns: repeat(10, 1fr); }
 .pd-units-cells[data-cols="25"] { grid-template-columns: repeat(25, 1fr); }
 .pd-units-cells[data-cols="50"] { grid-template-columns: repeat(50, 1fr); gap: 3px; }
@@ -195,7 +242,7 @@ figure.pd-units {
 }
 .pd-cell.is-on { background: var(--brass); border-color: var(--brass); }
 .pd-cell.is-alt { background: var(--paper); border-color: var(--paper); }
-.pd-units figcaption { margin-top: 12px; font-size: 12px; line-height: 1.4; max-width: none; }
+.pd-units figcaption { margin-top: 12px; line-height: 1.4; max-width: none; }
 
 /* ---------- Unit grid: a hundred squares, and the counts filling in ---------- */
 /* The opener runs the full width of the screen above or at the top of the piece; the callback is
@@ -205,15 +252,13 @@ figure.pd-units {
 .pd-cell.is-landing { transform: scale(1.35); }
 .pd-grid-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--hairline); }
 .pd-legend-row { display: grid; grid-template-columns: 12px auto minmax(0, 1fr); gap: 12px; align-items: baseline; }
-.pd-swatch { width: 12px; height: 12px; margin-top: 4px; align-self: start; border: 1px solid var(--hairline); }
-.pd-swatch.is-on { background: var(--brass); border-color: var(--brass); }
-.pd-swatch.is-alt { background: var(--paper); border-color: var(--paper); }
-.pd-legend-num { min-width: 2ch; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: clamp(30px, 3.4vw, 44px); line-height: 0.95; font-variant-numeric: tabular-nums; color: var(--paper); }
-.pd-legend-label { max-width: 26ch; font-size: 16px; line-height: 1.4; color: var(--secondary); }
-.pd-grid-source { margin: 12px 0 0 !important; max-width: 70ch; font-size: 12px; line-height: 1.5; color: var(--secondary); }
+.pd-legend-row .pd-swatch { margin-top: 4px; align-self: start; }
+.pd-legend-row .pd-num { min-width: 2ch; }
+.pd-legend-label { max-width: 26ch; font-size: var(--step--1); line-height: 1.4; color: var(--secondary); }
+.pd-grid-source { margin: 12px 0 0 !important; max-width: 70ch; font-size: var(--step--2); line-height: 1.5; color: var(--secondary); }
 .pd-grid-source a { color: var(--brass); text-decoration: underline; text-underline-offset: 3px; }
 .pd-grid.is-opener { width: 100vw; margin: 0 0 56px calc(50% - 50vw); padding: 8px 32px 0; }
-.pd-grid.is-opener .pd-grid-inner { max-width: 996px; margin: 0 auto; }
+.pd-grid.is-opener .pd-grid-inner { max-width: 996px; margin: 0 auto; container: column / inline-size; }
 .pd-grid.is-callback { border-bottom: 0; padding-bottom: 0; }
 .pd-grid.is-callback .pd-grid-cells { grid-template-columns: repeat(10, 1fr); gap: 3px; max-width: 200px; margin: 0 auto; aspect-ratio: 1 / 1; }
 .pd-grid.is-callback .pd-cell { transition-duration: var(--pd-base); }
@@ -233,9 +278,9 @@ figure.pd-units {
   transition: transform var(--pd-slow) var(--pd-ease), opacity var(--pd-base) var(--pd-ease);
   transition-delay: var(--d, 0ms);
 }
-.pd-org-name { font-size: 14px; font-weight: 700; line-height: 1.2; color: var(--paper); }
-.pd-org-owns { font-size: 12px; line-height: 1.3; color: var(--secondary); }
-.pd-org-status { margin-top: auto; white-space: nowrap; font-size: 12px; letter-spacing: 0.04em; text-transform: uppercase; color: var(--secondary); }
+.pd-org-name { font-size: var(--step--2); font-weight: 700; line-height: 1.2; color: var(--paper); }
+.pd-org-owns { font-size: var(--step--2); line-height: 1.3; color: var(--secondary); }
+.pd-org-status { margin-top: auto; white-space: nowrap; }
 .pd-org-status::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--ok); }
 .pd-one {
   position: absolute;
@@ -249,7 +294,7 @@ figure.pd-units {
   transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-slow) var(--pd-ease);
 }
 .pd-one img { display: block; width: auto; max-width: 100%; max-height: 380px; height: auto; margin: 0 auto; }
-.pd-one-cap { margin: 14px 0 0 !important; max-width: 34ch; font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-style: italic; font-size: 16px; line-height: 1.4; text-align: center; color: var(--secondary); }
+.pd-one-cap { margin: 14px 0 0 !important; max-width: 34ch; font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-style: italic; font-size: var(--step--1); line-height: 1.4; text-align: center; color: var(--secondary); }
 /* The fold is the part with data-at: when its step comes, the boxes head for the centre, the outer
    ones first, and the one bank arrives a beat later. */
 .is-armed .pd-fold.is-shown .pd-org-box { transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.18); opacity: 0; }
@@ -264,35 +309,24 @@ figure.pd-units {
   max-width: 30ch;
   font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
   font-style: italic;
-  font-size: clamp(24px, 2.6vw, 30px);
+  font-size: var(--step-1);
   line-height: 1.28;
   color: var(--paper);
   text-wrap: balance;
 }
+@media (width >= 1040px) { .article-body blockquote p, .pd-pull { font-size: var(--step-2); } }
 
 /* ---------- Stacked bar: parts that build a total, a line to beat, and the ledger ---------- */
-.pd-stack-lead { display: flex; align-items: baseline; gap: 14px; margin-bottom: 18px; }
-.pd-stack-num {
-  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: clamp(38px, 4.2vw, 56px);
-  line-height: 0.95;
-  font-variant-numeric: tabular-nums;
-  color: var(--paper);
-}
-.pd-stack-sub { color: var(--secondary); font-size: 13px; }
+/* Under the eyebrow, a figure with no number to lead with says what its bars count. */
+.pd-stack-sub { margin: 0 0 18px !important; color: var(--secondary); font-size: var(--step--2); line-height: 1.5; }
 .pd-stack-bar { margin-top: 14px; }
 .pd-stack-bar + .pd-stack-bar { margin-top: 36px; }
-.pd-stack-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
-.pd-stack-name { color: var(--secondary); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+/* The line's label hangs under its bar, so the next bar clears it. */
+.pd-stack-bar:has(.pd-mark) + .pd-stack-bar { margin-top: 48px; }
+/* The bar's name is a label; its value is a number (is-s). */
+.pd-stack-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 8px; }
 /* What a bar counts, under its name. */
-.pd-stack-what { display: block; max-width: 44ch; margin-top: 4px; font-size: 13px; font-weight: 400; line-height: 1.35; letter-spacing: 0; text-transform: none; }
-.pd-stack-val {
-  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: 22px;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  color: var(--paper);
-}
+.pd-stack-what { display: block; max-width: 44ch; margin-top: 4px; font-size: var(--step--2); font-weight: 400; line-height: 1.35; letter-spacing: 0; text-transform: none; }
 .pd-stack-track { position: relative; height: 34px; background: color-mix(in srgb, var(--paper) 6%, transparent); }
 .pd-seg { position: absolute; top: 0; bottom: 0; background: var(--paper); transition: width var(--pd-slow) var(--pd-ease), left var(--pd-slow) var(--pd-ease); }
 .pd-seg.is-accent { background: var(--brass); }
@@ -302,7 +336,7 @@ figure.pd-units {
   left: 10px;
   transform: translateY(-50%);
   white-space: nowrap;
-  font-size: 12px;
+  font-size: var(--step--2);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--ground);
@@ -323,47 +357,30 @@ figure.pd-units {
   background: var(--paper);
   transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease), left var(--pd-slow) var(--pd-ease);
 }
-.pd-mark span {
+.pd-mark .label {
   position: absolute;
   top: 100%;
   right: -2px;
   margin-top: 6px;
   white-space: nowrap;
-  color: var(--secondary);
-  font-size: 12px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
 }
-.pd-mark.is-left span { right: auto; left: -2px; }
-.pd-stack-ledger { margin-top: 34px; }
-.pd-stack-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 16px;
-  padding: 10px 0;
-  border-top: 1px solid color-mix(in srgb, var(--paper) 12%, transparent);
-  transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease);
-}
-.pd-stack-row-label { font-size: 14px; color: var(--paper); }
-.pd-stack-row-label small { display: block; color: var(--secondary); font-size: 12px; }
-.pd-stack-row-val { font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 20px; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.pd-stack-row.is-total { border-top: 2px solid var(--paper); }
-.pd-stack-row.is-total .pd-stack-row-val { color: var(--brass); }
-.pd-stack-note { margin: 12px 0 0 !important; color: var(--paper); font-size: 14px; transition: opacity var(--pd-base) var(--pd-ease) 300ms; }
+.pd-mark.is-left .label { right: auto; left: -2px; }
+/* The ledger under the bars clears the line's label. */
+.pd-stack-bar + .pd-ledger { margin-top: 34px; }
+.pd-stack-note { margin: 12px 0 0 !important; color: var(--paper); font-size: var(--step--1); transition: opacity var(--pd-base) var(--pd-ease) 300ms; }
 .pd-stack-note strong { color: var(--brass); }
 
 /* ---------- Rising columns: one column per period, the event a beat later ---------- */
 .pd-cols { --plot: 230px; }
 .pd-cols-callouts { display: flex; justify-content: space-between; gap: 16px; min-height: 48px; margin: 0 0 8px 54px; }
 .pd-cols-callout { margin: 0 !important; line-height: 1.2; transition: opacity var(--pd-base) var(--pd-ease); }
-.pd-cols-callout b { display: block; font-size: 18px; font-weight: 700; color: var(--paper); }
-.pd-cols-callout span { display: block; margin-top: 3px; font-size: 13px; color: var(--secondary); }
+.pd-cols-callout b { display: block; font-size: var(--step--1); font-weight: 700; color: var(--paper); }
+.pd-cols-callout span { display: block; margin-top: 3px; font-size: var(--step--2); color: var(--secondary); }
 .pd-cols-callout.is-accent { text-align: right; }
 .pd-cols-callout.is-accent b, .pd-cols-callout.is-accent span { color: var(--brass); }
 .pd-cols-plot { position: relative; height: var(--plot); margin-left: 54px; border-bottom: 1px solid var(--secondary); }
 .pd-cols-grid span { position: absolute; left: 0; right: 0; height: 0; border-top: 1px solid var(--hairline); }
-.pd-cols-grid span b { position: absolute; right: calc(100% + 8px); top: -9px; font-size: 13px; font-weight: 400; color: var(--secondary); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.pd-cols-grid span b { position: absolute; right: calc(100% + 8px); top: -10px; font-size: var(--step--2); font-weight: 400; color: var(--secondary); white-space: nowrap; font-variant-numeric: tabular-nums; }
 .pd-cols-bars { position: absolute; inset: 0; display: flex; align-items: flex-end; }
 .pd-col { position: relative; flex: 1 1 0; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
 .pd-col i {
@@ -388,9 +405,9 @@ figure.pd-units {
   transition: opacity var(--pd-base) var(--pd-ease);
 }
 .pd-cols-x { display: flex; margin-left: 54px; }
-.pd-cols-x span { flex: 1 1 0; padding-top: 6px; text-align: center; font-size: 13px; color: var(--secondary); font-variant-numeric: tabular-nums; }
+.pd-cols-x span { flex: 1 1 0; padding-top: 6px; text-align: center; font-size: var(--step--2); color: var(--secondary); font-variant-numeric: tabular-nums; }
 .pd-cols-x span.is-strong { font-weight: 700; color: var(--paper); }
-.pd-cols-marker { margin: 6px 0 0 !important; text-align: right; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--brass); transition: opacity var(--pd-base) var(--pd-ease); }
+.pd-cols-marker { margin: 6px 0 0 !important; text-align: right; transition: opacity var(--pd-base) var(--pd-ease); }
 
 /* ---------- Build states: parts wait for their step (data-at) ---------- */
 /* article-kit.js adds is-armed to a figure below the fold, or to a pinned graphic, and marks
@@ -401,7 +418,7 @@ figure.pd-units {
 .is-armed .pd-seg[data-at]:not(.is-shown) { width: 0 !important; }
 .is-armed .pd-seg[data-at]:not(.is-shown) .pd-seg-label { opacity: 0; transition-delay: 0ms; }
 .is-armed .pd-mark[data-at]:not(.is-shown) { opacity: 0; transform: translateY(-14px); }
-.is-armed .pd-stack-row[data-at]:not(.is-shown) { opacity: 0; transform: translateY(4px); }
+.is-armed .pd-ledger-row[data-at]:not(.is-shown) { opacity: 0; transform: translateY(4px); }
 .is-armed .pd-stack-note[data-at]:not(.is-shown) { opacity: 0; }
 .is-armed .pd-cols-bars[data-at]:not(.is-shown) .pd-col:not(.is-event) i { transform: scaleY(0); }
 .is-armed .pd-col.is-event[data-at]:not(.is-shown)::before { opacity: 0; }
@@ -425,9 +442,7 @@ figure.pd-units {
 .pd-note-full { display: none; }
 .sidenote.is-open .pd-note-full { display: inline; }
 .sidenote.is-open .pd-note-brief { display: none; }
-.pd-note-more { margin-left: 4px; padding: 3px 0; border: 0; background: none; color: var(--brass); font: inherit; font-size: 13px; white-space: nowrap; cursor: pointer; }
-.pd-note-more:hover { text-decoration: underline; }
-.pd-note-more:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+.sidenote .pd-text-btn { margin-left: 4px; }
 @media (width >= 1180px) {
   .pd-scrolly {
     width: calc(min(1060px, 100vw) - 64px);
@@ -467,30 +482,24 @@ figure.pd-units {
 .pd-calc-title {
   margin: 0 0 8px !important;
   font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: 26px;
+  font-size: var(--step-1);
   line-height: 1.1;
   text-transform: uppercase;
   letter-spacing: 0.01em;
   color: var(--paper);
 }
-.pd-calc-lede { margin: 0 !important; max-width: 62ch; font-size: 16px; line-height: 1.5; color: var(--paper); opacity: 0.8; }
+.pd-calc-lede { margin: 0 !important; max-width: 62ch; font-size: var(--step--1); line-height: 1.5; color: var(--paper); opacity: 0.8; }
 .pd-calc-inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: 18px 16px; margin-bottom: 26px; }
 .pd-field { display: flex; flex-direction: column; }
 /* In a calculator, fields in a row share their label, box and note lines, so the boxes line up
    however long a label runs. */
 .pd-calc-inputs .pd-field { display: grid; grid-template-rows: subgrid; grid-row: span 3; row-gap: 0; }
-.pd-field-label {
+/* A field's name is a label. Two lines are held for it, so the boxes in a row line up. */
+.pd-field > .label, .pd-calc-row .label {
   display: flex;
   align-items: flex-end;
   min-height: 2.7em;
   margin: 0 0 8px !important;
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.35;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--paper);
-  opacity: 0.75;
 }
 .pd-input-wrap {
   display: flex;
@@ -512,66 +521,55 @@ figure.pd-units {
   background: transparent;
   color: var(--paper);
   font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;
-  font-size: 24px;
+  font-size: var(--step-1);
   font-weight: 600;
   line-height: 1.1;
   font-variant-numeric: tabular-nums;
 }
 .pd-input::-webkit-outer-spin-button, .pd-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .pd-input[type=number] { -moz-appearance: textfield; appearance: textfield; }
-.pd-affix { color: var(--brass); font-weight: 700; font-size: 18px; opacity: 0.9; }
+.pd-affix { color: var(--brass); font-weight: 700; font-size: var(--step--1); opacity: 0.9; }
 .pd-affix:first-child { margin-right: 4px; }
 .pd-affix:last-child { margin-left: 4px; }
-.pd-field-src { margin-top: 7px; color: var(--secondary); font-size: 12px; line-height: 1.35; }
+.pd-field-src { margin-top: 7px; color: var(--secondary); font-size: var(--step--2); line-height: 1.35; }
 .pd-calc-row { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; margin-bottom: 24px; }
 .pd-toggle { display: flex; flex-wrap: wrap; gap: 8px; }
+/* The button's text is a label, in ink. */
 .pd-toggle-btn {
   min-height: 44px;
   padding: 11px 14px;
   border: 1px solid var(--secondary);
   background: transparent;
   color: var(--paper);
-  font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;
-  font-size: 14px;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
   cursor: pointer;
 }
 .pd-toggle-btn:hover { border-color: var(--paper); }
 .pd-toggle-btn.is-on { border-color: var(--brass); background: var(--brass); color: var(--on-brass); }
 .pd-toggle-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
-.pd-calc-reset { min-height: 44px; padding: 8px 0; border: 0; background: none; color: var(--brass); font-family: inherit; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-/* Hidden but still holding its line, so the tool keeps its size when the link appears. */
-.pd-calc-reset[hidden] { display: inline-block; visibility: hidden; }
 .pd-bar { margin: 0 0 8px; }
 .pd-bar .pd-stack-track { background: color-mix(in srgb, var(--paper) 8%, transparent); }
 .pd-bar .pd-seg { transition-duration: 320ms; transition-timing-function: ease; }
 .pd-bar .pd-mark { top: -8px; bottom: -8px; transition-duration: 320ms; }
-.pd-bar .pd-mark span { right: auto; left: 50%; transform: translateX(-50%); margin-top: 4px; font-size: 11px; }
-.pd-calc .pd-key { display: flex; flex-wrap: wrap; gap: 18px; margin: 32px 0 6px; color: var(--secondary); font-size: 13px; }
-.pd-calc-row .pd-key { margin: 0; }
+.pd-bar .pd-mark .label { right: auto; left: 50%; transform: translateX(-50%); margin-top: 4px; }
 .pd-calc .pd-bar + .pd-bar { margin-top: 22px; }
-.pd-key span::before { content: ""; display: inline-block; width: 10px; height: 10px; margin-right: 6px; vertical-align: -1px; background: var(--paper); }
-.pd-key span.is-accent::before { background: var(--brass); }
+
+/* ---------- Key: a swatch and a name for each colour in a bar ---------- */
+.pd-key { display: flex; flex-wrap: wrap; gap: 18px; margin: 32px 0 6px; color: var(--secondary); font-size: var(--step--2); }
+.pd-key > span { display: inline-flex; align-items: center; gap: 6px; }
+.pd-calc-row .pd-key { margin: 0; }
+
+/* ---------- Ledger: named amounts, the arithmetic under each name, and the total ---------- */
+/* Under a stacked bar and in a calculator alike. Values are numbers; the total is is-l. */
 .pd-ledger { margin-top: 22px; }
-.pd-ledger-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 0; border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); }
-.pd-ledger-label { font-size: 17px; line-height: 1.35; }
-.pd-ledger-src { display: block; margin-top: 2px; color: var(--secondary); font-size: 13px; }
-.pd-ledger-value {
-  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: 30px;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-  white-space: nowrap;
-  transition: color var(--pd-base) var(--pd-ease);
-}
+.pd-ledger-row { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 16px 0; border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease); }
+.pd-ledger-label { font-size: var(--step--1); line-height: 1.35; }
+.pd-ledger-src { display: block; margin-top: 2px; color: var(--secondary); font-size: var(--step--2); }
+.pd-ledger-value { text-align: right; transition: color var(--pd-base) var(--pd-ease); }
 .pd-ledger-value.is-hot { color: var(--brass); }
 .pd-ledger-total { margin-top: 4px; padding: 20px 18px; border-top: 0; background: var(--dark-navy); box-shadow: inset 0 0 0 1px var(--hairline); }
-.pd-ledger-total .pd-ledger-label { font-size: 18px; font-weight: 600; }
-.pd-ledger-total .pd-ledger-value { font-size: 40px; color: var(--brass); }
-.pd-calc figcaption { margin-top: 20px; font-size: 13px; }
+.pd-ledger-total .pd-ledger-label { font-weight: 600; }
+.pd-ledger-total .pd-ledger-value { color: var(--brass); }
+.pd-calc figcaption { margin-top: 20px; }
 /* The fields answer to the calculator's own width: two across when it is narrow, three when it has
    room, one row once it is 900px wide. The calculator widens past the column on a desktop page. */
 .pd-calc { container: calc / inline-size; }
@@ -582,19 +580,20 @@ figure.pd-units {
 
 /* ---------- Dialogue: an exchange, each speaker named ---------- */
 .pd-dialogue { margin: 32px 0 36px; padding: 6px 0 6px 22px; border-left: 1px solid var(--hairline); }
-.pd-dialogue p { margin: 0 0 16px; max-width: 52ch; font-size: 18px; line-height: 1.5; }
+.pd-dialogue p { margin: 0 0 16px; max-width: 52ch; font-size: var(--step--1); line-height: 1.5; }
 .pd-dialogue p:last-child { margin-bottom: 0; }
 .pd-dialogue .pd-them { margin-left: 3ch; color: var(--paper); }
 .pd-dialogue .pd-us { color: var(--secondary); }
-.pd-who { display: block; margin-bottom: 2px; font-size: 12px; font-weight: 600; letter-spacing: 0.02em; color: var(--brass); }
-.pd-us .pd-who { color: var(--secondary); }
+/* Each speaker is a label: the reader's side in the accent. */
+.pd-dialogue .label { display: block; margin-bottom: 2px; }
+.pd-dialogue .pd-them .label { color: var(--brass); }
 
 /* ---------- Decisions: the numbered changes to make ---------- */
 .pd-decisions { list-style: none; margin: 28px 0 40px; padding: 0; counter-reset: pdd; }
-.pd-decisions li { counter-increment: pdd; position: relative; margin: 0; padding: 26px 0 26px 76px; border-top: 1px solid var(--hairline); font-size: 18.5px; }
+.pd-decisions li { counter-increment: pdd; position: relative; margin: 0; padding: 26px 0 26px 76px; border-top: 1px solid var(--hairline); font-size: var(--step--1); }
 .pd-decisions li:last-child { border-bottom: 1px solid var(--hairline); }
-.pd-decisions li::before { content: counter(pdd, decimal-leading-zero); position: absolute; left: 0; top: 22px; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 34px; line-height: 1; color: var(--brass); }
-.pd-decisions strong { display: block; margin-bottom: 8px; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-weight: 400; font-size: 20px; line-height: 1.15; text-transform: uppercase; }
+.pd-decisions li::before { content: counter(pdd, decimal-leading-zero); position: absolute; left: 0; top: 24px; font-size: var(--step-2); color: var(--brass); }
+.pd-decisions strong { display: block; margin-bottom: 8px; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-weight: 400; font-size: var(--step-0); line-height: 1.15; text-transform: uppercase; }
 
 /* ---------- Illustrations: they rise into place as they arrive ---------- */
 .pd-img { margin: 40px 0 44px; padding: 0; border: 0; }
@@ -608,70 +607,64 @@ figure.pd-units {
 :root[data-theme="dark"] .pd-img.is-blend img { mix-blend-mode: normal; }
 
 /* ---------- Tables ---------- */
-.article-body table { display: block; overflow-x: auto; width: 100%; margin: 28px 0 32px; border-collapse: collapse; font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; font-size: 14px; line-height: 1.45; }
-.article-body th { padding: 10px 16px 10px 0; border-top: 2px solid var(--paper); border-bottom: 1px solid var(--hairline); text-align: left; vertical-align: bottom; font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--secondary); }
+.article-body table { display: block; overflow-x: auto; width: 100%; margin: 28px 0 32px; border-collapse: collapse; font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif; font-size: var(--step--2); line-height: 1.45; }
+.article-body th { padding: 10px 16px 10px 0; border-top: 2px solid var(--paper); border-bottom: 1px solid var(--hairline); text-align: left; vertical-align: bottom; }
 .article-body td { padding: 10px 16px 10px 0; border-bottom: 1px solid var(--hairline); vertical-align: top; min-width: 9ch; }
 .article-body td:first-child { font-weight: 600; color: var(--paper); }
 /* A row header in the body reads like the first column, not like the column headings. */
-.article-body tbody th { border-top: 0; vertical-align: top; font-size: inherit; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--paper); }
+.article-body tbody th { border-top: 0; vertical-align: top; font-weight: 600; color: var(--paper); }
 
 /* ---------- Narrow screens ---------- */
 @media (width < 1180px) {
   .pd-fold { min-height: 330px; }
   .pd-one { inset: 46px 0 0; }
-  .pd-one-cap { font-size: 14px; }
+  .pd-one-cap { font-size: var(--step--2); }
 }
 @media (width < 760px) {
   .pd-grid.is-opener { margin-bottom: 30px; padding: 4px 20px 0; }
   .pd-grid.is-opener .pd-grid-cells { grid-template-columns: repeat(20, 1fr); gap: 2px; }
   .pd-grid-legend { grid-template-columns: 1fr; gap: 12px; }
-  .pd-legend-label { max-width: none; font-size: 15px; }
+  .pd-legend-label { max-width: none; }
   .pd-org { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
   .pd-org-box { min-height: 70px; padding: 9px; }
-  .pd-org-name { font-size: 12px; }
   .pd-org-owns { display: none; }
   .pd-one img { max-height: 200px; }
-  .pd-one-cap { margin-top: 8px !important; font-size: 13px; }
-  .pd-pull { font-size: 21px; line-height: 1.38; }
-  .article-body { font-size: 18px; }
-  .article-intro { font-size: 19px; }
-  .article-title { font-size: clamp(30px, 8.6vw, 38px); line-height: 1.04; }
-  .article-lede { font-size: 19px; }
-  .article-lede::first-letter { font-size: 64px; }
-  .article-body h2 { margin-top: 52px; font-size: 23px; }
+  .pd-one-cap { margin-top: 8px !important; }
+  /* On phones every reading size takes the step below: body 17, lede and subheads 20, pull quotes 20. */
+  .pd-pull { font-size: var(--step-0); line-height: 1.38; }
+  .article-body { font-size: var(--step--1); }
+  .article-title { line-height: 1.04; }
+  .article-lede { font-size: var(--step-0); }
+  .article-lede::first-letter { font-size: var(--step-6); }
+  .article-body h2 { margin-top: 52px; }
+  .article-body h3 { font-size: var(--step-0); }
+  .pd-deck { font-size: var(--step--1); }
   .pd-figure { margin: 34px 0; padding-top: 22px; }
   /* Pull quotes: the mark sits above the quote, and the quote keeps the column. */
   .article-body blockquote { padding: 30px 0 18px; margin: 34px 0 !important; }
-  .article-body blockquote::before { font-size: 64px; left: -3px; top: -0.02em; }
-  .article-body blockquote p { font-size: 21px; line-height: 1.38; }
-  .pd-graphic .pd-stack-ledger { display: none; }
+  .article-body blockquote::before { font-size: var(--step-6); left: -3px; top: -0.02em; }
+  .article-body blockquote p { font-size: var(--step-0); line-height: 1.38; }
+  .pd-graphic .pd-ledger { display: none; }
   /* With the ledger hidden, the payback line clears the label under the line to beat. */
-  .pd-graphic .pd-stack-note { margin-top: 40px !important; font-size: 13px; }
+  .pd-graphic .pd-stack-note { margin-top: 40px !important; font-size: var(--step--2); }
   .article-body [data-footnote-ref] { padding: 6px 4px; margin: -6px -2px; }
 }
 /* Components answer to the column they sit in, not the screen: the same figure reads the same in
    an article, a /ui frame or a narrow sidebar. */
 @container column (width < 560px) {
-  .pd-units-num { font-size: 44px; }
-  .pd-units-label { font-size: 17px; }
   .pd-units-cells[data-cols="50"] { grid-template-columns: repeat(25, 1fr); }
   .pd-seg-label { left: 8px; }
   .pd-seg-word { display: none; }
-  .pd-stack-lead { margin-bottom: 12px; }
-  .pd-stack-num { font-size: 30px; }
-  .pd-stack-sub { font-size: 12px; }
+  .pd-stack-sub { margin-bottom: 12px !important; }
   .pd-stack-track { height: 28px; }
   .pd-cols { --plot: 180px; }
   .pd-calc { padding: 22px 18px 18px; }
-  .pd-calc-title { font-size: 22px; }
-  .pd-field-label { min-height: 0; }
-  .pd-input { font-size: 22px; }
-  .pd-ledger-value { font-size: 24px; }
+  .pd-calc-title { font-size: var(--step-0); }
+  .pd-field > .label, .pd-calc-row .label { min-height: 0; }
+  .pd-input { font-size: var(--step-0); }
   .pd-ledger-total { padding: 16px 14px; }
-  .pd-ledger-total .pd-ledger-value { font-size: 30px; }
   .pd-decisions li { padding: 20px 0 24px; }
-  .pd-decisions li::before { position: static; display: block; margin-bottom: 8px; font-size: 26px; }
-  .pd-decisions strong { font-size: 18px; }
+  .pd-decisions li::before { position: static; display: block; margin-bottom: 8px; font-size: var(--step-1); }
   .pd-dialogue { padding-left: 0; border-left: 0; }
   .pd-dialogue p { padding-left: 14px; border-left: 2px solid var(--hairline); }
   .pd-dialogue .pd-them { margin-left: 0; border-left-color: var(--brass); }
@@ -690,24 +683,15 @@ figure.pd-units {
 .is-armed .pd-seg-range[data-at]:not(.is-shown) { width: 0 !important; transition-delay: 0ms; }
 
 /* ---------- Record: one number from a primary record, what it was for, and the record's own words ---------- */
-.pd-record { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 8px 24px; align-items: baseline; }
-.pd-record .pd-record-num {
-  margin: 0;
-  font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  font-size: clamp(40px, 4.6vw, 58px);
-  line-height: 0.95;
-  font-variant-numeric: lining-nums tabular-nums;
-  white-space: nowrap;
-  color: var(--paper);
-}
-.pd-record-body { max-width: 52ch; }
-.pd-record .pd-record-lead { margin: 0 0 10px; font-size: 17px; font-weight: 600; line-height: 1.4; font-variant-numeric: lining-nums; color: var(--paper); }
+/* A head (the number and the sentence) with the record's words under the sentence. */
+.pd-record .pd-head { margin: 0; }
+.pd-record .pd-head-text { font-variant-numeric: lining-nums; }
 .pd-record .pd-record-quote {
-  margin: 0;
+  margin: 10px 0 0;
   padding-left: 14px;
   border-left: 2px solid var(--brass);
   font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif;
-  font-size: 17px;
+  font-size: var(--step--1);
   font-style: italic;
   line-height: 1.45;
   font-variant-numeric: lining-nums;
@@ -715,16 +699,12 @@ figure.pd-units {
 }
 .pd-record-quote::before { content: "\201C"; }
 .pd-record-quote::after { content: "\201D"; }
-.pd-record figcaption { grid-column: 1 / -1; }
-@container column (width < 560px) {
-  .pd-record { grid-template-columns: minmax(0, 1fr); gap: 10px; }
-  .pd-record .pd-record-num { font-size: 40px; }
-}
 
 /* ---------- As-of slider: pick a day and see the version that was live ---------- */
-.pd-asof .pd-asof-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: 0 0 4px; font-size: 15px; line-height: 1.4; color: var(--secondary); }
+.pd-asof .pd-asof-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin: 0 0 4px; font-size: var(--step--1); line-height: 1.4; color: var(--secondary); }
 .pd-asof-q { color: var(--secondary); }
-.pd-asof-day { display: inline-block; font-family: 'Archivo Black', 'Archivo Black Fallback', sans-serif; font-size: 28px; line-height: 1; font-variant-numeric: lining-nums tabular-nums; color: var(--paper); }
+/* The day is a number. */
+.pd-asof-day { display: inline-block; }
 /* Ink, so the accent in this figure only ever marks what the customer saw. */
 .pd-asof-range { display: block; width: 100%; height: 44px; margin: 4px 0 2px; accent-color: var(--paper); cursor: pointer; }
 /* Before the script adds the slider, its line is already held, so nothing moves when it appears. */
@@ -737,33 +717,33 @@ figure.pd-units {
 /* Each version's value printed on its band, so the strip reads as a history. */
 .pd-asof-bands.is-labeled { height: 24px; }
 .pd-asof-band { overflow: hidden; }
-.pd-asof-band-label { display: block; padding: 0 6px; font-size: 11px; font-weight: 700; line-height: 24px; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; color: var(--paper); }
+.pd-asof-band-label { display: block; padding: 0 6px; font-size: var(--step--2); font-weight: 700; line-height: 24px; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; color: var(--paper); }
 .pd-asof-band.is-live .pd-asof-band-label { color: var(--on-brass); }
-.pd-asof-months { position: relative; height: 1.5em; margin-top: 4px; font-size: 11px; color: var(--secondary); }
+.pd-asof-months { position: relative; height: 1.5em; margin-top: 4px; font-size: var(--step--2); color: var(--secondary); }
 .pd-asof-months span { position: absolute; top: 0; }
 .pd-asof-answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 18px; }
 .pd-asof-answers.is-single { grid-template-columns: minmax(0, 1fr); max-width: 62ch; }
 /* The accent marks an answer that shows what the customer saw, like the live band; a wrong one gets a faint rule. */
 .pd-asof-answer { padding: 14px 16px 16px; border-top: 3px solid var(--brass); background: color-mix(in srgb, var(--paper) 4%, transparent); }
 .pd-asof-answer.is-wrong { border-top-color: color-mix(in srgb, var(--paper) 25%, transparent); }
-.pd-asof .pd-asof-label { margin: 0 0 8px; font-size: 12px; font-weight: 700; line-height: 1.35; letter-spacing: 0.1em; text-transform: uppercase; color: var(--secondary); }
-.pd-asof .pd-asof-copy { margin: 0 0 8px; font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: 17px; line-height: 1.4; font-variant-numeric: lining-nums; color: var(--paper); }
-.pd-asof .pd-asof-meta { margin: 0; font-size: 12.5px; line-height: 1.45; color: var(--secondary); }
-.pd-asof .pd-asof-verdict { margin: 8px 0 0; font-size: 12px; font-weight: 700; color: var(--paper); }
+/* Each answer is named by a label. */
+.pd-asof-answer .label { margin: 0 0 8px; }
+.pd-asof .pd-asof-copy { margin: 0 0 8px; font-family: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, serif; font-size: var(--step--1); line-height: 1.4; font-variant-numeric: lining-nums; color: var(--paper); }
+.pd-asof .pd-asof-meta { margin: 0; font-size: var(--step--2); line-height: 1.45; color: var(--secondary); }
+.pd-asof .pd-asof-verdict { margin: 8px 0 0; font-size: var(--step--2); font-weight: 700; color: var(--paper); }
 /* Every version, listed: what a reader sees without the script, and what the script reads. */
-.pd-asof-versions { margin: 22px 0 0; padding-left: 1.3em; font-size: 14px; line-height: 1.5; }
+.pd-asof-versions { margin: 22px 0 0; padding-left: 1.3em; font-size: var(--step--2); line-height: 1.5; }
 .pd-asof-versions li { margin-bottom: 8px; }
 .pd-asof-versions .pd-asof-copy { font-family: inherit; font-size: inherit; margin: 0; }
 .pd-asof-versions .pd-asof-meta { display: block; }
 .pd-asof.is-armed .pd-asof-versions { display: none; }
 @container column (width < 560px) {
   .pd-asof-answers { grid-template-columns: minmax(0, 1fr); }
-  .pd-asof-day { font-size: 24px; }
 }
 
 /* ---------- Calculator fold: the main fields stay in view, the rest open on request ---------- */
 .pd-calc-more { margin: 0 0 26px; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
-.pd-calc-more > summary { display: flex; align-items: center; min-height: 48px; font-size: 15px; font-weight: 700; color: var(--paper); cursor: pointer; list-style: none; }
+.pd-calc-more > summary { display: flex; align-items: center; min-height: 48px; font-size: var(--step--1); font-weight: 700; color: var(--paper); cursor: pointer; list-style: none; }
 .pd-calc-more > summary::-webkit-details-marker { display: none; }
 .pd-calc-more > summary::before { content: "+"; display: inline-block; width: 1.4em; color: var(--brass); font-weight: 700; }
 .pd-calc-more[open] > summary::before { content: "\2212"; }
@@ -771,18 +751,19 @@ figure.pd-units {
 .pd-calc .pd-calc-inputs.is-more { margin: 4px 0 0; padding-bottom: 22px; }
 /* Wider than a phone, the fold's fields wrap at a readable width instead of sharing one row. */
 @container calc (width >= 560px) { .pd-calc .pd-calc-inputs.is-more { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); } }
-.pd-calc .pd-calc-group { grid-column: 1 / -1; margin: 10px 0 0; font-size: 11px; font-weight: 700; line-height: 1.2; letter-spacing: 0.1em; text-transform: uppercase; color: var(--secondary); }
-.pd-calc .pd-calc-group:first-child { margin-top: 0; }
+/* A group of fields in the fold is named by a label across the row. */
+.pd-calc-inputs > .label { grid-column: 1 / -1; margin: 10px 0 0; }
+.pd-calc-inputs > .label:first-child { margin-top: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .pd-org-box, .pd-one,
-  .pd-cell, .pd-seg, .pd-seg-label, .pd-mark, .pd-stack-bar, .pd-stack-row, .pd-stack-note, .pd-col i, .pd-col::before,
+  .pd-cell, .pd-seg, .pd-seg-label, .pd-mark, .pd-stack-bar, .pd-ledger-row, .pd-stack-note, .pd-col i, .pd-col::before,
   .pd-cols-callout, .pd-cols-marker, .pd-img img, .pd-seg-range, .pd-asof-band { transition: none !important; }
 }
 @media (forced-colors: active) {
-  .pd-seg, .pd-col i, .pd-cell.is-on, .pd-swatch.is-on { background: CanvasText; forced-color-adjust: none; }
+  .pd-seg, .pd-col i, .pd-cell.is-on, .pd-swatch.is-accent { background: CanvasText; forced-color-adjust: none; }
   /* The second fill needs its own system colour, or it reads as an empty square. */
-  .pd-cell.is-alt, .pd-swatch.is-alt { background: Highlight; border-color: Highlight; forced-color-adjust: none; }
+  .pd-cell.is-alt, .pd-swatch.is-ink { background: Highlight; border-color: Highlight; forced-color-adjust: none; }
   .pd-seg-range, .pd-seg.is-outline { background: none; box-shadow: inset 0 0 0 2px CanvasText; forced-color-adjust: none; }
   .pd-asof-band.is-live { background: Highlight; forced-color-adjust: none; }
 }
