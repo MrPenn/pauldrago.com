@@ -66,6 +66,7 @@ export const RULES = [
   { id: 'css-color', severity: 'error', group: 'Stylesheets', title: 'Colours come from tokens', why: 'A literal colour does not switch with the theme. The print block and token definitions are exempt.', bad: 'color: #0A192F;', good: 'color: var(--paper);' },
   { id: 'type-tokens', severity: 'error', group: 'Stylesheets', title: 'Faces, weights, line spacing and tracking come from the base', why: 'site-shell.css is the root of the cascade: it names the three typefaces and their fallbacks, three weights, five kinds of line spacing and the tracking for small capitals. Every other sheet uses those tokens, so one change at the root moves the whole site, and nothing drifts a shade off.', bad: "font-family: 'IBM Plex Sans', sans-serif;\nline-height: 1.42;\nfont-weight: 500;", good: 'font-family: var(--font-sans);\nline-height: var(--leading-text);\nfont-weight: var(--weight-regular);' },
   { id: 'space-tokens', severity: 'error', group: 'Stylesheets', title: 'Spacing and the grid come from the base', why: 'Every margin, padding and gap is a step of the 4px spacing scale in site-shell.css, and the containers, gutter, rail and text measures are grid tokens, so the rhythm holds from page to page and one change at the root moves it everywhere. 0, auto, percentages, viewport units and a 1px hairline pass.', bad: 'padding: 18px 22px;\nmax-width: 68ch;', good: 'padding: var(--space-5) var(--space-6);\nmax-width: var(--measure-1);' },
+  { id: 'css-layer', severity: 'error', group: 'Stylesheets', title: 'Every rule sits in a cascade layer', why: 'site-shell.css declares the order once: base, site, kit, page, utilities. A later layer wins over an earlier one whatever its selectors, so a page never needs !important to beat the base, and the order the sheets load in stops mattering. A rule outside the layers beats all of them, and a layer with another name has no place in the order.', fix: 'Wrap the sheet in @layer base, site, kit, page or utilities: the shell and article template are site, the kit is kit, one page\'s own sheet is page.', good: '@layer page {\n  .hero { margin: 0; }\n}' },
   { id: 'css-radius', severity: 'warn', group: 'Stylesheets', title: 'Corners stay square', why: 'Rounded cards read as a software template. Bar ends and inputs round by 4px at most; a 50% radius draws a dot and is allowed.' },
   { id: 'css-gradient', severity: 'warn', group: 'Stylesheets', title: 'No gradients', why: 'Flat fills and hard rules. Hatching with repeating-linear-gradient is allowed; it draws ranges.' },
   { id: 'css-shadow', severity: 'warn', group: 'Stylesheets', title: 'No soft shadows', why: 'Depth comes from rules and panels. A zero-blur inset shadow drawing a hairline is allowed.' },
@@ -328,6 +329,8 @@ function shorthandSize(v) {
   return null;
 }
 
+export const LAYERS = ['base', 'site', 'kit', 'page', 'utilities'];
+
 export function lintCss(file, text) {
   const { findings, report } = makeReporter(file, text);
   const src = text.replace(/\/\*[\s\S]*?\*\//g, blank);
@@ -337,6 +340,12 @@ export function lintCss(file, text) {
   const columnFix = { fix: `Use a width from the column scale (${COLUMN_SCALE.join(', ')}), in range syntax: @container column (width < 560px).` };
   for (const m of src.matchAll(/@container\s+([^{]+)\{/g)) checkQuery(report, m.index, '@container', `@container ${m[1].trim()}`, m[1], COLUMN_SCALE, 'column scale', columnFix);
   for (const rule of parseCss(text)) {
+    // A style rule sits in a layer; @page and @font-face describe the paper and the fonts, not the document.
+    if (!/^@(?:page|font-face)\b/.test(rule.selector) && !rule.context.some((c) => /^@page\b/.test(c))) {
+      const layers = rule.context.filter((c) => /^@layer\b/.test(c)).map((c) => c.replace(/^@layer\s+/, '').trim());
+      if (!layers.length) report('css-layer', rule.index, `${rule.selector.slice(0, 60)} is outside the cascade layers`);
+      for (const l of layers) if (!LAYERS.includes(l)) report('css-layer', rule.index, `layer "${l}" is not one of ${LAYERS.join(', ')}`);
+    }
     const parts = rule.selector.split(',').map((s) => s.trim()).filter((s) => {
       const subject = s.split(/\s*[>+~]\s*|\s+/).pop();
       return TABLE_PART.test(subject) && !/::?(?:before|after|marker)/i.test(subject);
@@ -472,7 +481,7 @@ function checkUnits(html, where, report) {
   const value = Number(html.match(/data-value="(\d+)"/)?.[1]);
   const of = Number(html.match(/data-of="(\d+)"/)?.[1]);
   if (!Number.isFinite(value) || !Number.isFinite(of) || !of) { report('units-count', where, 'the unit stat has no data-value and data-of'); return; }
-  const printed = Number(html.match(/class="(?:pd-num is-xl|fd-stat-num)"[^>]*>\s*([\d.]+)\s*%/)?.[1]);
+  const printed = Number(html.match(/class="(?:pd-num pd-num--xl|fd-stat-num)"[^>]*>\s*([\d.]+)\s*%/)?.[1]);
   if (Number.isFinite(printed) && Math.abs((value / of) * 100 - printed) > 1) report('units-count', where, `${value} of ${of} is ${Math.round((value / of) * 1000) / 10}%, but the stat prints ${printed}%`);
   const cells = (html.match(/class="pd-cell\b/g) ?? []).length;
   if (cells) {
@@ -485,10 +494,10 @@ function checkUnits(html, where, report) {
 // Stacked bars: one scale for every segment and line, segments end to end, totals that add up.
 function checkStack(html, where, report) {
   const scale = [];
-  for (const bar of html.split(/<div class="pd-stack-bar\b/).slice(1)) {
+  for (const bar of html.split(/<div class="pd-bar"/).slice(1)) {
     // A lone segment has no label; its number is in data-value.
-    const segs = [...bar.matchAll(/<div class="pd-seg(?=[\s"])[^"]*"[^>]*style="([^"]*)"[^>]*>(?:<span class="pd-seg-label">([\s\S]*?)<\/span>)?<\/div>/g)].map((m) => {
-      const shown = (m[2] ?? '').replace(/<span class="pd-seg-word">[^<]*<\/span>/, '').replace(/<[^>]+>/g, '').trim();
+    const segs = [...bar.matchAll(/<div class="pd-seg(?=[\s"])[^"]*"[^>]*style="([^"]*)"[^>]*>(?:<span class="pd-seg__label">([\s\S]*?)<\/span>)?<\/div>/g)].map((m) => {
+      const shown = (m[2] ?? '').replace(/<span class="pd-seg__word">[^<]*<\/span>/, '').replace(/<[^>]+>/g, '').trim();
       const given = m[0].match(/data-value="([\d.]+)"/);
       return { left: geom(m[1], 'left'), width: geom(m[1], 'width'), value: given ? Number(given[1]) : money(shown), shown, places: (shown.match(/\.(\d+)/)?.[1] ?? '').length };
     });
@@ -499,7 +508,7 @@ function checkStack(html, where, report) {
       if (sg.value && sg.width) scale.push({ value: sg.value, width: sg.width, text: sg.shown || `the segment at ${sg.value}` });
     }
     // A range runs on from the end of the last segment to its data-to value, on the same scale.
-    const range = bar.match(/<div class="pd-seg-range\b[^"]*"[^>]*data-to="([\d.]+)"[^>]*style="([^"]*)"/);
+    const range = bar.match(/<div class="pd-range\b[^"]*"[^>]*data-to="([\d.]+)"[^>]*style="([^"]*)"/);
     if (range && segs.length) {
       const last = segs[segs.length - 1];
       const left = geom(range[2], 'left');
@@ -511,7 +520,7 @@ function checkStack(html, where, report) {
     }
     const mark = bar.match(/<div class="pd-mark\b[^"]*"[^>]*style="([^"]*)"[^>]*><span[^>]*>([^<]*)<\/span>/);
     if (mark && money(mark[2])) scale.push({ value: money(mark[2]), width: geom(mark[1], 'left'), text: mark[2] });
-    const shownTotal = (bar.match(/class="pd-num is-s"[^>]*>([\s\S]*?)<\/span><\/div>/)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
+    const shownTotal = (bar.match(/class="pd-num pd-num--s"[^>]*>([\s\S]*?)<\/span><\/div>/)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
     const total = money(shownTotal);
     const sum = segs.reduce((t, sg) => t + (sg.value ?? 0), 0);
     // Each printed part can be off by half its last digit, so the parts may drift that far from the total.
@@ -523,9 +532,9 @@ function checkStack(html, where, report) {
 
 // Pinned sequences: steps 1..n in order, and no part waiting for a step past n.
 function checkScrolly(html, where, report) {
-  const steps = [...html.matchAll(/class="(?:pd|fd)-step"[^>]*data-step="(\d+)"/g)].map((m) => Number(m[1]));
+  const steps = [...html.matchAll(/class="(?:pd-scrolly__step|fd-step)"[^>]*data-step="(\d+)"/g)].map((m) => Number(m[1]));
   steps.forEach((n, i) => { if (n !== i + 1) report('scrolly-steps', where, `step ${i + 1} is numbered ${n}`); });
-  const graphic = html.slice(html.search(/class="(?:pd|fd)-sticky"/));
+  const graphic = html.slice(html.search(/class="(?:pd-scrolly__sticky|fd-sticky)"/));
   const ats = [...graphic.matchAll(/data-at="(\d+)"/g)].map((m) => Number(m[1]));
   const late = ats.filter((a) => a > steps.length);
   if (late.length) report('scrolly-steps', where, `the graphic waits for step ${Math.max(...late)}, but there are ${steps.length} steps`);
@@ -649,7 +658,7 @@ export function lintArticle(file, source, ctx) {
   // Figures
   for (const f of figures(body)) {
     const where = off(f.start);
-    const named = f.type === 'calc' ? /class="[^"]*\bpd-calc-title\b/ : /class="[^"]*\b(?:pd-eyebrow|cd-widget-title)\b/;
+    const named = f.type === 'calc' ? /class="[^"]*\bpd-calc__title\b/ : /class="[^"]*\b(?:pd-eyebrow|cd-widget-title)\b/;
     if (['bars', 'tl', 'markets', 'widget', 'stack', 'cols', 'calc', 'asof'].includes(f.type) && !named.test(f.html)) report('figure-title', where, f.type === 'calc' ? 'the calculator has no pd-calc-title' : `the ${f.type} figure has no eyebrow`);
     const italicNext = /^\s*(\*[^*]|_[^_]|<p[^>]*>\s*<em>|<p class="[^"]*pd-source)/.test(f.after);
     if (['bars', 'tl', 'stat', 'record', 'units', 'stack', 'cols', 'asof'].includes(f.type) && !/<figcaption/.test(f.html) && !italicNext) report('chart-source', where, `the ${FIGURE_NAMES[f.type] ?? f.type} has no caption`);

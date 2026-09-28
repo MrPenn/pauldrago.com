@@ -2,545 +2,554 @@
    sheet builds on: the colours, the three typefaces, the type scale, the weights, the line spacing,
    the tracking, the spacing scale and the grid, then the defaults every element inherits. Other
    sheets use these tokens and set only what differs from what they inherit. The linter holds them
-   to it (type-scale, type-tokens, space-tokens, css-color). */
+   to it (type-scale, type-tokens, space-tokens, css-color, css-layer).
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+   Cascade layers make the order explicit. A later layer wins over an earlier one whatever the
+   selectors, so a component never needs !important to beat the base:
+     base       this sheet's reset, tokens and element defaults
+     site       the shell every page shares (this sheet) and the article template (article.css)
+     kit        the article kit (article-kit.css)
+     page       one page's own sheet (the home page, a service page, the front door, /ui)
+     utilities  single-purpose classes that always win: .accent, .sr-only */
 
-/* Two themes, one set of names. "paper" is always the ink colour and "ground"
-   the page colour, whichever theme is on; "brass" is the single accent. Light
-   is the default; the browser's colour-scheme preference picks dark. */
-:root {
-  --ground: #F1F2F4;
-  --dark-navy: #FFFFFF;
-  --panel: #E7E9ED;
-  --panel-2: #DDE0E6;
-  --paper: #0A192F;
-  --secondary: #4B5568;
-  --brass: #B8411E;
-  --on-brass: #FFFFFF;
-  /* A button in the accent, pressed or hovered: darker, in either theme. */
-  --brass-hover: color-mix(in srgb, var(--brass) 86%, #000);
-  --brass-active: color-mix(in srgb, var(--brass) 74%, #000);
-  --hairline: #C9CED6;
-  --shadow: color-mix(in srgb, var(--ground) 16%, transparent);
-  --ok: #1F8A5B;
-  color-scheme: light;
+@layer base, site, kit, page, utilities;
 
-  /* Three typefaces: Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for
-     everything else. Each has a fallback sized to its metrics (src/components/Fonts.astro). */
-  --font-display: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
-  --font-serif: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, 'Times New Roman', serif;
-  --font-sans: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  --font-mono: ui-monospace, Menlo, Consolas, monospace;
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
-  /* The type scale. Every font size on the site is one of these steps. Body text is step 0, and
-     each step is 1.2 times the one below it, rounded to the pixel. Step -2 is the smallest text
-     anywhere. */
-  --step--2: 14px;
-  --step--1: 17px;
-  --step-0: 20px;
-  --step-1: 24px;
-  --step-2: 29px;
-  --step-3: 35px;
-  --step-4: 41px;
-  --step-5: 50px;
-  --step-6: 60px;
-  --step-7: 72px;
-  --step-8: 86px;
-  --step-9: 103px;
-  --step-10: 124px;
-
-  /* Three weights. Archivo Black has one, which is the regular. */
-  --weight-regular: 400;
-  --weight-semibold: 600;
-  --weight-bold: 700;
-
-  /* Line spacing, from tight to open: capitals and big numbers, headings, labels and short lines,
-     small text and captions, and reading text. The drop cap's box is its own. */
-  --leading-display: 0.95;
-  --leading-heading: 1.1;
-  --leading-snug: 1.3;
-  --leading-text: 1.45;
-  --leading-body: 1.55;
-  --leading-cap: 0.8;
-
-  /* Tracking: none, except small capitals, which open up. */
-  --tracking-caps: 0.1em;
-
-  /* Spacing: a 4px grid. Each token is named for how many 4px units it holds, so --space-5 is
-     20px, and the steps widen as they grow. The half step is for hairline gaps. Every margin,
-     padding and gap on the site is one of these. */
-  --space-half: 2px;
-  --space-1: 4px;
-  --space-2: 8px;
-  --space-3: 12px;
-  --space-4: 16px;
-  --space-5: 20px;
-  --space-6: 24px;
-  --space-8: 32px;
-  --space-10: 40px;
-  --space-12: 48px;
-  --space-16: 64px;
-  --space-20: 80px;
-  --space-24: 96px;
-  --space-32: 128px;
-
-  /* The grid. The page and article containers, the gutter inside them (a step narrower on
-     phones), the source-notes rail beside the article column, and the text measures. Measures
-     step by 1.2 from the reading measure, like the type scale. The breakpoints are 480, 760, 1040
-     and 1180; media queries cannot read custom properties, so the linter holds them instead. */
-  --container-page: 1240px;
-  --container-article: 1060px;
-  --gutter: var(--space-8);
-  --rail: 280px;
-  --rail-gap: var(--space-20);
-  --measure--4: 30ch;
-  --measure--3: 36ch;
-  --measure--2: 43ch;
-  --measure--1: 52ch;
-  --measure-0: 62ch;
-  --measure-1: 74ch;
-}
-@media (prefers-color-scheme: dark) {
+  /* Two themes, one set of names, each colour written once as light-dark(light, dark). "paper" is
+     always the ink colour and "ground" the page colour, whichever theme is on; "brass" is the
+     single accent. The reader's browser picks the theme; data-theme forces one. */
   :root {
-    --ground: #0A192F;
-    --dark-navy: #081220;
-    --panel: #0E203A;
-    --panel-2: #102846;
-    --paper: #F4F0EA;
-    --secondary: #A9B0C0;
-    --brass: #E8734A;
-    --on-brass: #081220;
-    --hairline: #2A3448;
-    --shadow: color-mix(in srgb, var(--dark-navy) 90%, transparent);
-    --ok: #4CC38A;
-    color-scheme: dark;
+    --ground: light-dark(#F1F2F4, #0A192F);
+    --dark-navy: light-dark(#FFFFFF, #081220);
+    --panel: light-dark(#E7E9ED, #0E203A);
+    --panel-2: light-dark(#DDE0E6, #102846);
+    --paper: light-dark(#0A192F, #F4F0EA);
+    --secondary: light-dark(#4B5568, #A9B0C0);
+    --brass: light-dark(#B8411E, #E8734A);
+    --on-brass: light-dark(#FFFFFF, #081220);
+    /* A button in the accent, pressed or hovered: darker, in either theme. */
+    --brass-hover: color-mix(in srgb, var(--brass) 86%, #000);
+    --brass-active: color-mix(in srgb, var(--brass) 74%, #000);
+    --hairline: light-dark(#C9CED6, #2A3448);
+    --shadow: light-dark(color-mix(in srgb, var(--ground) 16%, transparent), color-mix(in srgb, var(--dark-navy) 90%, transparent));
+    --ok: light-dark(#1F8A5B, #4CC38A);
+    color-scheme: light dark;
+
+    /* Three typefaces: Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for
+       everything else. Each has a fallback sized to its metrics (src/components/Fonts.astro). */
+    --font-display: 'Archivo Black', 'Archivo Black Fallback', sans-serif;
+    --font-serif: 'Source Serif 4', 'Source Serif 4 Fallback', Georgia, 'Times New Roman', serif;
+    --font-sans: 'IBM Plex Sans', 'IBM Plex Sans Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: ui-monospace, Menlo, Consolas, monospace;
+
+    /* The type scale. Every font size on the site is one of these steps. Body text is step 0, and
+       each step is 1.2 times the one below it, rounded to the pixel: 14, 17, 20, 24, 29, 35, 41, 50,
+       60, 72, 86, 103 and 124px at the browser's default text size. They are written in rem, so a
+       reader who sets a larger text size gets larger text. Step -2 is the smallest text anywhere. */
+    --step--2: 0.875rem;
+    --step--1: 1.0625rem;
+    --step-0: 1.25rem;
+    --step-1: 1.5rem;
+    --step-2: 1.8125rem;
+    --step-3: 2.1875rem;
+    --step-4: 2.5625rem;
+    --step-5: 3.125rem;
+    --step-6: 3.75rem;
+    --step-7: 4.5rem;
+    --step-8: 5.375rem;
+    --step-9: 6.4375rem;
+    --step-10: 7.75rem;
+
+    /* Three weights. Archivo Black has one, which is the regular. */
+    --weight-regular: 400;
+    --weight-semibold: 600;
+    --weight-bold: 700;
+
+    /* Line spacing, from tight to open: capitals and big numbers, headings, labels and short lines,
+       small text and captions, and reading text. The drop cap's box is its own. */
+    --leading-display: 0.95;
+    --leading-heading: 1.1;
+    --leading-snug: 1.3;
+    --leading-text: 1.45;
+    --leading-body: 1.55;
+    --leading-cap: 0.8;
+
+    /* Tracking: none, except small capitals, which open up. */
+    --tracking-caps: 0.1em;
+
+    /* Spacing: a 4px grid. Each token is named for how many 4px units it holds, so --space-5 is
+       20px, and the steps widen as they grow. The half step is for hairline gaps. Every margin,
+       padding and gap on the site is one of these. */
+    --space-half: 2px;
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+    --space-16: 64px;
+    --space-20: 80px;
+    --space-24: 96px;
+    --space-32: 128px;
+
+    /* The grid. The page and article containers, the gutter inside them (a step narrower on
+       phones), the source-notes rail beside the article column, and the text measures. Measures
+       step by 1.2 from the reading measure, like the type scale. The breakpoints are 480, 760, 1040
+       and 1180; media queries cannot read custom properties, so the linter holds them instead. */
+    --container-page: 1240px;
+    --container-article: 1060px;
+    --gutter: var(--space-8);
+    --rail: 280px;
+    --rail-gap: var(--space-20);
+    --measure--4: 30ch;
+    --measure--3: 36ch;
+    --measure--2: 43ch;
+    --measure--1: 52ch;
+    --measure-0: 62ch;
+    --measure-1: 74ch;
+  }
+
+  /* A theme forced on the page, as the /ui frames do. */
+  :root[data-theme="light"] { color-scheme: light; }
+  :root[data-theme="dark"] { color-scheme: dark; }
+
+  @media (width < 760px) {
+    /* The gutter is a step narrower on phones; everything that reads it follows. */
+    :root {
+      --gutter: var(--space-5);
+    }
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    overflow-x: hidden;
+    background: var(--ground);
+    color: var(--paper);
+    font-family: var(--font-sans);
+    font-size: var(--step--1);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Element defaults. :where() keeps them at zero specificity, so any class a page sets wins, and an
+     element nobody styled still lands on the scale instead of the browser's own sizes. */
+  :where(h1, h2, h3, h4, h5, h6) { font-weight: var(--weight-bold); line-height: var(--leading-heading); text-wrap: balance; }
+  :where(p, li, dd, blockquote, figcaption) { text-wrap: pretty; }
+  :where(h1) { font-size: var(--step-4); }
+  :where(h2) { font-size: var(--step-2); }
+  :where(h3) { font-size: var(--step-0); }
+  :where(h4, h5, h6) { font-size: var(--step--1); }
+  :where(strong, b, th) { font-weight: var(--weight-bold); }
+  :where(small, sup, sub) { font-size: var(--step--2); }
+  :where(sup, sub) { line-height: 0; }
+  :where(code, kbd, samp, pre) { font-family: var(--font-mono); font-size: var(--step--2); }
+  :where(button, input, select, textarea) { font: inherit; letter-spacing: inherit; color: inherit; }
+
+  a {
+    color: inherit;
+  }
+
+  :where(a, button, input, summary):focus-visible {
+    outline: 3px solid var(--paper);
+    outline-offset: 4px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-html {
-  scroll-behavior: smooth;
-}
-
-body {
-  overflow-x: hidden;
-  background: var(--ground);
-  color: var(--paper);
-  font-family: var(--font-sans);
-  font-size: var(--step--1);
-  font-weight: var(--weight-regular);
-  line-height: var(--leading-body);
-  -webkit-font-smoothing: antialiased;
-}
-
-/* Element defaults. :where() keeps them at zero specificity, so any class a page sets wins, and an
-   element nobody styled still lands on the scale instead of the browser's own sizes. */
-:where(h1, h2, h3, h4, h5, h6) { font-weight: var(--weight-bold); line-height: var(--leading-heading); }
-:where(h1) { font-size: var(--step-4); }
-:where(h2) { font-size: var(--step-2); }
-:where(h3) { font-size: var(--step-0); }
-:where(h4, h5, h6) { font-size: var(--step--1); }
-:where(strong, b, th) { font-weight: var(--weight-bold); }
-:where(small, sup, sub) { font-size: var(--step--2); }
-:where(sup, sub) { line-height: 0; }
-:where(code, kbd, samp, pre) { font-family: var(--font-mono); font-size: var(--step--2); }
-:where(button, input, select, textarea) { font: inherit; letter-spacing: inherit; color: inherit; }
-
-a {
-  color: inherit;
-}
-
-:where(a, button, input, summary):focus-visible {
-  outline: 3px solid var(--paper);
-  outline-offset: 4px;
-}
-
-.container {
-  width: 100%;
-  max-width: var(--container-page);
-  margin: 0 auto;
-  padding: 0 var(--gutter);
-}
-
-.skip-link {
-  position: fixed;
-  top: 12px;
-  left: 24px;
-  z-index: 100;
-  padding: var(--space-3) var(--space-4);
-  background: var(--paper);
-  color: var(--ground);
-  font-weight: var(--weight-bold);
-  transform: translateY(-160%);
-}
-
-.skip-link:focus {
-  transform: translateY(0);
-}
-
-.trace-rail {
-  position: fixed;
-  top: 0;
-  left: 16px;
-  z-index: 20;
-  width: 2px;
-  height: 100vh;
-  background: color-mix(in srgb, var(--brass) 12%, transparent);
-  pointer-events: none;
-}
-
-.trace-fill {
-  width: 100%;
-  height: var(--trace-depth, 0%);
-  background: var(--brass);
-}
-
-/* Reading progress without a scroll listener where the browser supports scroll timelines. */
-@supports (animation-timeline: scroll()) {
-  .trace-fill {
-    height: 100%;
-    transform-origin: top;
-    transform: scaleY(0);
-    animation: trace-progress linear both;
-    animation-timeline: scroll(root);
+@layer site {
+  .container {
+    width: 100%;
+    max-width: var(--container-page);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
   }
 
-  @keyframes trace-progress {
-    from { transform: scaleY(0); }
-    to { transform: scaleY(1); }
+  .skip-link {
+    position: fixed;
+    top: 12px;
+    left: 24px;
+    z-index: 100;
+    padding: var(--space-3) var(--space-4);
+    background: var(--paper);
+    color: var(--ground);
+    font-weight: var(--weight-bold);
+    transform: translateY(-160%);
   }
-}
 
-/* Elsewhere only pages with a script can fill the rail, so pages without one hide it. */
-@supports not (animation-timeline: scroll()) {
-  .no-trace-script .trace-rail {
-    display: none;
-  }
-}
-
-.display-title,
-.brand-name,
-.footer-brand {
-  font-family: var(--font-display);
-  text-transform: uppercase;
-}
-
-.display-title {
-  color: var(--paper);
-  line-height: var(--leading-display);
-  /* Long single words never get clipped on narrow screens. */
-  overflow-wrap: break-word;
-  hyphens: auto;
-}
-
-/* The label: small capitals, and the only label on the site. Everything that names something in
-   small type takes the class: a figure's eyebrow, a bar's name, a field, a section of the header.
-   Add .accent for the accent colour. Markdown table headers cannot carry a class, so they are
-   listed here, and the kit's eyebrow is the label in the accent over a figure. */
-.label,
-.pd-eyebrow,
-.article-body thead th {
-  font-family: var(--font-sans);
-  font-size: var(--step--2);
-  font-style: normal;
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-snug);
-  letter-spacing: var(--tracking-caps);
-  text-transform: uppercase;
-  color: var(--secondary);
-}
-
-.accent {
-  color: var(--brass);
-}
-
-header {
-  padding: var(--space-6) 0;
-  border-bottom: 1px solid var(--hairline);
-}
-
-.header-inner,
-.header-actions,
-.brand-group {
-  display: flex;
-}
-
-.header-inner {
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--space-8);
-}
-
-.header-actions {
-  align-items: center;
-  gap: var(--space-8);
-}
-
-.brand-home {
-  color: inherit;
-  text-decoration: none;
-}
-
-.brand-group {
-  flex-direction: column;
-  gap: var(--space-1);
-}
-
-.brand-name {
-  color: var(--paper);
-  font-size: var(--step-1);
-  line-height: var(--leading-display);
-}
-
-.header-link {
-  color: var(--paper);
-  font-size: var(--step--2);
-  font-weight: var(--weight-bold);
-  text-decoration: none;
-  padding: var(--space-3) 0 var(--space-2);
-  border-bottom: 2px solid transparent;
-}
-
-.header-link:hover,
-.header-link[aria-current="page"] {
-  border-bottom-color: var(--brass);
-}
-
-.btn {
-  display: inline-block;
-  padding: var(--space-5) var(--space-8);
-  border: 0;
-  border-radius: 0;
-  background: var(--brass);
-  color: var(--on-brass);
-  font-size: var(--step--1);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-body);
-  text-decoration: none;
-  text-transform: none;
-  cursor: pointer;
-  transition: background-color 120ms ease;
-}
-
-.btn:hover {
-  background: var(--brass-hover);
-}
-
-.btn:active {
-  background: var(--brass-active);
-}
-
-.section-divider {
-  display: block;
-  width: 100%;
-  height: 4px;
-  border: 0;
-  background: var(--brass);
-}
-
-footer {
-  padding: var(--space-12) 0 var(--space-8);
-  border-top: 1px solid var(--hairline);
-  background: var(--ground);
-  color: var(--secondary);
-  font-size: var(--step--2);
-}
-
-.footer-top,
-.footer-meta {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--space-6);
-}
-
-.footer-top {
-  align-items: center;
-}
-
-.footer-brand {
-  color: var(--paper);
-  font-size: var(--step-0);
-}
-
-.footer-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-3) var(--space-6);
-}
-
-.footer-links a {
-  color: var(--paper);
-  font-weight: var(--weight-semibold);
-  text-decoration: none;
-}
-
-.footer-links a:hover {
-  color: var(--brass);
-}
-
-.footer-link-button {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--paper);
-  font: inherit;
-  font-weight: var(--weight-semibold);
-  cursor: pointer;
-}
-
-.footer-link-button:hover {
-  color: var(--brass);
-}
-
-.footer-meta {
-  margin-top: var(--space-8);
-  padding-top: var(--space-5);
-  border-top: 1px solid var(--hairline);
-}
-
-@media (width < 760px) {
-  /* The gutter is a step narrower on phones; everything that reads it follows. */
-  :root {
-    --gutter: var(--space-5);
+  .skip-link:focus {
+    transform: translateY(0);
   }
 
   .trace-rail {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 16px;
+    z-index: 20;
+    width: 2px;
+    height: 100vh;
+    background: color-mix(in srgb, var(--brass) 12%, transparent);
+    pointer-events: none;
+  }
+
+  .trace-fill {
+    width: 100%;
+    height: var(--trace-depth, 0%);
+    background: var(--brass);
+  }
+
+  /* Reading progress without a scroll listener where the browser supports scroll timelines. */
+  @supports (animation-timeline: scroll()) {
+    .trace-fill {
+      height: 100%;
+      transform-origin: top;
+      transform: scaleY(0);
+      animation: trace-progress linear both;
+      animation-timeline: scroll(root);
+    }
+
+    @keyframes trace-progress {
+      from { transform: scaleY(0); }
+      to { transform: scaleY(1); }
+    }
+  }
+
+  /* Elsewhere only pages with a script can fill the rail, so pages without one hide it. */
+  @supports not (animation-timeline: scroll()) {
+    .no-trace-script .trace-rail {
+      display: none;
+    }
+  }
+
+  .display-title,
+  .brand-name,
+  .footer-brand {
+    font-family: var(--font-display);
+    text-transform: uppercase;
+  }
+
+  .display-title {
+    color: var(--paper);
+    line-height: var(--leading-display);
+    /* Long single words never get clipped on narrow screens. */
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  /* The label: small capitals, and the only label on the site. Everything that names something in
+     small type takes the class: a figure's eyebrow, a bar's name, a field, a section of the header.
+     Add .accent for the accent colour. Markdown table headers cannot carry a class, so they are
+     listed here, and the kit's eyebrow is the label in the accent over a figure. */
+  .label,
+  .pd-eyebrow,
+  .article-body thead th {
+    font-family: var(--font-sans);
+    font-size: var(--step--2);
+    font-style: normal;
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-snug);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--secondary);
   }
 
   header {
     padding: var(--space-6) 0;
+    border-bottom: 1px solid var(--hairline);
+  }
+
+  .header-inner,
+  .header-actions,
+  .brand-group {
+    display: flex;
   }
 
   .header-inner {
-    align-items: flex-start;
-    gap: var(--space-4);
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-8);
   }
 
   .header-actions {
-    width: auto;
-    justify-content: flex-end;
-    gap: var(--space-4);
-    padding-top: 0;
-    border-top: 0;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  .brand-home {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .brand-group {
+    flex-direction: column;
+    gap: var(--space-1);
   }
 
   .brand-name {
-    font-size: var(--step-0);
+    color: var(--paper);
+    font-size: var(--step-1);
+    line-height: var(--leading-display);
   }
 
-  .brand-subline {
-    max-width: 180px;
+  .header-link {
+    color: var(--paper);
+    font-size: var(--step--2);
+    font-weight: var(--weight-bold);
+    text-decoration: none;
+    padding: var(--space-3) 0 var(--space-2);
+    border-bottom: 2px solid transparent;
+  }
+
+  .header-link:hover,
+  .header-link[aria-current="page"] {
+    border-bottom-color: var(--brass);
   }
 
   .btn {
-    min-height: 44px;
-    padding: var(--space-3) var(--space-4);
+    display: inline-block;
+    padding: var(--space-5) var(--space-8);
+    border: 0;
+    border-radius: 0;
+    background: var(--brass);
+    color: var(--on-brass);
+    font-size: var(--step--1);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-body);
+    text-decoration: none;
+    text-transform: none;
+    cursor: pointer;
+    transition: background-color 120ms ease;
+  }
+
+  .btn:hover {
+    background: var(--brass-hover);
+  }
+
+  .btn:active {
+    background: var(--brass-active);
+  }
+
+  .section-divider {
+    display: block;
+    width: 100%;
+    height: 4px;
+    border: 0;
+    background: var(--brass);
+  }
+
+  footer {
+    padding: var(--space-12) 0 var(--space-8);
+    border-top: 1px solid var(--hairline);
+    background: var(--ground);
+    color: var(--secondary);
     font-size: var(--step--2);
-    white-space: nowrap;
   }
 
   .footer-top,
   .footer-meta {
-    flex-direction: column;
-    align-items: flex-start;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+
+  .footer-top {
+    align-items: center;
+  }
+
+  .footer-brand {
+    color: var(--paper);
+    font-size: var(--step-0);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3) var(--space-6);
+  }
+
+  .footer-links a {
+    color: var(--paper);
+    font-weight: var(--weight-semibold);
+    text-decoration: none;
+  }
+
+  .footer-links a:hover {
+    color: var(--brass);
+  }
+
+  .footer-link-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--paper);
+    font: inherit;
+    font-weight: var(--weight-semibold);
+    cursor: pointer;
+  }
+
+  .footer-link-button:hover {
+    color: var(--brass);
   }
 
   .footer-meta {
-    line-height: var(--leading-body);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--hairline);
   }
 
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  @media (width < 760px) {
+
+    .trace-rail {
+      display: none;
+    }
+
+    header {
+      padding: var(--space-6) 0;
+    }
+
+    .header-inner {
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+
+    .header-actions {
+      width: auto;
+      justify-content: flex-end;
+      gap: var(--space-4);
+      padding-top: 0;
+      border-top: 0;
+    }
+
+    .brand-name {
+      font-size: var(--step-0);
+    }
+
+    .brand-subline {
+      max-width: 180px;
+    }
+
+    .btn {
+      min-height: 44px;
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--step--2);
+      white-space: nowrap;
+    }
+
+    .footer-top,
+    .footer-meta {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .footer-meta {
+      line-height: var(--leading-body);
+    }
   }
-}
 
+  /* Other decisions: sibling services at the end of each product page */
+  .other-decisions {
+    padding: var(--space-16) 0;
+    border-top: 1px solid var(--hairline);
+  }
 
-/* Other decisions: sibling services at the end of each product page */
-.other-decisions {
-  padding: var(--space-16) 0;
-  border-top: 1px solid var(--hairline);
-}
-
-.other-decisions-list {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0 var(--space-8);
-  margin-top: var(--space-5);
-  list-style: none;
-}
-
-.other-decisions-list a {
-  display: block;
-  height: 100%;
-  padding: var(--space-5) 0;
-  border-top: 2px solid var(--paper);
-  color: inherit;
-  text-decoration: none;
-}
-
-.other-decisions-name {
-  display: block;
-  color: var(--paper);
-  font-size: var(--step--1);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-snug);
-}
-
-.other-decisions-question {
-  display: block;
-  margin-top: var(--space-2);
-  color: var(--secondary);
-  font-size: var(--step--2);
-  line-height: var(--leading-text);
-}
-
-.other-decisions-list a:hover .other-decisions-name {
-  color: var(--brass);
-}
-
-.other-decisions-all {
-  display: inline-block;
-  margin-top: var(--space-3);
-  padding: var(--space-1) 0;
-  color: var(--paper);
-  font-size: var(--step--2);
-  font-weight: var(--weight-bold);
-  text-decoration: underline;
-  text-decoration-color: var(--brass);
-  text-underline-offset: 4px;
-}
-
-@media (width < 760px) {
   .other-decisions-list {
-    grid-template-columns: 1fr;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--space-8);
+    margin-top: var(--space-5);
+    list-style: none;
+  }
+
+  .other-decisions-list a {
+    display: block;
+    height: 100%;
+    padding: var(--space-5) 0;
+    border-top: 2px solid var(--paper);
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .other-decisions-name {
+    display: block;
+    color: var(--paper);
+    font-size: var(--step--1);
+    font-weight: var(--weight-bold);
+    line-height: var(--leading-snug);
+  }
+
+  .other-decisions-question {
+    display: block;
+    margin-top: var(--space-2);
+    color: var(--secondary);
+    font-size: var(--step--2);
+    line-height: var(--leading-text);
+  }
+
+  .other-decisions-list a:hover .other-decisions-name {
+    color: var(--brass);
+  }
+
+  .other-decisions-all {
+    display: inline-block;
+    margin-top: var(--space-3);
+    padding: var(--space-1) 0;
+    color: var(--paper);
+    font-size: var(--step--2);
+    font-weight: var(--weight-bold);
+    text-decoration: underline;
+    text-decoration-color: var(--brass);
+    text-underline-offset: 4px;
+  }
+
+  @media (width < 760px) {
+    .other-decisions-list {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Supporting section headings on service pages: calm, sentence case. The display face is kept
+     for the page title, the featured section and the closing call. */
+  h2.section-title-plain { max-width: var(--measure--3); font-size: var(--step-1); line-height: var(--leading-heading); text-transform: none; }
+  @media (width >= 760px) { h2.section-title-plain { font-size: var(--step-2); } }
+  @media (width >= 1040px) { h2.section-title-plain { font-size: var(--step-3); } }
+
+}
+
+@layer utilities {
+  .accent {
+    color: var(--brass);
+  }
+
+  /* Visually hidden, still read by screen readers */
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
 }
-
-/* Visually hidden, still read by screen readers */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-  clip-path: inset(50%);
-  white-space: nowrap;
-}
-
-/* Supporting section headings on service pages: calm, sentence case. The display face is kept
-   for the page title, the featured section and the closing call. */
-h2.section-title-plain { max-width: var(--measure--3); font-size: var(--step-1); line-height: var(--leading-heading); text-transform: none; text-wrap: balance; }
-@media (width >= 760px) { h2.section-title-plain { font-size: var(--step-2); } }
-@media (width >= 1040px) { h2.section-title-plain { font-size: var(--step-3); } }

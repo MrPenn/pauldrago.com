@@ -117,7 +117,7 @@ brief:
 
 ${units({ ...UNITS_DEMO, value: 17 })}
 
-${stack(STACK_DEMO).replace('<span class="pd-num is-s">$418</span>', '<span class="pd-num is-s">$450</span>')}
+${stack(STACK_DEMO).replace('<span class="pd-num pd-num--s">$418</span>', '<span class="pd-num pd-num--s">$450</span>')}
 
 <figure class="cd-bars"><p class="cd-widget-title">T</p></figure>
 `);
@@ -188,15 +188,15 @@ test('a percent stack built by the builder passes its own lint, rounding include
 
 test('the stack builder prints a sub line on its own, marks and printed text', () => {
   const html = stack({ sub: 'Share of each source', prefix: '', suffix: '%', bars: [{ name: 'Veeva', ref: 'veeva-unused', segs: [{ value: 80, text: 'nearly 80%', ref: 'veeva-unused' }] }] });
-  assert.match(html, /<p class="pd-stack-sub">Share of each source<\/p>/);
-  assert.doesNotMatch(html, /pd-seg-label/);
+  assert.match(html, /<p class="pd-stack__sub">Share of each source<\/p>/);
+  assert.doesNotMatch(html, /pd-seg__label/);
   assert.match(html, /<div class="pd-seg" data-value="80" style="[^"]*"><\/div>/);
-  assert.match(html, /<span class="pd-num is-s"><data value="c:veeva-unused">80%<\/data><\/span>/);
+  assert.match(html, /<span class="pd-num pd-num--s"><data value="c:veeva-unused">80%<\/data><\/span>/);
 });
 
 test('a lone segment prints its value once; the parts of a longer bar keep their labels', () => {
   const html = stack({ bars: [{ name: 'One', segs: [{ value: 40 }] }, { name: 'Two', segs: [{ word: 'A', value: 20 }, { word: 'B', value: 30 }] }] });
-  assert.equal((html.match(/pd-seg-label/g) ?? []).length, 2);
+  assert.equal((html.match(/pd-seg__label/g) ?? []).length, 2);
   assert.match(html, /<div class="pd-seg" data-value="40" style="[^"]*"><\/div>/);
   const a = auditDraft(html);
   assert.ok(!a.findings.some((f) => f.rule === 'stack-scale'), JSON.stringify(a.findings.filter((f) => f.rule === 'stack-scale')));
@@ -205,14 +205,14 @@ test('a lone segment prints its value once; the parts of a longer bar keep their
 test('max fixes the end of the scale, and a segment can be an outline', () => {
   const html = stack({ prefix: '', suffix: '%', max: 100, bars: [{ name: 'Measured', segs: [{ value: 52 }] }, { name: 'Folklore', segs: [{ value: 60, to: 70, outline: true }] }] });
   assert.match(html, /data-value="52" style="left:0\.0%;width:52\.0%"/);
-  assert.match(html, /<div class="pd-seg is-outline" data-value="60" style="left:0\.0%;width:60\.0%">/);
-  assert.match(html, /<div class="pd-seg-range" data-to="70" style="left:60\.0%;width:10\.0%">/);
+  assert.match(html, /<div class="pd-seg pd-seg--outline" data-value="60" style="left:0\.0%;width:60\.0%">/);
+  assert.match(html, /<div class="pd-range" data-to="70" style="left:60\.0%;width:10\.0%">/);
   const off = auditDraft(html.replace('width:52.0%', 'width:58.0%'));
   assert.ok(off.findings.some((f) => f.rule === 'stack-scale' && /the segment at 52/.test(f.message)));
 });
 
 test('the as-of builder prints a value on each band when versions carry one', () => {
   const html = asof({ start: '2026-01-01', end: '2026-01-31', day: '2026-01-20', versions: [{ from: '2026-01-01', to: '2026-01-15', copy: 'A', band: '4.10%' }, { from: '2026-01-16', copy: 'B', band: '3.85%' }] });
-  assert.match(html, /<div class="pd-asof-bands is-labeled" aria-hidden="true">/);
-  assert.match(html, /<span class="pd-asof-band is-live" style="[^"]*"><span class="pd-asof-band-label">3\.85%<\/span><\/span>/);
+  assert.match(html, /<div class="pd-asof__bands pd-asof__bands--labeled" aria-hidden="true">/);
+  assert.match(html, /<span class="pd-asof__band is-live" style="[^"]*"><span class="pd-asof__band-label">3\.85%<\/span><\/span>/);
 });

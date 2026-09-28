@@ -37,8 +37,8 @@ export function units({ num: shown = '', label = '', value = 0, of = 20, cols, s
   const cells = Array.from({ length: n }, (_, i) => `<i class="pd-cell${i < v ? ' is-on' : ''}"></i>`).join('');
   return lines([
     `<figure class="pd-units" data-pd="units" data-value="${v}" data-of="${n}">`,
-    `  <div class="pd-head"><span class="pd-num is-xl">${esc(shown)}</span><span class="pd-head-text">${esc(label)}</span></div>`,
-    `  <div class="pd-units-cells" data-cols="${c}" aria-hidden="true">${cells}</div>`,
+    `  <div class="pd-head"><span class="pd-num pd-num--xl">${esc(shown)}</span><span class="pd-head__text">${esc(label)}</span></div>`,
+    `  <div class="pd-units__cells" data-cols="${c}" aria-hidden="true">${cells}</div>`,
     source ? `  <figcaption>${esc(source)}</figcaption>` : null,
     '</figure>',
   ]);
@@ -58,24 +58,24 @@ export function grid({ variant = 'opener', total = 100, on = 0, alt = 0, altFrom
   const kind = (i) => (i < on ? ' is-on' : i >= a0 && i < a0 + (Number(alt) || 0) ? ' is-alt' : '');
   const cells = Array.from({ length: n }, (_, i) => `<i class="pd-cell${kind(i)}"></i>`).join('');
   // Each legend row keys its squares: accent for the `on` squares, ink for the `alt` ones, empty for the rest.
-  const sw = { on: ' is-accent', alt: ' is-ink' };
-  const rows = legend.map((l) => `      <div class="pd-legend-row"><span class="pd-swatch${sw[l.kind] ?? ''}"></span><span class="pd-num is-l"${l.kind ? ` data-count="${Number(String(l.num).replace(/,/g, ''))}"` : ''}>${esc(l.num)}</span><span class="pd-legend-label">${esc(l.label)}</span></div>`);
+  const sw = { on: ' pd-swatch--accent', alt: ' pd-swatch--ink' };
+  const rows = legend.map((l) => `      <div class="pd-legend"><span class="pd-swatch pd-legend__swatch${sw[l.kind] ?? ''}"></span><span class="pd-num pd-num--l pd-legend__num"${l.kind ? ` data-count="${Number(String(l.num).replace(/,/g, ''))}"` : ''}>${esc(l.num)}</span><span class="pd-legend__label">${esc(l.label)}</span></div>`);
   if (variant === 'callback') {
     return lines([
-      `<figure class="pd-figure pd-grid is-callback" data-pd="grid" data-pace="0" data-alt-pace="300" data-delay="400"${label ? ` aria-label="${esc(label)}"` : ''}>`,
-      `  <div class="pd-grid-cells" aria-hidden="true">${cells}</div>`,
+      `<figure class="pd-figure pd-grid pd-grid--callback" data-pd="grid" data-pace="0" data-alt-pace="300" data-delay="400"${label ? ` aria-label="${esc(label)}"` : ''}>`,
+      `  <div class="pd-grid__cells" aria-hidden="true">${cells}</div>`,
       caption ? `  <figcaption>${esc(caption)}</figcaption>` : null,
       '</figure>',
     ]);
   }
   return lines([
-    `<div class="pd-grid is-opener" data-pd="grid" role="figure"${label ? ` aria-label="${esc(label)}"` : ''}>`,
-    '  <div class="pd-grid-inner">',
-    `    <div class="pd-grid-cells" aria-hidden="true">${cells}</div>`,
-    rows.length ? '    <div class="pd-grid-legend">' : null,
+    `<div class="pd-grid pd-grid--opener" data-pd="grid" role="figure"${label ? ` aria-label="${esc(label)}"` : ''}>`,
+    '  <div class="pd-grid__inner">',
+    `    <div class="pd-grid__cells" aria-hidden="true">${cells}</div>`,
+    rows.length ? '    <div class="pd-grid__legend">' : null,
     ...rows,
     rows.length ? '    </div>' : null,
-    source ? `    <p class="pd-grid-source">${source}</p>` : null,
+    source ? `    <p class="pd-grid__source">${source}</p>` : null,
     '  </div>',
     '</div>',
   ]);
@@ -119,37 +119,37 @@ export function stack({ eyebrow = '', num: lead = '', sub = '', bars = [], ledge
       const shown = sg.html ?? (sg.text ? esc(sg.text) : range ? span(sg.value, sg.to) : unit(sg.value));
       // A lone segment's label would repeat the value printed at the end of the bar.
       const solo = all.length === 1;
-      const inner = solo ? '' : `<span class="pd-seg-label">${sg.word ? `<span class="pd-seg-word">${esc(sg.word)} </span>` : ''}${sg.html ? shown : marked(shown, sg.ref)}</span>`;
+      const inner = solo ? '' : `<span class="pd-seg__label">${sg.word ? `<span class="pd-seg__word">${esc(sg.word)} </span>` : ''}${sg.html ? shown : marked(shown, sg.ref)}</span>`;
       // Words in place of the number, or no label at all, keep the number in data-value, so the linter can check the scale.
-      const cls = `pd-seg${sg.accent ? ' is-accent' : ''}${sg.outline ? ' is-outline' : ''}`;
+      const cls = `pd-seg${sg.accent ? ' pd-seg--accent' : ''}${sg.outline ? ' pd-seg--outline' : ''}`;
       const html = [`    <div class="${cls}"${at(sg.at)}${solo || sg.text || sg.html ? ` data-value="${Number(sg.value)}"` : ''} style="left:${pct(left)};width:${pct(width)}">${inner}</div>`];
       left += width;
-      if (range) html.push(`    <div class="pd-seg-range${sg.accent ? ' is-accent' : ''}"${at(sg.at)} data-to="${Number(sg.to)}" style="left:${pct(left)};width:${pct(w(range))}"></div>`);
+      if (range) html.push(`    <div class="pd-range${sg.accent ? ' pd-range--accent' : ''}"${at(sg.at)} data-to="${Number(sg.to)}" style="left:${pct(left)};width:${pct(w(range))}"></div>`);
       return html;
     });
     const mark = b.mark && b.mark.value !== undefined && b.mark.value !== ''
-      ? `    <div class="pd-mark${w(b.mark.value) < 40 ? ' is-left' : ''}"${at(b.mark.at)} style="left:${pct(w(b.mark.value))}"><span class="label">${esc(b.mark.label ?? unit(b.mark.value))}</span></div>`
+      ? `    <div class="pd-mark${w(b.mark.value) < 40 ? ' pd-mark--left' : ''}"${at(b.mark.at)} style="left:${pct(w(b.mark.value))}"><span class="label pd-mark__label">${esc(b.mark.label ?? unit(b.mark.value))}</span></div>`
       : null;
     return lines([
-      `<div class="pd-stack-bar"${at(b.at)}>`,
-      `  <div class="pd-stack-head"><span class="label">${esc(b.name)}${b.sub ? `<small class="pd-stack-what">${esc(b.sub)}</small>` : ''}</span><span class="pd-num is-s">${b.html ?? marked(b.text ? esc(b.text) : extra[bi] ? span(totals[bi], totals[bi] + extra[bi]) : unit(totals[bi]), b.ref)}</span></div>`,
-      '  <div class="pd-stack-track">',
+      `<div class="pd-bar"${at(b.at)}>`,
+      `  <div class="pd-bar__head"><span class="label">${esc(b.name)}${b.sub ? `<small class="pd-bar__what">${esc(b.sub)}</small>` : ''}</span><span class="pd-num pd-num--s">${b.html ?? marked(b.text ? esc(b.text) : extra[bi] ? span(totals[bi], totals[bi] + extra[bi]) : unit(totals[bi]), b.ref)}</span></div>`,
+      '  <div class="pd-bar__track">',
       ...segs,
       mark,
       '  </div>',
       '</div>',
     ], pad);
   });
-  const rows = ledger.map((r) => `${pad}  <div class="pd-ledger-row${r.total ? ' pd-ledger-total' : ''}"${at(r.at)}><span class="pd-ledger-label">${esc(r.label)}${r.sub ? ` <span class="pd-ledger-src">${esc(r.sub)}</span>` : ''}</span><span class="pd-num${r.total ? ' is-l' : ''} pd-ledger-value">${marked(r.text ? esc(r.text) : unit(r.value), r.ref)}</span></div>`);
+  const rows = ledger.map((r) => `${pad}  <div class="pd-ledger__row${r.total ? ' pd-ledger__row--total' : ''}"${at(r.at)}><span class="pd-ledger__label">${esc(r.label)}${r.sub ? ` <span class="pd-ledger__src">${esc(r.sub)}</span>` : ''}</span><span class="pd-num${r.total ? ' pd-num--l' : ''} pd-ledger__value">${marked(r.text ? esc(r.text) : unit(r.value), r.ref)}</span></div>`);
   const inner = [
     eyebrow ? `${pad}<p class="pd-eyebrow">${esc(eyebrow)}</p>` : null,
     // A number to lead with makes a head; a sub line alone says what the bars count.
-    lead ? `${pad}<div class="pd-head"><span class="pd-num is-xl">${esc(lead)}</span>${sub ? `<span class="pd-head-text">${esc(sub)}</span>` : ''}</div>` : sub ? `${pad}<p class="pd-stack-sub">${esc(sub)}</p>` : null,
+    lead ? `${pad}<div class="pd-head"><span class="pd-num pd-num--xl">${esc(lead)}</span>${sub ? `<span class="pd-head__text">${esc(sub)}</span>` : ''}</div>` : sub ? `${pad}<p class="pd-stack__sub">${esc(sub)}</p>` : null,
     ...barHtml,
     rows.length ? `${pad}<div class="pd-ledger">` : null,
     ...rows,
     rows.length ? `${pad}</div>` : null,
-    note ? `${pad}<p class="pd-stack-note"${at(noteAt)}>${note}</p>` : null,
+    note ? `${pad}<p class="pd-stack__note"${at(noteAt)}>${note}</p>` : null,
   ];
   if (graphic) return lines(inner);
   return lines([`<figure class="pd-figure pd-stack" data-pd="build"${label ? ` aria-label="${esc(label)}"` : ''}>`, ...inner, caption ? `  <figcaption>${esc(caption)}</figcaption>` : null, '</figure>']);
@@ -168,28 +168,28 @@ export function cols({ eyebrow = '', values = [], start = 0, step = 1, labelEver
   const pad = graphic ? '' : '  ';
   const n = vals.length + (event ? 1 : 0);
   const period = (i) => start + i * step;
-  const colHtml = vals.map((v, i) => `${pad}    <span class="pd-col"><i style="height:${pct(h(v))};--i:${i}"></i></span>`);
-  if (event) colHtml.push(`${pad}    <span class="pd-col is-event" data-at="1"><i data-at="3" style="height:${pct(h(event.value))}"></i></span>`);
+  const colHtml = vals.map((v, i) => `${pad}    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:${pct(h(v))};--i:${i}"></i></span>`);
+  if (event) colHtml.push(`${pad}    <span class="pd-cols__col pd-cols__col--event" data-at="1"><i class="pd-cols__fill" data-at="3" style="height:${pct(h(event.value))}"></i></span>`);
   const xs = Array.from({ length: n }, (_, i) => {
     const last = event && i === n - 1;
     const show = last || i % labelEvery === 0;
     const strong = i === 0 || last;
-    return `<span${strong ? ' class="is-strong"' : ''}>${show ? esc(String(period(i))) : ''}</span>`;
+    return `<span class="pd-cols__tick${strong ? ' pd-cols__tick--strong' : ''}">${show ? esc(String(period(i))) : ''}</span>`;
   }).join('');
   const inner = [
     eyebrow ? `${pad}<p class="pd-eyebrow">${esc(eyebrow)}</p>` : null,
-    `${pad}<div class="pd-cols-callouts">`,
-    total ? `${pad}  <p class="pd-cols-callout" data-at="4"><b>${esc(total.label)}</b><span>${esc(total.sub)}</span></p>` : `${pad}  <span></span>`,
-    event ? `${pad}  <p class="pd-cols-callout is-accent" data-at="3"><b>${esc(event.label ?? prefix + num(event.value) + suffix)}</b><span>${esc(event.sub)}</span></p>` : null,
+    `${pad}<div class="pd-cols__callouts">`,
+    total ? `${pad}  <p class="pd-cols__callout" data-at="4"><b class="pd-cols__callout-value">${esc(total.label)}</b><span class="pd-cols__callout-note">${esc(total.sub)}</span></p>` : `${pad}  <span></span>`,
+    event ? `${pad}  <p class="pd-cols__callout pd-cols__callout--accent" data-at="3"><b class="pd-cols__callout-value">${esc(event.label ?? prefix + num(event.value) + suffix)}</b><span class="pd-cols__callout-note">${esc(event.sub)}</span></p>` : null,
     `${pad}</div>`,
-    `${pad}<div class="pd-cols-plot">`,
-    ticks.length ? `${pad}  <div class="pd-cols-grid" aria-hidden="true">${ticks.map((t) => `<span style="bottom:${pct(h(t))}"><b>${esc(prefix + num(Number(t)) + suffix)}</b></span>`).join('')}</div>` : null,
-    `${pad}  <div class="pd-cols-bars" data-at="2">`,
+    `${pad}<div class="pd-cols__plot">`,
+    ticks.length ? `${pad}  <div class="pd-cols__gridlines" aria-hidden="true">${ticks.map((t) => `<span class="pd-cols__gridline" style="bottom:${pct(h(t))}"><b class="pd-cols__gridline-value">${esc(prefix + num(Number(t)) + suffix)}</b></span>`).join('')}</div>` : null,
+    `${pad}  <div class="pd-cols__bars" data-at="2">`,
     ...colHtml,
     `${pad}  </div>`,
     `${pad}</div>`,
-    `${pad}<div class="pd-cols-x" aria-hidden="true">${xs}</div>`,
-    event?.marker ? `${pad}<p class="label accent pd-cols-marker" data-at="1">${esc(event.marker)}</p>` : null,
+    `${pad}<div class="pd-cols__axis" aria-hidden="true">${xs}</div>`,
+    event?.marker ? `${pad}<p class="label accent pd-cols__marker" data-at="1">${esc(event.marker)}</p>` : null,
     caption ? `${pad}<figcaption>${esc(caption)}</figcaption>` : null,
   ];
   if (graphic) return lines(inner);
@@ -204,11 +204,11 @@ export function cols({ eyebrow = '', values = [], start = 0, step = 1, labelEver
 export function record({ num: shown = '', lead = '', quote = '', source = '', ref, label = '' } = {}) {
   return lines([
     `<figure class="pd-figure pd-record"${label ? ` aria-label="${esc(label)}"` : ''}>`,
-    '  <div class="pd-head">',
-    `    <span class="pd-num is-xl">${marked(esc(shown), ref)}</span>`,
-    '    <div class="pd-head-text">',
+    '  <div class="pd-head pd-record__head">',
+    `    <span class="pd-num pd-num--xl">${marked(esc(shown), ref)}</span>`,
+    '    <div class="pd-head__text pd-record__text">',
     `      <p>${esc(lead)}</p>`,
-    quote ? `      <p class="pd-record-quote">${esc(quote)}</p>` : null,
+    quote ? `      <p class="pd-record__quote">${esc(quote)}</p>` : null,
     '    </div>',
     '  </div>',
     source ? `  <figcaption>${esc(source)}</figcaption>` : null,
@@ -245,25 +245,25 @@ export function asof({ eyebrow = '', question = '', slider = 'Pick a day', start
   const now = vs.find((v) => at0 >= v.f && at0 <= v.t) ?? vs.at(-1);
   const last = vs.at(-1);
   const labeled = vs.some((v) => v.band);
-  const bands = vs.map((v) => `<span class="pd-asof-band${v === now ? ' is-live' : ''}" style="width:${pct(((v.t - v.f) / DAY + 1) / (days + 1) * 100)}">${v.band ? `<span class="pd-asof-band-label">${esc(v.band)}</span>` : ''}</span>`).join('');
+  const bands = vs.map((v) => `<span class="pd-asof__band${v === now ? ' is-live' : ''}" style="width:${pct(((v.t - v.f) / DAY + 1) / (days + 1) * 100)}">${v.band ? `<span class="pd-asof__band-label">${esc(v.band)}</span>` : ''}</span>`).join('');
   const months = [];
   for (let d = new Date(t0); d.getTime() <= t1; d = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1))) {
-    months.push(`<span style="left:${pct(Math.max(0, (d.getTime() - t0) / DAY / days * 100))}">${d.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })}</span>`);
+    months.push(`<span class="pd-asof__month" style="left:${pct(Math.max(0, (d.getTime() - t0) / DAY / days * 100))}">${d.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })}</span>`);
   }
   const wrong = latest && now !== last;
   return lines([
     `<figure class="pd-figure pd-asof" data-pd="asof" data-rail="block" data-start="${esc(start)}" data-end="${esc(end)}" data-day="${esc(day ?? start)}"${label ? ` aria-label="${esc(label)}"` : ''}>`,
     eyebrow ? `  <p class="pd-eyebrow">${esc(eyebrow)}</p>` : null,
-    `  <p class="pd-asof-head"><span class="pd-asof-q">${esc(question)}</span> <output class="pd-num pd-asof-day">${dayName(at0)}</output></p>`,
-    `  <input class="pd-asof-range" type="range" min="0" max="${days}" step="1" value="${Math.round((at0 - t0) / DAY)}" aria-label="${esc(slider)}" hidden>`,
-    `  <div class="pd-asof-bands${labeled ? ' is-labeled' : ''}" aria-hidden="true">${bands}</div>`,
-    `  <div class="pd-asof-months" aria-hidden="true">${months.join('')}</div>`,
-    `  <div class="pd-asof-answers${latest ? '' : ' is-single'}">`,
-    `    <div class="pd-asof-answer" data-show="live">${live.label ? `<p class="label">${esc(live.label)}</p>` : ''}<p class="pd-asof-copy">${esc(now.copy)}</p><p class="pd-asof-meta">${esc(now.meta)}</p>${live.verdict ? `<p class="pd-asof-verdict">${esc(live.verdict)}</p>` : ''}</div>`,
-    latest ? `    <div class="pd-asof-answer${wrong ? ' is-wrong' : ''}" data-show="latest" data-right="${esc(latest.right)}" data-wrong="${esc(latest.wrong)}"><p class="label">${esc(latest.label)}</p><p class="pd-asof-copy">${esc(last.copy)}</p><p class="pd-asof-meta">${esc(latest.meta ?? `Version ${last.n}, the one published today.`)}</p><p class="pd-asof-verdict">${esc(wrong ? latest.wrong : latest.right)}</p></div>` : null,
+    `  <p class="pd-asof__head"><span class="pd-asof__q">${esc(question)}</span> <output class="pd-num pd-asof__day">${dayName(at0)}</output></p>`,
+    `  <input class="pd-slider" type="range" min="0" max="${days}" step="1" value="${Math.round((at0 - t0) / DAY)}" aria-label="${esc(slider)}" hidden>`,
+    `  <div class="pd-asof__bands${labeled ? ' pd-asof__bands--labeled' : ''}" aria-hidden="true">${bands}</div>`,
+    `  <div class="pd-asof__months" aria-hidden="true">${months.join('')}</div>`,
+    `  <div class="pd-asof__answers${latest ? '' : ' pd-asof__answers--single'}">`,
+    `    <div class="pd-asof__answer" data-show="live">${live.label ? `<p class="label pd-asof__label">${esc(live.label)}</p>` : ''}<p class="pd-asof__copy">${esc(now.copy)}</p><p class="pd-asof__meta">${esc(now.meta)}</p>${live.verdict ? `<p class="pd-asof__verdict">${esc(live.verdict)}</p>` : ''}</div>`,
+    latest ? `    <div class="pd-asof__answer${wrong ? ' is-wrong' : ''}" data-show="latest" data-right="${esc(latest.right)}" data-wrong="${esc(latest.wrong)}"><p class="label pd-asof__label">${esc(latest.label)}</p><p class="pd-asof__copy">${esc(last.copy)}</p><p class="pd-asof__meta">${esc(latest.meta ?? `Version ${last.n}, the one published today.`)}</p><p class="pd-asof__verdict">${esc(wrong ? latest.wrong : latest.right)}</p></div>` : null,
     '  </div>',
-    '  <ol class="pd-asof-versions">',
-    ...vs.map((v) => `    <li data-from="${esc(v.from)}" data-to="${esc(v.to ?? '')}"><span class="pd-asof-copy">${esc(v.copy)}</span> <span class="pd-asof-meta">${esc(v.meta)}</span></li>`),
+    '  <ol class="pd-asof__versions">',
+    ...vs.map((v) => `    <li class="pd-asof__version" data-from="${esc(v.from)}" data-to="${esc(v.to ?? '')}"><span class="pd-asof__copy">${esc(v.copy)}</span> <span class="pd-asof__meta">${esc(v.meta)}</span></li>`),
     '  </ol>',
     caption ? `  <figcaption>${esc(caption)}</figcaption>` : null,
     '</figure>',

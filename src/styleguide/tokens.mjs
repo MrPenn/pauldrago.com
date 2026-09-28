@@ -22,14 +22,30 @@ const ROLES = {
 // Tokens that carry text or a mark someone has to see, measured against the page background.
 const TEXT_TOKENS = new Set(['--paper', '--secondary', '--brass']);
 
+// The :root custom properties, in any layer, split into light and dark values: a colour written as
+// light-dark(a, b) gives a to light and b to dark; anything else is the same in both.
+function splitTopLevel(v) {
+  const out = []; let depth = 0; let cur = '';
+  for (const ch of v) {
+    if (ch === '(') depth++;
+    if (ch === ')') depth--;
+    if (ch === ',' && depth === 0) { out.push(cur.trim()); cur = ''; } else cur += ch;
+  }
+  out.push(cur.trim());
+  return out;
+}
 function rootBlocks(css) {
   const light = {};
   const dark = {};
   for (const rule of parseCss(css)) {
     if (rule.selector.trim() !== ':root') continue;
-    const isDark = rule.context.some((c) => /prefers-color-scheme:\s*dark/.test(c));
-    if (rule.context.length && !isDark) continue;
-    for (const d of rule.declarations) if (d.prop.startsWith('--')) (isDark ? dark : light)[d.prop] = d.value.trim();
+    if (rule.context.some((c) => !/^@layer\b/.test(c))) continue;
+    for (const d of rule.declarations) {
+      if (!d.prop.startsWith('--')) continue;
+      const v = d.value.trim();
+      const m = v.match(/^light-dark\((.*)\)$/s);
+      if (m) { const [a, b] = splitTopLevel(m[1]); light[d.prop] = a; dark[d.prop] = b; } else { light[d.prop] = v; dark[d.prop] = v; }
+    }
   }
   return { light, dark };
 }
@@ -87,24 +103,16 @@ export function gridTokens(root) {
 export function typeSteps(root) {
   const { light } = rootBlocks(readFileSync(join(root, 'public/assets/site-shell.css'), 'utf8'));
   return Object.entries(light)
-    .map(([name, v]) => ({ name, m: name.match(/^--step-(-?\d+)$/), px: Number(String(v).match(/^([\d.]+)px$/)?.[1]) }))
+    .map(([name, v]) => ({ name, m: name.match(/^--step-(-?\d+)$/), px: Math.round(Number(String(v).match(/^([\d.]+)rem$/)?.[1]) * 16) }))
     .filter((t) => t.m)
     .map((t) => ({ step: Number(t.m[1]), name: t.name, px: t.px }))
     .sort((a, b) => a.step - b.step);
 }
 
 /**
- * CSS that forces a theme on a frame: :root[data-theme="light"] and :root[data-theme="dark"]
- * carry every custom property the given stylesheets define for that theme.
+ * CSS that forces a theme on a frame. Colours are light-dark() pairs, so site-shell.css forces a theme
+ * with color-scheme on :root[data-theme]; nothing more is needed.
  */
-export function themeOverrides(root, hrefs) {
-  const light = {};
-  const dark = {};
-  for (const href of hrefs) {
-    const blocks = rootBlocks(readFileSync(join(root, 'public', href), 'utf8'));
-    Object.assign(light, blocks.light);
-    Object.assign(dark, blocks.dark);
-  }
-  const block = (sel, vars, scheme) => `${sel} { ${Object.entries(vars).map(([k, v]) => `${k}: ${v};`).join(' ')} color-scheme: ${scheme}; }`;
-  return [block(':root[data-theme="light"]', light, 'light'), block(':root[data-theme="dark"]', { ...light, ...dark }, 'dark')].join('\n');
+export function themeOverrides() {
+  return '';
 }

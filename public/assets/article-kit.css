@@ -5,762 +5,764 @@
      scripts: ["/assets/article-kit.js"]
    in its front matter. Tokens come from site-shell.css; every class here is pd-*. */
 
-/* ============================================================
-   Motion: one easing, three durations, used everywhere.
-   ============================================================ */
-:root {
-  --pd-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --pd-fast: 260ms;
-  --pd-base: 620ms;
-  --pd-slow: 900ms;
-}
-
-/* ---------- The page ---------- */
-.article .container { max-width: var(--container-article); }
-.article-header { max-width: 920px; border-bottom: 0; }
-.article-kicker-sep, .article-meta-sep { opacity: 0.5; }
-.article-intro { font-family: var(--font-serif); }
-
-/* ============================================================
-   Three voices. Archivo Black for the headline, section heads and big numbers;
-   Source Serif 4 for reading, decks and pull quotes; IBM Plex Sans for figures,
-   labels, captions, inputs and notes. Every size is a step of the type scale in
-   site-shell.css; body text is step 0.
-   ============================================================ */
-/* The article column is the container the kit's components answer to (see @container column). */
-.article-body {
-  container: column / inline-size;
-  position: relative;
-  max-width: var(--measure-0);
-  font-family: var(--font-serif);
-  font-size: var(--step-0);
-  line-height: var(--leading-body);
-  counter-reset: sec;
-}
-.article-body p { font-variant-numeric: oldstyle-nums proportional-nums; }
-.article-body a { color: inherit; text-decoration-color: var(--brass); text-underline-offset: 3px; }
-.pd-figure, .pd-graphic, .pd-calc, .pd-units, .pd-field, .pd-ledger, .pd-stack, .pd-cols, .pd-record, .pd-asof,
-.pd-sticky-notes, .article-body figcaption, .pd-toggle, .pd-key, .pd-text-btn {
-  font-family: var(--font-sans);
-}
-
-/* The first plain paragraph opens on a drop cap (article.js marks it). */
-.article-lede { font-size: var(--step-1); line-height: var(--leading-body); color: var(--paper); }
-.article-lede::first-letter {
-  float: left;
-  margin: var(--space-2) var(--space-3) 0 0;
-  font-family: var(--font-display);
-  font-size: var(--step-8);
-  line-height: var(--leading-cap);
-  color: var(--brass);
-}
-
-/* Sections: a hairline, a roman numeral, the claim. "About the numbers" is not numbered. */
-.article-body h2 {
-  position: relative;
-  margin: var(--space-20) 0 var(--space-4);
-  padding-top: var(--space-6);
-  border-top: 1px solid var(--hairline);
-  font-family: var(--font-display);
-  font-size: var(--step-1);
-  line-height: var(--leading-heading);
-  counter-increment: sec;
-}
-@media (width >= 1040px) { .article-body h2 { font-size: var(--step-2); } }
-.article-body h2::before {
-  content: counter(sec, upper-roman) ".";
-  display: block;
-  margin-bottom: var(--space-3);
-  font-family: var(--font-serif);
-  font-size: var(--step--1);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-caps);
-  color: var(--brass);
-}
-.article-body h2.article-colophon, .article-body section[data-footnotes] h2 { counter-increment: none; }
-.article-body h2.article-colophon::before, .article-body section[data-footnotes] h2::before { content: none; }
-/* Subheads take the decks' voice. */
-.article-body h3 {
-  margin: var(--space-12) 0 var(--space-4);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: var(--weight-regular);
-  font-size: var(--step-1);
-  line-height: var(--leading-snug);
-  color: var(--paper);
-}
-
-/* The deck: one italic line under a section heading. */
-.pd-deck {
-  margin: calc(-1 * var(--space-2)) 0 var(--space-6) !important;
-  max-width: var(--measure--1);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--step-0);
-  line-height: var(--leading-text);
-  color: var(--secondary);
-}
-
-/* Pull quotes: an accent rule under the quote, the opening mark hung into the margin.
-   A markdown blockquote takes this style; so does <blockquote class="pd-pq">. */
-.article-body blockquote {
-  position: relative;
-  margin: var(--space-12) 0 !important;
-  padding: 0 0 var(--space-6);
-  border: 0;
-  border-bottom: 2px solid var(--brass);
-}
-.article-body blockquote p {
-  margin: 0;
-  max-width: var(--measure--4);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--step-1);
-  line-height: var(--leading-snug);
-  color: var(--paper);
-  text-wrap: balance;
-}
-.article-body blockquote::before {
-  content: "\201C";
-  position: absolute;
-  left: -0.55em;
-  top: -0.22em;
-  font-family: var(--font-serif);
-  font-size: var(--step-10);
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-display);
-  color: var(--brass);
-}
-
-/* Footnote markers */
-
-/* ---------- Figure parts ---------- */
-/* The eyebrow is the label (site-shell.css) in the accent, naming the figure under it. */
-.pd-eyebrow {
-  margin: 0 0 var(--space-4) !important;
-  color: var(--brass);
-}
-.pd-figure {
-  margin: var(--space-12) 0;
-  padding: var(--space-8) 0 var(--space-5);
-  border-top: 1px solid var(--hairline);
-  border-bottom: 1px solid var(--hairline);
-}
-.article-body figcaption, .pd-figure figcaption {
-  margin-top: var(--space-5);
-  max-width: var(--measure-0);
-  color: var(--secondary);
-  font-size: var(--step--2);
-  line-height: var(--leading-text);
-}
-
-/* ---------- Number: every figure set in the display face, in four sizes ---------- */
-/* The default is a value in a row; is-s a value beside a label; is-l a total or a count; is-xl the
-   number a figure leads with. In a narrow column each size takes the step below. The decisions'
-   numerals are the same number, drawn by the stylesheet. */
-.pd-num, .pd-decisions li::before {
-  font-family: var(--font-display);
-  font-weight: var(--weight-regular);
-  line-height: var(--leading-display);
-  font-variant-numeric: lining-nums tabular-nums;
-  color: var(--paper);
-}
-.pd-num { font-size: var(--step-2); white-space: nowrap; }
-.pd-num.is-s { font-size: var(--step-1); }
-.pd-num.is-l { font-size: var(--step-4); }
-.pd-num.is-xl { font-size: var(--step-6); }
-@container column (width < 560px) {
-  .pd-num { font-size: var(--step-1); }
-  .pd-num.is-l { font-size: var(--step-2); }
-  .pd-num.is-xl { font-size: var(--step-4); }
-}
-
-/* ---------- Head: the number a figure leads with and the sentence it belongs to ---------- */
-/* The sentence sits beside the number, and wraps under it when fewer than 14 characters fit. */
-.pd-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-5); margin: 0 0 var(--space-5); }
-.pd-head-text {
-  flex: 1 1 14ch;
-  max-width: var(--measure--2);
-  font-family: var(--font-serif);
-  font-size: var(--step-0);
-  line-height: var(--leading-text);
-  color: var(--paper);
-}
-.pd-head-text > p { margin: 0; }
-@container column (width < 560px) {
-  .pd-head { margin-bottom: var(--space-3); }
-  .pd-head-text { font-size: var(--step--1); }
-}
-
-/* ---------- Swatch: the square that keys a colour in a legend or a key ---------- */
-.pd-swatch { display: inline-block; flex: none; width: 12px; height: 12px; border: 1px solid var(--hairline); }
-.pd-swatch.is-ink { background: var(--paper); border-color: var(--paper); }
-.pd-swatch.is-accent { background: var(--brass); border-color: var(--brass); }
-
-/* ---------- Text button: an action written as a link ---------- */
-.pd-text-btn {
-  position: relative;
-  padding: 0;
-  border: 0;
-  background: none;
-  color: var(--brass);
-  font-size: var(--step--2);
-  font-weight: var(--weight-semibold);
-  line-height: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  white-space: nowrap;
-  cursor: pointer;
-}
-/* A 44px target without making the line taller. */
-.pd-text-btn::after { content: ""; position: absolute; inset: -12px -4px; }
-.pd-text-btn:hover { color: var(--paper); }
-.pd-text-btn:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
-/* A button that appears later holds its line, so nothing moves when it does. */
-.pd-text-btn[hidden] { display: inline-block; visibility: hidden; }
-
-/* ---------- Unit stat: the number, its sentence, and a row of units that fills ---------- */
-figure.pd-units {
-  display: block;
-  margin: var(--space-10) 0 var(--space-8) !important;
-  padding: var(--space-5) 0 var(--space-4);
-  border-top: 2px solid var(--brass);
-  border-bottom: 1px solid var(--hairline);
-}
-.pd-units-cells { display: grid; gap: var(--space-1); grid-template-columns: repeat(20, 1fr); }
-.pd-units-cells[data-cols="10"] { grid-template-columns: repeat(10, 1fr); }
-.pd-units-cells[data-cols="25"] { grid-template-columns: repeat(25, 1fr); }
-.pd-units-cells[data-cols="50"] { grid-template-columns: repeat(50, 1fr); gap: var(--space-1); }
-.pd-cell {
-  display: block;
-  aspect-ratio: 1 / 1;
-  border: 1px solid var(--hairline);
-  background: transparent;
-  transition: background-color var(--pd-fast) var(--pd-ease), border-color var(--pd-fast) var(--pd-ease), transform var(--pd-fast) var(--pd-ease);
-}
-.pd-cell.is-on { background: var(--brass); border-color: var(--brass); }
-.pd-cell.is-alt { background: var(--paper); border-color: var(--paper); }
-.pd-units figcaption { margin-top: var(--space-3); line-height: var(--leading-text); max-width: none; }
-
-/* ---------- Unit grid: a hundred squares, and the counts filling in ---------- */
-/* The opener runs the full width of the screen above or at the top of the piece; the callback is
-   the same hundred, small, near the end. */
-.pd-grid { font-family: var(--font-sans); }
-.pd-grid-cells { display: grid; grid-template-columns: repeat(25, 1fr); gap: var(--space-1); }
-.pd-cell.is-landing { transform: scale(1.35); }
-.pd-grid-legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--hairline); }
-.pd-legend-row { display: grid; grid-template-columns: 12px auto minmax(0, 1fr); gap: var(--space-3); align-items: baseline; }
-.pd-legend-row .pd-swatch { margin-top: var(--space-1); align-self: start; }
-.pd-legend-row .pd-num { min-width: 2ch; }
-.pd-legend-label { max-width: var(--measure--4); font-size: var(--step--1); line-height: var(--leading-text); color: var(--secondary); }
-.pd-grid-source { margin: var(--space-3) 0 0 !important; max-width: var(--measure-1); font-size: var(--step--2); line-height: var(--leading-text); color: var(--secondary); }
-.pd-grid-source a { color: var(--brass); text-decoration: underline; text-underline-offset: 3px; }
-.pd-grid.is-opener { width: 100vw; margin: 0 0 var(--space-16) calc(50% - 50vw); padding: var(--space-2) var(--gutter) 0; }
-.pd-grid.is-opener .pd-grid-inner { max-width: 996px; margin: 0 auto; container: column / inline-size; }
-.pd-grid.is-callback { border-bottom: 0; padding-bottom: 0; }
-.pd-grid.is-callback .pd-grid-cells { grid-template-columns: repeat(10, 1fr); gap: var(--space-1); max-width: 200px; margin: 0 auto; aspect-ratio: 1 / 1; }
-.pd-grid.is-callback .pd-cell { transition-duration: var(--pd-base); }
-.pd-grid.is-callback figcaption { margin: var(--space-3) auto 0; text-align: center; }
-
-/* ---------- Org fold: every function on target, folding into the one bank the customer sees ---------- */
-.pd-fold { position: relative; min-height: 540px; }
-.pd-org { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
-.pd-org-box {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  min-height: 92px;
-  padding: var(--space-3);
-  border: 1px solid var(--hairline);
-  background: var(--ground);
-  transition: transform var(--pd-slow) var(--pd-ease), opacity var(--pd-base) var(--pd-ease);
-  transition-delay: var(--d, 0ms);
-}
-.pd-org-name { font-size: var(--step--2); font-weight: var(--weight-bold); line-height: var(--leading-snug); color: var(--paper); }
-.pd-org-owns { font-size: var(--step--2); line-height: var(--leading-snug); color: var(--secondary); }
-.pd-org-status { margin-top: auto; white-space: nowrap; }
-.pd-org-status::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: var(--space-2); border-radius: 50%; background: var(--ok); }
-.pd-one {
-  position: absolute;
-  inset: 56px 0 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  opacity: 0;
-  transform: scale(0.94);
-  pointer-events: none;
-  transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-slow) var(--pd-ease);
-}
-.pd-one img { display: block; width: auto; max-width: 100%; max-height: 380px; height: auto; margin: 0 auto; }
-.pd-one-cap { margin: var(--space-4) 0 0 !important; max-width: var(--measure--3); font-family: var(--font-serif); font-style: italic; font-size: var(--step--1); line-height: var(--leading-text); text-align: center; color: var(--secondary); }
-/* The fold is the part with data-at: when its step comes, the boxes head for the centre, the outer
-   ones first, and the one bank arrives a beat later. */
-.is-armed .pd-fold.is-shown .pd-org-box { transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.18); opacity: 0; }
-.is-armed .pd-fold.is-shown .pd-one { opacity: 1; transform: scale(1); transition-delay: 520ms; }
-.pd-fold-cap + .pd-fold-cap { display: none; }
-.is-armed .pd-fold-cap { display: none; }
-.is-armed .pd-fold-cap.is-shown { display: block; }
-
-/* A line from the argument inside a pinned step, in the pull quote's voice. */
-.pd-pull {
-  margin: 0 !important;
-  max-width: var(--measure--4);
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--step-1);
-  line-height: var(--leading-snug);
-  color: var(--paper);
-  text-wrap: balance;
-}
-@media (width >= 1040px) { .article-body blockquote p, .pd-pull { font-size: var(--step-2); } }
-
-/* ---------- Stacked bar: parts that build a total, a line to beat, and the ledger ---------- */
-/* Under the eyebrow, a figure with no number to lead with says what its bars count. */
-.pd-stack-sub { margin: 0 0 var(--space-5) !important; color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
-.pd-stack-bar { margin-top: var(--space-4); }
-.pd-stack-bar + .pd-stack-bar { margin-top: var(--space-10); }
-/* The line's label hangs under its bar, so the next bar clears it. */
-.pd-stack-bar:has(.pd-mark) + .pd-stack-bar { margin-top: var(--space-12); }
-/* The bar's name is a label; its value is a number (is-s). */
-.pd-stack-head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); margin-bottom: var(--space-2); }
-/* What a bar counts, under its name. */
-.pd-stack-what { display: block; max-width: var(--measure--2); margin-top: var(--space-1); font-size: var(--step--2); font-weight: var(--weight-regular); line-height: var(--leading-snug); letter-spacing: 0; text-transform: none; }
-.pd-stack-track { position: relative; height: 34px; background: color-mix(in srgb, var(--paper) 6%, transparent); }
-.pd-seg { position: absolute; top: 0; bottom: 0; background: var(--paper); transition: width var(--pd-slow) var(--pd-ease), left var(--pd-slow) var(--pd-ease); }
-.pd-seg.is-accent { background: var(--brass); }
-.pd-seg-label {
-  position: absolute;
-  top: 50%;
-  left: 10px;
-  transform: translateY(-50%);
-  white-space: nowrap;
-  font-size: var(--step--2);
-  font-weight: var(--weight-bold);
-  font-variant-numeric: tabular-nums;
-  color: var(--ground);
-  transition: opacity var(--pd-fast) var(--pd-ease) var(--pd-base);
-}
-.pd-seg.is-accent .pd-seg-label { color: var(--on-brass); }
-/* A figure the text doubts, drawn as an outline beside the measured ones. */
-.pd-seg.is-outline { background: transparent; box-shadow: inset 0 0 0 2px var(--paper); }
-.pd-seg.is-outline.is-accent { box-shadow: inset 0 0 0 2px var(--brass); }
-.pd-seg.is-outline .pd-seg-label { color: var(--paper); }
-/* A segment too narrow for its label shows none; the ledger carries the number. */
-.pd-seg.is-tight .pd-seg-label { visibility: hidden; }
-.pd-mark {
-  position: absolute;
-  top: -10px;
-  bottom: -10px;
-  width: 2px;
-  background: var(--paper);
-  transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease), left var(--pd-slow) var(--pd-ease);
-}
-.pd-mark .label {
-  position: absolute;
-  top: 100%;
-  right: -2px;
-  margin-top: var(--space-2);
-  white-space: nowrap;
-}
-.pd-mark.is-left .label { right: auto; left: -2px; }
-/* The ledger under the bars clears the line's label. */
-.pd-stack-bar + .pd-ledger { margin-top: var(--space-8); }
-.pd-stack-note { margin: var(--space-3) 0 0 !important; color: var(--paper); font-size: var(--step--1); transition: opacity var(--pd-base) var(--pd-ease) 300ms; }
-.pd-stack-note strong { color: var(--brass); }
-
-/* ---------- Rising columns: one column per period, the event a beat later ---------- */
-.pd-cols { --plot: 230px; }
-.pd-cols-callouts { display: flex; justify-content: space-between; gap: var(--space-4); min-height: 48px; margin: 0 0 var(--space-2) var(--space-12); }
-.pd-cols-callout { margin: 0 !important; line-height: var(--leading-snug); transition: opacity var(--pd-base) var(--pd-ease); }
-.pd-cols-callout b { display: block; font-size: var(--step--1); color: var(--paper); }
-.pd-cols-callout span { display: block; margin-top: var(--space-1); font-size: var(--step--2); color: var(--secondary); }
-.pd-cols-callout.is-accent { text-align: right; }
-.pd-cols-callout.is-accent b, .pd-cols-callout.is-accent span { color: var(--brass); }
-.pd-cols-plot { position: relative; height: var(--plot); margin-left: var(--space-12); border-bottom: 1px solid var(--secondary); }
-.pd-cols-grid span { position: absolute; left: 0; right: 0; height: 0; border-top: 1px solid var(--hairline); }
-.pd-cols-grid span b { position: absolute; right: calc(100% + 8px); top: -10px; font-size: var(--step--2); font-weight: var(--weight-regular); color: var(--secondary); white-space: nowrap; font-variant-numeric: tabular-nums; }
-.pd-cols-bars { position: absolute; inset: 0; display: flex; align-items: flex-end; }
-.pd-col { position: relative; flex: 1 1 0; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
-.pd-col i {
-  display: block;
-  width: 62%;
-  min-width: 6px;
-  background: var(--paper);
-  opacity: 0.85;
-  transform-origin: bottom;
-  transition: transform var(--pd-base) var(--pd-ease);
-  transition-delay: calc(var(--i, 0) * 55ms);
-}
-.pd-col.is-event i { background: var(--brass); opacity: 1; transition-delay: 380ms; }
-/* The dashed line through the event column comes first: the wait, before anything has built. */
-.pd-col.is-event::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: 0;
-  height: calc(100% + 6px);
-  border-left: 1px dashed var(--brass);
-  transition: opacity var(--pd-base) var(--pd-ease);
-}
-.pd-cols-x { display: flex; margin-left: var(--space-12); }
-.pd-cols-x span { flex: 1 1 0; padding-top: var(--space-2); text-align: center; font-size: var(--step--2); color: var(--secondary); font-variant-numeric: tabular-nums; }
-.pd-cols-x span.is-strong { font-weight: var(--weight-bold); color: var(--paper); }
-.pd-cols-marker { margin: var(--space-2) 0 0 !important; text-align: right; transition: opacity var(--pd-base) var(--pd-ease); }
-
-/* ---------- Build states: parts wait for their step (data-at) ---------- */
-/* article-kit.js adds is-armed to a figure below the fold, or to a pinned graphic, and marks
-   each part is-shown as the reader reaches it. Without the script everything shows. */
-/* A bar takes no room until its step, as in the front door's graphic. */
-.is-armed .pd-stack-bar { max-height: 120px; transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease), max-height var(--pd-base) var(--pd-ease), margin var(--pd-base) var(--pd-ease); }
-.is-armed .pd-stack-bar[data-at]:not(.is-shown) { max-height: 0; margin-top: 0; opacity: 0; transform: translateY(6px); }
-.is-armed .pd-seg[data-at]:not(.is-shown) { width: 0 !important; }
-.is-armed .pd-seg[data-at]:not(.is-shown) .pd-seg-label { opacity: 0; transition-delay: 0ms; }
-.is-armed .pd-mark[data-at]:not(.is-shown) { opacity: 0; transform: translateY(-14px); }
-.is-armed .pd-ledger-row[data-at]:not(.is-shown) { opacity: 0; transform: translateY(4px); }
-.is-armed .pd-stack-note[data-at]:not(.is-shown) { opacity: 0; }
-.is-armed .pd-cols-bars[data-at]:not(.is-shown) .pd-col:not(.is-event) i { transform: scaleY(0); }
-.is-armed .pd-col.is-event[data-at]:not(.is-shown)::before { opacity: 0; }
-.is-armed .pd-col.is-event i[data-at]:not(.is-shown) { transform: scaleY(0); }
-.is-armed .pd-cols-callout[data-at]:not(.is-shown), .is-armed .pd-cols-marker[data-at]:not(.is-shown) { opacity: 0; }
-
-/* ---------- Pinned sequence: steps scroll past a graphic that holds still ---------- */
-.pd-scrolly { position: relative; margin: var(--space-10) 0 var(--space-12); }
-.pd-steps { position: relative; z-index: 2; }
-.pd-step { min-height: 40vh; display: flex; flex-direction: column; justify-content: center; padding: 4vh 0; color: var(--paper); }
-.pd-step > p { margin: 0; max-width: var(--measure--1); }
-.pd-step > p + p { margin-top: var(--space-5); }
-.pd-step:first-child { padding-top: 2vh; min-height: 36vh; }
-.pd-step:last-child { padding-bottom: 6vh; min-height: 40vh; }
-.pd-sticky { position: sticky; top: 5vh; align-self: start; }
-.pd-graphic { padding: var(--space-6) 0 var(--space-5); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
-/* Sources cited inside the steps sit under the graphic and change with the step: the publisher and
-   the first sentence, with the full note a click away. */
-.pd-sticky-notes { margin-top: var(--space-4); }
-.pd-sticky-notes .sidenote { position: static !important; width: auto; margin-top: var(--space-3); display: none; color: var(--secondary); opacity: 1; }
-.pd-note-full { display: none; }
-.sidenote.is-open .pd-note-full { display: inline; }
-.sidenote.is-open .pd-note-brief { display: none; }
-.sidenote .pd-text-btn { margin-left: var(--space-1); }
-@media (width >= 1180px) {
-  .pd-scrolly {
-    width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter));
-    display: grid;
-    grid-template-columns: minmax(0, 50ch) minmax(360px, 1fr);
-    column-gap: var(--space-20);
-    align-items: start;
+@layer kit {
+  /* ============================================================
+     Motion: one easing, three durations, used everywhere.
+     ============================================================ */
+  :root {
+    --pd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --pd-fast: 260ms;
+    --pd-base: 620ms;
+    --pd-slow: 900ms;
   }
-  .pd-sticky-notes .sidenote.is-current { display: block; }
-}
-@media (width < 1180px) {
-  /* The graphic is a compact card pinned at the top; the steps read like paragraphs under it. */
-  .pd-scrolly { display: flex; flex-direction: column; margin-bottom: var(--space-2); }
-  .pd-sticky {
-    order: -1;
-    top: 0;
-    z-index: 3;
-    margin: 0 calc(-1 * var(--gutter));
-    padding: var(--space-2) var(--gutter) var(--space-3);
+
+  /* ---------- The page ---------- */
+  .article .container { max-width: var(--container-article); }
+  .article-header { max-width: 920px; border-bottom: 0; }
+  .article-kicker-sep, .article-meta-sep { opacity: 0.5; }
+  .article-intro { font-family: var(--font-serif); }
+
+  /* ============================================================
+     Three voices. Archivo Black for the headline, section heads and big numbers;
+     Source Serif 4 for reading, decks and pull quotes; IBM Plex Sans for figures,
+     labels, captions, inputs and notes. Every size is a step of the type scale in
+     site-shell.css; body text is step 0.
+     ============================================================ */
+  /* The article column is the container the kit's components answer to (see @container column). */
+  .article-body {
+    container: column / inline-size;
+    position: relative;
+    max-width: var(--measure-0);
+    font-family: var(--font-serif);
+    font-size: var(--step-0);
+    line-height: var(--leading-body);
+    counter-reset: sec;
+  }
+  .article-body p { font-variant-numeric: oldstyle-nums proportional-nums; }
+  .pd-figure, .pd-scrolly__graphic, .pd-calc, .pd-units, .pd-field, .pd-ledger, .pd-stack, .pd-cols, .pd-record, .pd-asof,
+  .pd-scrolly__notes, .article-body figcaption, .pd-toggle, .pd-key, .pd-text-btn {
+    font-family: var(--font-sans);
+  }
+
+  /* The first plain paragraph opens on a drop cap (article.js marks it). */
+  .article-lede { font-size: var(--step-1); line-height: var(--leading-body); color: var(--paper); }
+  .article-lede::first-letter {
+    float: left;
+    margin: var(--space-2) var(--space-3) 0 0;
+    font-family: var(--font-display);
+    font-size: var(--step-8);
+    line-height: var(--leading-cap);
+    color: var(--brass);
+  }
+
+  /* Sections: a hairline, a roman numeral, the claim. "About the numbers" is not numbered. */
+  .article-body h2 {
+    position: relative;
+    margin: var(--space-20) 0 var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--hairline);
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    line-height: var(--leading-heading);
+    counter-increment: sec;
+  }
+  @media (width >= 1040px) { .article-body h2 { font-size: var(--step-2); } }
+  .article-body h2::before {
+    content: counter(sec, upper-roman) ".";
+    display: block;
+    margin-bottom: var(--space-3);
+    font-family: var(--font-serif);
+    font-size: var(--step--1);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-caps);
+    color: var(--brass);
+  }
+  .article-body h2.article-colophon, .article-body section[data-footnotes] h2 { counter-increment: none; }
+  .article-body h2.article-colophon::before, .article-body section[data-footnotes] h2::before { content: none; }
+  /* Subheads take the decks' voice. */
+  .article-body h3 {
+    margin: var(--space-12) 0 var(--space-4);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+    color: var(--paper);
+  }
+
+  /* The deck: one italic line under a section heading. */
+  .pd-deck {
+    margin: calc(-1 * var(--space-2)) 0 var(--space-6);
+    max-width: var(--measure--1);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--step-0);
+    line-height: var(--leading-text);
+    color: var(--secondary);
+  }
+
+  /* Pull quotes: an accent rule under the quote, the opening mark hung into the margin.
+     A markdown blockquote takes this style; so does <blockquote class="pd-pq">. */
+  .article-body blockquote {
+    position: relative;
+    margin: var(--space-12) 0;
+    padding: 0 0 var(--space-6);
+    border: 0;
+    border-bottom: 2px solid var(--brass);
+  }
+  .article-body blockquote p {
+    margin: 0;
+    max-width: var(--measure--4);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+    color: var(--paper);
+    text-wrap: balance;
+  }
+  .article-body blockquote::before {
+    content: "\201C";
+    position: absolute;
+    left: -0.55em;
+    top: -0.22em;
+    font-family: var(--font-serif);
+    font-size: var(--step-10);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-display);
+    color: var(--brass);
+  }
+
+  /* Footnote markers */
+
+  /* ---------- Figure parts ---------- */
+  /* The eyebrow is the label (site-shell.css) in the accent, naming the figure under it. */
+  .pd-eyebrow {
+    margin: 0 0 var(--space-4);
+    color: var(--brass);
+  }
+  .pd-figure {
+    margin: var(--space-12) 0;
+    padding: var(--space-8) 0 var(--space-5);
+    border-top: 1px solid var(--hairline);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .article-body figcaption, .pd-figure figcaption {
+    margin-top: var(--space-5);
+    max-width: var(--measure-0);
+    color: var(--secondary);
+    font-size: var(--step--2);
+    line-height: var(--leading-text);
+  }
+
+  /* ---------- Number: every figure set in the display face, in four sizes ---------- */
+  /* The default is a value in a row; is-s a value beside a label; is-l a total or a count; is-xl the
+     number a figure leads with. In a narrow column each size takes the step below. The decisions'
+     numerals are the same number, drawn by the stylesheet. */
+  .pd-num, .pd-decisions li::before {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-display);
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--paper);
+  }
+  .pd-num { font-size: var(--step-2); white-space: nowrap; }
+  .pd-num--s { font-size: var(--step-1); }
+  .pd-num--l { font-size: var(--step-4); }
+  .pd-num--xl { font-size: var(--step-6); }
+  @container column (width < 560px) {
+    .pd-num { font-size: var(--step-1); }
+    .pd-num--l { font-size: var(--step-2); }
+    .pd-num--xl { font-size: var(--step-4); }
+  }
+
+  /* ---------- Head: the number a figure leads with and the sentence it belongs to ---------- */
+  /* The sentence sits beside the number, and wraps under it when fewer than 14 characters fit. */
+  .pd-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-5); margin: 0 0 var(--space-5); }
+  .pd-head__text {
+    flex: 1 1 14ch;
+    max-width: var(--measure--2);
+    font-family: var(--font-serif);
+    font-size: var(--step-0);
+    line-height: var(--leading-text);
+    color: var(--paper);
+  }
+  .pd-head__text > p { margin: 0; }
+  @container column (width < 560px) {
+    .pd-head { margin-bottom: var(--space-3); }
+    .pd-head__text { font-size: var(--step--1); }
+  }
+
+  /* ---------- Swatch: the square that keys a colour in a legend or a key ---------- */
+  .pd-swatch { display: inline-block; flex: none; width: 12px; height: 12px; border: 1px solid var(--hairline); }
+  .pd-swatch--ink { background: var(--paper); border-color: var(--paper); }
+  .pd-swatch--accent { background: var(--brass); border-color: var(--brass); }
+
+  /* ---------- Text button: an action written as a link ---------- */
+  .pd-text-btn {
+    position: relative;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--brass);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    line-height: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  /* A 44px target without making the line taller. */
+  .pd-text-btn::after { content: ""; position: absolute; inset: -12px -4px; }
+  .pd-text-btn:hover { color: var(--paper); }
+  .pd-text-btn:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+  /* A button that appears later holds its line, so nothing moves when it does. */
+  .pd-text-btn[hidden] { display: inline-block; visibility: hidden; }
+
+  /* ---------- Unit stat: the number, its sentence, and a row of units that fills ---------- */
+  figure.pd-units {
+    display: block;
+    margin: var(--space-10) 0 var(--space-8);
+    padding: var(--space-5) 0 var(--space-4);
+    border-top: 2px solid var(--brass);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .pd-units__cells { display: grid; gap: var(--space-1); grid-template-columns: repeat(20, 1fr); }
+  .pd-units__cells[data-cols="10"] { grid-template-columns: repeat(10, 1fr); }
+  .pd-units__cells[data-cols="25"] { grid-template-columns: repeat(25, 1fr); }
+  .pd-units__cells[data-cols="50"] { grid-template-columns: repeat(50, 1fr); gap: var(--space-1); }
+  .pd-cell {
+    display: block;
+    aspect-ratio: 1 / 1;
+    border: 1px solid var(--hairline);
+    background: transparent;
+    transition: background-color var(--pd-fast) var(--pd-ease), border-color var(--pd-fast) var(--pd-ease), transform var(--pd-fast) var(--pd-ease);
+  }
+  .pd-cell.is-on { background: var(--brass); border-color: var(--brass); }
+  .pd-cell.is-alt { background: var(--paper); border-color: var(--paper); }
+  .pd-units figcaption { margin-top: var(--space-3); line-height: var(--leading-text); max-width: none; }
+
+  /* ---------- Unit grid: a hundred squares, and the counts filling in ---------- */
+  /* The opener runs the full width of the screen above or at the top of the piece; the callback is
+     the same hundred, small, near the end. */
+  .pd-grid { font-family: var(--font-sans); }
+  .pd-grid__cells { display: grid; grid-template-columns: repeat(25, 1fr); gap: var(--space-1); }
+  .pd-cell.is-landing { transform: scale(1.35); }
+  .pd-grid__legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--hairline); }
+  .pd-legend { display: grid; grid-template-columns: 12px auto minmax(0, 1fr); gap: var(--space-3); align-items: baseline; }
+  .pd-legend__swatch { margin-top: var(--space-1); align-self: start; }
+  .pd-legend__num { min-width: 2ch; }
+  .pd-legend__label { max-width: var(--measure--4); font-size: var(--step--1); line-height: var(--leading-text); color: var(--secondary); }
+  .pd-grid__source { margin: var(--space-3) 0 0; max-width: var(--measure-1); font-size: var(--step--2); line-height: var(--leading-text); color: var(--secondary); }
+  .pd-grid__source a { color: var(--brass); text-decoration: underline; text-underline-offset: 3px; }
+  .pd-grid--opener { width: 100vw; margin: 0 0 var(--space-16) calc(50% - 50vw); padding: var(--space-2) var(--gutter) 0; }
+  .pd-grid--opener .pd-grid__inner { max-width: 996px; margin: 0 auto; container: column / inline-size; }
+  .pd-grid--callback { border-bottom: 0; padding-bottom: 0; }
+  .pd-grid--callback .pd-grid__cells { grid-template-columns: repeat(10, 1fr); gap: var(--space-1); max-width: 200px; margin: 0 auto; aspect-ratio: 1 / 1; }
+  .pd-grid--callback .pd-cell { transition-duration: var(--pd-base); }
+  .pd-grid--callback figcaption { margin: var(--space-3) auto 0; text-align: center; }
+
+  /* ---------- Org fold: every function on target, folding into the one bank the customer sees ---------- */
+  .pd-fold { position: relative; min-height: 540px; }
+  .pd-org { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
+  .pd-org__box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    min-height: 92px;
+    padding: var(--space-3);
+    border: 1px solid var(--hairline);
     background: var(--ground);
-    /* style-ok: css-shadow (the pinned card floats over the steps that scroll under it) */
-    box-shadow: 0 14px 22px -14px var(--shadow);
+    transition: transform var(--pd-slow) var(--pd-ease), opacity var(--pd-base) var(--pd-ease);
+    transition-delay: var(--d, 0ms);
   }
-  .pd-graphic { padding: var(--space-4) 0 var(--space-3); border-top: 0; }
-  .pd-sticky-notes { display: none; }
-  .pd-step { min-height: 0; padding: var(--space-5) 0; justify-content: flex-start; }
-  .pd-step:first-child { padding-top: var(--space-6); min-height: 0; }
-  .pd-step:last-child { padding-bottom: var(--space-3); min-height: 0; }
-  /* Runway, so the last step can reach the line under the graphic. */
-  .pd-steps::after { content: ""; display: block; height: 26vh; }
-}
+  .pd-org__name { font-size: var(--step--2); font-weight: var(--weight-bold); line-height: var(--leading-snug); color: var(--paper); }
+  .pd-org__owns { font-size: var(--step--2); line-height: var(--leading-snug); color: var(--secondary); }
+  .pd-org__status { margin-top: auto; white-space: nowrap; }
+  .pd-org__status::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: var(--space-2); border-radius: 50%; background: var(--ok); }
+  .pd-fold__one {
+    position: absolute;
+    inset: 56px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    transform: scale(0.94);
+    pointer-events: none;
+    transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-slow) var(--pd-ease);
+  }
+  .pd-fold__one img { display: block; width: auto; max-width: 100%; max-height: 380px; height: auto; margin: 0 auto; }
+  .pd-fold__one-cap { margin: var(--space-4) 0 0; max-width: var(--measure--3); font-family: var(--font-serif); font-style: italic; font-size: var(--step--1); line-height: var(--leading-text); text-align: center; color: var(--secondary); }
+  /* The fold is the part with data-at: when its step comes, the boxes head for the centre, the outer
+     ones first, and the one bank arrives a beat later. */
+  .is-armed .pd-fold.is-shown .pd-org__box { transform: translate(var(--dx, 0), var(--dy, 0)) scale(0.18); opacity: 0; }
+  .is-armed .pd-fold.is-shown .pd-fold__one { opacity: 1; transform: scale(1); transition-delay: 520ms; }
+  .pd-fold__cap + .pd-fold__cap { display: none; }
+  .is-armed .pd-fold__cap { display: none; }
+  .is-armed .pd-fold__cap.is-shown { display: block; }
 
-/* ---------- Calculator: the reader's numbers, a bar that moves, and the ledger ---------- */
-.pd-calc { padding: var(--space-8) var(--space-8) var(--space-6); border: 0; background: var(--panel); box-shadow: inset 0 0 0 1px var(--hairline); }
-.pd-calc .pd-eyebrow { margin-bottom: var(--space-2) !important; }
-.pd-calc-head { margin-bottom: var(--space-6); }
-.pd-calc-title {
-  margin: 0 0 var(--space-2) !important;
-  font-family: var(--font-display);
-  font-size: var(--step-1);
-  line-height: var(--leading-heading);
-  text-transform: uppercase;
-  color: var(--paper);
-}
-.pd-calc-lede { margin: 0 !important; max-width: var(--measure-0); font-size: var(--step--1); line-height: var(--leading-body); color: var(--paper); opacity: 0.8; }
-.pd-calc-inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: var(--space-5) var(--space-4); margin-bottom: var(--space-6); }
-.pd-field { display: flex; flex-direction: column; }
-/* In a calculator, fields in a row share their label, box and note lines, so the boxes line up
-   however long a label runs. */
-.pd-calc-inputs .pd-field { display: grid; grid-template-rows: subgrid; grid-row: span 3; row-gap: 0; }
-/* A field's name is a label. Two lines are held for it, so the boxes in a row line up. */
-.pd-field > .label, .pd-calc-row .label {
-  display: flex;
-  align-items: flex-end;
-  min-height: 2.7em;
-  margin: 0 0 var(--space-2) !important;
-}
-.pd-input-wrap {
-  display: flex;
-  align-items: center;
-  padding: var(--space-3) var(--space-4);
-  border: 1.5px solid var(--hairline);
-  background: var(--dark-navy);
-  cursor: text;
-  transition: border-color var(--pd-fast) var(--pd-ease);
-}
-.pd-input-wrap:hover { border-color: var(--secondary); }
-.pd-input-wrap:focus-within { border-color: var(--brass); outline: 3px solid var(--paper); outline-offset: 2px; }
-.pd-input {
-  width: 100%;
-  min-width: 0;
-  padding: 0;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: var(--paper);
-  font-family: var(--font-sans);
-  font-size: var(--step-1);
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-heading);
-  font-variant-numeric: tabular-nums;
-}
-.pd-input::-webkit-outer-spin-button, .pd-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.pd-input[type=number] { -moz-appearance: textfield; appearance: textfield; }
-.pd-affix { color: var(--brass); font-weight: var(--weight-bold); font-size: var(--step--1); opacity: 0.9; }
-.pd-affix:first-child { margin-right: var(--space-1); }
-.pd-affix:last-child { margin-left: var(--space-1); }
-.pd-field-src { margin-top: var(--space-2); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-snug); }
-.pd-calc-row { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-6); }
-.pd-toggle { display: flex; flex-wrap: wrap; gap: var(--space-2); }
-/* The button's text is a label, in ink. */
-.pd-toggle-btn {
-  min-height: 44px;
-  padding: var(--space-3) var(--space-4);
-  border: 1px solid var(--secondary);
-  background: transparent;
-  color: var(--paper);
-  cursor: pointer;
-}
-.pd-toggle-btn:hover { border-color: var(--paper); }
-.pd-toggle-btn.is-on { border-color: var(--brass); background: var(--brass); color: var(--on-brass); }
-.pd-toggle-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
-.pd-bar { margin: 0 0 var(--space-2); }
-.pd-bar .pd-stack-track { background: color-mix(in srgb, var(--paper) 8%, transparent); }
-.pd-bar .pd-seg { transition-duration: 320ms; transition-timing-function: ease; }
-.pd-bar .pd-mark { top: -8px; bottom: -8px; transition-duration: 320ms; }
-.pd-bar .pd-mark .label { right: auto; left: 50%; transform: translateX(-50%); margin-top: var(--space-1); }
-.pd-calc .pd-bar + .pd-bar { margin-top: var(--space-6); }
+  /* A line from the argument inside a pinned step, in the pull quote's voice. */
+  .pd-pull {
+    margin: 0;
+    max-width: var(--measure--4);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+    color: var(--paper);
+    text-wrap: balance;
+  }
+  @media (width >= 1040px) { .article-body blockquote p, .pd-pull { font-size: var(--step-2); } }
 
-/* ---------- Key: a swatch and a name for each colour in a bar ---------- */
-.pd-key { display: flex; flex-wrap: wrap; gap: var(--space-5); margin: var(--space-8) 0 var(--space-2); color: var(--secondary); font-size: var(--step--2); }
-.pd-key > span { display: inline-flex; align-items: center; gap: var(--space-2); }
-.pd-calc-row .pd-key { margin: 0; }
+  /* ---------- Stacked bar: parts that build a total, a line to beat, and the ledger ---------- */
+  /* Under the eyebrow, a figure with no number to lead with says what its bars count. */
+  .pd-stack__sub { margin: 0 0 var(--space-5); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
+  .pd-bar { margin-top: var(--space-4); }
+  .pd-bar + .pd-bar { margin-top: var(--space-10); }
+  /* The line's label hangs under its bar, so the next bar clears it. */
+  .pd-bar:has(.pd-mark) + .pd-bar { margin-top: var(--space-12); }
+  /* The bar's name is a label; its value is a number (is-s). */
+  .pd-bar__head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); margin-bottom: var(--space-2); }
+  /* What a bar counts, under its name. */
+  .pd-bar__what { display: block; max-width: var(--measure--2); margin-top: var(--space-1); font-size: var(--step--2); font-weight: var(--weight-regular); line-height: var(--leading-snug); letter-spacing: 0; text-transform: none; }
+  .pd-bar__track { position: relative; height: 34px; background: color-mix(in srgb, var(--paper) 6%, transparent); }
+  .pd-seg { position: absolute; top: 0; bottom: 0; background: var(--paper); transition: width var(--pd-slow) var(--pd-ease), left var(--pd-slow) var(--pd-ease); }
+  .pd-seg--accent { background: var(--brass); }
+  .pd-seg__label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    white-space: nowrap;
+    font-size: var(--step--2);
+    font-weight: var(--weight-bold);
+    font-variant-numeric: tabular-nums;
+    color: var(--ground);
+    transition: opacity var(--pd-fast) var(--pd-ease) var(--pd-base);
+  }
+  .pd-seg--accent .pd-seg__label { color: var(--on-brass); }
+  /* A figure the text doubts, drawn as an outline beside the measured ones. */
+  .pd-seg--outline { background: transparent; box-shadow: inset 0 0 0 2px var(--paper); }
+  .pd-seg--accent.pd-seg--outline { box-shadow: inset 0 0 0 2px var(--brass); }
+  .pd-seg--outline .pd-seg__label { color: var(--paper); }
+  /* A segment too narrow for its label shows none; the ledger carries the number. */
+  .pd-seg.is-tight .pd-seg__label { visibility: hidden; }
+  .pd-mark {
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    width: 2px;
+    background: var(--paper);
+    transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease), left var(--pd-slow) var(--pd-ease);
+  }
+  .pd-mark__label {
+    position: absolute;
+    top: 100%;
+    right: -2px;
+    margin-top: var(--space-2);
+    white-space: nowrap;
+  }
+  .pd-mark--left .pd-mark__label { right: auto; left: -2px; }
+  /* The ledger under the bars clears the line's label. */
+  .pd-bar:not(.pd-bar--live) + .pd-ledger { margin-top: var(--space-8); }
+  .pd-stack__note { margin: var(--space-3) 0 0; color: var(--paper); font-size: var(--step--1); transition: opacity var(--pd-base) var(--pd-ease) 300ms; }
+  .pd-stack__note strong { color: var(--brass); }
 
-/* ---------- Ledger: named amounts, the arithmetic under each name, and the total ---------- */
-/* Under a stacked bar and in a calculator alike. Values are numbers; the total is is-l. */
-.pd-ledger { margin-top: var(--space-6); }
-.pd-ledger-row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-4) 0; border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease); }
-.pd-ledger-label { font-size: var(--step--1); line-height: var(--leading-snug); }
-.pd-ledger-src { display: block; margin-top: var(--space-half); color: var(--secondary); font-size: var(--step--2); }
-.pd-ledger-value { text-align: right; transition: color var(--pd-base) var(--pd-ease); }
-.pd-ledger-value.is-hot { color: var(--brass); }
-.pd-ledger-total { margin-top: var(--space-1); padding: var(--space-5) var(--space-5); border-top: 0; background: var(--dark-navy); box-shadow: inset 0 0 0 1px var(--hairline); }
-.pd-ledger-total .pd-ledger-label { font-weight: var(--weight-semibold); }
-.pd-ledger-total .pd-ledger-value { color: var(--brass); }
-.pd-calc figcaption { margin-top: var(--space-5); }
-/* The fields answer to the calculator's own width: two across when it is narrow, three when it has
-   room, one row once it is 900px wide. The calculator widens past the column on a desktop page. */
-.pd-calc { container: calc / inline-size; }
-@container calc (width < 560px) { .pd-calc-inputs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@container calc (560px <= width < 900px) { .pd-calc-inputs { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@container calc (width >= 900px) { .pd-calc-inputs { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: var(--space-5) var(--space-5); } }
-@media (width >= 1040px) { .pd-calc { width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter)); } }
+  /* ---------- Rising columns: one column per period, the event a beat later ---------- */
+  .pd-cols { --plot: 230px; }
+  .pd-cols__callouts { display: flex; justify-content: space-between; gap: var(--space-4); min-height: 48px; margin: 0 0 var(--space-2) var(--space-12); }
+  .pd-cols__callout { margin: 0; line-height: var(--leading-snug); transition: opacity var(--pd-base) var(--pd-ease); }
+  .pd-cols__callout-value { display: block; font-size: var(--step--1); color: var(--paper); }
+  .pd-cols__callout-note { display: block; margin-top: var(--space-1); font-size: var(--step--2); color: var(--secondary); }
+  .pd-cols__callout--accent { text-align: right; }
+  .pd-cols__callout--accent .pd-cols__callout-value, .pd-cols__callout--accent .pd-cols__callout-note { color: var(--brass); }
+  .pd-cols__plot { position: relative; height: var(--plot); margin-left: var(--space-12); border-bottom: 1px solid var(--secondary); }
+  .pd-cols__gridlines { position: absolute; inset: 0; pointer-events: none; }
+  .pd-cols__gridline { position: absolute; left: 0; right: 0; height: 0; border-top: 1px solid var(--hairline); }
+  .pd-cols__gridline-value { position: absolute; right: calc(100% + 8px); top: -10px; font-size: var(--step--2); font-weight: var(--weight-regular); color: var(--secondary); white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .pd-cols__bars { position: absolute; inset: 0; display: flex; align-items: flex-end; }
+  .pd-cols__col { position: relative; flex: 1 1 0; height: 100%; display: flex; align-items: flex-end; justify-content: center; }
+  .pd-cols__fill {
+    display: block;
+    width: 62%;
+    min-width: 6px;
+    background: var(--paper);
+    opacity: 0.85;
+    transform-origin: bottom;
+    transition: transform var(--pd-base) var(--pd-ease);
+    transition-delay: calc(var(--i, 0) * 55ms);
+  }
+  .pd-cols__col--event .pd-cols__fill { background: var(--brass); opacity: 1; transition-delay: 380ms; }
+  /* The dashed line through the event column comes first: the wait, before anything has built. */
+  .pd-cols__col--event::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    height: calc(100% + 6px);
+    border-left: 1px dashed var(--brass);
+    transition: opacity var(--pd-base) var(--pd-ease);
+  }
+  .pd-cols__axis { display: flex; margin-left: var(--space-12); }
+  .pd-cols__tick { flex: 1 1 0; padding-top: var(--space-2); text-align: center; font-size: var(--step--2); color: var(--secondary); font-variant-numeric: tabular-nums; }
+  .pd-cols__tick--strong { font-weight: var(--weight-bold); color: var(--paper); }
+  .pd-cols__marker { margin: var(--space-2) 0 0; text-align: right; transition: opacity var(--pd-base) var(--pd-ease); }
 
-/* ---------- Dialogue: an exchange, each speaker named ---------- */
-.pd-dialogue { margin: var(--space-8) 0 var(--space-10); padding: var(--space-2) 0 var(--space-2) var(--space-6); border-left: 1px solid var(--hairline); }
-.pd-dialogue p { margin: 0 0 var(--space-4); max-width: var(--measure--1); font-size: var(--step--1); line-height: var(--leading-body); }
-.pd-dialogue p:last-child { margin-bottom: 0; }
-.pd-dialogue .pd-them { margin-left: var(--space-6); color: var(--paper); }
-.pd-dialogue .pd-us { color: var(--secondary); }
-/* Each speaker is a label: the reader's side in the accent. */
-.pd-dialogue .label { display: block; margin-bottom: var(--space-half); }
-.pd-dialogue .pd-them .label { color: var(--brass); }
+  /* ---------- Build states: parts wait for their step (data-at) ---------- */
+  /* article-kit.js adds is-armed to a figure below the fold, or to a pinned graphic, and marks
+     each part is-shown as the reader reaches it. Without the script everything shows. */
+  /* A bar takes no room until its step, as in the front door's graphic. */
+  .is-armed .pd-bar { max-height: 120px; transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease), max-height var(--pd-base) var(--pd-ease), margin var(--pd-base) var(--pd-ease); }
+  .is-armed .pd-bar[data-at]:not(.is-shown) { max-height: 0; margin-top: 0; opacity: 0; transform: translateY(6px); }
+  .is-armed .pd-seg[data-at]:not(.is-shown) { width: 0 !important; }
+  .is-armed .pd-seg[data-at]:not(.is-shown) .pd-seg__label { opacity: 0; transition-delay: 0ms; }
+  .is-armed .pd-mark[data-at]:not(.is-shown) { opacity: 0; transform: translateY(-14px); }
+  .is-armed .pd-ledger__row[data-at]:not(.is-shown) { opacity: 0; transform: translateY(4px); }
+  .is-armed .pd-stack__note[data-at]:not(.is-shown) { opacity: 0; }
+  .is-armed .pd-cols__bars[data-at]:not(.is-shown) .pd-cols__col:not(.pd-cols__col--event) .pd-cols__fill { transform: scaleY(0); }
+  .is-armed .pd-cols__col--event[data-at]:not(.is-shown)::before { opacity: 0; }
+  .is-armed .pd-cols__col--event .pd-cols__fill[data-at]:not(.is-shown) { transform: scaleY(0); }
+  .is-armed .pd-cols__callout[data-at]:not(.is-shown), .is-armed .pd-cols__marker[data-at]:not(.is-shown) { opacity: 0; }
 
-/* ---------- Decisions: the numbered changes to make ---------- */
-.pd-decisions { list-style: none; margin: var(--space-8) 0 var(--space-10); padding: 0; counter-reset: pdd; }
-.pd-decisions li { counter-increment: pdd; position: relative; margin: 0; padding: var(--space-6) 0 var(--space-6) var(--space-20); border-top: 1px solid var(--hairline); font-size: var(--step--1); }
-.pd-decisions li:last-child { border-bottom: 1px solid var(--hairline); }
-.pd-decisions li::before { content: counter(pdd, decimal-leading-zero); position: absolute; left: 0; top: 24px; font-size: var(--step-2); color: var(--brass); }
-.pd-decisions strong { display: block; margin-bottom: var(--space-2); font-family: var(--font-display); font-weight: var(--weight-regular); font-size: var(--step-0); line-height: var(--leading-heading); text-transform: uppercase; }
+  /* ---------- Pinned sequence: steps scroll past a graphic that holds still ---------- */
+  .pd-scrolly { position: relative; margin: var(--space-10) 0 var(--space-12); }
+  .pd-scrolly__steps { position: relative; z-index: 2; }
+  .pd-scrolly__step { min-height: 40svh; display: flex; flex-direction: column; justify-content: center; padding: 4svh 0; color: var(--paper); }
+  .pd-scrolly__step > p { margin: 0; max-width: var(--measure--1); }
+  .pd-scrolly__step > p + p { margin-top: var(--space-5); }
+  .pd-scrolly__step:first-child { padding-top: 2svh; min-height: 36svh; }
+  .pd-scrolly__step:last-child { padding-bottom: 6svh; min-height: 40svh; }
+  .pd-scrolly__sticky { position: sticky; top: 5svh; align-self: start; }
+  .pd-scrolly__graphic { padding: var(--space-6) 0 var(--space-5); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+  /* Sources cited inside the steps sit under the graphic and change with the step: the publisher and
+     the first sentence, with the full note a click away. */
+  .pd-scrolly__notes { margin-top: var(--space-4); }
+  .pd-scrolly__notes .sidenote { position: static !important; width: auto; margin-top: var(--space-3); display: none; color: var(--secondary); opacity: 1; }
+  .pd-scrolly__note-full { display: none; }
+  .sidenote.is-open .pd-scrolly__note-full { display: inline; }
+  .sidenote.is-open .pd-scrolly__note-brief { display: none; }
+  .sidenote .pd-text-btn { margin-left: var(--space-1); }
+  @media (width >= 1180px) {
+    .pd-scrolly {
+      width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter));
+      display: grid;
+      grid-template-columns: minmax(0, 50ch) minmax(360px, 1fr);
+      column-gap: var(--space-20);
+      align-items: start;
+    }
+    .pd-scrolly__notes .sidenote.is-current { display: block; }
+  }
+  @media (width < 1180px) {
+    /* The graphic is a compact card pinned at the top; the steps read like paragraphs under it. */
+    .pd-scrolly { display: flex; flex-direction: column; margin-bottom: var(--space-2); }
+    .pd-scrolly__sticky {
+      order: -1;
+      top: 0;
+      z-index: 3;
+      margin: 0 calc(-1 * var(--gutter));
+      padding: var(--space-2) var(--gutter) var(--space-3);
+      background: var(--ground);
+      /* style-ok: css-shadow (the pinned card floats over the steps that scroll under it) */
+      box-shadow: 0 14px 22px -14px var(--shadow);
+    }
+    .pd-scrolly__graphic { padding: var(--space-4) 0 var(--space-3); border-top: 0; }
+    .pd-scrolly__notes { display: none; }
+    .pd-scrolly__step { min-height: 0; padding: var(--space-5) 0; justify-content: flex-start; }
+    .pd-scrolly__step:first-child { padding-top: var(--space-6); min-height: 0; }
+    .pd-scrolly__step:last-child { padding-bottom: var(--space-3); min-height: 0; }
+    /* Runway, so the last step can reach the line under the graphic. */
+    .pd-scrolly__steps::after { content: ""; display: block; height: 26svh; }
+  }
 
-/* ---------- Illustrations: they rise into place as they arrive ---------- */
-.pd-img { margin: var(--space-10) 0 var(--space-12); padding: 0; border: 0; }
-.pd-img img { display: block; width: 100%; height: auto; transition: opacity var(--pd-slow) var(--pd-ease), transform var(--pd-slow) var(--pd-ease); }
-.pd-img.is-tall img { width: min(100%, 420px); margin: 0 auto; }
-.pd-img.is-spot img { width: min(100%, 520px); margin: 0 auto; }
-.pd-img.is-armed img { opacity: 0; transform: translateY(14px); }
-/* A drawing whose ground drifts a shade from the page: in light mode it blends into the page. */
-.pd-img.is-blend img { mix-blend-mode: multiply; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pd-img.is-blend img { mix-blend-mode: normal; } }
-:root[data-theme="dark"] .pd-img.is-blend img { mix-blend-mode: normal; }
+  /* ---------- Calculator: the reader's numbers, a bar that moves, and the ledger ---------- */
+  .pd-calc { padding: var(--space-8) var(--space-8) var(--space-6); border: 0; background: var(--panel); box-shadow: inset 0 0 0 1px var(--hairline); }
+  .pd-calc .pd-eyebrow { margin-bottom: var(--space-2); }
+  .pd-calc__head { margin-bottom: var(--space-6); }
+  .pd-calc__title {
+    margin: 0 0 var(--space-2);
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    line-height: var(--leading-heading);
+    text-transform: uppercase;
+    color: var(--paper);
+  }
+  .pd-calc__lede { margin: 0; max-width: var(--measure-0); font-size: var(--step--1); line-height: var(--leading-body); color: var(--paper); opacity: 0.8; }
+  .pd-calc__inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: var(--space-5) var(--space-4); margin-bottom: var(--space-6); }
+  .pd-field { display: flex; flex-direction: column; }
+  /* In a calculator, fields in a row share their label, box and note lines, so the boxes line up
+     however long a label runs. */
+  .pd-calc__inputs .pd-field { display: grid; grid-template-rows: subgrid; grid-row: span 3; row-gap: 0; }
+  /* A field's name is a label. Two lines are held for it, so the boxes in a row line up. */
+  .pd-field__label, .pd-calc__label {
+    display: flex;
+    align-items: flex-end;
+    min-height: 2lh;
+    margin: 0 0 var(--space-2);
+  }
+  .pd-input {
+    display: flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border: 1.5px solid var(--hairline);
+    background: var(--dark-navy);
+    cursor: text;
+    transition: border-color var(--pd-fast) var(--pd-ease);
+  }
+  .pd-input:hover { border-color: var(--secondary); }
+  .pd-input:focus-within { border-color: var(--brass); outline: 3px solid var(--paper); outline-offset: 2px; }
+  .pd-input__field {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--paper);
+    font-family: var(--font-sans);
+    font-size: var(--step-1);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-heading);
+    font-variant-numeric: tabular-nums;
+  }
+  .pd-input__field::-webkit-outer-spin-button, .pd-input__field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .pd-input__field[type=number] { -moz-appearance: textfield; appearance: textfield; }
+  .pd-input__affix { color: var(--brass); font-weight: var(--weight-bold); font-size: var(--step--1); opacity: 0.9; }
+  .pd-input__affix:first-child { margin-right: var(--space-1); }
+  .pd-input__affix:last-child { margin-left: var(--space-1); }
+  .pd-field__src { margin-top: var(--space-2); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-snug); }
+  .pd-calc__row { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-6); }
+  .pd-toggle { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  /* The button's text is a label, in ink. */
+  .pd-toggle-btn {
+    min-height: 44px;
+    padding: var(--space-3) var(--space-4);
+    border: 1px solid var(--secondary);
+    background: transparent;
+    color: var(--paper);
+    cursor: pointer;
+  }
+  .pd-toggle-btn:hover { border-color: var(--paper); }
+  .pd-toggle-btn.is-on { border-color: var(--brass); background: var(--brass); color: var(--on-brass); }
+  .pd-toggle-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+  .pd-bar--live { margin: 0 0 var(--space-2); }
+  .pd-bar--live .pd-bar__track { background: color-mix(in srgb, var(--paper) 8%, transparent); }
+  .pd-bar--live .pd-seg { transition-duration: 320ms; transition-timing-function: ease; }
+  .pd-bar--live .pd-mark { top: -8px; bottom: -8px; transition-duration: 320ms; }
+  .pd-bar--live .pd-mark__label { right: auto; left: 50%; transform: translateX(-50%); margin-top: var(--space-1); }
+  .pd-calc .pd-bar--live + .pd-bar--live { margin-top: var(--space-6); }
 
-/* ---------- Tables ---------- */
-.article-body table { display: block; overflow-x: auto; width: 100%; margin: var(--space-8) 0 var(--space-8); border-collapse: collapse; font-family: var(--font-sans); font-size: var(--step--2); line-height: var(--leading-text); }
-.article-body th { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-top: 2px solid var(--paper); border-bottom: 1px solid var(--hairline); text-align: left; vertical-align: bottom; }
-.article-body td { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--hairline); vertical-align: top; min-width: 9ch; }
-.article-body td:first-child { font-weight: var(--weight-semibold); color: var(--paper); }
-/* A row header in the body reads like the first column, not like the column headings. */
-.article-body tbody th { border-top: 0; vertical-align: top; font-weight: var(--weight-semibold); color: var(--paper); }
+  /* ---------- Key: a swatch and a name for each colour in a bar ---------- */
+  .pd-key { display: flex; flex-wrap: wrap; gap: var(--space-5); margin: var(--space-8) 0 var(--space-2); color: var(--secondary); font-size: var(--step--2); }
+  .pd-key__item { display: inline-flex; align-items: center; gap: var(--space-2); }
+  .pd-calc__row .pd-key { margin: 0; }
 
-/* ---------- Narrow screens ---------- */
-@media (width < 1180px) {
-  .pd-fold { min-height: 330px; }
-  .pd-one { inset: 46px 0 0; }
-  .pd-one-cap { font-size: var(--step--2); }
-}
-@media (width < 760px) {
-  .pd-grid.is-opener { margin-bottom: var(--space-8); padding: var(--space-1) var(--gutter) 0; }
-  .pd-grid.is-opener .pd-grid-cells { grid-template-columns: repeat(20, 1fr); gap: var(--space-half); }
-  .pd-grid-legend { grid-template-columns: 1fr; gap: var(--space-3); }
-  .pd-legend-label { max-width: none; }
-  .pd-org { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
-  .pd-org-box { min-height: 70px; padding: var(--space-2); }
-  .pd-org-owns { display: none; }
-  .pd-one img { max-height: 200px; }
-  .pd-one-cap { margin-top: var(--space-2) !important; }
-  /* On phones every reading size takes the step below: body 17, lede and subheads 20, pull quotes 20. */
-  .pd-pull { font-size: var(--step-0); line-height: var(--leading-snug); }
-  .article-body { font-size: var(--step--1); }
-  .article-title { line-height: var(--leading-display); }
-  .article-lede { font-size: var(--step-0); }
-  .article-lede::first-letter { font-size: var(--step-6); }
-  .article-body h2 { margin-top: var(--space-12); }
-  .article-body h3 { font-size: var(--step-0); }
-  .pd-deck { font-size: var(--step--1); }
-  .pd-figure { margin: var(--space-8) 0; padding-top: var(--space-6); }
-  /* Pull quotes: the mark sits above the quote, and the quote keeps the column. */
-  .article-body blockquote { padding: var(--space-8) 0 var(--space-5); margin: var(--space-8) 0 !important; }
-  .article-body blockquote::before { font-size: var(--step-6); left: -3px; top: -0.02em; }
-  .article-body blockquote p { font-size: var(--step-0); line-height: var(--leading-snug); }
-  .pd-graphic .pd-ledger { display: none; }
-  /* With the ledger hidden, the payback line clears the label under the line to beat. */
-  .pd-graphic .pd-stack-note { margin-top: var(--space-10) !important; font-size: var(--step--2); }
-  .article-body [data-footnote-ref] { padding: var(--space-2) var(--space-1); margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-half)); }
-}
-/* Components answer to the column they sit in, not the screen: the same figure reads the same in
-   an article, a /ui frame or a narrow sidebar. */
-@container column (width < 560px) {
-  .pd-units-cells[data-cols="50"] { grid-template-columns: repeat(25, 1fr); }
-  .pd-seg-label { left: 8px; }
-  .pd-seg-word { display: none; }
-  .pd-stack-sub { margin-bottom: var(--space-3) !important; }
-  .pd-stack-track { height: 28px; }
-  .pd-cols { --plot: 180px; }
-  .pd-calc { padding: var(--space-6) var(--space-5) var(--space-5); }
-  .pd-calc-title { font-size: var(--step-0); }
-  .pd-field > .label, .pd-calc-row .label { min-height: 0; }
-  .pd-input { font-size: var(--step-0); }
-  .pd-ledger-total { padding: var(--space-4) var(--space-4); }
-  .pd-decisions li { padding: var(--space-5) 0 var(--space-6); }
-  .pd-decisions li::before { position: static; display: block; margin-bottom: var(--space-2); font-size: var(--step-1); }
-  .pd-dialogue { padding-left: 0; border-left: 0; }
-  .pd-dialogue p { padding-left: var(--space-4); border-left: 2px solid var(--hairline); }
-  .pd-dialogue .pd-them { margin-left: 0; border-left-color: var(--brass); }
-}
+  /* ---------- Ledger: named amounts, the arithmetic under each name, and the total ---------- */
+  /* Under a stacked bar and in a calculator alike. Values are numbers; the total is is-l. */
+  .pd-ledger { margin-top: var(--space-6); }
+  .pd-ledger__row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-4) 0; border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease); }
+  .pd-ledger__label { font-size: var(--step--1); line-height: var(--leading-snug); }
+  .pd-ledger__src { display: block; margin-top: var(--space-half); color: var(--secondary); font-size: var(--step--2); }
+  .pd-ledger__value { text-align: right; transition: color var(--pd-base) var(--pd-ease); }
+  .pd-ledger__value.is-hot { color: var(--brass); }
+  .pd-ledger__row--total { margin-top: var(--space-1); padding: var(--space-5) var(--space-5); border-top: 0; background: var(--dark-navy); box-shadow: inset 0 0 0 1px var(--hairline); }
+  .pd-ledger__row--total .pd-ledger__label { font-weight: var(--weight-semibold); }
+  .pd-ledger__row--total .pd-ledger__value { color: var(--brass); }
+  .pd-calc figcaption { margin-top: var(--space-5); }
+  /* The fields answer to the calculator's own width: two across when it is narrow, three when it has
+     room, one row once it is 900px wide. The calculator widens past the column on a desktop page. */
+  .pd-calc { container: calc / inline-size; }
+  @container calc (width < 560px) { .pd-calc__inputs { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @container calc (560px <= width < 900px) { .pd-calc__inputs { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+  @container calc (width >= 900px) { .pd-calc__inputs { grid-template-columns: repeat(auto-fit, minmax(0, 1fr)); gap: var(--space-5) var(--space-5); } }
+  @media (width >= 1040px) { .pd-calc { width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter)); } }
 
-/* ---------- Range segment: a value known only as a range, hatched from its low end to its high end ---------- */
-.pd-seg-range {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--paper) 70%, transparent) 0 2px, transparent 2px 6px);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--paper) 45%, transparent);
-  transition: width var(--pd-base) var(--pd-ease) var(--pd-slow);
-}
-.pd-seg-range.is-accent { background: repeating-linear-gradient(135deg, var(--brass) 0 2px, transparent 2px 6px); box-shadow: inset 0 0 0 1px var(--brass); }
-.is-armed .pd-seg-range[data-at]:not(.is-shown) { width: 0 !important; transition-delay: 0ms; }
+  /* ---------- Dialogue: an exchange, each speaker named ---------- */
+  .pd-dialogue { margin: var(--space-8) 0 var(--space-10); padding: var(--space-2) 0 var(--space-2) var(--space-6); border-left: 1px solid var(--hairline); }
+  .pd-dialogue p { margin: 0 0 var(--space-4); max-width: var(--measure--1); font-size: var(--step--1); line-height: var(--leading-body); }
+  .pd-dialogue p:last-child { margin-bottom: 0; }
+  .pd-dialogue .pd-dialogue__them { margin-left: var(--space-6); color: var(--paper); }
+  .pd-dialogue .pd-dialogue__us { color: var(--secondary); }
+  /* Each speaker is a label: the reader's side in the accent. */
+  .pd-dialogue__who { display: block; margin-bottom: var(--space-half); }
+  .pd-dialogue__them .pd-dialogue__who { color: var(--brass); }
 
-/* ---------- Record: one number from a primary record, what it was for, and the record's own words ---------- */
-/* A head (the number and the sentence) with the record's words under the sentence. */
-.pd-record .pd-head { margin: 0; }
-.pd-record .pd-head-text { font-variant-numeric: lining-nums; }
-.pd-record .pd-record-quote {
-  margin: var(--space-3) 0 0;
-  padding-left: var(--space-4);
-  border-left: 2px solid var(--brass);
-  font-family: var(--font-serif);
-  font-size: var(--step--1);
-  font-style: italic;
-  line-height: var(--leading-text);
-  font-variant-numeric: lining-nums;
-  color: var(--secondary);
-}
-.pd-record-quote::before { content: "\201C"; }
-.pd-record-quote::after { content: "\201D"; }
+  /* ---------- Decisions: the numbered changes to make ---------- */
+  .pd-decisions { list-style: none; margin: var(--space-8) 0 var(--space-10); padding: 0; counter-reset: pdd; }
+  .pd-decisions li { counter-increment: pdd; position: relative; margin: 0; padding: var(--space-6) 0 var(--space-6) var(--space-20); border-top: 1px solid var(--hairline); font-size: var(--step--1); }
+  .pd-decisions li:last-child { border-bottom: 1px solid var(--hairline); }
+  .pd-decisions li::before { content: counter(pdd, decimal-leading-zero); position: absolute; left: 0; top: 24px; font-size: var(--step-2); color: var(--brass); }
+  .pd-decisions strong { display: block; margin-bottom: var(--space-2); font-family: var(--font-display); font-weight: var(--weight-regular); font-size: var(--step-0); line-height: var(--leading-heading); text-transform: uppercase; }
 
-/* ---------- As-of slider: pick a day and see the version that was live ---------- */
-.pd-asof .pd-asof-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-4); margin: 0 0 var(--space-1); font-size: var(--step--1); line-height: var(--leading-text); color: var(--secondary); }
-.pd-asof-q { color: var(--secondary); }
-/* The day is a number. */
-.pd-asof-day { display: inline-block; }
-/* Ink, so the accent in this figure only ever marks what the customer saw. */
-.pd-asof-range { display: block; width: 100%; height: 44px; margin: var(--space-1) 0 var(--space-half); accent-color: var(--paper); cursor: pointer; }
-/* Before the script adds the slider, its line is already held, so nothing moves when it appears. */
-.pd-asof-range[hidden] { display: block; visibility: hidden; }
-.pd-asof-range:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
-.pd-asof-bands { display: flex; height: 10px; }
-.pd-asof-band { flex: none; box-sizing: border-box; border-right: 2px solid var(--ground); background: color-mix(in srgb, var(--paper) 22%, transparent); transition: background-color var(--pd-fast) var(--pd-ease); }
-.pd-asof-band:last-child { border-right: 0; }
-.pd-asof-band.is-live { background: var(--brass); }
-/* Each version's value printed on its band, so the strip reads as a history. */
-.pd-asof-bands.is-labeled { height: 24px; }
-.pd-asof-band { overflow: hidden; }
-.pd-asof-band-label { display: flex; align-items: center; height: 100%; padding: 0 var(--space-2); font-size: var(--step--2); font-weight: var(--weight-bold); line-height: var(--leading-snug); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; color: var(--paper); }
-.pd-asof-band.is-live .pd-asof-band-label { color: var(--on-brass); }
-.pd-asof-months { position: relative; height: 1.5em; margin-top: var(--space-1); font-size: var(--step--2); color: var(--secondary); }
-.pd-asof-months span { position: absolute; top: 0; }
-.pd-asof-answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-5); }
-.pd-asof-answers.is-single { grid-template-columns: minmax(0, 1fr); max-width: var(--measure-0); }
-/* The accent marks an answer that shows what the customer saw, like the live band; a wrong one gets a faint rule. */
-.pd-asof-answer { padding: var(--space-4) var(--space-4) var(--space-4); border-top: 3px solid var(--brass); background: color-mix(in srgb, var(--paper) 4%, transparent); }
-.pd-asof-answer.is-wrong { border-top-color: color-mix(in srgb, var(--paper) 25%, transparent); }
-/* Each answer is named by a label. */
-.pd-asof-answer .label { margin: 0 0 var(--space-2); }
-.pd-asof .pd-asof-copy { margin: 0 0 var(--space-2); font-family: var(--font-serif); font-size: var(--step--1); line-height: var(--leading-text); font-variant-numeric: lining-nums; color: var(--paper); }
-.pd-asof .pd-asof-meta { margin: 0; font-size: var(--step--2); line-height: var(--leading-text); color: var(--secondary); }
-.pd-asof .pd-asof-verdict { margin: var(--space-2) 0 0; font-size: var(--step--2); font-weight: var(--weight-bold); color: var(--paper); }
-/* Every version, listed: what a reader sees without the script, and what the script reads. */
-.pd-asof-versions { margin: var(--space-6) 0 0; padding-left: var(--space-5); font-size: var(--step--2); line-height: var(--leading-text); }
-.pd-asof-versions li { margin-bottom: var(--space-2); }
-.pd-asof-versions .pd-asof-copy { font-family: inherit; font-size: inherit; margin: 0; }
-.pd-asof-versions .pd-asof-meta { display: block; }
-.pd-asof.is-armed .pd-asof-versions { display: none; }
-@container column (width < 560px) {
-  .pd-asof-answers { grid-template-columns: minmax(0, 1fr); }
-}
+  /* ---------- Illustrations: they rise into place as they arrive ---------- */
+  .pd-img { margin: var(--space-10) 0 var(--space-12); padding: 0; border: 0; }
+  .pd-img img { display: block; width: 100%; height: auto; transition: opacity var(--pd-slow) var(--pd-ease), transform var(--pd-slow) var(--pd-ease); }
+  .pd-img--tall img { width: min(100%, 420px); margin: 0 auto; }
+  .pd-img--spot img { width: min(100%, 520px); margin: 0 auto; }
+  .pd-img.is-armed img { opacity: 0; transform: translateY(14px); }
+  /* A drawing whose ground drifts a shade from the page: in light mode it blends into the page. */
+  .pd-img--blend img { mix-blend-mode: multiply; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pd-img--blend img { mix-blend-mode: normal; } }
+  :root[data-theme="dark"] .pd-img--blend img { mix-blend-mode: normal; }
 
-/* ---------- Calculator fold: the main fields stay in view, the rest open on request ---------- */
-.pd-calc-more { margin: 0 0 var(--space-6); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
-.pd-calc-more > summary { display: flex; align-items: center; min-height: 48px; font-size: var(--step--1); font-weight: var(--weight-bold); color: var(--paper); cursor: pointer; list-style: none; }
-.pd-calc-more > summary::-webkit-details-marker { display: none; }
-.pd-calc-more > summary::before { content: "+"; display: inline-block; width: 1.4em; color: var(--brass); font-weight: var(--weight-bold); }
-.pd-calc-more[open] > summary::before { content: "\2212"; }
-.pd-calc-more > summary:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
-.pd-calc .pd-calc-inputs.is-more { margin: var(--space-1) 0 0; padding-bottom: var(--space-6); }
-/* Wider than a phone, the fold's fields wrap at a readable width instead of sharing one row. */
-@container calc (width >= 560px) { .pd-calc .pd-calc-inputs.is-more { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); } }
-/* A group of fields in the fold is named by a label across the row. */
-.pd-calc-inputs > .label { grid-column: 1 / -1; margin: var(--space-3) 0 0; }
-.pd-calc-inputs > .label:first-child { margin-top: 0; }
+  /* ---------- Tables ---------- */
+  .article-body table { display: block; overflow-x: auto; width: 100%; margin: var(--space-8) 0 var(--space-8); border-collapse: collapse; font-family: var(--font-sans); font-size: var(--step--2); line-height: var(--leading-text); }
+  .article-body th { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-top: 2px solid var(--paper); border-bottom: 1px solid var(--hairline); text-align: left; vertical-align: bottom; }
+  .article-body td { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--hairline); vertical-align: top; min-width: 9ch; }
+  .article-body td:first-child { font-weight: var(--weight-semibold); color: var(--paper); }
+  /* A row header in the body reads like the first column, not like the column headings. */
+  .article-body tbody th { border-top: 0; vertical-align: top; font-weight: var(--weight-semibold); color: var(--paper); }
 
-@media (prefers-reduced-motion: reduce) {
-  .pd-org-box, .pd-one,
-  .pd-cell, .pd-seg, .pd-seg-label, .pd-mark, .pd-stack-bar, .pd-ledger-row, .pd-stack-note, .pd-col i, .pd-col::before,
-  .pd-cols-callout, .pd-cols-marker, .pd-img img, .pd-seg-range, .pd-asof-band { transition: none !important; }
-}
-@media (forced-colors: active) {
-  .pd-seg, .pd-col i, .pd-cell.is-on, .pd-swatch.is-accent { background: CanvasText; forced-color-adjust: none; }
-  /* The second fill needs its own system colour, or it reads as an empty square. */
-  .pd-cell.is-alt, .pd-swatch.is-ink { background: Highlight; border-color: Highlight; forced-color-adjust: none; }
-  .pd-seg-range, .pd-seg.is-outline { background: none; box-shadow: inset 0 0 0 2px CanvasText; forced-color-adjust: none; }
-  .pd-asof-band.is-live { background: Highlight; forced-color-adjust: none; }
+  /* ---------- Narrow screens ---------- */
+  @media (width < 1180px) {
+    .pd-fold { min-height: 330px; }
+    .pd-fold__one { inset: 46px 0 0; }
+    .pd-fold__one-cap { font-size: var(--step--2); }
+  }
+  @media (width < 760px) {
+    .pd-grid--opener { margin-bottom: var(--space-8); padding: var(--space-1) var(--gutter) 0; }
+    .pd-grid--opener .pd-grid__cells { grid-template-columns: repeat(20, 1fr); gap: var(--space-half); }
+    .pd-grid__legend { grid-template-columns: 1fr; gap: var(--space-3); }
+    .pd-legend__label { max-width: none; }
+    .pd-org { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
+    .pd-org__box { min-height: 70px; padding: var(--space-2); }
+    .pd-org__owns { display: none; }
+    .pd-fold__one img { max-height: 200px; }
+    .pd-fold__one-cap { margin-top: var(--space-2); }
+    /* On phones every reading size takes the step below: body 17, lede and subheads 20, pull quotes 20. */
+    .pd-pull { font-size: var(--step-0); line-height: var(--leading-snug); }
+    .article-body { font-size: var(--step--1); }
+    .article-title { line-height: var(--leading-display); }
+    .article-lede { font-size: var(--step-0); }
+    .article-lede::first-letter { font-size: var(--step-6); }
+    .article-body h2 { margin-top: var(--space-12); }
+    .article-body h3 { font-size: var(--step-0); }
+    .pd-deck { font-size: var(--step--1); }
+    .pd-figure { margin: var(--space-8) 0; padding-top: var(--space-6); }
+    /* Pull quotes: the mark sits above the quote, and the quote keeps the column. */
+    .article-body blockquote { padding: var(--space-8) 0 var(--space-5); margin: var(--space-8) 0; }
+    .article-body blockquote::before { font-size: var(--step-6); left: -3px; top: -0.02em; }
+    .article-body blockquote p { font-size: var(--step-0); line-height: var(--leading-snug); }
+    .pd-scrolly__graphic .pd-ledger { display: none; }
+    /* With the ledger hidden, the payback line clears the label under the line to beat. */
+    .pd-scrolly__graphic .pd-stack__note { margin-top: var(--space-10); font-size: var(--step--2); }
+    .article-body [data-footnote-ref] { padding: var(--space-2) var(--space-1); margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-half)); }
+  }
+  /* Components answer to the column they sit in, not the screen: the same figure reads the same in
+     an article, a /ui frame or a narrow sidebar. */
+  @container column (width < 560px) {
+    .pd-units__cells[data-cols="50"] { grid-template-columns: repeat(25, 1fr); }
+    .pd-seg__label { left: 8px; }
+    .pd-seg__word { display: none; }
+    .pd-stack__sub { margin-bottom: var(--space-3); }
+    .pd-bar__track { height: 28px; }
+    .pd-cols { --plot: 180px; }
+    .pd-calc { padding: var(--space-6) var(--space-5) var(--space-5); }
+    .pd-calc__title { font-size: var(--step-0); }
+    .pd-field__label, .pd-calc__label { min-height: 0; }
+    .pd-input__field { font-size: var(--step-0); }
+    .pd-ledger__row--total { padding: var(--space-4) var(--space-4); }
+    .pd-decisions li { padding: var(--space-5) 0 var(--space-6); }
+    .pd-decisions li::before { position: static; display: block; margin-bottom: var(--space-2); font-size: var(--step-1); }
+    .pd-dialogue { padding-left: 0; border-left: 0; }
+    .pd-dialogue p { padding-left: var(--space-4); border-left: 2px solid var(--hairline); }
+    .pd-dialogue .pd-dialogue__them { margin-left: 0; border-left-color: var(--brass); }
+  }
+
+  /* ---------- Range segment: a value known only as a range, hatched from its low end to its high end ---------- */
+  .pd-range {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--paper) 70%, transparent) 0 2px, transparent 2px 6px);
+    box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--paper) 45%, transparent);
+    transition: width var(--pd-base) var(--pd-ease) var(--pd-slow);
+  }
+  .pd-range--accent { background: repeating-linear-gradient(135deg, var(--brass) 0 2px, transparent 2px 6px); box-shadow: inset 0 0 0 1px var(--brass); }
+  .is-armed .pd-range[data-at]:not(.is-shown) { width: 0 !important; transition-delay: 0ms; }
+
+  /* ---------- Record: one number from a primary record, what it was for, and the record's own words ---------- */
+  /* A head (the number and the sentence) with the record's words under the sentence. */
+  .pd-record__head { margin: 0; }
+  .pd-record__text { font-variant-numeric: lining-nums; }
+  .pd-record .pd-record__quote {
+    margin: var(--space-3) 0 0;
+    padding-left: var(--space-4);
+    border-left: 2px solid var(--brass);
+    font-family: var(--font-serif);
+    font-size: var(--step--1);
+    font-style: italic;
+    line-height: var(--leading-text);
+    font-variant-numeric: lining-nums;
+    color: var(--secondary);
+  }
+  .pd-record__quote::before { content: "\201C"; }
+  .pd-record__quote::after { content: "\201D"; }
+
+  /* ---------- As-of slider: pick a day and see the version that was live ---------- */
+  .pd-asof .pd-asof__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-4); margin: 0 0 var(--space-1); font-size: var(--step--1); line-height: var(--leading-text); color: var(--secondary); }
+  .pd-asof__q { color: var(--secondary); }
+  /* The day is a number. */
+  .pd-asof__day { display: inline-block; }
+  /* Ink, so the accent in this figure only ever marks what the customer saw. */
+  .pd-slider { display: block; width: 100%; height: 44px; margin: var(--space-1) 0 var(--space-half); accent-color: var(--paper); cursor: pointer; }
+  /* Before the script adds the slider, its line is already held, so nothing moves when it appears. */
+  .pd-slider[hidden] { display: block; visibility: hidden; }
+  .pd-slider:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+  .pd-asof__bands { display: flex; height: 10px; }
+  .pd-asof__band { flex: none; box-sizing: border-box; border-right: 2px solid var(--ground); background: color-mix(in srgb, var(--paper) 22%, transparent); transition: background-color var(--pd-fast) var(--pd-ease); }
+  .pd-asof__band:last-child { border-right: 0; }
+  .pd-asof__band.is-live { background: var(--brass); }
+  /* Each version's value printed on its band, so the strip reads as a history. */
+  .pd-asof__bands--labeled { height: 24px; }
+  .pd-asof__band { overflow: hidden; }
+  .pd-asof__band-label { display: flex; align-items: center; height: 100%; padding: 0 var(--space-2); font-size: var(--step--2); font-weight: var(--weight-bold); line-height: var(--leading-snug); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; color: var(--paper); }
+  .pd-asof__band.is-live .pd-asof__band-label { color: var(--on-brass); }
+  .pd-asof__months { position: relative; height: 1lh; margin-top: var(--space-1); font-size: var(--step--2); color: var(--secondary); }
+  .pd-asof__month { position: absolute; top: 0; }
+  .pd-asof__answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-5); }
+  .pd-asof__answers--single { grid-template-columns: minmax(0, 1fr); max-width: var(--measure-0); }
+  /* The accent marks an answer that shows what the customer saw, like the live band; a wrong one gets a faint rule. */
+  .pd-asof__answer { padding: var(--space-4) var(--space-4) var(--space-4); border-top: 3px solid var(--brass); background: color-mix(in srgb, var(--paper) 4%, transparent); }
+  .pd-asof__answer.is-wrong { border-top-color: color-mix(in srgb, var(--paper) 25%, transparent); }
+  /* Each answer is named by a label. */
+  .pd-asof__label { margin: 0 0 var(--space-2); }
+  .pd-asof .pd-asof__copy { margin: 0 0 var(--space-2); font-family: var(--font-serif); font-size: var(--step--1); line-height: var(--leading-text); font-variant-numeric: lining-nums; color: var(--paper); }
+  .pd-asof .pd-asof__meta { margin: 0; font-size: var(--step--2); line-height: var(--leading-text); color: var(--secondary); }
+  .pd-asof .pd-asof__verdict { margin: var(--space-2) 0 0; font-size: var(--step--2); font-weight: var(--weight-bold); color: var(--paper); }
+  /* Every version, listed: what a reader sees without the script, and what the script reads. */
+  .pd-asof__versions { margin: var(--space-6) 0 0; padding-left: var(--space-5); font-size: var(--step--2); line-height: var(--leading-text); }
+  .pd-asof__version { margin-bottom: var(--space-2); }
+  .pd-asof__versions .pd-asof__copy { font-family: inherit; font-size: inherit; margin: 0; }
+  .pd-asof__versions .pd-asof__meta { display: block; }
+  .pd-asof.is-armed .pd-asof__versions { display: none; }
+  @container column (width < 560px) {
+    .pd-asof__answers { grid-template-columns: minmax(0, 1fr); }
+  }
+
+  /* ---------- Calculator fold: the main fields stay in view, the rest open on request ---------- */
+  .pd-calc__more { margin: 0 0 var(--space-6); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
+  .pd-calc__more > summary { display: flex; align-items: center; min-height: 48px; font-size: var(--step--1); font-weight: var(--weight-bold); color: var(--paper); cursor: pointer; list-style: none; }
+  .pd-calc__more > summary::-webkit-details-marker { display: none; }
+  .pd-calc__more > summary::before { content: "+"; display: inline-block; width: 1.4em; color: var(--brass); font-weight: var(--weight-bold); }
+  .pd-calc__more[open] > summary::before { content: "\2212"; }
+  .pd-calc__more > summary:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+  .pd-calc .pd-calc__inputs--more { margin: var(--space-1) 0 0; padding-bottom: var(--space-6); }
+  /* Wider than a phone, the fold's fields wrap at a readable width instead of sharing one row. */
+  @container calc (width >= 560px) { .pd-calc .pd-calc__inputs--more { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); } }
+  /* A group of fields in the fold is named by a label across the row. */
+  .pd-calc__group { grid-column: 1 / -1; margin: var(--space-3) 0 0; }
+  .pd-calc__group:first-child { margin-top: 0; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pd-org__box, .pd-fold__one,
+    .pd-cell, .pd-seg, .pd-seg__label, .pd-mark, .pd-bar, .pd-ledger__row, .pd-stack__note, .pd-cols__fill, .pd-cols__col::before,
+    .pd-cols__callout, .pd-cols__marker, .pd-img img, .pd-range, .pd-asof__band { transition: none !important; }
+  }
+  @media (forced-colors: active) {
+    .pd-seg, .pd-cols__fill, .pd-cell.is-on, .pd-swatch--accent { background: CanvasText; forced-color-adjust: none; }
+    /* The second fill needs its own system colour, or it reads as an empty square. */
+    .pd-cell.is-alt, .pd-swatch--ink { background: Highlight; border-color: Highlight; forced-color-adjust: none; }
+    .pd-range, .pd-seg--outline { background: none; box-shadow: inset 0 0 0 2px CanvasText; forced-color-adjust: none; }
+    .pd-asof__band.is-live { background: Highlight; forced-color-adjust: none; }
+  }
 }
