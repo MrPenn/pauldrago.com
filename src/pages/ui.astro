@@ -44,7 +44,7 @@ const PRINCIPLES = [
 
   <section class="ui-section">
     <h2 class="ui-h2">Principles</h2>
-    <ol class="ui-list is-numbered">{PRINCIPLES.map(([b, t]) => <li><strong>{b}</strong> {t}</li>)}</ol>
+    <ol class="ui-list ui-list--numbered">{PRINCIPLES.map(([b, t]) => <li><strong>{b}</strong> {t}</li>)}</ol>
   </section>
 
   <section class="ui-section">
@@ -59,7 +59,7 @@ const PRINCIPLES = [
     <div class="ui-table-wrap">
       <table class="ui-table">
         <thead><tr><th class="label">Status</th><th class="label">What it means</th><th class="label">Components</th></tr></thead>
-        <tbody>{STATUSES.map((s) => <tr><td><span class={`label ui-chip is-${s.id}`}>{s.name}</span></td><td>{s.about}</td><td class="ui-num">{count('status', s.id)}</td></tr>)}</tbody>
+        <tbody>{STATUSES.map((s) => <tr><td><span class={`label ui-chip ui-chip--${s.id}`}>{s.name}</span></td><td>{s.about}</td><td class="ui-num">{count('status', s.id)}</td></tr>)}</tbody>
       </table>
     </div>
   </section>
@@ -67,11 +67,11 @@ const PRINCIPLES = [
   <section class="ui-section">
     <h2 class="ui-h2">Components</h2>
     {LEVELS.map((l) => (
-      <div class="ui-index-group">
+      <div class="ui-index">
         <h3 class="ui-h3">{l.name}</h3>
-        <ul class="ui-index">
+        <ul class="ui-index__list">
           {COMPONENTS.filter((c) => c.level === l.id).map((c) => (
-            <li><a href={`/ui/components/${c.id}`}>{c.name}</a><span class={`label ui-chip is-${c.status}`}>{STATUSES.find((s) => s.id === c.status).name}</span><p>{c.summary}</p></li>
+            <li><a href={`/ui/components/${c.id}`}>{c.name}</a><span class={`label ui-chip ui-chip--${c.status}`}>{STATUSES.find((s) => s.id === c.status).name}</span><p>{c.summary}</p></li>
           ))}
         </ul>
       </div>

@@ -56,10 +56,10 @@ const wrap = story.wrap ?? 'body';
 <Fonts />
 <style is:inline set:html={css}></style>
 </head>
-<body class={`ui-frame is-${wrap}`}>
-{wrap === 'page' && <div class="ui-slot" set:html={html}></div>}
-{wrap === 'article' && <div class="article"><div class="ui-slot" set:html={html}></div></div>}
-{wrap === 'body' && <div class="article"><div class="article__body ui-slot" data-notes={story.notes ? 'rail' : 'custom'} set:html={html}></div></div>}
+<body class={`ui-frame ui-frame--${wrap}`}>
+{wrap === 'page' && <div class="ui-frame__slot" set:html={html}></div>}
+{wrap === 'article' && <div class="article"><div class="ui-frame__slot" set:html={html}></div></div>}
+{wrap === 'body' && <div class="article"><div class="article__body ui-frame__slot" data-notes={story.notes ? 'rail' : 'custom'} set:html={html}></div></div>}
 {story.notes && <script is:inline defer src="/assets/article.js"></script>}
 <script is:inline defer src="/assets/article-kit.js"></script>
 </body>

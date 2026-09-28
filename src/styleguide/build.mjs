@@ -308,28 +308,28 @@ export function highlight(src, lang = 'html') {
   if (lang === 'yaml') {
     return String(src).split('\n').map((l) => {
       const m = l.match(/^(\s*-?\s*)([\w-]+)(:)(.*)$/);
-      if (m) return `${esc(m[1])}<span class="t-attr">${esc(m[2])}</span>${esc(m[3])}<span class="t-val">${esc(m[4])}</span>`;
-      if (/^\s*#/.test(l)) return `<span class="t-com">${esc(l)}</span>`;
-      if (/^---\s*$/.test(l)) return `<span class="t-com">${esc(l)}</span>`;
+      if (m) return `${esc(m[1])}<span class="ui-syntax__attr">${esc(m[2])}</span>${esc(m[3])}<span class="ui-syntax__value">${esc(m[4])}</span>`;
+      if (/^\s*#/.test(l)) return `<span class="ui-syntax__comment">${esc(l)}</span>`;
+      if (/^---\s*$/.test(l)) return `<span class="ui-syntax__comment">${esc(l)}</span>`;
       return esc(l);
     }).join('\n');
   }
   if (lang === 'markdown') {
     return String(src).split('\n').map((l) => {
-      if (/^---\s*$/.test(l)) return `<span class="t-com">${esc(l)}</span>`;
-      if (/^#{1,6} /.test(l)) return `<span class="t-tag">${esc(l)}</span>`;
+      if (/^---\s*$/.test(l)) return `<span class="ui-syntax__comment">${esc(l)}</span>`;
+      if (/^#{1,6} /.test(l)) return `<span class="ui-syntax__tag">${esc(l)}</span>`;
       if (/^\s*</.test(l)) return highlight(l, 'html');
-      if (/^\[\^\d+\]:/.test(l)) return l.replace(/^(\[\^\d+\]:)(.*)$/, (_, a, b) => `<span class="t-attr">${esc(a)}</span>${esc(b)}`);
-      return esc(l).replace(/(\[\^\d+\])/g, '<span class="t-attr">$1</span>');
+      if (/^\[\^\d+\]:/.test(l)) return l.replace(/^(\[\^\d+\]:)(.*)$/, (_, a, b) => `<span class="ui-syntax__attr">${esc(a)}</span>${esc(b)}`);
+      return esc(l).replace(/(\[\^\d+\])/g, '<span class="ui-syntax__attr">$1</span>');
     }).join('\n');
   }
   return String(src).replace(/(<!--[\s\S]*?-->)|(<\/?)([a-zA-Z][\w-]*)([^>]*?)(\/?>)|([^<]+)/g, (m, com, open, name, attrs, close, text) => {
-    if (com) return `<span class="t-com">${esc(com)}</span>`;
+    if (com) return `<span class="ui-syntax__comment">${esc(com)}</span>`;
     if (text !== undefined) return esc(text);
     const a = attrs.replace(/([^\s=]+)(?:(=)("[^"]*"|'[^']*'|[^\s"']+))?|(\s+)/g, (mm, an, eq, av, ws) => {
       if (ws) return ws;
-      return `<span class="t-attr">${esc(an)}</span>${eq ? `=<span class="t-val">${esc(av)}</span>` : ''}`;
+      return `<span class="ui-syntax__attr">${esc(an)}</span>${eq ? `=<span class="ui-syntax__value">${esc(av)}</span>` : ''}`;
     });
-    return `<span class="t-tag">${esc(open)}${esc(name)}</span>${a}<span class="t-tag">${esc(close)}</span>`;
+    return `<span class="ui-syntax__tag">${esc(open)}${esc(name)}</span>${a}<span class="ui-syntax__tag">${esc(close)}</span>`;
   });
 }

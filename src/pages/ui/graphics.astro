@@ -63,11 +63,11 @@ const CHOOSE = [
     <p class="ui-p">The illustrations have their own accents, a little brighter than the interface's, drawn for a light and a dark version of every image.</p>
     <div class="ui-palettes">
       <div>
-        <p class="ui-specimen-meta"><strong>Light version</strong></p>
+        <p class="ui-palettes__name"><strong>Light version</strong></p>
         <ul class="ui-chips">{LIGHT.map(([hex, role]) => <li><span style={`background:${hex}`}></span><b>{hex}</b> {role}</li>)}</ul>
       </div>
       <div>
-        <p class="ui-specimen-meta"><strong>Dark version</strong></p>
+        <p class="ui-palettes__name"><strong>Dark version</strong></p>
         <ul class="ui-chips">{DARK.map(([hex, role]) => <li><span style={`background:${hex}`}></span><b>{hex}</b> {role}</li>)}</ul>
       </div>
     </div>
@@ -81,11 +81,11 @@ const CHOOSE = [
       <li>Write the alt text, and paste the snippet from the <a href="/ui/components/illustration">illustration component</a>.</li>
     </ol>
     <div class="ui-code">
-      <div class="label ui-code-head"><span>Dark prompt</span><button type="button" class="ui-link-btn" data-copy="prompt-dark">Copy</button><span class="ui-copy-msg" role="status"></span></div>
+      <div class="label ui-code__head"><span>Dark prompt</span><button type="button" class="ui-link-btn ui-code__copy" data-copy="prompt-dark">Copy</button><span class="ui-code__status" role="status"></span></div>
       <pre><code id="prompt-dark">{DARK_PROMPT}</code></pre>
     </div>
     <div class="ui-code" style="margin-top:12px">
-      <div class="label ui-code-head"><span>Light rebuild prompt</span><button type="button" class="ui-link-btn" data-copy="prompt-light">Copy</button><span class="ui-copy-msg" role="status"></span></div>
+      <div class="label ui-code__head"><span>Light rebuild prompt</span><button type="button" class="ui-link-btn ui-code__copy" data-copy="prompt-light">Copy</button><span class="ui-code__status" role="status"></span></div>
       <pre><code id="prompt-light">{LIGHT_PROMPT}</code></pre>
     </div>
 
@@ -106,8 +106,8 @@ const CHOOSE = [
     <p class="ui-p">Every illustration in <a href={`/articles/${REFERENCE.slug}`}>{REFERENCE.title}</a>, light and dark side by side.</p>
     <div class="ui-gallery">
       {art.map((a) => (
-        <figure class="ui-gallery-item">
-          <div class="ui-gallery-pair">
+        <figure class="ui-gallery__item">
+          <div class="ui-gallery__pair">
             <span class="is-light" style="background:#F1F2F4"><img src={a.light} width={a.w} height={a.h} loading="lazy" alt="" /></span>
             <span class="is-dark" style="background:#0A192F"><img src={a.dark} width={a.darkSize?.w ?? a.w} height={a.darkSize?.h ?? a.h} loading="lazy" alt="" /></span>
           </div>
@@ -137,7 +137,7 @@ const CHOOSE = [
       <li>The same number in the short version, the text and the graphic comes from one data mark.</li>
     </ul>
     <h3 class="ui-h3">Not used</h3>
-    <ul class="ui-list is-avoid">
+    <ul class="ui-list ui-list--avoid">
       <li>Pie and donut charts. A unit grid or a stacked bar shows the same share with the number printed.</li>
       <li>3D, gradients, drop shadows and glows.</li>
       <li>A legend where a label can sit on the mark.</li>

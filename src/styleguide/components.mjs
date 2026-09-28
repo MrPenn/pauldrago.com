@@ -258,16 +258,16 @@ export const ASOF_DEMO = {
 
 // The layout grid, drawn with the real containers so it is true at whatever width the frame is.
 const GRID_HTML = `<div class="ui-grid">
-  <p class="ui-grid-now">At this width: <strong class="ui-grid-bp"></strong></p>
-  <div class="container ui-grid-band ui-grid-site"><span class="ui-grid-tag">Page container: 1240px, gutters 32px (20px below 760)</span></div>
+  <p class="ui-grid__now">At this width: <strong class="ui-grid__step"></strong></p>
+  <div class="container ui-grid__band ui-grid__band--site"><span class="ui-grid__tag">Page container: 1240px, gutters 32px (20px below 760)</span></div>
   <div class="article">
-    <div class="container ui-grid-band ui-grid-art">
-      <span class="ui-grid-tag">Article container: 1060px</span>
-      <div class="article__body ui-grid-band ui-grid-col">
-        <span class="ui-grid-tag">Reading column: 62 characters. Kit components answer to this width.</span>
-        <p class="ui-grid-compact">The column is under 560px, so kit components here take their compact form.</p>
-        <div class="ui-grid-band ui-grid-wide"><span class="ui-grid-tag">A calculator: the column, then the article container at 1040 and up</span></div>
-        <div class="ui-grid-rail"><span class="ui-grid-tag">Source notes: 1180 and up</span></div>
+    <div class="container ui-grid__band ui-grid__band--article">
+      <span class="ui-grid__tag">Article container: 1060px</span>
+      <div class="article__body ui-grid__band ui-grid__band--column">
+        <span class="ui-grid__tag">Reading column: 62 characters. Kit components answer to this width.</span>
+        <p class="ui-grid__compact">The column is under 560px, so kit components here take their compact form.</p>
+        <div class="ui-grid__band ui-grid__band--wide"><span class="ui-grid__tag">A calculator: the column, then the article container at 1040 and up</span></div>
+        <div class="ui-grid__rail"><span class="ui-grid__tag">Source notes: 1180 and up</span></div>
       </div>
     </div>
   </div>
@@ -292,9 +292,9 @@ export const TYPE_SCALE = [
   { step: 10, px: 124, face: 'serif', sample: '“', roles: 'The pull quote\'s opening mark.' },
 ];
 export const stepName = (n) => `--step-${n < 0 ? '-' + Math.abs(n) : n}`;
-const stepClass = (n) => `ui-step-${n < 0 ? 'm' + Math.abs(n) : n}`;
+const stepClass = (n) => `ui-scale__sample--step-${n < 0 ? 'm' + Math.abs(n) : n}`;
 // Every step at its size, in the face its main role uses.
-const SCALE_HTML = `<div class="ui-scale">\n${TYPE_SCALE.map((t) => `  <div class="ui-scale-row"><span class="label">Step ${t.step < 0 ? '−' + Math.abs(t.step) : t.step}, ${t.px}px</span><span class="ui-scale-sample ui-scale-${t.face} ${stepClass(t.step)}">${t.sample}</span></div>`).join('\n')}\n</div>`;
+const SCALE_HTML = `<div class="ui-scale">\n${TYPE_SCALE.map((t) => `  <div class="ui-scale__row"><span class="label">Step ${t.step < 0 ? '−' + Math.abs(t.step) : t.step}, ${t.px}px</span><span class="ui-scale__sample ui-scale__sample--${t.face} ${stepClass(t.step)}">${t.sample}</span></div>`).join('\n')}\n</div>`;
 
 // The layout grid. The page changes layout at four widths, and nowhere else; the linter holds every
 // media query to them. Components answer to the column they sit in (container queries), so their
@@ -483,7 +483,7 @@ export const COMPONENTS = [
     a11y: ['A number that changes as the reader types carries aria-live where it is the result.'],
     classes: ['pd-num', 'pd-num--s', 'pd-num--l', 'pd-num--xl'],
     lint: ['type-scale'],
-    stories: [{ id: 'sizes', name: 'The four sizes', html: `<div class="ui-specimens">\n  <div><span class="pd-num pd-num--xl">$5,400</span><p class="label">pd-num--xl: the number a figure leads with</p></div>\n  <div><span class="pd-num pd-num--l">$418</span><p class="label">pd-num--l: a total or a count</p></div>\n  <div><span class="pd-num">$206</span><p class="label">A number in a row</p></div>\n  <div><span class="pd-num pd-num--s">$350</span><p class="label">pd-num--s: beside a label</p></div>\n</div>` }],
+    stories: [{ id: 'sizes', name: 'The four sizes', html: `<div class="ui-specimens">\n  <div class="ui-specimens__item"><span class="pd-num pd-num--xl">$5,400</span><p class="label ui-specimens__name">pd-num--xl: the number a figure leads with</p></div>\n  <div class="ui-specimens__item"><span class="pd-num pd-num--l">$418</span><p class="label ui-specimens__name">pd-num--l: a total or a count</p></div>\n  <div class="ui-specimens__item"><span class="pd-num">$206</span><p class="label ui-specimens__name">A number in a row</p></div>\n  <div class="ui-specimens__item"><span class="pd-num pd-num--s">$350</span><p class="label ui-specimens__name">pd-num--s: beside a label</p></div>\n</div>` }],
   },
   {
     id: 'swatch',
@@ -497,7 +497,7 @@ export const COMPONENTS = [
     a11y: ['Decorative: the name beside it carries the meaning.', 'In forced-colours mode it takes the same system colours as the marks it keys.'],
     classes: ['pd-swatch', 'pd-swatch--ink', 'pd-swatch--accent'],
     lint: [],
-    stories: [{ id: 'three', name: 'Ink, accent and empty', html: `<p class="ui-row"><i class="pd-swatch pd-swatch--ink"></i> <i class="pd-swatch pd-swatch--accent"></i> <i class="pd-swatch"></i></p>` }],
+    stories: [{ id: 'three', name: 'Ink, accent and empty', html: `<p class="ui-frame__row"><i class="pd-swatch pd-swatch--ink"></i> <i class="pd-swatch pd-swatch--accent"></i> <i class="pd-swatch"></i></p>` }],
   },
   {
     id: 'unit-square',
@@ -557,7 +557,7 @@ export const COMPONENTS = [
       id: 'sizes',
       name: 'Header and author box sizes',
       wrap: 'article',
-      html: `<p class="ui-row"><a class="btn" href="${BOOKING}" ${CAL}>Book a call</a> <a class="btn btn--small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a></p>`,
+      html: `<p class="ui-frame__row"><a class="btn" href="${BOOKING}" ${CAL}>Book a call</a> <a class="btn btn--small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a></p>`,
       code: `<a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n<a class="btn btn--small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a>`,
     }],
   },
@@ -573,7 +573,7 @@ export const COMPONENTS = [
     a11y: ['A real button, so it takes focus and answers Enter and Space; a 3px focus ring in the accent.', 'One that opens something carries aria-expanded.'],
     classes: ['pd-text-btn'],
     lint: [],
-    stories: [{ id: 'two', name: 'Reset and full note', html: `<p class="ui-row"><button type="button" class="pd-text-btn">Reset to the public figures</button> <button type="button" class="pd-text-btn" aria-expanded="false">Full note</button></p>` }],
+    stories: [{ id: 'two', name: 'Reset and full note', html: `<p class="ui-frame__row"><button type="button" class="pd-text-btn">Reset to the public figures</button> <button type="button" class="pd-text-btn" aria-expanded="false">Full note</button></p>` }],
   },
   {
     id: 'toggle-button',
@@ -587,7 +587,7 @@ export const COMPONENTS = [
     a11y: ['aria-pressed says which case is in force.', '44px tall, with a 3px focus ring in ink.'],
     classes: ['pd-toggle-btn'],
     lint: [],
-    stories: [{ id: 'states', name: 'In force and not', html: `<p class="ui-row"><button type="button" class="label pd-toggle-btn is-on" aria-pressed="true">Under $10B, exempt ($0.51)</button> <button type="button" class="label pd-toggle-btn" aria-pressed="false">Over $10B, capped ($0.23)</button></p>` }],
+    stories: [{ id: 'states', name: 'In force and not', html: `<p class="ui-frame__row"><button type="button" class="label pd-toggle-btn is-on" aria-pressed="true">Under $10B, exempt ($0.51)</button> <button type="button" class="label pd-toggle-btn" aria-pressed="false">Over $10B, capped ($0.23)</button></p>` }],
   },
   {
     id: 'number-input',
@@ -601,7 +601,7 @@ export const COMPONENTS = [
     a11y: ['The box border turns accent on focus, with a 3px ring in ink.', 'inputmode="decimal" brings up the number pad on phones.'],
     classes: ['pd-input', 'pd-input__field', 'pd-input__affix'],
     lint: [],
-    stories: [{ id: 'units', name: 'Dollars and percent', html: `<p class="ui-row"><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" type="number" inputmode="decimal" value="5400" aria-label="Average checking balance"></span> <span class="pd-input"><input class="pd-input__field" type="number" inputmode="decimal" value="3.81" aria-label="Net interest margin"><span class="pd-input__affix">%</span></span></p>` }],
+    stories: [{ id: 'units', name: 'Dollars and percent', html: `<p class="ui-frame__row"><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" type="number" inputmode="decimal" value="5400" aria-label="Average checking balance"></span> <span class="pd-input"><input class="pd-input__field" type="number" inputmode="decimal" value="3.81" aria-label="Net interest margin"><span class="pd-input__affix">%</span></span></p>` }],
   },
   {
     id: 'slider',

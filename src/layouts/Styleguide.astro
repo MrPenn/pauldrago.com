@@ -25,16 +25,16 @@ const current = (href) => (href === path ? 'page' : undefined);
   stylesheets={['/assets/personal-site.css', '/assets/article.css', '/assets/article-kit.css', '/assets/styleguide.css']}
 >
   <main id="main" class="ui">
-    <div class="container ui-shell">
+    <div class="container ui__shell">
       <details class="ui-nav" open>
-        <summary>Styleguide contents</summary>
-        <nav aria-label="Styleguide">
-          <p class="label ui-nav-group">Guide</p>
-          <ul>{guide.map((g) => <li><a href={g.href} aria-current={current(g.href)}>{g.label}</a></li>)}</ul>
+        <summary class="ui-nav__summary">Styleguide contents</summary>
+        <nav class="ui-nav__body" aria-label="Styleguide">
+          <p class="label ui-nav__group">Guide</p>
+          <ul class="ui-nav__list">{guide.map((g) => <li><a class="ui-nav__link" href={g.href} aria-current={current(g.href)}>{g.label}</a></li>)}</ul>
           {groups.map((g) => (
             <Fragment>
-              <p class="label ui-nav-group">{g.name}</p>
-              <ul>{g.items.map((c) => <li><a href={`/ui/components/${c.id}`} aria-current={current(`/ui/components/${c.id}`)}>{c.name}</a></li>)}</ul>
+              <p class="label ui-nav__group">{g.name}</p>
+              <ul class="ui-nav__list">{g.items.map((c) => <li><a class="ui-nav__link" href={`/ui/components/${c.id}`} aria-current={current(`/ui/components/${c.id}`)}>{c.name}</a></li>)}</ul>
             </Fragment>
           ))}
         </nav>
@@ -51,7 +51,7 @@ const current = (href) => (href === path ? 'page' : undefined);
           narrow.addEventListener('change', follow);
         })();
       </script>
-      <div class="ui-main">
+      <div class="ui__main">
         <slot />
       </div>
     </div>

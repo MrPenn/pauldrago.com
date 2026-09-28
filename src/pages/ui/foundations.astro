@@ -77,13 +77,13 @@ const ARTICLE = [
     <div class="ui-swatches">
       {tokens.map((t) => (
         <div class="ui-swatch">
-          <div class="ui-swatch-chips" aria-hidden="true"><span style={`background:${t.light}`}></span><span style={`background:${t.dark}`}></span></div>
+          <div class="ui-swatch__chips" aria-hidden="true"><span style={`background:${t.light}`}></span><span style={`background:${t.dark}`}></span></div>
           <div>
             <b>{t.name}</b>
             <p>{t.role}</p>
-            <p><span class="ui-num">{t.light}</span> light, <span class="ui-num">{t.dark}</span> dark</p>
-            {t.text && <p>Contrast <span class="ui-num">{t.lightContrast}:1</span> light, <span class="ui-num">{t.darkContrast}:1</span> dark</p>}
-            {t.onBrass && <p>On the accent <span class="ui-num">{t.onBrass[0]}:1</span> light, <span class="ui-num">{t.onBrass[1]}:1</span> dark</p>}
+            <p><span class="ui-num ui-swatch__value">{t.light}</span> light, <span class="ui-num ui-swatch__value">{t.dark}</span> dark</p>
+            {t.text && <p>Contrast <span class="ui-num ui-swatch__value">{t.lightContrast}:1</span> light, <span class="ui-num ui-swatch__value">{t.darkContrast}:1</span> dark</p>}
+            {t.onBrass && <p>On the accent <span class="ui-num ui-swatch__value">{t.onBrass[0]}:1</span> light, <span class="ui-num ui-swatch__value">{t.onBrass[1]}:1</span> dark</p>}
           </div>
         </div>
       ))}
@@ -140,7 +140,7 @@ const ARTICLE = [
     <h2 class="ui-h2">Spacing</h2>
     <p class="ui-p">Every margin, padding and gap on the site is a step of one scale, read here from <code>site-shell.css</code>. It sits on a 4px grid, each token is named for how many 4px units it holds, and the steps widen as they grow. The linter rejects any other value (<code>space-tokens</code>).</p>
     <div class="ui-space">
-      {space.map((t) => <div class="ui-space-row"><code>var({t.name})</code><span class="ui-num">{t.value}</span><i style={`width:${t.value}`}></i></div>)}
+      {space.map((t) => <div class="ui-space__row"><code>var({t.name})</code><span class="ui-num">{t.value}</span><i class="ui-space__bar" style={`width:${t.value}`}></i></div>)}
     </div>
     <ul class="ui-list">
       <li>Sections open var(--space-20) below the last paragraph, var(--space-12) on phones, with a hairline and the section's numeral.</li>

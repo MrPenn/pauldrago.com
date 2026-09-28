@@ -252,8 +252,8 @@ test('a signature device in consecutive articles is flagged', () => {
 
 test('highlight escapes markup and marks tags and attributes', () => {
   const out = highlight('<p class="x">a &amp; b</p>');
-  assert.match(out, /<span class="t-tag">&lt;p<\/span>/);
-  assert.match(out, /<span class="t-attr">class<\/span>=<span class="t-val">&quot;x&quot;<\/span>/);
+  assert.match(out, /<span class="ui-syntax__tag">&lt;p<\/span>/);
+  assert.match(out, /<span class="ui-syntax__attr">class<\/span>=<span class="ui-syntax__value">&quot;x&quot;<\/span>/);
   assert.ok(!out.includes('<p'));
 });
 

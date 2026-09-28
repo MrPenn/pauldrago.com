@@ -7,7 +7,7 @@ document.addEventListener('click', async (e) => {
   const btn = e.target.closest('[data-copy]');
   if (!btn) return;
   const code = document.getElementById(btn.dataset.copy);
-  const msg = btn.parentElement.querySelector('.ui-copy-msg');
+  const msg = btn.parentElement.querySelector('.ui-code__status');
   const say = (t) => { if (msg) { msg.textContent = t; clearTimeout(msg.t); msg.t = setTimeout(() => { msg.textContent = ''; }, 2400); } };
   try {
     await navigator.clipboard.writeText(code.textContent);
@@ -74,7 +74,7 @@ document.querySelectorAll('.ui-canvas iframe').forEach((frame) => {
 
 // ---------------------------------------------------------------- toolbar
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.ui-toolbar button');
+  const btn = e.target.closest('.ui-story__toolbar button');
   if (!btn) return;
   const story = btn.closest('.ui-story');
   const frame = story.querySelector('iframe');
@@ -179,7 +179,7 @@ function field(f, value, onChange, prefix) {
   const id = `${prefix}-${f.key}-${(uid += 1)}`;
   const wrap = document.createElement('label');
   const short = f.size === 'short' || f.type === 'number';
-  wrap.className = `ui-control${f.type === 'checkbox' ? ' is-check' : ''}${f.wide ? ' is-wide' : ''}${short ? ' is-short' : ''}`;
+  wrap.className = `ui-controls__field${f.type === 'checkbox' ? ' ui-controls__field--check' : ''}${f.wide ? ' ui-controls__field--wide' : ''}${short ? ' ui-controls__field--short' : ''}`;
   wrap.htmlFor = id;
   const input = document.createElement('input');
   input.id = id;
@@ -209,7 +209,7 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
   const render = () => {
     const html = schema.build(state);
     code.innerHTML = highlight(html);
-    const slot = frame.contentDocument && frame.contentDocument.querySelector('.ui-slot');
+    const slot = frame.contentDocument && frame.contentDocument.querySelector('.ui-frame__slot');
     if (slot) {
       slot.innerHTML = html;
       if (frame.dataset.theme) frame.contentWindow.uiTheme(frame.dataset.theme);
@@ -221,15 +221,15 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
   const draw = () => {
     box.replaceChildren();
     const top = document.createElement('fieldset');
-    top.className = 'ui-controls-top';
+    top.className = 'ui-controls__top';
     top.innerHTML = '<legend class="label">Figure</legend>';
     schema.top.forEach((f) => top.append(field(f, state[f.key], (v) => { state[f.key] = v; render(); }, 'top')));
     const rows = document.createElement('div');
-    rows.className = 'ui-controls-rows';
+    rows.className = 'ui-controls__rows';
     if (!schema.row) { box.append(top); return; }
     state.rows.forEach((row, i) => {
       const set = document.createElement('fieldset');
-      set.className = 'ui-controls-row';
+      set.className = 'ui-controls__row';
       const legend = document.createElement('legend');
       legend.className = 'label';
       legend.textContent = `Row ${i + 1}`;
@@ -237,14 +237,14 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
       schema.row.forEach((f) => set.append(field(f, row[f.key], (v) => { row[f.key] = v; render(); }, `r${i}`)));
       const remove = document.createElement('button');
       remove.type = 'button';
-      remove.className = 'ui-link-btn';
+      remove.className = 'ui-link-btn ui-controls__remove';
       remove.textContent = `Remove row ${i + 1}`;
       remove.addEventListener('click', () => { state.rows.splice(i, 1); draw(); render(); });
       set.append(remove);
       rows.append(set);
     });
     const actions = document.createElement('p');
-    actions.className = 'ui-row-actions';
+    actions.className = 'ui-controls__actions';
     const add = document.createElement('button');
     add.type = 'button';
     add.className = 'ui-btn';

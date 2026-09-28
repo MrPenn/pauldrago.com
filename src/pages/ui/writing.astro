@@ -25,9 +25,9 @@ const PAIRS = {
       <li>A scripted exchange is a signature device: once in a piece at most, and never in two consecutive pieces.</li>
       <li>Write for a bank or credit union executive who reads with a compliance officer's eye.</li>
     </ul>
-    <div class="ui-rule-eg">
-      <div class="is-bad"><b class="label">Before</b><pre><code>{PAIRS.story[0]}</code></pre></div>
-      <div><b class="label">After</b><pre><code>{PAIRS.story[1]}</code></pre></div>
+    <div class="ui-examples">
+      <div class="ui-examples__item ui-examples__item--bad"><b class="label">Before</b><pre><code>{PAIRS.story[0]}</code></pre></div>
+      <div class="ui-examples__item"><b class="label">After</b><pre><code>{PAIRS.story[1]}</code></pre></div>
     </div>
   </section>
 
@@ -40,13 +40,13 @@ const PAIRS = {
       <li>The deck under it is one short line that says what the section finds: "Fewer capabilities, one experience."</li>
       <li>The stylesheet numbers the sections I, II, III. "About the numbers" closes the piece without a numeral.</li>
     </ul>
-    <div class="ui-rule-eg">
-      <div class="is-bad"><b class="label">Before</b><pre><code>{PAIRS.heading[0]}</code></pre></div>
-      <div><b class="label">After</b><pre><code>{PAIRS.heading[1]}</code></pre></div>
+    <div class="ui-examples">
+      <div class="ui-examples__item ui-examples__item--bad"><b class="label">Before</b><pre><code>{PAIRS.heading[0]}</code></pre></div>
+      <div class="ui-examples__item"><b class="label">After</b><pre><code>{PAIRS.heading[1]}</code></pre></div>
     </div>
-    <div class="ui-rule-eg">
-      <div class="is-bad"><b class="label">Before</b><pre><code>{PAIRS.deck[0]}</code></pre></div>
-      <div><b class="label">After</b><pre><code>{PAIRS.deck[1]}</code></pre></div>
+    <div class="ui-examples">
+      <div class="ui-examples__item ui-examples__item--bad"><b class="label">Before</b><pre><code>{PAIRS.deck[0]}</code></pre></div>
+      <div class="ui-examples__item"><b class="label">After</b><pre><code>{PAIRS.deck[1]}</code></pre></div>
     </div>
   </section>
 
@@ -60,9 +60,9 @@ const PAIRS = {
       <li>When a figure says more or less than expected, give the expected number next to it.</li>
       <li>A figure is stated once in the body. The brief and the charts repeat it through the same data mark, so all three agree.</li>
     </ul>
-    <div class="ui-rule-eg">
-      <div class="is-bad"><b class="label">Before</b><pre><code>{PAIRS.numbers[0]}</code></pre></div>
-      <div><b class="label">After</b><pre><code>{PAIRS.numbers[1]}</code></pre></div>
+    <div class="ui-examples">
+      <div class="ui-examples__item ui-examples__item--bad"><b class="label">Before</b><pre><code>{PAIRS.numbers[0]}</code></pre></div>
+      <div class="ui-examples__item"><b class="label">After</b><pre><code>{PAIRS.numbers[1]}</code></pre></div>
     </div>
   </section>
 
@@ -75,9 +75,9 @@ const PAIRS = {
       <li>A figure in circulation with no method is named as folklore, with its date, and kept out of the argument.</li>
       <li>Every article closes on "About the numbers": when the research was checked, which figures are estimates, and which conclusions are the author's own.</li>
     </ul>
-    <div class="ui-rule-eg">
-      <div class="is-bad"><b class="label">Before</b><pre><code>{PAIRS.sources[0]}</code></pre></div>
-      <div><b class="label">After</b><pre><code>{PAIRS.sources[1]}</code></pre></div>
+    <div class="ui-examples">
+      <div class="ui-examples__item ui-examples__item--bad"><b class="label">Before</b><pre><code>{PAIRS.sources[0]}</code></pre></div>
+      <div class="ui-examples__item"><b class="label">After</b><pre><code>{PAIRS.sources[1]}</code></pre></div>
     </div>
   </section>
 
@@ -101,9 +101,9 @@ const PAIRS = {
       <li>The booking line is the same on every article: "If you want to see this with your organization's own numbers, book twenty minutes." The template adds it.</li>
       <li>An ask that belongs to one piece goes in the paragraph above the booking line.</li>
     </ul>
-    <div class="ui-rule-eg">
-      <div class="is-bad"><b class="label">Before</b><pre><code>{PAIRS.ending[0]}</code></pre></div>
-      <div><b class="label">After</b><pre><code>{PAIRS.ending[1]}</code></pre></div>
+    <div class="ui-examples">
+      <div class="ui-examples__item ui-examples__item--bad"><b class="label">Before</b><pre><code>{PAIRS.ending[0]}</code></pre></div>
+      <div class="ui-examples__item"><b class="label">After</b><pre><code>{PAIRS.ending[1]}</code></pre></div>
     </div>
   </section>
 
@@ -111,7 +111,7 @@ const PAIRS = {
   <section class="ui-section" id="cut">
     <h2 class="ui-h2">What gets cut</h2>
     <p class="ui-p">The anti-slop linter catches most of these. Run it with <code>npm run lint:style -- --prose</code>.</p>
-    <ul class="ui-list is-avoid">
+    <ul class="ui-list ui-list--avoid">
       <li>Dashes between clauses, and whatever follows them. Restate a fact it carried as its own sentence.</li>
       <li>The "it's not X, it's Y" family, including "one is X, the other is Y". Say what the thing is.</li>
       <li>Lines that announce the point: "the point is", "here's the thing", "worth saying".</li>

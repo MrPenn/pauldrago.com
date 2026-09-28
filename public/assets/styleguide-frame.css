@@ -9,16 +9,16 @@
   html.is-embedded .pd-scrolly__step, html.is-embedded .pd-scrolly__step:first-child, html.is-embedded .pd-scrolly__step:last-child { min-height: 0; padding: var(--space-5) 0; }
   html.is-embedded .pd-scrolly__steps::after { display: none; }
   html.is-embedded .pd-scrolly__sticky { position: relative; top: 0; }
-  body.ui-frame.is-page { padding: 0; }
+  body.ui-frame--page { padding: 0; }
   .ui-frame .article { padding: 0; }
-  .ui-frame.is-page .article { padding: var(--space-10) 0 var(--space-12); }
-  .ui-frame .ui-slot > :first-child { margin-top: 0; }
-  .ui-frame .ui-slot > :last-child { margin-bottom: 0; }
+  .ui-frame--page .article { padding: var(--space-10) 0 var(--space-12); }
+  .ui-frame__slot > :first-child { margin-top: 0; }
+  .ui-frame__slot > :last-child { margin-bottom: 0; }
   .ui-frame .article__header { margin-bottom: 0; }
-  .ui-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin: 0 !important; }
+  .ui-frame__row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin: 0; }
   /* Room on the left for what hangs into the article's margin, such as a pull quote's opening mark. */
   @media (width >= 760px) {
-    body.ui-frame.is-body { padding-left: var(--space-24); }
+    body.ui-frame--body { padding-left: var(--space-24); }
   }
   @media (width < 760px) {
     body.ui-frame { padding: var(--space-6) var(--space-4) var(--space-6); }
@@ -31,54 +31,53 @@
   /* The layout grid specimen: each band is a real container, outlined and named, so the page shows
      the grid at whatever width the frame is. */
   .ui-grid { padding: var(--space-6) 0 var(--space-10); font-family: var(--font-sans); }
-  .ui-grid .article { padding: 0; }
-  .ui-grid-now { margin: 0 auto var(--space-5); max-width: var(--container-page); padding: 0 var(--gutter); font-size: var(--step--2); color: var(--secondary); }
-  .ui-grid-bp { color: var(--paper); }
-  .ui-grid-bp::after { content: "small phone, under 480px"; }
-  @media (480px <= width < 760px) { .ui-grid-bp::after { content: "phone, 480 to 760px"; } }
-  @media (760px <= width < 1040px) { .ui-grid-bp::after { content: "tablet, 760 to 1040px"; } }
-  @media (1040px <= width < 1180px) { .ui-grid-bp::after { content: "desktop, 1040 to 1180px"; } }
-  @media (width >= 1180px) { .ui-grid-bp::after { content: "wide, 1180px and up"; } }
-  .ui-grid-band { position: relative; min-height: 64px; margin-bottom: var(--space-4); padding-top: var(--space-8); outline: 1px dashed var(--brass); outline-offset: -1px; background: color-mix(in srgb, var(--brass) 5%, transparent); }
-  .ui-grid-tag { position: absolute; top: 7px; left: 10px; right: 10px; font-size: var(--step--2); font-weight: var(--weight-semibold); line-height: var(--leading-snug); color: var(--paper); }
-  .ui-grid-col { padding: var(--space-8) 0 var(--space-3); }
-  .ui-grid-compact { display: none; margin: var(--space-2) var(--space-3) var(--space-3) !important; font-size: var(--step--2); color: var(--secondary); }
-  @container column (width < 560px) { .ui-grid-compact { display: block; } }
-  .ui-grid-wide { margin: var(--space-3) 0 0; background: color-mix(in srgb, var(--paper) 6%, transparent); }
-  @media (width >= 1040px) { .ui-grid-wide { width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter)); } }
-  .ui-grid-rail { display: none; }
+  .ui-grid__now { margin: 0 auto var(--space-5); max-width: var(--container-page); padding: 0 var(--gutter); font-size: var(--step--2); color: var(--secondary); }
+  .ui-grid__step { color: var(--paper); }
+  .ui-grid__step::after { content: "small phone, under 480px"; }
+  @media (480px <= width < 760px) { .ui-grid__step::after { content: "phone, 480 to 760px"; } }
+  @media (760px <= width < 1040px) { .ui-grid__step::after { content: "tablet, 760 to 1040px"; } }
+  @media (1040px <= width < 1180px) { .ui-grid__step::after { content: "desktop, 1040 to 1180px"; } }
+  @media (width >= 1180px) { .ui-grid__step::after { content: "wide, 1180px and up"; } }
+  .ui-grid__band { position: relative; min-height: 64px; margin-bottom: var(--space-4); padding-top: var(--space-8); outline: 1px dashed var(--brass); outline-offset: -1px; background: color-mix(in srgb, var(--brass) 5%, transparent); }
+  .ui-grid__tag { position: absolute; top: 7px; left: 10px; right: 10px; font-size: var(--step--2); font-weight: var(--weight-semibold); line-height: var(--leading-snug); color: var(--paper); }
+  .ui-grid__band--column { padding: var(--space-8) 0 var(--space-3); }
+  .ui-grid__compact { display: none; margin: var(--space-2) var(--space-3) var(--space-3); font-size: var(--step--2); color: var(--secondary); }
+  @container column (width < 560px) { .ui-grid__compact { display: block; } }
+  .ui-grid__band--wide { margin: var(--space-3) 0 0; background: color-mix(in srgb, var(--paper) 6%, transparent); }
+  @media (width >= 1040px) { .ui-grid__band--wide { width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter)); } }
+  .ui-grid__rail { display: none; }
   @media (width >= 1180px) {
-    .ui-grid-wide { margin-top: var(--space-24); }
-    .ui-grid-rail { display: block; position: absolute; top: 0; left: calc(100% + var(--rail-gap)); width: var(--rail); height: 88px; margin: 0; outline: 1px dashed var(--secondary); background: color-mix(in srgb, var(--secondary) 6%, transparent); }
+    .ui-grid__band--wide { margin-top: var(--space-24); }
+    .ui-grid__rail { display: block; position: absolute; top: 0; left: calc(100% + var(--rail-gap)); width: var(--rail); height: 88px; margin: 0; outline: 1px dashed var(--secondary); background: color-mix(in srgb, var(--secondary) 6%, transparent); }
   }
-  .ui-grid-tag, .ui-grid-compact { font-family: var(--font-sans); }
+  .ui-grid__tag, .ui-grid__compact { font-family: var(--font-sans); }
   /* The page container's gutters: its content box, dotted inside the outline. */
-  .ui-grid-site::after { content: ""; position: absolute; top: 30px; bottom: 8px; left: var(--gutter); right: var(--gutter); outline: 1px dotted var(--secondary); }
+  .ui-grid__band--site::after { content: ""; position: absolute; top: 30px; bottom: 8px; left: var(--gutter); right: var(--gutter); outline: 1px dotted var(--secondary); }
   /* A widened calculator in a frame keeps clear of the frame's own left padding. */
-  @media (width >= 1040px) { body.ui-frame.is-body .pd-calc { width: min(calc(min(var(--container-article), 100vw) - 2 * var(--gutter)), calc(100vw - 120px)); } }
+  @media (width >= 1040px) { body.ui-frame--body .pd-calc { width: min(calc(min(var(--container-article), 100vw) - 2 * var(--gutter)), calc(100vw - 120px)); } }
 
   /* The type scale specimen: every step at its size, in the face its main role uses. */
   .ui-scale { display: grid; gap: 0; font-family: var(--font-sans); }
-  .ui-scale-row { display: grid; grid-template-columns: 13ch minmax(0, 1fr); gap: var(--space-4); align-items: baseline; padding: var(--space-3) 0; border-bottom: 1px solid var(--hairline); }
-  .ui-scale-sample { overflow-wrap: anywhere; line-height: var(--leading-heading); color: var(--paper); }
-  .ui-scale-serif { font-family: var(--font-serif); }
-  .ui-scale-display { font-family: var(--font-display); }
-  .ui-step-m2 { font-size: var(--step--2); }
-  .ui-step-m1 { font-size: var(--step--1); }
-  .ui-step-0 { font-size: var(--step-0); }
-  .ui-step-1 { font-size: var(--step-1); }
-  .ui-step-2 { font-size: var(--step-2); }
-  .ui-step-3 { font-size: var(--step-3); }
-  .ui-step-4 { font-size: var(--step-4); }
-  .ui-step-5 { font-size: var(--step-5); }
-  .ui-step-6 { font-size: var(--step-6); }
-  .ui-step-7 { font-size: var(--step-7); }
-  .ui-step-8 { font-size: var(--step-8); }
-  .ui-step-9 { font-size: var(--step-9); }
-  .ui-step-10 { font-size: var(--step-10); }
-  @media (width < 760px) { .ui-scale-row { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); } }
+  .ui-scale__row { display: grid; grid-template-columns: 13ch minmax(0, 1fr); gap: var(--space-4); align-items: baseline; padding: var(--space-3) 0; border-bottom: 1px solid var(--hairline); }
+  .ui-scale__sample { overflow-wrap: anywhere; line-height: var(--leading-heading); color: var(--paper); }
+  .ui-scale__sample--serif { font-family: var(--font-serif); }
+  .ui-scale__sample--display { font-family: var(--font-display); }
+  .ui-scale__sample--step-m2 { font-size: var(--step--2); }
+  .ui-scale__sample--step-m1 { font-size: var(--step--1); }
+  .ui-scale__sample--step-0 { font-size: var(--step-0); }
+  .ui-scale__sample--step-1 { font-size: var(--step-1); }
+  .ui-scale__sample--step-2 { font-size: var(--step-2); }
+  .ui-scale__sample--step-3 { font-size: var(--step-3); }
+  .ui-scale__sample--step-4 { font-size: var(--step-4); }
+  .ui-scale__sample--step-5 { font-size: var(--step-5); }
+  .ui-scale__sample--step-6 { font-size: var(--step-6); }
+  .ui-scale__sample--step-7 { font-size: var(--step-7); }
+  .ui-scale__sample--step-8 { font-size: var(--step-8); }
+  .ui-scale__sample--step-9 { font-size: var(--step-9); }
+  .ui-scale__sample--step-10 { font-size: var(--step-10); }
+  @media (width < 760px) { .ui-scale__row { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); } }
   /* Specimens side by side: a number or a mark over the label that names it. */
   .ui-specimens { display: flex; flex-wrap: wrap; align-items: flex-end; gap: var(--space-5) var(--space-10); }
-  .ui-specimens > div { display: grid; gap: var(--space-2); }
-  .ui-specimens .label { margin: 0 !important; }
+  .ui-specimens__item { display: grid; gap: var(--space-2); }
+  .ui-specimens__name { margin: 0; }
 }
