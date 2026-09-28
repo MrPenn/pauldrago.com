@@ -133,7 +133,6 @@
   .report-brief__note a, .report-lede a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
   .report-brief__page-two { margin-top: var(--space-3); }
   .report-brief__page-two .county-maps { margin-top: var(--space-8); }
-  .report-brief .market-table--sequence td, .report-brief .market-table--sequence th { padding-top: var(--space-2); padding-bottom: var(--space-2); }
   .report-brief .table-wrap { margin-top: var(--space-3); }
   .report-brief__risks li { padding: var(--space-2) 0; font-size: var(--step--2); }
   .sample-plan__brief-label { margin-top: var(--space-8); color: var(--secondary); font-size: var(--step--2); font-weight: var(--weight-bold); }
@@ -144,7 +143,6 @@
   .appendix-open__index { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); margin-top: var(--space-4); }
   .appendix-open__index a { padding: var(--space-1) 0; color: var(--paper); font-size: var(--step--2); font-weight: var(--weight-semibold); text-decoration: none; border-bottom: 1px solid var(--hairline); }
   .appendix-open__index a:hover { border-bottom-color: var(--brass); }
-  .report-section--appendix:first-of-type { margin-top: var(--space-8); }
 
   /* Criteria columns: an X where the town meets the criterion. */
   .market-table th.market-table__crit, .market-table td.market-table__crit { width: 72px; text-align: center !important; }
@@ -241,8 +239,6 @@
   .plan-chart__label { fill: var(--paper); font-size: var(--step--2); font-weight: var(--weight-bold); }
   .plan-chart__label--end { text-anchor: end; }
   .market-table--outcomes thead th:first-child, .market-table--network thead th:first-child { text-align: left; }
-  /* Negatives read as accounting figures: ink with a minus sign. Brass stays for emphasis. */
-  .market-table td.market-table__negative { color: var(--paper); }
   .market-table .market-table__total th, .market-table .market-table__total td { border-top: 2px solid var(--paper); color: var(--paper); font-weight: var(--weight-bold); }
   .market-table--network { min-width: 560px; }
   .market-table--network td { white-space: nowrap; }
@@ -276,15 +272,15 @@
     /* Type scale */
     .report-cover__title { font-size: 22pt; max-width: none; }
     .report-figures__value { font-size: 18pt !important; }
-    .county-maps__title, .report-section--appendix .report-section__title { font-size: 13pt !important; }
+    .county-maps__title, .report-section .report-section__title { font-size: 13pt !important; }
     .report-lede { font-size: 11pt !important; line-height: var(--leading-text); max-width: none; }
     .report-cover__meta, .report-brief__why, .report-brief__p, .report-brief__note, .report-cover__status, .report-cover__status strong,
     .report-brief__risks li, .report-brief__resolution p,
-    .report-section--appendix .report-p, .report-section--appendix .report-rules li, .report-section--appendix .local-questions li, .report-section--appendix .report-risks li,
-    .report-section--appendix .findings__item p, .report-section--appendix .pipeline__detail, .report-section--appendix .pipeline__watch, .report-section--appendix .pipeline__title { font-size: 9.5pt !important; line-height: var(--leading-text); }
+    .report-section .report-p, .report-section .report-rules li, .report-section .local-questions li, .report-section .report-risks li,
+    .report-section .findings__item p, .report-section .pipeline__detail, .report-section .pipeline__watch, .report-section .pipeline__title { font-size: 9.5pt !important; line-height: var(--leading-text); }
     .market-table, .market-table th, .market-table td, .market-table thead th, .table-note, figcaption,
-    .report-figures__note, .report-figures dt, .county-maps__legend-scale li, .county-maps__keys li, .county-maps__legend-title, .pipeline__meta, .report-sources li, .county-maps__map-name, .report-brief__title, .report-section--appendix .report-section__subhead { font-size: 8.5pt !important; }
-    .report-brief__title, .report-section--appendix .report-section__subhead, .county-maps__map-name, .county-maps__legend-title { font-weight: var(--weight-bold); }
+    .report-figures__note, .report-figures dt, .county-maps__legend-scale li, .county-maps__keys li, .county-maps__legend-title, .pipeline__meta, .report-sources li, .county-maps__map-name, .report-brief__title, .report-section .report-section__subhead { font-size: 8.5pt !important; }
+    .report-brief__title, .report-section .report-section__subhead, .county-maps__map-name, .county-maps__legend-title { font-weight: var(--weight-bold); }
 
     /* Cover and brief */
     .report-cover { margin-top: 0; padding-bottom: 8px; }
@@ -301,8 +297,6 @@
     .report-brief__risks li { padding-top: 2px; padding-bottom: 2px; }
     .market-table th, .market-table td { padding-top: 3px !important; padding-bottom: 3px !important; }
     .market-table--econ, .market-table--pace, .market-table--cumulative, .market-table--towns, .market-table--network { min-width: 0; }
-    #economics-brief .table-wrap { margin-top: 4px; }
-    #economics-brief .report-brief__note { margin-top: 3px; }
     .market-table--options th { width: 1.5in; }
     .report-brief__page-two { break-before: page; margin-top: 0; }
     .report-brief__resolution { margin-top: 8px; padding: 6px 10px; break-inside: avoid; }
@@ -326,24 +320,24 @@
     /* Tags print as text, not pills */
     .pipeline__brings { border: 0; padding: 0; margin-right: 8px; font-size: 8.5pt !important; font-weight: var(--weight-bold); }
     .report-rules { break-inside: avoid; }
-    .report-section--appendix .local-questions li, .report-section--appendix .report-risks li { padding-top: 3px; padding-bottom: 3px; }
-    .report-section--appendix .local-questions { margin-top: 6px; }
+    .report-section .local-questions li, .report-section .report-risks li { padding-top: 3px; padding-bottom: 3px; }
+    .report-section .local-questions { margin-top: 6px; }
     .report-sources { margin-top: 6px; padding-left: 18px; }
     .report-sources li { padding: 1px 0 !important; }
     #methods .report-p--small { margin-top: 6px; }
-    .report-section--appendix .findings { gap: 12px; }
-    .report-section--appendix .findings__item h3 { font-size: 9.5pt; }
+    .report-section .findings { gap: 12px; }
+    .report-section .findings__item h3 { font-size: 9.5pt; }
     .plan-ramp figure, .plan-ramp .table-wrap { break-inside: auto; }
 
     /* Appendix: one heading style, letters in the display face; sections flow */
-    .report-section--appendix { margin-top: 20px; }
+    .report-section { margin-top: 20px; }
     #markets { break-before: page; margin-top: 0; }
-    .report-section--appendix .report-section__title { display: block; padding-top: 8px; font-family: var(--font-sans); font-weight: var(--weight-bold); text-transform: none; }
-    .report-section--appendix .report-section__title span { margin-right: 8px; font-family: var(--font-display); }
-    .report-section--appendix .report-section__subhead, .report-section--appendix .findings__item h3, .pipeline__county h3 { margin-top: 12px; font-size: 11pt !important; font-weight: var(--weight-bold); line-height: var(--leading-snug); }
+    .report-section .report-section__title { display: block; padding-top: 8px; font-family: var(--font-sans); font-weight: var(--weight-bold); text-transform: none; }
+    .report-section .report-section__title span { margin-right: 8px; font-family: var(--font-display); }
+    .report-section .report-section__subhead, .report-section .findings__item h3, .pipeline__county h3 { margin-top: 12px; font-size: 11pt !important; font-weight: var(--weight-bold); line-height: var(--leading-snug); }
     .pipeline__county h3 { padding-bottom: 4px; }
-    .report-section--appendix .table-wrap, .report-section--appendix .findings { margin-top: 8px; }
-    .report-section--appendix .pipeline__item { padding: 5px 0; }
+    .report-section .table-wrap, .report-section .findings { margin-top: 8px; }
+    .report-section .pipeline__item { padding: 5px 0; }
     .pipeline.pipeline--two { display: block !important; }
     .pipeline--two .pipeline__county + .pipeline__county { margin-top: 12px; }
     .plan-ramp { grid-template-columns: 1fr 1fr !important; gap: 18px; }
@@ -351,14 +345,14 @@
     .sample-plan .table-wrap { overflow: visible; }
     .market-table--towns tbody th { font-size: 8.5pt !important; }
     .market-table--towns .market-table__county { font-size: 7.5pt !important; color: #555; font-weight: var(--weight-regular); }
-    .report-section--appendix .report-risks, .report-section--appendix .local-questions, .report-section--appendix .report-rules { max-width: none; }
+    .report-section .report-risks, .report-section .local-questions, .report-section .report-rules { max-width: none; }
     .pipeline__detail a { color: #444 !important; }
     .report-section__pace { break-inside: avoid; }
-    .report-section--appendix .report-p, .report-section--appendix .local-questions li, .report-section--appendix .report-risks li, .report-section--appendix .findings__item p, .report-section--appendix .pipeline__detail { line-height: var(--leading-snug) !important; }
-    .report-section--appendix .local-questions li { padding: 3px 0 3px 4px !important; }
+    .report-section .report-p, .report-section .local-questions li, .report-section .report-risks li, .report-section .findings__item p, .report-section .pipeline__detail { line-height: var(--leading-snug) !important; }
+    .report-section .local-questions li { padding: 3px 0 3px 4px !important; }
     .report-rules li { display: grid; grid-template-columns: 1.1in 1fr; padding: 1pt 0 !important; }
     .market-table th.market-table__crit, .market-table td.market-table__crit { width: 0.6in; }
-    .report-section--appendix :is(.report-p, .table-note, figcaption, .report-p--small) { max-width: none !important; }
+    .report-section :is(.report-p, .table-note, figcaption, .report-p--small) { max-width: none !important; }
     .table-note, figcaption, .report-figures__note, .report-sources li { line-height: var(--leading-snug) !important; }
 
     .report-sources li::after { content: ""; }
@@ -366,7 +360,7 @@
 
     /* Keep things together */
     .report-section__title, .report-section__subhead, .pipeline__county h3, .report-rules { break-after: avoid; }
-    .report-figures, table, figure:not(.county-maps), .county-maps__map, .findings__item, .pipeline__item, .report-risks li, #economics-brief { break-inside: avoid; }
+    .report-figures, table, figure:not(.county-maps), .county-maps__map, .findings__item, .pipeline__item, .report-risks li { break-inside: avoid; }
   }
 }
 

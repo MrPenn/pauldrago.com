@@ -9,12 +9,6 @@
       border-bottom: 2px solid var(--brass);
     }
 
-    .hero__title {
-      font-size: var(--step-4);
-    }
-  @media (width >= 760px) { .hero__title { font-size: var(--step-5); } }
-  @media (width >= 1040px) { .hero__title { font-size: var(--step-6); } }
-  @media (width >= 1180px) { .hero__title { font-size: var(--step-7); } }
 
     .section-title {
       font-size: var(--step-3);
@@ -61,14 +55,14 @@
       max-width: 980px;
     }
 
-    .hero__copy .hero__title {
+    .hero__title {
       font-size: var(--step-4);
       line-height: var(--leading-display);
       max-width: 960px;
     }
-  @media (width >= 760px) { .hero__copy .hero__title { font-size: var(--step-5); } }
-  @media (width >= 1040px) { .hero__copy .hero__title { font-size: var(--step-6); } }
-  @media (width >= 1180px) { .hero__copy .hero__title { font-size: var(--step-7); } }
+  @media (width >= 760px) { .hero__title { font-size: var(--step-5); } }
+  @media (width >= 1040px) { .hero__title { font-size: var(--step-6); } }
+  @media (width >= 1180px) { .hero__title { font-size: var(--step-7); } }
 
     .subhead {
       color: var(--paper);
@@ -86,17 +80,6 @@
       gap: var(--space-6);
       margin-top: var(--space-8);
     }
-
-    @media (width >= 1040px) {.hero__copy .hero__title {
-        font-size: var(--step-6);
-      }
-  @media (width >= 1180px) { .hero__copy .hero__title { font-size: var(--step-7); } }
-
-      .subhead {
-        font-size: var(--step-0);
-      }
-  @media (width >= 1180px) { .subhead { font-size: var(--step-1); } }
-  }
 
     .decision-nav {
       position: sticky;
@@ -274,11 +257,10 @@
 
     .router__visual {
       min-height: 148px;
-      border: 1px solid var(--hairline);
-      background: color-mix(in srgb, var(--paper) 2.5%, transparent);
+      border: 1px solid color-mix(in srgb, var(--brass) 45%, transparent);
+      background: color-mix(in srgb, var(--brass) 3.5%, transparent);
       padding: var(--space-4);
       overflow: hidden;
-      transition: border-color 420ms ease, background-color 420ms ease;
     }
 
     .router__visual-label {
@@ -312,9 +294,6 @@
     .spend-flow__fill {
       height: 100%;
       background: var(--paper);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 650ms cubic-bezier(.2, .8, .2, 1);
     }
 
     .spend-flow__fill.spend-flow__fill--accent {
@@ -338,8 +317,6 @@
       aspect-ratio: 1;
       background: color-mix(in srgb, var(--paper) 8%, transparent);
       border: 1px solid color-mix(in srgb, var(--paper) 8%, transparent);
-      opacity: 0.42;
-      transition: opacity 360ms ease, background-color 360ms ease, border-color 360ms ease;
     }
 
     .market-grid__cell--live {
@@ -363,9 +340,6 @@
       height: 94px;
       border: 2px solid var(--paper);
       background: color-mix(in srgb, var(--paper) 7%, transparent);
-      transform: translateX(-18px);
-      opacity: 0.5;
-      transition: transform 720ms cubic-bezier(.2, .8, .2, 1), opacity 480ms ease;
     }
 
     .overlap-visual__circle--target {
@@ -396,9 +370,6 @@
       background: color-mix(in srgb, var(--paper) 13%, transparent);
       border-top: 3px solid var(--paper);
       min-height: 34px;
-      transform: scaleY(0.35);
-      transform-origin: bottom;
-      transition: transform 680ms cubic-bezier(.2, .8, .2, 1);
     }
 
     .cadence__bar--live {
@@ -415,28 +386,6 @@
       margin-top: var(--space-2);
       text-align: center;
       text-transform: uppercase;
-    }
-
-    .router__row--visible .router__visual {
-      border-color: color-mix(in srgb, var(--brass) 45%, transparent);
-      background: color-mix(in srgb, var(--brass) 3.5%, transparent);
-    }
-
-    .router__row--visible .spend-flow__fill {
-      transform: scaleX(1);
-    }
-
-    .router__row--visible .market-grid__cell {
-      opacity: 1;
-    }
-
-    .router__row--visible .overlap-visual__circle {
-      transform: translateX(0);
-      opacity: 1;
-    }
-
-    .router__row--visible .cadence__bar {
-      transform: scaleY(1);
     }
 
     .process {
@@ -552,12 +501,10 @@
       line-height: var(--leading-body);
     }
 
-    @media (width < 760px) {.hero__copy .hero__title,
-      .hero__title {
+    @media (width < 760px) {.hero__title {
         font-size: var(--step-3);
       }
-  @media (width >= 480px) { .hero__copy .hero__title,
-      .hero__title { font-size: var(--step-4); } }
+  @media (width >= 480px) { .hero__title { font-size: var(--step-4); } }
 
       .process__step {
         grid-template-columns: 1fr;
@@ -578,12 +525,6 @@
   .process__body {
         font-size: var(--step--2);
         line-height: var(--leading-body);
-      }
-  }
-
-    @media (prefers-reduced-motion: reduce) {.spend-flow__fill,
-  .cadence__bar {
-        transform: none;
       }
   }
 

@@ -288,7 +288,7 @@
     .privacy__toc ol { columns: 2; column-gap: var(--space-4); }
     .glance__heading { padding: var(--space-8) var(--space-5) 0; }
     .glance__intro { padding: 0 var(--space-5); }
-    .glance__columns { grid-template-columns: 1fr; padding: var(--space-2) var(--space-5) var(--space-8); display: flex; flex-direction: column; }
+    .glance__columns { padding: var(--space-2) var(--space-5) var(--space-8); display: flex; flex-direction: column; }
     .glance__item-head { flex-direction: column; gap: var(--space-half); }
     .glance__item-head a { padding: var(--space-1) 0 var(--space-1) var(--space-8); }
     .timeline { --track: 88px; }
@@ -315,6 +315,5 @@
     .privacy__section details::details-content { content-visibility: visible; display: contents; }
     .privacy__section summary, .privacy__toc, .glance__cta, .glance__settings, .privacy__settings-button, #cc-main, .site-header, .site-footer, .trace-rail { display: none !important; }
     .privacy__columns { display: block; }
-    .glance { box-shadow: none; }
   }
 }

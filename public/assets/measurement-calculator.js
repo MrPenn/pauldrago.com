@@ -44,8 +44,6 @@ function updateCohortCalc() {
       if (artifactDay90) artifactDay90.textContent = fmtNum(accounts * (1 - closedRate));
       if (artifactYear1) artifactYear1.textContent = fmtNum(survivors);
       
-      const elBridge = document.getElementById('bridge-hole');
-      if (elBridge) elBridge.textContent = fmtPer(perSurvivor);
     }
 
     // On leaving a field, show the value the calculation actually used.

@@ -14,6 +14,7 @@
   .hero__grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
+    gap: var(--space-10);
     align-items: center;
   }
 
@@ -109,10 +110,6 @@
     border-bottom: 1px solid var(--hairline);
   }
 
-  /* Darker brass so the small label keeps 4.5:1 contrast on the light panel; dark mode keeps the lifted brass. */
-  @media (prefers-color-scheme: light) {
-    .compliance-section .band-label { color: color-mix(in srgb, var(--brass) 85%, black); }
-  }
 
   .market-example__title {
     max-width: 900px;
@@ -200,7 +197,6 @@
     border-bottom: 1px solid var(--hairline);
   }
 
-  .offer .offer__label { color: var(--brass); }
 
   .offer__grid {
     display: grid;
@@ -419,11 +415,10 @@
   .signal__copy, .deliverable__copy { max-width: var(--measure-1); }
   .sources__note { max-width: var(--measure-1); }
 
-  /* Hero with an output diagram beside it (branch and acquisition pages) */
-  .hero__grid--model { gap: var(--space-10); }
-  .hero__grid--model .model { margin: 0; }
+  /* The hero sets its output diagram beside the copy. */
+  .hero__grid .model { margin: 0; }
   @media (width >= 1040px) {
-    .hero__grid--model {
+    .hero__grid {
       grid-template-columns: minmax(0, 1.4fr) minmax(340px, 0.9fr);
       gap: var(--space-16);
     }
@@ -480,16 +475,13 @@
   .scorecard__rank-score { color: var(--paper); font-weight: var(--weight-bold); text-align: right; font-variant-numeric: tabular-nums; }
   .scorecard__note { margin-top: var(--space-4); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-body); }
 
-  .findings { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-8); margin-top: var(--space-16); }
-  .findings__item h3, .findings__item h4 { font-size: var(--step--1); line-height: var(--leading-snug); }
+  .findings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); margin-top: var(--space-16); }
+  .findings__item h3 { font-size: var(--step--1); line-height: var(--leading-snug); }
   .findings__item p { margin-top: var(--space-3); color: var(--secondary); }
   .model .model__note a { color: var(--paper); font-weight: var(--weight-bold); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
 
   @media (prefers-reduced-motion: reduce) { .scorecard__rank-bar span { transition: none; } }
 
-  @media (width < 1040px) {
-    .findings { grid-template-columns: 1fr; gap: var(--space-6); }
-  }
   @media (760px <= width < 1040px) {
     /* Weights beside the ranking; padding and gap reach the desktop 32px and 48px by about 960. */
     .scorecard { gap: var(--space-10); padding: var(--space-8); }
@@ -526,7 +518,6 @@
   @media (width < 480px) {
     .model__answers { grid-template-columns: 1fr; }
   }
-  .findings--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
   .recommendation {
     max-width: var(--measure-1);
@@ -539,12 +530,8 @@
   .recommendation__link a { display: inline-block; margin-top: var(--space-1); color: var(--paper); font-weight: var(--weight-bold); text-decoration: underline; text-decoration-color: var(--brass); text-decoration-thickness: 2px; text-underline-offset: 4px; }
   .recommendation__link a::after { content: " \2192"; color: var(--brass); }
 
-  @media (760px <= width < 1040px) {
-    /* Two findings side by side; the gap eases back to the desktop 32px by about 960. */
-    .findings--two { gap: var(--space-8); }
-  }
   @media (width < 760px) {
-    .findings--two { grid-template-columns: 1fr; gap: var(--space-6); }
+    .findings { grid-template-columns: 1fr; gap: var(--space-6); }
     .recommendation { padding: var(--space-6) var(--space-5); }
     .recommendation p:not(.band-label) { font-size: var(--step--1); }
   }

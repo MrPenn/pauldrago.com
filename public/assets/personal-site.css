@@ -173,12 +173,8 @@
       margin-top: var(--space-12);
     }
 
-    .link-group,
-  .link-group:first-child,
-  .link-group:nth-child(2) {
-      grid-column: auto;
+    .link-group {
       padding: var(--space-6) 0 var(--space-2);
-      border-left: 0;
     }
 
     .link-group + .link-group {

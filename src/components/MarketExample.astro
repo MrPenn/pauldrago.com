@@ -70,7 +70,7 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
     </div>
     <script type="application/json" id="market-data" set:html={JSON.stringify(markets)}></script>
 
-    <div class="findings findings--two">
+    <div class="findings">
       <div class="findings__item">
         <h3>Collin's growth went to the largest banks</h3>
         <p>Collin added {money(Collin.depositGrowth)} of deposits in five years, {growthVsKaufman} times Kaufman's entire deposit base. But community banks captured only {money(Collin.communityGrowth)} of it across {Collin.communityBranches} branches. {collinLeaders.slice(0, -1).join(', ')} and {collinLeaders.at(-1)} hold {pct(collinLeaderShare)} of Collin between them.</p>
