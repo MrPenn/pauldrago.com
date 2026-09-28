@@ -48,7 +48,7 @@ test('the builders and the chart checks agree', () => {
 });
 
 test('a stacked bar whose total does not add up is caught', () => {
-  const html = stack(STACK_DEMO).replace('<span class="pd-num pd-num--s">$418</span>', '<span class="pd-num pd-num--s">$450</span>');
+  const html = stack(STACK_DEMO).replace('<span class="pd-num pd-num--s pd-bar__value">$418</span>', '<span class="pd-num pd-num--s pd-bar__value">$450</span>');
   assert.ok(lint(html).some((f) => f.rule === 'stack-scale' && /\$450/.test(f.message)));
 });
 

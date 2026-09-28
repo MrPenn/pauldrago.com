@@ -335,7 +335,7 @@ export const LAYERS = ['base', 'site', 'kit', 'page', 'utilities'];
 // Class names: block, block__element, block--modifier; hyphens inside a name are fine. is- names are
 // the states a script turns on and off.
 const BEM_NAME = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:__[a-z0-9]+(?:-[a-z0-9]+)*)?(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$/;
-export const STATES = ['is-active', 'is-alt', 'is-armed', 'is-current', 'is-embedded', 'is-hot', 'is-landing', 'is-live', 'is-narrow', 'is-on', 'is-open', 'is-scaled', 'is-shown', 'is-tight', 'is-wrong'];
+export const STATES = ['is-active', 'is-alt', 'is-armed', 'is-current', 'is-embedded', 'is-hot', 'is-landing', 'is-live', 'is-narrow', 'is-on', 'is-open', 'is-scaled', 'is-shown', 'is-tight', 'is-unpinned', 'is-wrong'];
 
 function checkBem(report, rule) {
   const selector = rule.selector.replace(/\[[^\]]*\]/g, '');
@@ -543,7 +543,7 @@ function checkStack(html, where, report) {
     }
     const mark = bar.match(/<div class="pd-mark\b[^"]*"[^>]*style="([^"]*)"[^>]*><span[^>]*>([^<]*)<\/span>/);
     if (mark && money(mark[2])) scale.push({ value: money(mark[2]), width: geom(mark[1], 'left'), text: mark[2] });
-    const shownTotal = (bar.match(/class="pd-num pd-num--s"[^>]*>([\s\S]*?)<\/span><\/div>/)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
+    const shownTotal = (bar.match(/class="pd-num pd-num--s(?: pd-bar__value)?"[^>]*>([\s\S]*?)<\/span><\/div>/)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
     const total = money(shownTotal);
     const sum = segs.reduce((t, sg) => t + (sg.value ?? 0), 0);
     // Each printed part can be off by half its last digit, so the parts may drift that far from the total.

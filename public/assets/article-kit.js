@@ -233,10 +233,29 @@
 
     // Wide: the step crossing the middle of the screen is live. Stacked: the last step whose top
     // has passed a line a little below the pinned graphic.
+    // A card taller than two thirds of the screen, measured at its last step, would cover the steps
+    // scrolling under it; it stops pinning and shows the finished graphic instead. Measured on load,
+    // when the fonts arrive and on resize, never while scrolling.
+    var sticky = sec.querySelector('.pd-scrolly__sticky');
+    var unpinned = false;
+    function measure() {
+      var tall = false;
+      if (!wide.matches && sticky) {
+        var now = seq.active < 0 ? 0 : seq.active;
+        show(graphic, lastStep(graphic));
+        tall = sticky.offsetHeight > window.innerHeight * 2 / 3;
+        show(graphic, now);
+      }
+      // Pinned again (the phone turned back upright): start over, so the steps build it once more.
+      if (unpinned && !tall && !reduce) { seq.active = -1; show(graphic, 0); }
+      unpinned = tall;
+      sec.classList.toggle('is-unpinned', unpinned);
+    }
     var ticking = false;
     function pick() {
       ticking = false;
       if (seq.manual) return;
+      if (unpinned) { seq.set(lastStep(graphic)); return; }
       var r = sec.getBoundingClientRect();
       if (r.bottom < 0 || r.top > window.innerHeight) return;
       var line = wide.matches ? window.innerHeight * 0.5 : (sec.querySelector('.pd-scrolly__sticky').getBoundingClientRect().bottom + window.innerHeight * 0.14);
@@ -245,11 +264,16 @@
       seq.set(Math.max(1, n));
     }
     function onScroll() { if (!ticking) { ticking = true; requestAnimationFrame(pick); } }
+    function remeasure() { measure(); if (!reduce) onScroll(); }
+    window.addEventListener('resize', remeasure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(remeasure);
     if (!reduce) {
       window.addEventListener('scroll', onScroll, { passive: true });
-      window.addEventListener('resize', onScroll);
       show(graphic, 0);
+      measure();
       pick();
+    } else {
+      measure();
     }
   });
 

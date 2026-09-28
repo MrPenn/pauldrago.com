@@ -132,7 +132,7 @@ export function stack({ eyebrow = '', num: lead = '', sub = '', bars = [], ledge
       : null;
     return lines([
       `<div class="pd-bar"${at(b.at)}>`,
-      `  <div class="pd-bar__head"><span class="label">${esc(b.name)}${b.sub ? `<small class="pd-bar__what">${esc(b.sub)}</small>` : ''}</span><span class="pd-num pd-num--s">${b.html ?? marked(b.text ? esc(b.text) : extra[bi] ? span(totals[bi], totals[bi] + extra[bi]) : unit(totals[bi]), b.ref)}</span></div>`,
+      `  <div class="pd-bar__head"><span class="label">${esc(b.name)}${b.sub ? `<small class="pd-bar__what">${esc(b.sub)}</small>` : ''}</span><span class="pd-num pd-num--s pd-bar__value">${b.html ?? marked(b.text ? esc(b.text) : extra[bi] ? span(totals[bi], totals[bi] + extra[bi]) : unit(totals[bi]), b.ref)}</span></div>`,
       '  <div class="pd-bar__track">',
       ...segs,
       mark,

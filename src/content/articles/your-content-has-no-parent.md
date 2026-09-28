@@ -31,20 +31,20 @@ She could not sit in every meeting for every postcard, and she did not have to. 
 <figure class="pd-figure pd-stack" data-pd="build" aria-label="Time to ship the same holiday postcard: two to three months from a blank page, two weeks with the executive in every meeting, and under two weeks once componentized, which held for two to three years.">
   <p class="pd-eyebrow">The same postcard, three times</p>
   <div class="pd-bar" data-at="1">
-    <div class="pd-bar__head"><span class="label">Every card<small class="pd-bar__what">From a blank page, through every queue</small></span><span class="pd-num pd-num--s">two to three months</span></div>
+    <div class="pd-bar__head"><span class="label">Every card<small class="pd-bar__what">From a blank page, through every queue</small></span><span class="pd-num pd-num--s pd-bar__value">two to three months</span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="1" data-value="8.5" style="left:0.0%;width:58.4%"></div>
       <div class="pd-range" data-at="1" data-to="13" style="left:58.4%;width:30.9%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="2">
-    <div class="pd-bar__head"><span class="label">The executive in the room<small class="pd-bar__what">Same people, same tools; nothing bought, nobody hired</small></span><span class="pd-num pd-num--s">two weeks</span></div>
+    <div class="pd-bar__head"><span class="label">The executive in the room<small class="pd-bar__what">Same people, same tools; nothing bought, nobody hired</small></span><span class="pd-num pd-num--s pd-bar__value">two weeks</span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="2" data-value="2" style="left:0.0%;width:13.7%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="3">
-    <div class="pd-bar__head"><span class="label">Componentized<small class="pd-bar__what">Held for the next two to three years, nobody senior in the room</small></span><span class="pd-num pd-num--s">under two weeks</span></div>
+    <div class="pd-bar__head"><span class="label">Componentized<small class="pd-bar__what">Held for the next two to three years, nobody senior in the room</small></span><span class="pd-num pd-num--s pd-bar__value">under two weeks</span></div>
     <div class="pd-bar__track">
       <div class="pd-seg pd-seg--accent" data-at="3" data-value="2" style="left:0.0%;width:13.7%"></div>
     </div>
@@ -74,25 +74,25 @@ You will also see "<data value="c:folklore-60-70">60 to 70 percent of B2B conten
   <p class="pd-eyebrow">Content that goes unused</p>
   <p class="pd-stack__sub">Share of each source's content</p>
   <div class="pd-bar" data-at="1">
-    <div class="pd-bar__head"><span class="label">CreativeX<small class="pd-bar__what">Core assets never activated, consumer brands, 2023</small></span><span class="pd-num pd-num--s"><data value="c:creativex-unactivated">52%</data></span></div>
+    <div class="pd-bar__head"><span class="label">CreativeX<small class="pd-bar__what">Core assets never activated, consumer brands, 2023</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:creativex-unactivated">52%</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg pd-seg--accent" data-at="1" data-value="52" style="left:0.0%;width:52.0%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="2">
-    <div class="pd-bar__head"><span class="label">Veeva<small class="pd-bar__what">Pharma field content rarely or never used, 2022</small></span><span class="pd-num pd-num--s"><data value="c:veeva-unused">77%</data></span></div>
+    <div class="pd-bar__head"><span class="label">Veeva<small class="pd-bar__what">Pharma field content rarely or never used, 2022</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:veeva-unused">77%</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="2" data-value="77" style="left:0.0%;width:77.0%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="3">
-    <div class="pd-bar__head"><span class="label">Veeva<small class="pd-bar__what">The same measure, 2025</small></span><span class="pd-num pd-num--s"><data value="c:veeva-unused">nearly 80%</data></span></div>
+    <div class="pd-bar__head"><span class="label">Veeva<small class="pd-bar__what">The same measure, 2025</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:veeva-unused">nearly 80%</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="3" data-value="80" style="left:0.0%;width:80.0%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="4">
-    <div class="pd-bar__head"><span class="label">SiriusDecisions<small class="pd-bar__what">B2B content unused, a 2013 remark with no method published</small></span><span class="pd-num pd-num--s"><data value="c:folklore-60-70">60 to 70%</data></span></div>
+    <div class="pd-bar__head"><span class="label">SiriusDecisions<small class="pd-bar__what">B2B content unused, a 2013 remark with no method published</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:folklore-60-70">60 to 70%</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg pd-seg--outline" data-at="4" data-value="60" style="left:0.0%;width:60.0%"></div>
       <div class="pd-range" data-at="4" data-to="70" style="left:60.0%;width:10.0%"></div>
@@ -131,19 +131,19 @@ Pharmaceutical promotion goes through medical, legal, and regulatory review, cal
   <p class="pd-eyebrow">Review rounds per asset</p>
   <p class="pd-stack__sub">Pharma counts review cycles; marketing tools count versions sent for review</p>
   <div class="pd-bar" data-at="1">
-    <div class="pd-bar__head"><span class="label">Pharma<small class="pd-bar__what">MLR review cycles, 350+ life sciences companies</small></span><span class="pd-num pd-num--s"><data value="c:veeva-review-cycles">1.3</data> cycles</span></div>
+    <div class="pd-bar__head"><span class="label">Pharma<small class="pd-bar__what">MLR review cycles, 350+ life sciences companies</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:veeva-review-cycles">1.3</data> cycles</span></div>
     <div class="pd-bar__track">
       <div class="pd-seg pd-seg--accent" data-at="1" data-value="1.3" style="left:0.0%;width:23.2%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="2">
-    <div class="pd-bar__head"><span class="label">Marketing, Filestage<small class="pd-bar__what">Versions before approval, proofing platform users</small></span><span class="pd-num pd-num--s"><data value="c:review-versions">4 versions</data></span></div>
+    <div class="pd-bar__head"><span class="label">Marketing, Filestage<small class="pd-bar__what">Versions before approval, proofing platform users</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:review-versions">4 versions</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="2" data-value="4" style="left:0.0%;width:71.4%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="3">
-    <div class="pd-bar__head"><span class="label">Marketing, Ziflow<small class="pd-bar__what">Versions most respondents report</small></span><span class="pd-num pd-num--s"><data value="c:review-versions">3 to 5</data></span></div>
+    <div class="pd-bar__head"><span class="label">Marketing, Ziflow<small class="pd-bar__what">Versions most respondents report</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:review-versions">3 to 5</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="3" data-value="3" style="left:0.0%;width:53.6%"></div>
       <div class="pd-range" data-at="3" data-to="5" style="left:53.6%;width:35.7%"></div>
@@ -219,21 +219,21 @@ Fully loaded cost per asset, with agency fees, internal hours, translation, revi
     </div>
   </details>
   <div class="pd-bar pd-bar--live" data-scale="scale">
-    <div class="pd-bar__head"><span class="label">Cost of a new piece<small class="pd-bar__what">The whole chain: one to two months</small></span><span class="pd-num pd-num--s" data-out="N" data-format="money">$1,800</span></div>
+    <div class="pd-bar__head"><span class="label">Cost of a new piece<small class="pd-bar__what">The whole chain: one to two months</small></span><span class="pd-num pd-num--s pd-bar__value" data-out="N" data-format="money">$1,800</span></div>
     <div class="pd-bar__track" aria-hidden="true">
       <div class="pd-seg" data-w="nOther" style="left:0.0%;width:43.7%"><span class="pd-seg__label">Other costs<span class="pd-seg__word">: making, translation and rework</span></span></div>
       <div class="pd-seg pd-seg--accent" data-w="nr" style="left:43.7%;width:45.6%"><span class="pd-seg__label">Review</span></div>
     </div>
   </div>
   <div class="pd-bar pd-bar--live" data-scale="scale">
-    <div class="pd-bar__head"><span class="label">Cost of a variant<small class="pd-bar__what">The variant lane: a day or two</small></span><span class="pd-num pd-num--s" data-out="V" data-format="money">$257</span></div>
+    <div class="pd-bar__head"><span class="label">Cost of a variant<small class="pd-bar__what">The variant lane: a day or two</small></span><span class="pd-num pd-num--s pd-bar__value" data-out="V" data-format="money">$257</span></div>
     <div class="pd-bar__track" aria-hidden="true">
       <div class="pd-seg" data-w="vOther" style="left:0.0%;width:9.0%"></div>
       <div class="pd-seg pd-seg--accent" data-w="vr" style="left:9.0%;width:3.7%"></div>
     </div>
   </div>
   <div class="pd-bar pd-bar--live" data-scale="scale">
-    <div class="pd-bar__head"><span class="label">Cost of a reuse<small class="pd-bar__what">Linked at intake: the same day</small></span><span class="pd-num pd-num--s" data-out="R" data-format="money">$25</span></div>
+    <div class="pd-bar__head"><span class="label">Cost of a reuse<small class="pd-bar__what">Linked at intake: the same day</small></span><span class="pd-num pd-num--s pd-bar__value" data-out="R" data-format="money">$25</span></div>
     <div class="pd-bar__track" aria-hidden="true">
       <div class="pd-seg pd-seg--accent" data-w="R" style="left:0.0%;width:1.2%"></div>
     </div>
@@ -348,13 +348,13 @@ Put those two next to each other and most people take the asset. Ask them "do ei
   <p class="pd-eyebrow">Languages spoken at home in the US, other than English</p>
   <p class="pd-stack__sub">Millions of people age 5 and older, 2024</p>
   <div class="pd-bar" data-at="1">
-    <div class="pd-bar__head"><span class="label">Spanish</span><span class="pd-num pd-num--s"><data value="c:census-by-language">44.9</data></span></div>
+    <div class="pd-bar__head"><span class="label">Spanish</span><span class="pd-num pd-num--s pd-bar__value"><data value="c:census-by-language">44.9</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg pd-seg--accent" data-at="1" data-value="44.9" style="left:0.0%;width:89.3%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="2">
-    <div class="pd-bar__head"><span class="label">Chinese<small class="pd-bar__what">Including Mandarin and Cantonese</small></span><span class="pd-num pd-num--s"><data value="c:census-by-language">3.7</data></span></div>
+    <div class="pd-bar__head"><span class="label">Chinese<small class="pd-bar__what">Including Mandarin and Cantonese</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:census-by-language">3.7</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg pd-seg--accent" data-at="2" data-value="3.7" style="left:0.0%;width:7.4%"></div>
     </div>
@@ -375,25 +375,25 @@ Voice belongs to the branches that know the customers. The headline can be post-
   <p class="pd-eyebrow">Words translated per hour</p>
   <p class="pd-stack__sub">Ten professional translators, English to Spanish, 2015</p>
   <div class="pd-bar" data-at="1">
-    <div class="pd-bar__head"><span class="label">From scratch</span><span class="pd-num pd-num--s"><data value="c:translation-throughput">1,099</data></span></div>
+    <div class="pd-bar__head"><span class="label">From scratch</span><span class="pd-num pd-num--s pd-bar__value"><data value="c:translation-throughput">1,099</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="1" data-value="1099" style="left:0.0%;width:39.9%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="2">
-    <div class="pd-bar__head"><span class="label">A close match<small class="pd-bar__what">75 to 84 percent of the words already translated</small></span><span class="pd-num pd-num--s"><data value="c:translation-throughput">1,297</data></span></div>
+    <div class="pd-bar__head"><span class="label">A close match<small class="pd-bar__what">75 to 84 percent of the words already translated</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:translation-throughput">1,297</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="2" data-value="1297" style="left:0.0%;width:47.1%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="3">
-    <div class="pd-bar__head"><span class="label">Machine translation<small class="pd-bar__what">Post-edited by the translator</small></span><span class="pd-num pd-num--s"><data value="c:translation-throughput">1,329</data></span></div>
+    <div class="pd-bar__head"><span class="label">Machine translation<small class="pd-bar__what">Post-edited by the translator</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:translation-throughput">1,329</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="3" data-value="1329" style="left:0.0%;width:48.2%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="4">
-    <div class="pd-bar__head"><span class="label">A full match<small class="pd-bar__what">The same sentence, translated before</small></span><span class="pd-num pd-num--s"><data value="c:translation-throughput">2,461</data></span></div>
+    <div class="pd-bar__head"><span class="label">A full match<small class="pd-bar__what">The same sentence, translated before</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:translation-throughput">2,461</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg pd-seg--accent" data-at="4" data-value="2461" style="left:0.0%;width:89.3%"></div>
     </div>
@@ -443,19 +443,19 @@ The variant lane is where AI belongs: image and copy variants, assembled from ap
   <p class="pd-eyebrow">What marketing leaders report, 2026</p>
   <p class="pd-stack__sub">Share of 200+ leaders at VP level and above</p>
   <div class="pd-bar" data-at="1">
-    <div class="pd-bar__head"><span class="label">Sign-off<small class="pd-bar__what">Need ten or more stakeholders to sign off</small></span><span class="pd-num pd-num--s"><data value="c:typeface-speed">92%</data></span></div>
+    <div class="pd-bar__head"><span class="label">Sign-off<small class="pd-bar__what">Need ten or more stakeholders to sign off</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:typeface-speed">92%</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg pd-seg--accent" data-at="1" data-value="92" style="left:0.0%;width:92.0%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="2">
-    <div class="pd-bar__head"><span class="label">Speed<small class="pd-bar__what">Say their teams make content quickly and struggle with sign-off</small></span><span class="pd-num pd-num--s">88%</span></div>
+    <div class="pd-bar__head"><span class="label">Speed<small class="pd-bar__what">Say their teams make content quickly and struggle with sign-off</small></span><span class="pd-num pd-num--s pd-bar__value">88%</span></div>
     <div class="pd-bar__track">
       <div class="pd-seg pd-seg--accent" data-at="2" data-value="88" style="left:0.0%;width:88.0%"></div>
     </div>
   </div>
   <div class="pd-bar" data-at="3">
-    <div class="pd-bar__head"><span class="label">Launch time<small class="pd-bar__what">Need one to two months to launch a campaign</small></span><span class="pd-num pd-num--s"><data value="c:typeface-speed">34%</data></span></div>
+    <div class="pd-bar__head"><span class="label">Launch time<small class="pd-bar__what">Need one to two months to launch a campaign</small></span><span class="pd-num pd-num--s pd-bar__value"><data value="c:typeface-speed">34%</data></span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="3" data-value="34" style="left:0.0%;width:34.0%"></div>
     </div>

@@ -128,7 +128,7 @@ brief:
 
 ${units({ ...UNITS_DEMO, value: 17 })}
 
-${stack(STACK_DEMO).replace('<span class="pd-num pd-num--s">$418</span>', '<span class="pd-num pd-num--s">$450</span>')}
+${stack(STACK_DEMO).replace('<span class="pd-num pd-num--s pd-bar__value">$418</span>', '<span class="pd-num pd-num--s pd-bar__value">$450</span>')}
 
 <figure class="cd-bars"><p class="cd-widget-title">T</p></figure>
 `);
@@ -202,7 +202,7 @@ test('the stack builder prints a sub line on its own, marks and printed text', (
   assert.match(html, /<p class="pd-stack__sub">Share of each source<\/p>/);
   assert.doesNotMatch(html, /pd-seg__label/);
   assert.match(html, /<div class="pd-seg" data-value="80" style="[^"]*"><\/div>/);
-  assert.match(html, /<span class="pd-num pd-num--s"><data value="c:veeva-unused">80%<\/data><\/span>/);
+  assert.match(html, /<span class="pd-num pd-num--s pd-bar__value"><data value="c:veeva-unused">80%<\/data><\/span>/);
 });
 
 test('a lone segment prints its value once; the parts of a longer bar keep their labels', () => {
