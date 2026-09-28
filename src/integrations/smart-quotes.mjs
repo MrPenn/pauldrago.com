@@ -61,7 +61,7 @@ export function smartQuotes() {
         for (const f of files) {
           const path = join(root, f);
           const html = await readFile(path, 'utf8');
-          const start = html.indexOf('<div class="article-body"');
+          const start = html.indexOf('<div class="article__body"');
           const end = html.indexOf('</article>', start);
           if (start < 0 || end < 0) continue;
           await writeFile(path, html.slice(0, start) + curlHtml(html.slice(start, end)) + html.slice(end));

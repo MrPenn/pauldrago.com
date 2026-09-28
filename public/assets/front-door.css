@@ -2,11 +2,11 @@
    Tokens come from site-shell.css (--ground, --paper, --brass, --secondary, --hairline). */
 
 @layer page {
-  .article-kicker-sep,
-  .article-meta-sep { opacity: 0.5; }
+  .article__sep,
+  .article__sep { opacity: 0.5; }
 
-  .article-body { position: relative; }
-  .article-body p { font-variant-numeric: oldstyle-nums; }
+  .article__body { position: relative; }
+  .article__body p { font-variant-numeric: oldstyle-nums; }
 
   /* Eyebrow, shared by figures */
   .fd-eyebrow {
@@ -32,14 +32,14 @@
     max-width: var(--measure-0);
   }
   /* Footnote references */
-  .article-body [data-footnote-ref] {
+  .article__body [data-footnote-ref] {
     color: var(--brass);
     font-weight: var(--weight-bold);
     text-decoration: none;
     padding: 0 1px;
   }
-  .article-body [data-footnote-ref]:hover,
-  .article-body [data-footnote-ref].is-active { text-decoration: underline; text-underline-offset: 2px; }
+  .article__body [data-footnote-ref]:hover,
+  .article__body [data-footnote-ref].is-active { text-decoration: underline; text-underline-offset: 2px; }
 
   /* Pull quotes */
   .fd-pull {
@@ -225,12 +225,12 @@
   .fd-accent { color: var(--brass); }
 
   /* Sources: the list stays in the document for the sidenotes and for print, but is not shown on screen */
-  .article-body section[data-footnotes] { display: none; margin-top: var(--space-2); }
-  .article-body section[data-footnotes] .sr-only {
+  .article__body section[data-footnotes] { display: none; margin-top: var(--space-2); }
+  .article__body section[data-footnotes] .sr-only {
     position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
   }
-  .article-body section[data-footnotes] ol { list-style: none; padding: 0; margin: 0; }
-  .article-body section[data-footnotes] li {
+  .article__body section[data-footnotes] ol { list-style: none; padding: 0; margin: 0; }
+  .article__body section[data-footnotes] li {
     position: relative;
     padding: var(--space-4) 0 var(--space-4) var(--space-10);
     border-top: 1px solid var(--hairline);
@@ -238,8 +238,8 @@
     line-height: var(--leading-text);
     color: var(--secondary);
   }
-  .article-body section[data-footnotes] li:last-child { border-bottom: 1px solid var(--hairline); }
-  .article-body section[data-footnotes] li::before {
+  .article__body section[data-footnotes] li:last-child { border-bottom: 1px solid var(--hairline); }
+  .article__body section[data-footnotes] li::before {
     content: attr(data-num);
     position: absolute;
     left: 0;
@@ -248,10 +248,10 @@
     font-weight: var(--weight-bold);
     font-size: var(--step--2);
   }
-  .article-body section[data-footnotes] li p { margin: 0; }
-  .article-body section[data-footnotes] li strong { color: var(--paper); }
-  .article-body section[data-footnotes] li a { color: var(--paper); }
-  .article-body section[data-footnotes] .data-footnote-backref { margin-left: var(--space-2); color: var(--brass); text-decoration: none; }
+  .article__body section[data-footnotes] li p { margin: 0; }
+  .article__body section[data-footnotes] li strong { color: var(--paper); }
+  .article__body section[data-footnotes] li a { color: var(--paper); }
+  .article__body section[data-footnotes] .data-footnote-backref { margin-left: var(--space-2); color: var(--brass); text-decoration: none; }
 
   /* Sidenotes (desktop) */
   .fd-sidenote {
@@ -304,7 +304,7 @@
   }
 
   @media print {
-    .article-body section[data-footnotes] { display: block; }
+    .article__body section[data-footnotes] { display: block; }
     .fd-sidenote, .fd-note-inline, .trace-rail { display: none !important; }
   }
 
@@ -628,7 +628,7 @@
   .fd-sticky-notes .fd-sidenote.is-current.is-open { max-height: 600px; }
 
   /* ---------- Scanability: decks, stat lines, section air ---------- */
-  .article-body h2 { margin-top: var(--space-20); padding-top: var(--space-6); border-top: 1px solid var(--hairline); }
+  .article__body h2 { margin-top: var(--space-20); padding-top: var(--space-6); border-top: 1px solid var(--hairline); }
   .fd-deck {
     margin: calc(-1 * var(--space-2)) 0 var(--space-6) !important;
     color: var(--secondary);
@@ -657,7 +657,7 @@
   @media (width >= 1180px) { .fd-stat-num { font-size: var(--step-6); } }
   .fd-stat-label { color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); max-width: var(--measure--4); }
   @media (width < 760px) {
-    .article-body h2 { margin-top: var(--space-12); }
+    .article__body h2 { margin-top: var(--space-12); }
     .fd-stat-num { font-size: var(--step-3); }
   }
 
@@ -671,9 +671,9 @@
     line-height: var(--leading-cap);
     color: var(--brass);
   }
-  .article-body h2 { position: relative; counter-increment: sec; }
-  .article-body { counter-reset: sec; }
-  .article-body h2::before {
+  .article__body h2 { position: relative; counter-increment: sec; }
+  .article__body { counter-reset: sec; }
+  .article__body h2::before {
     content: counter(sec, upper-roman) ".";
     display: block;
     margin-bottom: var(--space-3);
@@ -683,9 +683,9 @@
     letter-spacing: var(--tracking-caps);
     color: var(--brass);
   }
-  .article-body h2.fd-colophon { counter-increment: none; }
-  .article-body h2.fd-colophon::before { content: none; }
-  .article-body h3 {
+  .article__body h2.fd-colophon { counter-increment: none; }
+  .article__body h2.fd-colophon::before { content: none; }
+  .article__body h3 {
     margin: var(--space-12) 0 var(--space-4);
     font-family: var(--font-sans);
     font-size: var(--step--2);
@@ -703,18 +703,18 @@
      numbers. Source Serif 4 for reading, decks and pull quotes. Inter for
      labels, captions, inputs and notes.
      ============================================================ */
-  .article-body {
+  .article__body {
     max-width: var(--measure-0);
     font-family: var(--font-serif);
     font-size: var(--step-0);
     line-height: var(--leading-body);
   }
-  .article-body p { font-variant-numeric: oldstyle-nums proportional-nums; }
-  .article-intro { font-family: var(--font-serif); font-size: var(--step-1); }
+  .article__body p { font-variant-numeric: oldstyle-nums proportional-nums; }
+  .article__intro { font-family: var(--font-serif); font-size: var(--step-1); }
   .fd-lede { font-size: var(--step-1); line-height: var(--leading-body); }
   .fd-lede::first-letter { font-size: var(--step-8); line-height: var(--leading-cap); margin-top: var(--space-2); }
-  .article-body h2 { font-size: var(--step-1); line-height: var(--leading-heading); }
-  @media (width >= 1040px) { .article-body h2 { font-size: var(--step-2); } }
+  .article__body h2 { font-size: var(--step-1); line-height: var(--leading-heading); }
+  @media (width >= 1040px) { .article__body h2 { font-size: var(--step-2); } }
   .fd-deck {
     font-family: var(--font-serif);
     font-style: italic;
@@ -778,8 +778,8 @@
   @media (width >= 1040px) { .fd-pull { font-size: var(--step-2); } }
 
   @media (width < 760px) {
-    .article-body { font-size: var(--step--1); line-height: var(--leading-body); }
-    .article-intro { font-size: var(--step-0); }
+    .article__body { font-size: var(--step--1); line-height: var(--leading-body); }
+    .article__intro { font-size: var(--step-0); }
     .fd-lede { font-size: var(--step-0); }
     .fd-lede::first-letter { font-size: var(--step-6); }
     .fd-pq { margin: var(--space-10) 0 !important; padding-left: var(--space-6); }
@@ -787,10 +787,10 @@
   }
 
   /* refinements */
-  .article-body .fd-pq { border-left: 0; padding-left: 0; opacity: 1; }
-  .article-body .fd-pq::before { font-size: var(--step-10); top: -0.22em; left: -0.55em; font-weight: var(--weight-semibold); }
+  .article__body .fd-pq { border-left: 0; padding-left: 0; opacity: 1; }
+  .article__body .fd-pq::before { font-size: var(--step-10); top: -0.22em; left: -0.55em; font-weight: var(--weight-semibold); }
   @media (width < 760px) {
-    .article-body .fd-pq::before { font-size: var(--step-9); left: -6px; top: -0.2em; }
+    .article__body .fd-pq::before { font-size: var(--step-9); left: -6px; top: -0.2em; }
   }
 
   /* ---------- Stat callouts: the number, its sentence, and a picture of it ---------- */
@@ -861,9 +861,9 @@
 
   /* ---------- Taste pass ---------- */
   /* headline on two lines at desktop */
-  .article-header { max-width: 920px; }
+  .article__header { max-width: 920px; }
   /* subheads join the decks' voice instead of adding more uppercase labels */
-  .article-body h3 {
+  .article__body h3 {
     margin: var(--space-12) 0 var(--space-4);
     font-family: var(--font-serif);
     font-style: italic;
@@ -886,7 +886,7 @@
     .fd-scrolly { width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter)); }
   }
   /* one rule under the header, not two */
-  .article-header { border-bottom: 0; }
+  .article__header { border-bottom: 0; }
 
   /* ---------- Calculator pass: it should look like a tool, not a table ---------- */
   .fd-calc {
@@ -985,9 +985,9 @@
     /* org graphic: three columns, no min-height reserve */
     .fd-g-org { min-height: 0; }
     /* pull quotes: mark sits above the quote, quote keeps the full column */
-    .article-body .fd-pq { padding: var(--space-8) 0 var(--space-5) 0; margin: var(--space-8) 0 !important; }
-    .article-body .fd-pq::before { font-size: var(--step-6); left: -3px; top: -0.02em; line-height: var(--leading-display); }
-    .article-body .fd-pq p { font-size: var(--step-0); line-height: var(--leading-snug); }
+    .article__body .fd-pq { padding: var(--space-8) 0 var(--space-5) 0; margin: var(--space-8) 0 !important; }
+    .article__body .fd-pq::before { font-size: var(--step-6); left: -3px; top: -0.02em; line-height: var(--leading-display); }
+    .article__body .fd-pq p { font-size: var(--step-0); line-height: var(--leading-snug); }
     /* decisions: number above the text, text keeps the full column */
     .fd-decisions li { padding: var(--space-5) 0 var(--space-6); }
     .fd-decisions li::before { position: static; display: block; margin-bottom: var(--space-2); font-size: var(--step-1); }
@@ -997,13 +997,13 @@
     .fd-dialogue p { padding-left: var(--space-4); border-left: 2px solid var(--hairline); }
     .fd-dialogue .fd-cust { margin-left: 0; border-left-color: var(--brass); }
     /* headline and header spacing */
-    .article-title { font-size: var(--step-3); line-height: var(--leading-display); }
-  @media (width >= 480px) { .article-title { font-size: var(--step-4); } }
-    .article-intro { font-size: var(--step-0); }
+    .article__title { font-size: var(--step-3); line-height: var(--leading-display); }
+  @media (width >= 480px) { .article__title { font-size: var(--step-4); } }
+    .article__intro { font-size: var(--step-0); }
     .article-opener { margin-bottom: var(--space-8); }
     .fd-opener-units { gap: var(--space-half); }
     /* section heads */
-    .article-body h2 { font-size: var(--step-1); }
+    .article__body h2 { font-size: var(--step-1); }
     /* calculator: inputs two-up, big type stays */
     .fd-calc-lede { font-size: var(--step--2); }
     /* tap targets */

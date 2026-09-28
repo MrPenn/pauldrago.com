@@ -412,7 +412,7 @@
 
   /* ---------- Lede and colophon ---------- */
   (function () {
-    var b = document.querySelector('.article-body');
+    var b = document.querySelector('.article__body');
     if (!b) return;
     var ps = b.children;
     for (var i = 0; i < ps.length; i++) {
@@ -423,7 +423,7 @@
   })();
 
   /* ---------- Sidenotes ---------- */
-  var body = document.querySelector('.article-body');
+  var body = document.querySelector('.article__body');
   var notesSection = body && body.querySelector('section[data-footnotes]');
   if (body && notesSection) {
     notesSection.querySelectorAll('li').forEach(function (li, i) { li.setAttribute('data-num', String(i + 1)); });

@@ -189,7 +189,7 @@ export function cols({ eyebrow = '', values = [], start = 0, step = 1, labelEver
     `${pad}  </div>`,
     `${pad}</div>`,
     `${pad}<div class="pd-cols__axis" aria-hidden="true">${xs}</div>`,
-    event?.marker ? `${pad}<p class="label accent pd-cols__marker" data-at="1">${esc(event.marker)}</p>` : null,
+    event?.marker ? `${pad}<p class="label label--accent pd-cols__marker" data-at="1">${esc(event.marker)}</p>` : null,
     caption ? `${pad}<figcaption>${esc(caption)}</figcaption>` : null,
   ];
   if (graphic) return lines(inner);

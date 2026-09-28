@@ -14,7 +14,7 @@
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var wide = window.matchMedia('(width >= 1180px)');
-  var body = document.querySelector('.article-body') || document.body;
+  var body = document.querySelector('.article__body') || document.body;
   // data-pd-arm on the root makes every figure wait for the reader, wherever it sits; the
   // styleguide's frames use it, since each frame starts with its figure at the top.
   var armAll = document.documentElement.hasAttribute('data-pd-arm');
@@ -181,7 +181,7 @@
   // sentence show, and "Full note" opens the rest.
   function brief(note, li) {
     if (!li || note.querySelector('[data-note-more]')) return;
-    var num = note.querySelector('.sidenote-num');
+    var num = note.querySelector('.sidenote__num');
     var strong = li.querySelector('strong');
     var text = li.textContent.replace(/\s*\u21a9\s*$/, '').trim();
     if (strong) text = text.replace(strong.textContent, '').trim();

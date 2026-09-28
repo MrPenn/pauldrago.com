@@ -7,7 +7,7 @@
 // status: template  - the article template renders it; write front matter or markdown, not HTML
 //         shared    - use in any article
 //         signature - a device that identifies one piece; see SIGNATURE_DEVICES and the spacing rule
-// stories[].wrap: body (inside .article-body, the default) | article (inside the article column,
+// stories[].wrap: body (inside .article__body, the default) | article (inside the article column,
 //         outside the body) | page (the story is the whole article)
 // stories[].motion: the frame's toolbar gets a Replay button; stories[].steps: step buttons.
 import { stack, cols, units, grid, record, asof } from './build.mjs';
@@ -263,7 +263,7 @@ const GRID_HTML = `<div class="ui-grid">
   <div class="article">
     <div class="container ui-grid-band ui-grid-art">
       <span class="ui-grid-tag">Article container: 1060px</span>
-      <div class="article-body ui-grid-band ui-grid-col">
+      <div class="article__body ui-grid-band ui-grid-col">
         <span class="ui-grid-tag">Reading column: 62 characters. Kit components answer to this width.</span>
         <p class="ui-grid-compact">The column is under 560px, so kit components here take their compact form.</p>
         <div class="ui-grid-band ui-grid-wide"><span class="ui-grid-tag">A calculator: the column, then the article container at 1040 and up</span></div>
@@ -376,12 +376,12 @@ export const COMPONENTS = [
     avoid: ['Opening on a figure or a heading. The piece starts with a sentence.'],
     rules: ['The opening paragraph states the situation the piece starts from, in two or three sentences.'],
     a11y: ['The drop cap is a style on the first letter; the text reads normally.'],
-    classes: ['article-lede'],
+    classes: ['article__lede'],
     lint: [],
     stories: [{
       id: 'opening',
       name: 'The opening paragraph',
-      html: `<p class="article-lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket. Add mobile deposit, card controls, digital wallets, person-to-person payments and a better app, and the trip to the branch stops being a reason to choose someone else.</p>`,
+      html: `<p class="article__lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket. Add mobile deposit, card controls, digital wallets, person-to-person payments and a better app, and the trip to the branch stops being a reason to choose someone else.</p>`,
       code: `For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket.`,
       lang: 'markdown',
     }],
@@ -408,11 +408,11 @@ export const COMPONENTS = [
     summary: 'Small capitals in the sans face: 14px, semibold and tracked. The one label on the site, in the secondary colour or, with accent, in the accent.',
     use: ['Naming something in a few words: a bar, a field, a speaker, a group of fields, an answer, a line to clear, the kicker over a title.', 'Over a figure, in the accent, it is the eyebrow.'],
     avoid: ['A sentence. A label names; a sentence goes in a caption or a note.', 'A label style of its own. Add the class, and let the component set only its colour, margin and position.'],
-    rules: ['`class="label"`, and `class="label accent"` for the accent.', 'A component never sets a label\'s size, weight, tracking or case.', 'Sentence case in the source; the style sets the capitals.', 'Markdown table headers and the eyebrow take the same style from the stylesheet, since neither carries the class.'],
+    rules: ['`class="label"`, and `class="label label--accent"` for the accent.', 'A component never sets a label\'s size, weight, tracking or case.', 'Sentence case in the source; the style sets the capitals.', 'Markdown table headers and the eyebrow take the same style from the stylesheet, since neither carries the class.'],
     a11y: ['The capitals come from the stylesheet, so a screen reader reads words, not letters.', 'At 14px it is the smallest text on the page, so it keeps its colour at full strength, never faded.'],
-    classes: ['label', 'accent'],
+    classes: ['label', 'label--accent'],
     lint: ['type-scale'],
-    stories: [{ id: 'colours', name: 'In the secondary colour and in the accent', html: `<p class="label">Average checking balance</p>\n<p class="label accent">One primary checking customer, one year</p>` }],
+    stories: [{ id: 'colours', name: 'In the secondary colour and in the accent', html: `<p class="label">Average checking balance</p>\n<p class="label label--accent">One primary checking customer, one year</p>` }],
   },
   {
     id: 'eyebrow',
@@ -551,14 +551,14 @@ export const COMPONENTS = [
     avoid: ['Inside the body. The closing booking line is a link.'],
     rules: ['Square corners.', 'The label says what happens: "Book a call".', 'Keep the Cal.com data attributes so the booking opens in place.'],
     a11y: ['44px tall on phones; a 3px focus ring in the ink colour.'],
-    classes: ['btn', 'btn-small'],
+    classes: ['btn', 'btn--small'],
     lint: [],
     stories: [{
       id: 'sizes',
       name: 'Header and author box sizes',
       wrap: 'article',
-      html: `<p class="ui-row"><a class="btn" href="${BOOKING}" ${CAL}>Book a call</a> <a class="btn btn-small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a></p>`,
-      code: `<a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n<a class="btn btn-small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a>`,
+      html: `<p class="ui-row"><a class="btn" href="${BOOKING}" ${CAL}>Book a call</a> <a class="btn btn--small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a></p>`,
+      code: `<a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n<a class="btn btn--small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a>`,
     }],
   },
   {
@@ -647,14 +647,14 @@ export const COMPONENTS = [
     avoid: ['A percentage or a time-left counter.'],
     rules: ['2px wide, 16px from the left edge, the accent at 12% for the empty rail and full strength for the fill.', 'Driven by a scroll timeline where the browser has one, and by a scroll listener in article.js where it does not.', 'Hidden on phones.'],
     a11y: ['Decorative and aria-hidden.'],
-    classes: ['trace-rail', 'trace-fill'],
+    classes: ['trace-rail', 'trace-rail__fill'],
     lint: [],
     stories: [{
       id: 'rail',
       name: 'Two fifths of the way down',
       wrap: 'page',
-      html: `<div class="ui-rail-demo"><div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div></div>`,
-      code: `<!-- src/layouts/Base.astro draws it; site-shell.css styles it. -->\n<div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div>`,
+      html: `<div class="ui-rail-demo"><div class="trace-rail" aria-hidden="true"><div class="trace-rail__fill"></div></div></div>`,
+      code: `<!-- src/layouts/Base.astro draws it; site-shell.css styles it. -->\n<div class="trace-rail" aria-hidden="true"><div class="trace-rail__fill"></div></div>`,
     }],
   },
 
@@ -928,7 +928,7 @@ export const COMPONENTS = [
     stories: [{
       id: 'inline',
       name: 'A source opened on a phone',
-      html: `<p>Community banks took 4, by Cornerstone Advisors' estimate, across all ages.<sup><a href="#fn-1" data-footnote-ref class="is-active">1</a></sup></p>\n<div class="note-inline"><span class="sidenote-num">1</span><p><strong>Cornerstone Advisors.</strong> Where new checking accounts were opened in 2024, by type of provider. <a href="https://www.crnrstone.com/">Cornerstone Advisors</a></p></div>`,
+      html: `<p>Community banks took 4, by Cornerstone Advisors' estimate, across all ages.<sup><a href="#fn-1" data-footnote-ref class="is-active">1</a></sup></p>\n<div class="note-inline"><span class="sidenote__num">1</span><p><strong>Cornerstone Advisors.</strong> Where new checking accounts were opened in 2024, by type of provider. <a href="https://www.crnrstone.com/">Cornerstone Advisors</a></p></div>`,
       code: `Community banks took 4, by Cornerstone Advisors' estimate, across all ages.[^1]\n\n[^1]: **Cornerstone Advisors.** Where new checking accounts were opened in 2024, by type of provider. [Cornerstone Advisors](https://www.crnrstone.com/)`,
       lang: 'markdown',
     }],
@@ -943,13 +943,13 @@ export const COMPONENTS = [
     avoid: ['A second call to action in the body.'],
     rules: ['"If you want to see this with your organization\'s own numbers, book twenty minutes."', 'A piece-specific ask goes in the paragraph above it.'],
     a11y: ['A plain link that opens the booking in place.'],
-    classes: ['article-cta'],
+    classes: ['booking-line'],
     parts: ['link'],
     lint: [],
     stories: [{
       id: 'line',
       name: 'As every article ends',
-      html: `<p class="article-cta">If you want to see this with your organization's own numbers, <a href="${BOOKING}" ${CAL}>book twenty minutes</a>.</p>`,
+      html: `<p class="booking-line">If you want to see this with your organization's own numbers, <a href="${BOOKING}" ${CAL}>book twenty minutes</a>.</p>`,
       code: `<!-- src/components/BookingLine.astro renders it; articles do not include it. -->`,
     }],
   },
@@ -963,13 +963,13 @@ export const COMPONENTS = [
     avoid: ['Teasers. Each point states a finding with its number.'],
     rules: ['Three to six points; five is typical.', 'The last point starts "What changes:" and names the changes.', 'Points are HTML strings in YAML, so marks and entities work.'],
     a11y: ['An aside labelled "The short version" holding an ordered list.'],
-    classes: ['article-brief', 'article-brief-label'],
+    classes: ['brief', 'brief__label'],
     parts: ['label'],
     lint: ['fm-brief'],
     stories: [{
       id: 'brief',
       name: 'Rendered from the brief',
-      html: `<aside class="article-brief" aria-label="The short version">\n  <p class="label accent article-brief-label">The short version</p>\n  <ol>\n    <li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li>\n    <li>Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year.</li>\n    <li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li>\n  </ol>\n</aside>`,
+      html: `<aside class="brief" aria-label="The short version">\n  <p class="label label--accent brief__label">The short version</p>\n  <ol>\n    <li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li>\n    <li>Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year.</li>\n    <li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li>\n  </ol>\n</aside>`,
       code: `brief:\n  - "Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts."\n  - "Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year."\n  - "What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter."`,
       lang: 'yaml',
     }],
@@ -1141,14 +1141,14 @@ export const COMPONENTS = [
     avoid: ['A title that needs the dek to make sense.'],
     rules: ['The title is short and in title case: "The Digital Front Door Nobody Walks Through".', 'The description is the dek: one or two sentences, 70 to 200 characters. It is also the search snippet.', 'The kicker names the topic area: "Financial services". It is a label.', 'The title climbs one step of the type scale at each breakpoint: 35, 41, 50 and 60px.'],
     a11y: ['The title is the page\'s only h1.'],
-    classes: ['article-header', 'article-kicker', 'article-title', 'article-intro', 'article-date', 'article-byline'],
+    classes: ['article__header', 'article__kicker', 'article__title', 'article__intro', 'article__date', 'article__byline'],
     parts: ['label'],
     lint: ['fm-description', 'fm-kicker', 'fm-title-case'],
     stories: [{
       id: 'header',
       name: 'From front matter',
       wrap: 'article',
-      html: `<header class="article-header">\n  <p class="label article-kicker"><a href="/articles">Articles</a><span class="article-kicker-sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article-title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article-intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article-date"><time datetime="2026-09-23">September 23, 2026</time><span class="article-meta-sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n  <p class="article-byline">By <a href="/">Paul Drago</a>, advisor to banks and credit unions</p>\n</header>`,
+      html: `<header class="article__header">\n  <p class="label article__kicker"><a href="/articles">Articles</a><span class="article__sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article__title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article__intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article__date"><time datetime="2026-09-23">September 23, 2026</time><span class="article__sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n  <p class="article__byline">By <a href="/">Paul Drago</a>, advisor to banks and credit unions</p>\n</header>`,
       code: `---\ntitle: "The Digital Front Door Nobody Walks Through"\ndescription: "Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?"\ndate: 2026-09-23\nkicker: "Financial services"\ntopics: ["Community banking", "Digital banking", "Checking account acquisition"]\n---`,
       lang: 'yaml',
     }],
@@ -1163,14 +1163,14 @@ export const COMPONENTS = [
     avoid: ['A per-article bio.'],
     rules: ['Firsthand stories name the kind of organization, never the employer.', 'One filled button: the booking call.'],
     a11y: ['An aside labelled "About the author".'],
-    classes: ['article-author', 'article-author-label', 'article-author-bio', 'article-author-links', 'article-author-link'],
+    classes: ['author', 'author__label', 'author__bio', 'author__links', 'author__link'],
     parts: ['label', 'button', 'link'],
     lint: [],
     stories: [{
       id: 'box',
       name: 'Under the article',
       wrap: 'article',
-      html: `<aside class="article-author" aria-label="About the author">\n  <p class="label accent article-author-label">About the author</p>\n  <p class="article-author-bio">Paul Drago advises banks and credit unions on marketing measurement, marketing operations and market decisions.</p>\n  <p class="article-author-links"><a class="btn btn-small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a> <a class="article-author-link" href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a class="article-author-link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a></p>\n</aside>`,
+      html: `<aside class="author" aria-label="About the author">\n  <p class="label label--accent author__label">About the author</p>\n  <p class="author__bio">Paul Drago advises banks and credit unions on marketing measurement, marketing operations and market decisions.</p>\n  <p class="author__links"><a class="btn btn--small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a> <a class="author__link" href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a class="author__link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a></p>\n</aside>`,
       code: `<!-- [slug].astro renders it from src/data/author.ts; articles do not include it. -->`,
     }],
   },
@@ -1184,14 +1184,14 @@ export const COMPONENTS = [
     avoid: ['A second navigation inside an article.'],
     rules: ['Two links and one button: Services, Articles, Book a call.', 'The line under the name says who the site serves: "Advisor to banks and credit unions".', 'On phones the line wraps under the name and the button shrinks to 44px tall.'],
     a11y: ['A nav labelled Primary; the current section carries aria-current="page".', 'A skip link to the content comes before it.'],
-    classes: ['header-inner', 'brand-home', 'brand-group', 'brand-name', 'brand-subline', 'header-actions', 'header-link'],
+    classes: ['site-header', 'site-header__inner', 'site-header__nav', 'site-header__link', 'brand', 'brand__group', 'brand__name', 'brand__line'],
     parts: ['label', 'button'],
     lint: [],
     stories: [{
       id: 'article',
       name: 'On an article',
       wrap: 'page',
-      html: `<header data-c="site-header">\n  <div class="container">\n    <div class="header-inner">\n      <a class="brand-home" href="/"><span class="brand-group"><span class="brand-name">Paul Drago</span><span class="brand-subline">Advisor to banks and credit unions</span></span></a>\n      <nav class="header-actions" aria-label="Primary">\n        <a class="header-link" href="/financial-services">Services</a>\n        <a class="header-link" href="/articles" aria-current="page">Articles</a>\n        <a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n      </nav>\n    </div>\n  </div>\n</header>`,
+      html: `<header class="site-header" data-c="site-header">\n  <div class="container">\n    <div class="site-header__inner">\n      <a class="brand" href="/"><span class="brand__group"><span class="brand__name">Paul Drago</span><span class="brand__line">Advisor to banks and credit unions</span></span></a>\n      <nav class="site-header__nav" aria-label="Primary">\n        <a class="site-header__link" href="/financial-services">Services</a>\n        <a class="site-header__link" href="/articles" aria-current="page">Articles</a>\n        <a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n      </nav>\n    </div>\n  </div>\n</header>`,
       code: `<!-- src/layouts/Base.astro renders it on every page. -->`,
     }],
   },
@@ -1205,13 +1205,13 @@ export const COMPONENTS = [
     avoid: ['A second call to action here; the header and the booking line carry it.'],
     rules: ['Links: Home, Services, Articles, the email address, LinkedIn, Privacy, and Cookie settings.', 'The line under the rule describes the section: "Writing on marketing measurement, markets, and accountable growth."'],
     a11y: ['Cookie settings is a button, since it opens a dialog rather than a page.'],
-    classes: ['footer-top', 'footer-brand', 'footer-links', 'footer-link-button', 'footer-meta'],
+    classes: ['site-footer', 'site-footer__top', 'site-footer__brand', 'site-footer__links', 'site-footer__link', 'site-footer__button', 'site-footer__meta'],
     lint: [],
     stories: [{
       id: 'article',
       name: 'On an article',
       wrap: 'page',
-      html: `<footer>\n  <div class="container">\n    <div class="footer-top">\n      <div class="footer-brand">Paul Drago</div>\n      <div class="footer-links"><a href="/">Home</a> <a href="/financial-services">Services</a> <a href="/articles">Articles</a> <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> <a href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a href="/privacy">Privacy</a> <button type="button" class="footer-link-button">Cookie settings</button></div>\n    </div>\n    <div class="footer-meta"><div>Writing on marketing measurement, markets, and accountable growth.</div></div>\n  </div>\n</footer>`,
+      html: `<footer class="site-footer">\n  <div class="container">\n    <div class="site-footer__top">\n      <div class="site-footer__brand">Paul Drago</div>\n      <div class="site-footer__links"><a class="site-footer__link" href="/">Home</a> <a class="site-footer__link" href="/financial-services">Services</a> <a class="site-footer__link" href="/articles">Articles</a> <a class="site-footer__link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> <a class="site-footer__link" href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a class="site-footer__link" href="/privacy">Privacy</a> <button type="button" class="site-footer__button">Cookie settings</button></div>\n    </div>\n    <div class="site-footer__meta"><div>Writing on marketing measurement, markets, and accountable growth.</div></div>\n  </div>\n</footer>`,
       code: `<!-- src/layouts/Base.astro renders it; an article passes footerNote. -->`,
     }],
   },
@@ -1261,7 +1261,7 @@ export const COMPONENTS = [
       name: 'A specimen built from the kit',
       wrap: 'page',
       motion: true,
-      html: `<article class="article">\n<div class="container">\n<header class="article-header">\n  <p class="label article-kicker"><a href="/articles">Articles</a><span class="article-kicker-sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article-title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article-intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article-date"><time datetime="2026-09-23">September 23, 2026</time><span class="article-meta-sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n</header>\n<div class="article-body" data-notes="custom">\n<aside class="article-brief" aria-label="The short version"><p class="label accent article-brief-label">The short version</p><ol><li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li><li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li></ol></aside>\n<p class="article-lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket.</p>\n<h2 id="the-48-star-trap">The 4.8-star trap</h2>\n<p class="pd-deck">Everyone's app is fine. Fine is where everyone already is.</p>\n<p>Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars.</p>\n${units(UNITS_DEMO)}\n<blockquote><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>\n<h3 id="what-the-customer-is-worth">What the customer is worth</h3>\n${stack(STACK_DEMO)}\n<h2 id="where-to-start">Somebody has to own the whole bank</h2>\n<p class="pd-deck">Where to start.</p>\n<ol class="pd-decisions"><li><strong>Someone owns the proposition.</strong> Give a senior leader responsibility for the chosen younger-customer proposition across product, digital, retail and marketing.</li><li><strong>Start with one journey.</strong> Take the first paycheck arriving in a newly opened account and manage the surrounding experience as a single product for one quarter.</li></ol>\n<p class="article-cta">If you want to see this with your organization's own numbers, <a href="${BOOKING}">book twenty minutes</a>.</p>\n</div>\n</div>\n</article>`,
+      html: `<article class="article">\n<div class="container">\n<header class="article__header">\n  <p class="label article__kicker"><a href="/articles">Articles</a><span class="article__sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article__title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article__intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article__date"><time datetime="2026-09-23">September 23, 2026</time><span class="article__sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n</header>\n<div class="article__body" data-notes="custom">\n<aside class="brief" aria-label="The short version"><p class="label label--accent brief__label">The short version</p><ol><li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li><li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li></ol></aside>\n<p class="article__lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket.</p>\n<h2 id="the-48-star-trap">The 4.8-star trap</h2>\n<p class="pd-deck">Everyone's app is fine. Fine is where everyone already is.</p>\n<p>Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars.</p>\n${units(UNITS_DEMO)}\n<blockquote><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>\n<h3 id="what-the-customer-is-worth">What the customer is worth</h3>\n${stack(STACK_DEMO)}\n<h2 id="where-to-start">Somebody has to own the whole bank</h2>\n<p class="pd-deck">Where to start.</p>\n<ol class="pd-decisions"><li><strong>Someone owns the proposition.</strong> Give a senior leader responsibility for the chosen younger-customer proposition across product, digital, retail and marketing.</li><li><strong>Start with one journey.</strong> Take the first paycheck arriving in a newly opened account and manage the surrounding experience as a single product for one quarter.</li></ol>\n<p class="booking-line">If you want to see this with your organization's own numbers, <a href="${BOOKING}">book twenty minutes</a>.</p>\n</div>\n</div>\n</article>`,
       code: `---\ntitle: "Your Title in Title Case"\ndescription: "One or two sentences that state the argument. They double as the search snippet."\ndate: 2026-10-15\ndraft: true\nkicker: "Financial services"\ntopics: ["Community banking"]\nnotes: "rail"\nstylesheets: ["/assets/article-kit.css"]\nscripts: ["/assets/article-kit.js"]\nbrief:\n  - "The finding, with its number."\n  - "What changes: the changes, in one sentence."\n---\n\nThe opening paragraph: the situation the piece starts from. It takes the drop cap.\n\n## A section heading that states a claim\n\n<p class="pd-deck">One line that says what this section finds.</p>\n\nBody paragraphs in markdown, with footnotes.[^1]\n\n> The line a reader should carry out of the section.\n\n## Somebody has to own it\n\n<p class="pd-deck">Where to start.</p>\n\n<ol class="pd-decisions">\n<li><strong>The first change.</strong> What it involves and who has the authority.</li>\n</ol>\n\n## About the numbers\n\nWhen the research was checked, and which figures are estimates.\n\n[^1]: **Publisher.** Title, date. What was measured. What it does not show. [Report title](https://example.com)`,
       lang: 'markdown',
     }],

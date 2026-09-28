@@ -215,7 +215,7 @@
     pointer-events: none;
   }
 
-  .trace-fill {
+  .trace-rail__fill {
     width: 100%;
     height: var(--trace-depth, 0%);
     background: var(--brass);
@@ -223,7 +223,7 @@
 
   /* Reading progress without a scroll listener where the browser supports scroll timelines. */
   @supports (animation-timeline: scroll()) {
-    .trace-fill {
+    .trace-rail__fill {
       height: 100%;
       transform-origin: top;
       transform: scaleY(0);
@@ -245,8 +245,8 @@
   }
 
   .display-title,
-  .brand-name,
-  .footer-brand {
+  .brand__name,
+  .site-footer__brand {
     font-family: var(--font-display);
     text-transform: uppercase;
   }
@@ -265,7 +265,7 @@
      listed here, and the kit's eyebrow is the label in the accent over a figure. */
   .label,
   .pd-eyebrow,
-  .article-body thead th {
+  .article__body thead th {
     font-family: var(--font-sans);
     font-size: var(--step--2);
     font-style: normal;
@@ -276,45 +276,49 @@
     color: var(--secondary);
   }
 
-  header {
+  .label--accent {
+    color: var(--brass);
+  }
+
+  .site-header {
     padding: var(--space-6) 0;
     border-bottom: 1px solid var(--hairline);
   }
 
-  .header-inner,
-  .header-actions,
-  .brand-group {
+  .site-header__inner,
+  .site-header__nav,
+  .brand__group {
     display: flex;
   }
 
-  .header-inner {
+  .site-header__inner {
     align-items: center;
     justify-content: space-between;
     gap: var(--space-8);
   }
 
-  .header-actions {
+  .site-header__nav {
     align-items: center;
     gap: var(--space-8);
   }
 
-  .brand-home {
+  .brand {
     color: inherit;
     text-decoration: none;
   }
 
-  .brand-group {
+  .brand__group {
     flex-direction: column;
     gap: var(--space-1);
   }
 
-  .brand-name {
+  .brand__name {
     color: var(--paper);
     font-size: var(--step-1);
     line-height: var(--leading-display);
   }
 
-  .header-link {
+  .site-header__link {
     color: var(--paper);
     font-size: var(--step--2);
     font-weight: var(--weight-bold);
@@ -323,8 +327,8 @@
     border-bottom: 2px solid transparent;
   }
 
-  .header-link:hover,
-  .header-link[aria-current="page"] {
+  .site-header__link:hover,
+  .site-header__link[aria-current="page"] {
     border-bottom-color: var(--brass);
   }
 
@@ -360,7 +364,7 @@
     background: var(--brass);
   }
 
-  footer {
+  .site-footer {
     padding: var(--space-12) 0 var(--space-8);
     border-top: 1px solid var(--hairline);
     background: var(--ground);
@@ -368,39 +372,39 @@
     font-size: var(--step--2);
   }
 
-  .footer-top,
-  .footer-meta {
+  .site-footer__top,
+  .site-footer__meta {
     display: flex;
     justify-content: space-between;
     gap: var(--space-6);
   }
 
-  .footer-top {
+  .site-footer__top {
     align-items: center;
   }
 
-  .footer-brand {
+  .site-footer__brand {
     color: var(--paper);
     font-size: var(--step-0);
   }
 
-  .footer-links {
+  .site-footer__links {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-3) var(--space-6);
   }
 
-  .footer-links a {
+  .site-footer__link {
     color: var(--paper);
     font-weight: var(--weight-semibold);
     text-decoration: none;
   }
 
-  .footer-links a:hover {
+  .site-footer__link:hover {
     color: var(--brass);
   }
 
-  .footer-link-button {
+  .site-footer__button {
     padding: 0;
     border: 0;
     background: none;
@@ -410,11 +414,11 @@
     cursor: pointer;
   }
 
-  .footer-link-button:hover {
+  .site-footer__button:hover {
     color: var(--brass);
   }
 
-  .footer-meta {
+  .site-footer__meta {
     margin-top: var(--space-8);
     padding-top: var(--space-5);
     border-top: 1px solid var(--hairline);
@@ -426,16 +430,16 @@
       display: none;
     }
 
-    header {
+    .site-header {
       padding: var(--space-6) 0;
     }
 
-    .header-inner {
+    .site-header__inner {
       align-items: flex-start;
       gap: var(--space-4);
     }
 
-    .header-actions {
+    .site-header__nav {
       width: auto;
       justify-content: flex-end;
       gap: var(--space-4);
@@ -443,11 +447,11 @@
       border-top: 0;
     }
 
-    .brand-name {
+    .brand__name {
       font-size: var(--step-0);
     }
 
-    .brand-subline {
+    .brand__line {
       max-width: 180px;
     }
 
@@ -458,13 +462,13 @@
       white-space: nowrap;
     }
 
-    .footer-top,
-    .footer-meta {
+    .site-footer__top,
+    .site-footer__meta {
       flex-direction: column;
       align-items: flex-start;
     }
 
-    .footer-meta {
+    .site-footer__meta {
       line-height: var(--leading-body);
     }
   }
@@ -475,7 +479,7 @@
     border-top: 1px solid var(--hairline);
   }
 
-  .other-decisions-list {
+  .other-decisions__list {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0 var(--space-8);
@@ -483,7 +487,7 @@
     list-style: none;
   }
 
-  .other-decisions-list a {
+  .other-decisions__link {
     display: block;
     height: 100%;
     padding: var(--space-5) 0;
@@ -492,7 +496,7 @@
     text-decoration: none;
   }
 
-  .other-decisions-name {
+  .other-decisions__name {
     display: block;
     color: var(--paper);
     font-size: var(--step--1);
@@ -500,7 +504,7 @@
     line-height: var(--leading-snug);
   }
 
-  .other-decisions-question {
+  .other-decisions__question {
     display: block;
     margin-top: var(--space-2);
     color: var(--secondary);
@@ -508,11 +512,11 @@
     line-height: var(--leading-text);
   }
 
-  .other-decisions-list a:hover .other-decisions-name {
+  .other-decisions__link:hover .other-decisions__name {
     color: var(--brass);
   }
 
-  .other-decisions-all {
+  .other-decisions__all {
     display: inline-block;
     margin-top: var(--space-3);
     padding: var(--space-1) 0;
@@ -525,7 +529,7 @@
   }
 
   @media (width < 760px) {
-    .other-decisions-list {
+    .other-decisions__list {
       grid-template-columns: 1fr;
     }
   }

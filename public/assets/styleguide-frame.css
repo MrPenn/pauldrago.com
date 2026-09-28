@@ -14,7 +14,7 @@
   .ui-frame.is-page .article { padding: var(--space-10) 0 var(--space-12); }
   .ui-frame .ui-slot > :first-child { margin-top: 0; }
   .ui-frame .ui-slot > :last-child { margin-bottom: 0; }
-  .ui-frame .article-header { margin-bottom: 0; }
+  .ui-frame .article__header { margin-bottom: 0; }
   .ui-row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3); margin: 0 !important; }
   /* Room on the left for what hangs into the article's margin, such as a pull quote's opening mark. */
   @media (width >= 760px) {
@@ -26,7 +26,7 @@
   /* The reading rail, held still two fifths of the way down so it can be seen in a frame. */
   .ui-rail-demo { position: relative; height: 240px; }
   .ui-rail-demo .trace-rail { position: absolute; display: block; height: 100%; }
-  .ui-rail-demo .trace-fill { height: 40%; animation: none; transform: none; }
+  .ui-rail-demo .trace-rail__fill { height: 40%; animation: none; transform: none; }
 
   /* The layout grid specimen: each band is a real container, outlined and named, so the page shows
      the grid at whatever width the frame is. */

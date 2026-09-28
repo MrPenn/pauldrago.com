@@ -257,7 +257,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           <details>
             <summary>More detail<span class="sr-only"> about {section.rights.title.toLowerCase()}</span></summary>
             <ul>
-              <li><strong>Cookies:</strong> use <button type="button" class="footer-link-button" data-cc="show-preferencesModal">Cookie settings</button> (also in the footer of every page), turn on Global Privacy Control in your browser, or block cookies in your browser.</li>
+              <li><strong>Cookies:</strong> use <button type="button" class="privacy__settings-button" data-cc="show-preferencesModal">Cookie settings</button> (also in the footer of every page), turn on Global Privacy Control in your browser, or block cookies in your browser.</li>
               <li><strong>Access, correction, and deletion:</strong> email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> and I will respond within 30 days.</li>
               <li><strong>Objection and portability:</strong> depending on where you live, you may also object to processing or ask for a copy of your data in a portable format.</li>
               <li><strong>Complaints:</strong> if you are in the UK or EU and are unhappy with how I handle your data, you can complain to your local data protection authority.</li>
@@ -312,7 +312,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
 
         <section class="privacy-section" id="cookies" aria-labelledby="cookies-heading">
           <h2 id="cookies-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.cookies.icon]} />{section.cookies.title}</h2>
-          <p class="privacy-summary">By default, visits are counted without cookies. Analytics cookies are used only if you accept them. <button type="button" class="footer-link-button" data-cc="show-preferencesModal">Change your cookie settings</button></p>
+          <p class="privacy-summary">By default, visits are counted without cookies. Analytics cookies are used only if you accept them. <button type="button" class="privacy__settings-button" data-cc="show-preferencesModal">Change your cookie settings</button></p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.cookies.title.toLowerCase()}</span></summary>
             <p>Without your consent, PostHog sets no cookies and stores nothing in your browser beyond a record of your choice. Visits are counted with an anonymous identifier calculated on PostHog's servers that changes daily and cannot recognize you over time.</p>

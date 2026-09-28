@@ -98,27 +98,27 @@ const structuredData = pageNodes.length ? { '@context': 'https://schema.org', '@
 <body class:list={[{ 'no-trace-script': scripts.length === 0 }]}>
 <Fragment set:html="<!--email_off-->" />
 <a class="skip-link" href="#main">Skip to content</a>
-<div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div>
+<div class="trace-rail" aria-hidden="true"><div class="trace-rail__fill"></div></div>
 
-<header data-c="site-header">
+<header class="site-header" data-c="site-header">
   <div class="container">
-    <div class="header-inner">
+    <div class="site-header__inner">
       {variant === 'home' ? (
-        <span class="brand-group">
-          <span class="brand-name">Paul Drago</span>
-          <span class="label brand-subline">{SUBLINE}</span>
+        <span class="brand__group">
+          <span class="brand__name">Paul Drago</span>
+          <span class="label brand__line">{SUBLINE}</span>
         </span>
       ) : (
-        <a class="brand-home" href="/">
-          <span class="brand-group">
-            <span class="brand-name">Paul Drago</span>
-            <span class="label brand-subline">{SUBLINE}</span>
+        <a class="brand" href="/">
+          <span class="brand__group">
+            <span class="brand__name">Paul Drago</span>
+            <span class="label brand__line">{SUBLINE}</span>
           </span>
         </a>
       )}
-      <nav class="header-actions" aria-label="Primary">
-        <a class="header-link" href="/financial-services" aria-current={section === 'services' ? 'page' : undefined}>Services</a>
-        <a class="header-link" href="/articles" aria-current={section === 'articles' ? 'page' : undefined}>Articles</a>
+      <nav class="site-header__nav" aria-label="Primary">
+        <a class="site-header__link" href="/financial-services" aria-current={section === 'services' ? 'page' : undefined}>Services</a>
+        <a class="site-header__link" href="/articles" aria-current={section === 'articles' ? 'page' : undefined}>Articles</a>
         <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
       </nav>
     </div>
@@ -127,21 +127,21 @@ const structuredData = pageNodes.length ? { '@context': 'https://schema.org', '@
 
 <slot />
 
-<footer>
+<footer class="site-footer">
   <div class="container">
-    <div class="footer-top">
-      <div class="footer-brand">Paul Drago</div>
-      <div class="footer-links">
-        <a href="/">Home</a>
-        <a href="/financial-services">Services</a>
-        <a href="/articles">Articles</a>
-        <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
-        <a href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-        <a href="/privacy">Privacy</a>
-        <button type="button" class="footer-link-button" data-cc="show-preferencesModal">Cookie settings</button>
+    <div class="site-footer__top">
+      <div class="site-footer__brand">Paul Drago</div>
+      <div class="site-footer__links">
+        <a class="site-footer__link" href="/">Home</a>
+        <a class="site-footer__link" href="/financial-services">Services</a>
+        <a class="site-footer__link" href="/articles">Articles</a>
+        <a class="site-footer__link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
+        <a class="site-footer__link" href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a class="site-footer__link" href="/privacy">Privacy</a>
+        <button type="button" class="site-footer__button" data-cc="show-preferencesModal">Cookie settings</button>
       </div>
     </div>
-    <div class="footer-meta">
+    <div class="site-footer__meta">
       <div>{footerNote}</div>
     </div>
   </div>

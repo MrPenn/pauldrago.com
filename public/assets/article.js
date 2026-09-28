@@ -14,7 +14,7 @@
     trace();
   }
 
-  var body = document.querySelector('.article-body[data-notes="rail"]');
+  var body = document.querySelector('.article__body[data-notes="rail"]');
   if (!body) return;
 
   function h(tag, cls, html) { var el = document.createElement(tag); el.className = cls; el.innerHTML = html; return el; }
@@ -23,11 +23,11 @@
   /* The first plain paragraph opens the piece; "About the numbers" closes it without a number. */
   for (var i = 0; i < body.children.length; i++) {
     var c = body.children[i];
-    if (c.tagName === 'P' && !c.className) { c.classList.add('article-lede'); break; }
+    if (c.tagName === 'P' && !c.className) { c.classList.add('article__lede'); break; }
     if (c.tagName === 'H3' || c.tagName === 'SECTION') break;
   }
   body.querySelectorAll('h2').forEach(function (hd) {
-    if (/about the numbers/i.test(hd.textContent)) hd.classList.add('article-colophon');
+    if (/about the numbers/i.test(hd.textContent)) hd.classList.add('article__colophon');
   });
 
   /* Sidenotes */
@@ -48,7 +48,7 @@
 
     if (!made[id]) {
       made[id] = true;
-      var note = h('aside', 'sidenote', '<span class="sidenote-num">' + num + '</span>' + li.innerHTML);
+      var note = h('aside', 'sidenote', '<span class="sidenote__num">' + num + '</span>' + li.innerHTML);
       note.setAttribute('data-for', id);
       body.appendChild(note);
       notes.push({ el: note, anchor: anchor });
@@ -70,7 +70,7 @@
       }
       var open = body.querySelector('.note-inline'); if (open) open.remove();
       body.querySelectorAll('[data-footnote-ref].is-active').forEach(function (r) { r.classList.remove('is-active'); r.setAttribute('aria-expanded', 'false'); });
-      var inline = h('div', 'note-inline', '<span class="sidenote-num">' + num + '</span>' + li.innerHTML);
+      var inline = h('div', 'note-inline', '<span class="sidenote__num">' + num + '</span>' + li.innerHTML);
       inline.setAttribute('data-for', id);
       anchor.insertAdjacentElement('afterend', inline);
       ref.classList.add('is-active');

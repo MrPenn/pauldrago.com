@@ -99,7 +99,7 @@ document.addEventListener('click', function (event) {
   event.stopImmediatePropagation();
 
   window.posthog?.capture('booking_cta_clicked', {
-    cta_location: trigger.closest('header') ? 'header' : trigger.classList.contains('btn-small') ? 'article_author' : 'page_content'
+    cta_location: trigger.closest('header') ? 'header' : trigger.classList.contains('btn--small') ? 'article_author' : 'page_content'
   });
 
   let config = {};

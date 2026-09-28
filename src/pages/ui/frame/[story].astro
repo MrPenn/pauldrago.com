@@ -59,7 +59,7 @@ const wrap = story.wrap ?? 'body';
 <body class={`ui-frame is-${wrap}`}>
 {wrap === 'page' && <div class="ui-slot" set:html={html}></div>}
 {wrap === 'article' && <div class="article"><div class="ui-slot" set:html={html}></div></div>}
-{wrap === 'body' && <div class="article"><div class="article-body ui-slot" data-notes={story.notes ? 'rail' : 'custom'} set:html={html}></div></div>}
+{wrap === 'body' && <div class="article"><div class="article__body ui-slot" data-notes={story.notes ? 'rail' : 'custom'} set:html={html}></div></div>}
 {story.notes && <script is:inline defer src="/assets/article.js"></script>}
 <script is:inline defer src="/assets/article-kit.js"></script>
 </body>
