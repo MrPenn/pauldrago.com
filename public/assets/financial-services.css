@@ -1,5 +1,5 @@
 @layer page {
-    .btn-secondary {
+    .text-link {
       display: inline-block;
       color: var(--paper);
       font-weight: var(--weight-bold);
@@ -9,19 +9,19 @@
       border-bottom: 2px solid var(--brass);
     }
 
-    .headline-104 {
+    .hero__title {
       font-size: var(--step-4);
     }
-  @media (width >= 760px) { .headline-104 { font-size: var(--step-5); } }
-  @media (width >= 1040px) { .headline-104 { font-size: var(--step-6); } }
-  @media (width >= 1180px) { .headline-104 { font-size: var(--step-7); } }
+  @media (width >= 760px) { .hero__title { font-size: var(--step-5); } }
+  @media (width >= 1040px) { .hero__title { font-size: var(--step-6); } }
+  @media (width >= 1180px) { .hero__title { font-size: var(--step-7); } }
 
-    .headline-76 {
+    .section-title {
       font-size: var(--step-3);
     }
-  @media (width >= 760px) { .headline-76 { font-size: var(--step-4); } }
-  @media (width >= 1040px) { .headline-76 { font-size: var(--step-5); } }
-  @media (width >= 1180px) { .headline-76 { font-size: var(--step-6); } }
+  @media (width >= 760px) { .section-title { font-size: var(--step-4); } }
+  @media (width >= 1040px) { .section-title { font-size: var(--step-5); } }
+  @media (width >= 1180px) { .section-title { font-size: var(--step-6); } }
 
     .eyebrow {
       color: var(--secondary);
@@ -35,7 +35,7 @@
       overflow: hidden;
     }
 
-    .hero-layout {
+    .hero__layout {
       display: grid;
       grid-template-columns: minmax(0, 1fr);
       gap: var(--space-12);
@@ -47,39 +47,39 @@
         padding-bottom: var(--space-12);
       }
 
-      .hero-layout {
+      .hero__layout {
         grid-template-columns: minmax(0, 1fr);
         align-items: start;
       }
   }
 
-    .hero-copy .eyebrow {
+    .hero__copy .eyebrow {
       margin-bottom: var(--space-6);
     }
 
-    .hero-copy {
+    .hero__copy {
       max-width: 980px;
     }
 
-    .hero-copy .headline-104 {
+    .hero__copy .hero__title {
       font-size: var(--step-4);
       line-height: var(--leading-display);
       max-width: 960px;
     }
-  @media (width >= 760px) { .hero-copy .headline-104 { font-size: var(--step-5); } }
-  @media (width >= 1040px) { .hero-copy .headline-104 { font-size: var(--step-6); } }
-  @media (width >= 1180px) { .hero-copy .headline-104 { font-size: var(--step-7); } }
+  @media (width >= 760px) { .hero__copy .hero__title { font-size: var(--step-5); } }
+  @media (width >= 1040px) { .hero__copy .hero__title { font-size: var(--step-6); } }
+  @media (width >= 1180px) { .hero__copy .hero__title { font-size: var(--step-7); } }
 
-    .hero-subhead {
+    .subhead {
       color: var(--paper);
       font-size: var(--step-0);
       line-height: var(--leading-snug);
       max-width: 800px;
       margin-top: var(--space-8);
     }
-  @media (width >= 1180px) { .hero-subhead { font-size: var(--step-1); } }
+  @media (width >= 1180px) { .subhead { font-size: var(--step-1); } }
 
-    .hero-actions {
+    .actions {
       display: flex;
       flex-wrap: wrap;
       align-items: center;
@@ -87,15 +87,15 @@
       margin-top: var(--space-8);
     }
 
-    @media (width >= 1040px) {.hero-copy .headline-104 {
+    @media (width >= 1040px) {.hero__copy .hero__title {
         font-size: var(--step-6);
       }
-  @media (width >= 1180px) { .hero-copy .headline-104 { font-size: var(--step-7); } }
+  @media (width >= 1180px) { .hero__copy .hero__title { font-size: var(--step-7); } }
 
-      .hero-subhead {
+      .subhead {
         font-size: var(--step-0);
       }
-  @media (width >= 1180px) { .hero-subhead { font-size: var(--step-1); } }
+  @media (width >= 1180px) { .subhead { font-size: var(--step-1); } }
   }
 
     .decision-nav {
@@ -108,13 +108,13 @@
       backdrop-filter: blur(10px);
     }
 
-    .decision-nav-inner {
+    .decision-nav__inner {
       display: grid;
       grid-template-columns: 1fr;
       gap: 0;
     }
 
-    @media (width >= 760px) {.decision-nav-inner {
+    @media (width >= 760px) {.decision-nav__inner {
         grid-template-columns: repeat(4, 1fr);
       }
   }
@@ -140,7 +140,7 @@
       }
   }
 
-    @media (width < 760px) {.decision-nav-inner {
+    @media (width < 760px) {.decision-nav__inner {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
@@ -178,7 +178,7 @@
     }
   @media (width >= 1040px) { .section-intro { font-size: var(--step-1); } }
 
-    .section-intro.flush {
+    .section-intro--flush {
       margin-top: 0;
     }
 
@@ -187,7 +187,7 @@
       border-top: 1px solid var(--hairline);
     }
 
-    .service-group-label {
+    .router__group-label {
       color: var(--secondary);
       font-size: var(--step--2);
       font-weight: var(--weight-bold);
@@ -196,11 +196,11 @@
       border-bottom: 1px solid var(--hairline);
     }
 
-    .service-group-label.embedded {
+    .router__group-label--embedded {
       margin-top: var(--space-6);
     }
 
-    .router-row {
+    .router__row {
       display: grid;
       grid-template-columns: 1fr;
       gap: var(--space-6);
@@ -209,31 +209,31 @@
     }
 
     /* The question column takes the larger share so the longest question holds to four lines */
-    @media (width >= 1040px) {.router-row {
+    @media (width >= 1040px) {.router__row {
         grid-template-columns: minmax(260px, 1.2fr) minmax(0, 1fr) 240px;
         align-items: start;
         gap: var(--space-8);
       }
   }
 
-    .router-question {
+    .router__question {
       font-family: var(--font-display);
       color: var(--paper);
       font-size: var(--step-1);
       line-height: var(--leading-display);
       text-transform: uppercase;
     }
-  @media (width >= 1040px) { .router-question { font-size: var(--step-2); } }
-  @media (width >= 1180px) { .router-question { font-size: var(--step-3); } }
+  @media (width >= 1040px) { .router__question { font-size: var(--step-2); } }
+  @media (width >= 1180px) { .router__question { font-size: var(--step-3); } }
 
     /* 1040 to 1180: the copy column keeps 330px (about 35 characters a line), and the question eases
        from 26px to 32px so it keeps four lines beside it */
-    @media (1040px <= width < 1180px) {.router-row {
+    @media (1040px <= width < 1180px) {.router__row {
         grid-template-columns: minmax(260px, 1.2fr) minmax(330px, 1fr) 240px;
       }
   }
 
-    .router-service {
+    .router__service {
       color: var(--brass);
       font-size: var(--step--2);
       font-weight: var(--weight-bold);
@@ -241,29 +241,29 @@
       margin-bottom: var(--space-3);
     }
 
-    .router-fit {
+    .router__fit {
       color: var(--secondary);
       font-size: var(--step--2);
       line-height: var(--leading-text);
       margin-top: var(--space-4);
     }
 
-    .router-fit strong {
+    .router__fit strong {
       color: var(--paper);
     }
 
-    .router-body {
+    .router__body {
       color: var(--paper);
     }
 
-    .router-data {
+    .router__data {
       color: var(--secondary);
       font-size: var(--step--2);
       line-height: var(--leading-text);
       margin-top: var(--space-4);
     }
 
-    .router-link {
+    .router__link {
       justify-self: start;
       color: var(--paper);
       font-weight: var(--weight-bold);
@@ -272,7 +272,7 @@
       padding-bottom: var(--space-2);
     }
 
-    .router-visual {
+    .router__visual {
       min-height: 148px;
       border: 1px solid var(--hairline);
       background: color-mix(in srgb, var(--paper) 2.5%, transparent);
@@ -281,7 +281,7 @@
       transition: border-color 420ms ease, background-color 420ms ease;
     }
 
-    .visual-label {
+    .router__visual-label {
       color: var(--brass);
       font-size: var(--step--2);
       font-weight: var(--weight-bold);
@@ -295,7 +295,7 @@
       gap: var(--space-3);
     }
 
-    .flow-line {
+    .spend-flow__line {
       display: grid;
       grid-template-columns: 82px 1fr 52px;
       gap: var(--space-3);
@@ -304,12 +304,12 @@
       font-size: var(--step--2);
     }
 
-    .flow-track {
+    .spend-flow__track {
       height: 10px;
       background: color-mix(in srgb, var(--paper) 10%, transparent);
     }
 
-    .flow-fill {
+    .spend-flow__fill {
       height: 100%;
       background: var(--paper);
       transform: scaleX(0);
@@ -317,11 +317,11 @@
       transition: transform 650ms cubic-bezier(.2, .8, .2, 1);
     }
 
-    .flow-fill.accent-fill {
+    .spend-flow__fill.spend-flow__fill--accent {
       background: var(--brass);
     }
 
-    .flow-val {
+    .spend-flow__value {
       color: var(--paper);
       font-weight: var(--weight-bold);
       text-align: right;
@@ -334,7 +334,7 @@
       gap: var(--space-1);
     }
 
-    .market-cell {
+    .market-grid__cell {
       aspect-ratio: 1;
       background: color-mix(in srgb, var(--paper) 8%, transparent);
       border: 1px solid color-mix(in srgb, var(--paper) 8%, transparent);
@@ -342,12 +342,12 @@
       transition: opacity 360ms ease, background-color 360ms ease, border-color 360ms ease;
     }
 
-    .market-cell.live {
+    .market-grid__cell--live {
       background: color-mix(in srgb, var(--brass) 36%, transparent);
       border-color: color-mix(in srgb, var(--brass) 70%, transparent);
     }
 
-    .market-cell.branch {
+    .market-grid__cell--branch {
       background: var(--brass);
       box-shadow: 0 0 0 2px var(--ground) inset;
     }
@@ -357,7 +357,7 @@
       position: relative;
     }
 
-    .overlap-circle {
+    .overlap-visual__circle {
       position: absolute;
       width: 94px;
       height: 94px;
@@ -368,13 +368,13 @@
       transition: transform 720ms cubic-bezier(.2, .8, .2, 1), opacity 480ms ease;
     }
 
-    .overlap-circle.target {
+    .overlap-visual__circle--target {
       left: 52px;
       border-color: var(--brass);
       background: color-mix(in srgb, var(--brass) 15%, transparent);
     }
 
-    .overlap-note {
+    .overlap-visual__note {
       position: absolute;
       right: 0;
       bottom: 0;
@@ -392,7 +392,7 @@
       min-height: 112px;
     }
 
-    .cadence-bar {
+    .cadence__bar {
       background: color-mix(in srgb, var(--paper) 13%, transparent);
       border-top: 3px solid var(--paper);
       min-height: 34px;
@@ -401,7 +401,7 @@
       transition: transform 680ms cubic-bezier(.2, .8, .2, 1);
     }
 
-    .cadence-bar.live {
+    .cadence__bar--live {
       background: color-mix(in srgb, var(--brass) 20%, transparent);
       border-color: var(--brass);
     }
@@ -417,25 +417,25 @@
       text-transform: uppercase;
     }
 
-    .router-row.is-visible .router-visual {
+    .router__row--visible .router__visual {
       border-color: color-mix(in srgb, var(--brass) 45%, transparent);
       background: color-mix(in srgb, var(--brass) 3.5%, transparent);
     }
 
-    .router-row.is-visible .flow-fill {
+    .router__row--visible .spend-flow__fill {
       transform: scaleX(1);
     }
 
-    .router-row.is-visible .market-cell {
+    .router__row--visible .market-grid__cell {
       opacity: 1;
     }
 
-    .router-row.is-visible .overlap-circle {
+    .router__row--visible .overlap-visual__circle {
       transform: translateX(0);
       opacity: 1;
     }
 
-    .router-row.is-visible .cadence-bar {
+    .router__row--visible .cadence__bar {
       transform: scaleY(1);
     }
 
@@ -447,7 +447,7 @@
       border-top: 1px solid var(--hairline);
     }
 
-    .process-step {
+    .process__step {
       display: grid;
       grid-template-columns: minmax(220px, 0.55fr) minmax(0, 1fr);
       gap: var(--space-10);
@@ -455,7 +455,7 @@
       border-bottom: 1px solid var(--hairline);
     }
 
-    .process-title {
+    .process__title {
       color: var(--paper);
       font-weight: var(--weight-bold);
       font-size: var(--step--1);
@@ -463,7 +463,7 @@
       margin-bottom: 0;
     }
 
-    .process-body {
+    .process__body {
       color: var(--secondary);
       font-size: var(--step--2);
       line-height: var(--leading-text);
@@ -511,20 +511,20 @@
       padding: var(--space-24) 0 var(--space-24);
     }
 
-    .closing-grid {
+    .closing-band__grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: var(--space-12);
     }
 
-    @media (width >= 760px) {.closing-grid {
+    @media (width >= 760px) {.closing-band__grid {
         grid-template-columns: minmax(0, 1fr) 280px;
         gap: var(--space-16);
       }
   }
 
     /* Tablet: the note column keeps its 280px; the gap eases so 761 reads and is back to 64px by about 960 */
-    @media (760px <= width < 1040px) {.closing-grid {
+    @media (760px <= width < 1040px) {.closing-band__grid {
         gap: var(--space-16);
       }
   }
@@ -538,7 +538,7 @@
       padding: var(--space-6);
     }
 
-    .call-note-label {
+    .call-note__label {
       color: var(--brass);
       font-size: var(--step--2);
       font-weight: var(--weight-bold);
@@ -552,14 +552,14 @@
       line-height: var(--leading-body);
     }
 
-    @media (width < 760px) {.hero-copy .headline-104,
-      .headline-104 {
+    @media (width < 760px) {.hero__copy .hero__title,
+      .hero__title {
         font-size: var(--step-3);
       }
-  @media (width >= 480px) { .hero-copy .headline-104,
-      .headline-104 { font-size: var(--step-4); } }
+  @media (width >= 480px) { .hero__copy .hero__title,
+      .hero__title { font-size: var(--step-4); } }
 
-      .process-step {
+      .process__step {
         grid-template-columns: 1fr;
         gap: var(--space-2);
       }
@@ -573,33 +573,33 @@
         position: static;
       }
 
-      .router-fit,
-  .router-data,
-  .process-body {
+      .router__fit,
+  .router__data,
+  .process__body {
         font-size: var(--step--2);
         line-height: var(--leading-body);
       }
   }
 
-    @media (prefers-reduced-motion: reduce) {.flow-fill,
-  .cadence-bar {
+    @media (prefers-reduced-motion: reduce) {.spend-flow__fill,
+  .cadence__bar {
         transform: none;
       }
   }
 
   /* Visual sits above the row link in the third column */
-  .router-visual + .router-link { display: inline-block; margin-top: var(--space-4); }
+  .router__visual + .router__link { display: inline-block; margin-top: var(--space-4); }
 
   /* Visuals inside the 190px router column: stack the spend rows, round the overlap circles, keep the note clear of them */
-  .router-visual .flow-line { grid-template-columns: 1fr 44px; grid-template-rows: auto auto; row-gap: var(--space-1); }
-  .router-visual .flow-line > span:first-child { grid-column: 1; grid-row: 1; }
-  .router-visual .flow-val { grid-column: 2; grid-row: 1; }
-  .router-visual .flow-track { grid-column: 1 / -1; grid-row: 2; height: 8px; }
-  .router-visual .spend-flow { gap: var(--space-3); }
-  .router-visual .overlap-visual { min-height: 128px; }
-  .router-visual .overlap-circle { width: 72px; height: 72px; border-radius: 50%; top: 0; }
-  .router-visual .overlap-circle.target { left: 44px; }
-  .router-visual .overlap-note { left: 0; right: auto; bottom: 0; width: auto; }
+  .router__visual .spend-flow__line { grid-template-columns: 1fr 44px; grid-template-rows: auto auto; row-gap: var(--space-1); }
+  .router__visual .spend-flow__line > span:first-child { grid-column: 1; grid-row: 1; }
+  .router__visual .spend-flow__value { grid-column: 2; grid-row: 1; }
+  .router__visual .spend-flow__track { grid-column: 1 / -1; grid-row: 2; height: 8px; }
+  .router__visual .spend-flow { gap: var(--space-3); }
+  .router__visual .overlap-visual { min-height: 128px; }
+  .router__visual .overlap-visual__circle { width: 72px; height: 72px; border-radius: 50%; top: 0; }
+  .router__visual .overlap-visual__circle--target { left: 44px; }
+  .router__visual .overlap-visual__note { left: 0; right: auto; bottom: 0; width: auto; }
 
   /* Reading measure: keep running text near 65-75 characters a line. */
   .process-note { max-width: var(--measure-1); }

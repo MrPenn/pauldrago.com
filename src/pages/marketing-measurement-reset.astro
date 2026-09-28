@@ -84,16 +84,16 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <Base {...meta} jsonld={jsonld}>
 <main id="main">
 <!-- 01 HERO -->
-<section class="hero-section">
+<section class="hero">
 <div class="container">
-<div class="eyebrow-secondary">
+<div class="eyebrow">
         For bank and credit union CMOs, CFOs, and the leaders who sign the marketing budget.
       </div>
-<div class="hero-grid">
+<div class="hero__grid">
 <div>
-<h1 class="display-title headline-96">Show the board what marketing produced in <span class="accent">funded balances</span>.</h1>
-<p class="hero-subhead">Connect spend to retained accounts and core balances using definitions finance and marketing agree to use.</p>
-<p class="hero-proof-line">Most marketing reports stop at account opening. The reset follows the account after opening day: what stayed open, what funded, what balance remained, and what acquisition spend is still attached.</p>
+<h1 class="display-title hero__title">Show the board what marketing produced in <span class="accent">funded balances</span>.</h1>
+<p class="subhead">Connect spend to retained accounts and core balances using definitions finance and marketing agree to use.</p>
+<p class="hero__proof">Most marketing reports stop at account opening. The reset follows the account after opening day: what stayed open, what funded, what balance remained, and what acquisition spend is still attached.</p>
 <div class="reporting-line" role="group" aria-label="Reporting line">
 <span>Spend</span>
 <span>Retained accounts</span>
@@ -102,69 +102,69 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 </div>
 </div>
 <!-- HERO RIGHT COLUMN: INTERACTIVE COHORT CALCULATOR -->
-<div class="calc-container">
-<div class="calc-eyebrow">Run the survival math on last year's online accounts</div>
-<div class="calc-inputs-grid">
-<div class="calc-field-group">
-<label class="calc-field-label" for="calc-input-accounts">Accounts opened last year</label>
-<div class="calc-input-wrapper">
-<input class="calc-input" id="calc-input-accounts" min="0" type="number" inputmode="numeric" value="1000" aria-describedby="calc-src-accounts"/>
+<div class="calc">
+<div class="calc__eyebrow">Run the survival math on last year's online accounts</div>
+<div class="calc__inputs">
+<div class="calc__field">
+<label class="calc__label" for="calc-input-accounts">Accounts opened last year</label>
+<div class="calc__box">
+<input class="calc__input" id="calc-input-accounts" min="0" type="number" inputmode="numeric" value="1000" aria-describedby="calc-src-accounts"/>
 </div>
-<div class="calc-field-source" id="calc-src-accounts">Your number</div>
+<div class="calc__source" id="calc-src-accounts">Your number</div>
 </div>
-<div class="calc-field-group">
-<label class="calc-field-label" for="calc-input-cost">Cost to acquire each</label>
-<div class="calc-input-wrapper">
-<span class="calc-field-affix leading">$</span>
-<input class="calc-input" id="calc-input-cost" min="0" type="number" inputmode="decimal" value="300" aria-describedby="calc-src-cost"/>
+<div class="calc__field">
+<label class="calc__label" for="calc-input-cost">Cost to acquire each</label>
+<div class="calc__box">
+<span class="calc__affix calc__affix--leading">$</span>
+<input class="calc__input" id="calc-input-cost" min="0" type="number" inputmode="decimal" value="300" aria-describedby="calc-src-cost"/>
 </div>
-<div class="calc-field-source" id="calc-src-cost">Assumed. Fintel Connect, September 2026: $75 to $400+</div>
+<div class="calc__source" id="calc-src-cost">Assumed. Fintel Connect, September 2026: $75 to $400+</div>
 </div>
-<div class="calc-field-group">
-<label class="calc-field-label" for="calc-input-closed">Closed within 90 days</label>
-<div class="calc-input-wrapper">
-<input class="calc-input" id="calc-input-closed" max="100" min="0" type="number" inputmode="decimal" value="45" aria-describedby="calc-src-closed"/>
-<span class="calc-field-affix trailing">%</span>
+<div class="calc__field">
+<label class="calc__label" for="calc-input-closed">Closed within 90 days</label>
+<div class="calc__box">
+<input class="calc__input" id="calc-input-closed" max="100" min="0" type="number" inputmode="decimal" value="45" aria-describedby="calc-src-closed"/>
+<span class="calc__affix calc__affix--trailing">%</span>
 </div>
-<div class="calc-field-source" id="calc-src-closed">Curinos SalesScape, 2022</div>
+<div class="calc__source" id="calc-src-closed">Curinos SalesScape, 2022</div>
 </div>
 </div>
 <div class="calc-ledger">
-<div class="calc-ledger-row">
-<div class="calc-ledger-label">Acquisition spend</div>
-<span class="calc-ledger-value" id="calc-spend">$300,000</span>
+<div class="calc-ledger__row">
+<div class="calc-ledger__label">Acquisition spend</div>
+<span class="calc-ledger__value" id="calc-spend">$300,000</span>
 </div>
-<div class="calc-ledger-row">
-<div class="calc-ledger-label">Spend attached to accounts closed by day 90</div>
-<span class="calc-ledger-value accent" id="calc-closed-spend">$135,000</span>
+<div class="calc-ledger__row">
+<div class="calc-ledger__label">Spend attached to accounts closed by day 90</div>
+<span class="calc-ledger__value accent" id="calc-closed-spend">$135,000</span>
 </div>
-<div class="calc-ledger-row">
-<div class="calc-ledger-label">
-<div class="calc-ledger-label-stack">
+<div class="calc-ledger__row">
+<div class="calc-ledger__label">
+<div class="calc-ledger__stack">
 <span>Still open at one year, estimated</span>
-<span class="calc-ledger-source">Curinos, July 2026; scaled to your 90-day rate</span>
+<span class="calc-ledger__source">Curinos, July 2026; scaled to your 90-day rate</span>
 </div>
 </div>
-<span class="calc-ledger-value" id="calc-survivors">410</span>
+<span class="calc-ledger__value" id="calc-survivors">410</span>
 </div>
-<div class="calc-ledger-row">
-<div class="calc-ledger-label">Acquisition spend per surviving account</div>
-<span class="calc-ledger-value accent" id="calc-per-survivor" aria-live="polite">$732</span>
+<div class="calc-ledger__row">
+<div class="calc-ledger__label">Acquisition spend per surviving account</div>
+<span class="calc-ledger__value accent" id="calc-per-survivor" aria-live="polite">$732</span>
 </div>
 </div>
 <div class="calc-compare">
-            <div class="calc-compare-item">
-              <div class="calc-compare-label">Reported cost per new account</div>
-              <div class="calc-compare-value" id="calc-reported">$300</div>
+            <div class="calc-compare__item">
+              <div class="calc-compare__label">Reported cost per new account</div>
+              <div class="calc-compare__value" id="calc-reported">$300</div>
             </div>
-            <div class="calc-compare-item">
-              <div class="calc-compare-label">What an account that lasted a year cost</div>
-              <div class="calc-compare-value accent" id="calc-hole">$732</div>
+            <div class="calc-compare__item">
+              <div class="calc-compare__label">What an account that lasted a year cost</div>
+              <div class="calc-compare__value accent" id="calc-hole">$732</div>
             </div>
           </div>
-<p class="calc-assumption">Illustration only. The one-year estimate preserves the relationship between Curinos' published 90-day and one-year retention benchmarks. Client reporting uses the institution's actual cohort data and agreed definitions.</p>
+<p class="calc__assumption">Illustration only. The one-year estimate preserves the relationship between Curinos' published 90-day and one-year retention benchmarks. Client reporting uses the institution's actual cohort data and agreed definitions.</p>
 <div>
-<a class="calc-cta-btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
+<a class="calc__cta" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
 </div>
 </div>
 </div>
@@ -172,52 +172,52 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 </section>
 <hr class="section-divider"/>
 <!-- SECTION A -->
-<section class="section-a">
+<section class="evidence">
 <div class="container">
 <h2 class="section-title-plain">The account-opening report stops too early.</h2>
-<p class="bridge-line">The opening report shows volume. It does not show which accounts stayed open, which ones funded, what balances remained, or what acquisition spend is still attached to them ninety days later.</p>
-<dl class="section-a-ledger">
-<div class="section-a-row">
-<dt class="section-a-figure">45% <span class="section-a-vs">vs 4%</span></dt>
-<dd class="section-a-text">of accounts opened online close within three months, against 4% of accounts opened in a branch. <span class="section-a-cite">Curinos SalesScape, 2022</span></dd>
+<p class="evidence__bridge">The opening report shows volume. It does not show which accounts stayed open, which ones funded, what balances remained, or what acquisition spend is still attached to them ninety days later.</p>
+<dl class="evidence__ledger">
+<div class="evidence__row">
+<dt class="evidence__figure">45% <span class="evidence__vs">vs 4%</span></dt>
+<dd class="evidence__text">of accounts opened online close within three months, against 4% of accounts opened in a branch. <span class="evidence__cite">Curinos SalesScape, 2022</span></dd>
 </div>
-<div class="section-a-row">
-<dt class="section-a-figure">6 in 10</dt>
-<dd class="section-a-text">marketing executives say their core or CRM system cannot measure return. <span class="section-a-cite">Cornerstone Advisors, April 2026, survey of 126 executives</span></dd>
+<div class="evidence__row">
+<dt class="evidence__figure">6 in 10</dt>
+<dd class="evidence__text">marketing executives say their core or CRM system cannot measure return. <span class="evidence__cite">Cornerstone Advisors, April 2026, survey of 126 executives</span></dd>
 </div>
 </dl>
 </div>
 </section>
 <!-- SECTION B -->
-<section class="section-b">
+<section class="budget">
 <div class="container">
 <h2 class="section-title-plain">The budget conversation needs a finance line.</h2>
-<p class="section-b-statement">More than half of banks and credit unions set next year's marketing budget by adjusting last year's number. When the third quarter comes in light, marketing is the first line reallocated to protect the year.</p>
-<p class="section-b-subline">The reset gives finance and marketing one line from acquisition spend to retained accounts and funded balances, with the assumptions visible enough to challenge.</p>
-<div class="section-b-source">Cornerstone Advisors, April 2026. American Bankers Association budget guidance.</div>
+<p class="budget__statement">More than half of banks and credit unions set next year's marketing budget by adjusting last year's number. When the third quarter comes in light, marketing is the first line reallocated to protect the year.</p>
+<p class="budget__subline">The reset gives finance and marketing one line from acquisition spend to retained accounts and funded balances, with the assumptions visible enough to challenge.</p>
+<div class="budget__source">Cornerstone Advisors, April 2026. American Bankers Association budget guidance.</div>
 </div>
 </section>
 <!-- SECTION C -->
-<section class="section-c">
+<section class="outputs">
 <div class="container">
 <h2 class="section-title-plain">One report from spend to funded balances.</h2>
-<div class="section-c-grid">
+<div class="outputs__grid">
 <div>
-<div class="section-c-pull">A working reporting line from marketing spend to retained accounts and funded balances, built with definitions finance and marketing agree to use.</div>
+<div class="outputs__pull">A working reporting line from marketing spend to retained accounts and funded balances, built with definitions finance and marketing agree to use.</div>
 <p class="body-copy">The reset does not start with a new dashboard. It starts with the definitions: what counts as opened, funded, retained, closed, dormant, profitable, and still worth paying to acquire.</p>
 </div>
 <div>
-<div class="section-c-lines">
-<div class="section-c-line-item">
+<div class="outputs__lines">
+<div class="outputs__line">
             A KPI tree from acquisition spend to retained accounts, funded balances, and the board report.
           </div>
-<div class="section-c-line-item">
+<div class="outputs__line">
             One attribution method, chosen with finance, documented, and used consistently.
           </div>
-<div class="section-c-line-item">
+<div class="outputs__line">
             A working dashboard on bank data, with sources and assumptions visible enough to challenge.
           </div>
-<div class="section-c-line-item">
+<div class="outputs__line">
             A monthly review that brings marketing and finance together before the next budget cycle.
           </div>
 </div>
@@ -226,69 +226,69 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 </div>
 </section>
 <!-- SECTION D -->
-<section class="section-d">
+<section class="offers">
 <div class="container">
-<h2 class="display-title headline-84">Four to six weeks, then optional monthly support.</h2>
-<div class="offers-grid">
+<h2 class="display-title section-title">Four to six weeks, then optional monthly support.</h2>
+<div class="offers__grid">
 <!-- Left Offer -->
-<div class="offer-col">
-<div class="offer-badge">Fixed fee, four to six weeks</div>
-<h3 class="offer-title">Marketing Measurement Reset</h3>
-<p class="offer-body">
+<div class="offer">
+<div class="offer__badge">Fixed fee, four to six weeks</div>
+<h3 class="offer__title">Marketing Measurement Reset</h3>
+<p class="offer__body">
             A focused build for banks that need the marketing number to stand up in a budget conversation. It connects spend, digital account opening, retained accounts, funded balances, and board reporting without asking the bank to replace its core, CRM, or reporting stack.
           </p>
-<div class="offer-produces-line">You receive a board report with the definitions and source logic attached.</div>
+<div class="offer__produces">You receive a board report with the definitions and source logic attached.</div>
 
 </div>
 <!-- Right Offer -->
-<div class="offer-col">
-<div class="offer-badge">Optional operating support</div>
-<h3 class="offer-title">Monthly Measurement Support</h3>
-<p class="offer-body">
+<div class="offer">
+<div class="offer__badge">Optional operating support</div>
+<h3 class="offer__title">Monthly Measurement Support</h3>
+<p class="offer__body">
             After the reset, the same reporting line can be run monthly: definitions maintained, exceptions explained, budget questions prepared, and the board deck kept aligned with the numbers finance is using.
           </p>
-<div class="offer-produces-line">Monthly support keeps the definitions, exceptions, and board report current.</div>
+<div class="offer__produces">Monthly support keeps the definitions, exceptions, and board report current.</div>
 </div>
 </div>
-<div class="artifact-preview" role="group" aria-label="Illustrative marketing measurement report">
-<div class="artifact-head">
+<div class="artifact" role="group" aria-label="Illustrative marketing measurement report">
+<div class="artifact__head">
 <div>
-<div class="artifact-kicker">Illustrative output</div>
-<div class="artifact-title">Acquisition cohort reporting line</div>
+<div class="artifact__kicker">Illustrative output</div>
+<div class="artifact__title">Acquisition cohort reporting line</div>
 </div>
-<div class="artifact-status">Definitions agreed</div>
+<div class="artifact__status">Definitions agreed</div>
 </div>
-<div class="artifact-row"><span class="artifact-label">Acquisition spend</span><span class="artifact-value" id="artifact-spend">$300,000</span></div>
-<div class="artifact-row"><span class="artifact-label">Accounts opened</span><span class="artifact-value" id="artifact-opened">1,000</span></div>
-<div class="artifact-row"><span class="artifact-label">Retained at 90 days</span><span class="artifact-value" id="artifact-day90">550</span></div>
-<div class="artifact-row"><span class="artifact-label">Estimated at one year</span><span class="artifact-value accent" id="artifact-year1">410</span></div>
-<div class="artifact-row"><span class="artifact-label">Funded balances</span><span class="artifact-value">Core data required</span></div>
-<div class="artifact-note">This is the reporting structure, not client data. The delivered model includes source fields, exclusions, attribution rules, and finance-approved definitions.</div>
+<div class="artifact__row"><span class="artifact__label">Acquisition spend</span><span class="artifact__value" id="artifact-spend">$300,000</span></div>
+<div class="artifact__row"><span class="artifact__label">Accounts opened</span><span class="artifact__value" id="artifact-opened">1,000</span></div>
+<div class="artifact__row"><span class="artifact__label">Retained at 90 days</span><span class="artifact__value" id="artifact-day90">550</span></div>
+<div class="artifact__row"><span class="artifact__label">Estimated at one year</span><span class="artifact__value accent" id="artifact-year1">410</span></div>
+<div class="artifact__row"><span class="artifact__label">Funded balances</span><span class="artifact__value">Core data required</span></div>
+<div class="artifact__note">This is the reporting structure, not client data. The delivered model includes source fields, exclusions, attribution rules, and finance-approved definitions.</div>
 </div>
-<div class="section-d-cta-row">
+<div class="offers__cta">
 <a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
 </div>
-<div class="section-d-not-sold">
+<div class="offers__not-sold">
         Outside this project: brand creative, campaign production, events, hands-on paid media, branch-site modeling, and acquisition analysis. Those services are listed on the <a href="/financial-services">services page</a>.
       </div>
 </div>
 </section>
 <!-- CLOSING BAND -->
   <OtherDecisions current="/marketing-measurement-reset" />
-<section class="closing-band-section" id="the-call">
+<section class="closing-band" id="the-call">
 <div class="container">
-<div class="closing-band-grid">
-<div class="closing-text-col">
-<h2 class="display-title headline-96 closing-heading">Twenty minutes. Bring the deck and the account-opening report.</h2>
-<p class="body-copy closing-copy-lead">
+<div class="closing-band__grid">
+<div class="closing-band__text">
+<h2 class="display-title closing-band__title">Twenty minutes. Bring the deck and the account-opening report.</h2>
+<p class="body-copy closing-band__copy">
           I will trace where the reporting line stops and what it would take to connect spend to retained, funded value. If the fix is small, I will say so.
         </p>
 <a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
 </div>
-<div class="closing-photo-col">
-<aside class="call-prep-panel" aria-label="What to bring to the call">
-<div class="call-prep-kicker">Bring one working question</div>
-<ul class="call-prep-list">
+<div class="closing-band__aside">
+<aside class="call-prep" aria-label="What to bring to the call">
+<div class="call-prep__title">Bring one working question</div>
+<ul class="call-prep__list">
 <li>The current marketing or board report</li>
 <li>An account-opening or campaign-spend export</li>
 <li>The finance question the report cannot answer</li>
@@ -299,27 +299,27 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 </div>
 </section>
 <!-- SOURCES -->
-<section class="sources-section">
+<section class="sources">
 <div class="container">
-<ol class="sources-list">
+<ol class="sources__list">
 <li>
-<span class="source-num">1</span>
+<span class="sources__num">1</span>
 <span><a href="https://www.curinos.com/insights/crq322-acquire-retain-retail-customers-digital-channels" target="_blank" rel="noopener noreferrer">Curinos, September 2022</a>. Accounts closed within three months of opening, digital versus branch.</span>
 </li>
 <li>
-<span class="source-num">2</span>
+<span class="sources__num">2</span>
 <span><a href="https://www.curinos.com/insights/curinos-perspective-meeting-growth-challenge-requires-precision-over-volume" target="_blank" rel="noopener noreferrer">Curinos, July 2026</a>. One-year retention for digitally acquired relationships.</span>
 </li>
 <li>
-<span class="source-num">3</span>
+<span class="sources__num">3</span>
 <span><a href="https://www.crnrstone.com/gritty-insights/research/the-marketing-roi-gap-in-banking" target="_blank" rel="noopener noreferrer">Cornerstone Advisors, April 2026</a>. Survey of 126 senior executives at U.S. banks and credit unions.</span>
 </li>
 <li>
-<span class="source-num">4</span>
+<span class="sources__num">4</span>
 <span><a href="https://www.fintelconnect.com/blog/customer-acquisition-in-banking/" target="_blank" rel="noopener noreferrer">Fintel Connect, September 2026</a>. Directional customer-acquisition-cost range for banks and credit unions.</span>
 </li>
 <li>
-<span class="source-num">5</span>
+<span class="sources__num">5</span>
 <span><a href="https://www.aba.com/news-research/analysis-guides/making-a-more-compelling-case-for-the-2025-marketing-budget" target="_blank" rel="noopener noreferrer">American Bankers Association</a>. Guidance for connecting marketing budgets to bank business objectives.</span>
 </li>
 </ol>

@@ -13,6 +13,13 @@ const LAYER_ROWS = [
   ['page', 'One page\'s own sheet: the home page, a service page, the front door, /ui.'],
   ['utilities', 'Single-purpose classes that always win: .accent and .sr-only.'],
 ];
+const NAMING = [
+  ['Block', 'block', 'booking-line, pd-calc, ui-story'],
+  ['Element', 'block__element', 'site-header__nav, pd-calc__title'],
+  ['Modifier', 'block block--modifier', 'btn btn--small, pd-bar pd-bar--live'],
+  ['State', 'is-state', 'is-open, is-shown, is-on: set by a script'],
+  ['Mix', 'atom block__element', 'label pd-mark__label: the atom, placed by its component'],
+];
 const base = typeTokens(process.cwd());
 const space = spaceTokens(process.cwd());
 const grid = gridTokens(process.cwd());
@@ -207,9 +214,9 @@ const ARTICLE = [
 @media (760px <= width < 1180px) { ... }
 
 /* The tablet band: a smaller step of the same scale */
-.closing-band-grid { gap: var(--space-16); }
+.closing-band__grid { gap: var(--space-16); }
 @media (760px <= width < 1040px) {
-  .closing-band-grid { gap: var(--space-12); }
+  .closing-band__grid { gap: var(--space-12); }
 }
 
 /* A component: the column it sits in */
@@ -225,6 +232,25 @@ tablet.addEventListener('change', update);`}</code></pre>
         <tbody>{ARTICLE.map(([w, t]) => <tr><td class="ui-num">{w}</td><td>{t}</td></tr>)}</tbody>
       </table>
     </div>
+  </section>
+
+  <section class="ui-section" id="naming">
+    <h2 class="ui-h2">Class names</h2>
+    <p class="ui-p">Every class says what it belongs to. A block stands on its own, a part of it adds <code>__part</code> to the block's name, and a variant adds <code>--variant</code>. The markup reads as the parts a page is made of, and a change to one block's rules stays inside that block. The linter checks every stylesheet (<code>css-bem</code>).</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Kind</th><th class="label">Written</th><th class="label">Examples</th></tr></thead>
+        <tbody>{NAMING.map(([kind, written, eg]) => <tr><td>{kind}</td><td><code>{written}</code></td><td>{eg}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <ul class="ui-list">
+      <li>An element sits inside its block. A wrapper outside the block is a block of its own, or the block moves up to the wrapper.</li>
+      <li>No element of an element: <code>pd-cols__callout-value</code>, not <code>pd-cols__callout__value</code>.</li>
+      <li>A modifier never stands alone in the markup: <code>class="btn btn--small"</code>.</li>
+      <li><code>is-</code> names are only for states a script turns on and off. A variant written into the markup is a modifier.</li>
+      <li>An atom keeps its own class, and the component adds its element class beside it for colour, margin and position. The atom's size and type stay the same everywhere.</li>
+      <li>Kit classes start <code>pd-</code> and the styleguide's own start <code>ui-</code>. The front door's <code>fd-</code> classes are the one sheet not renamed yet.</li>
+    </ul>
   </section>
 
   <section class="ui-section" id="accessibility">

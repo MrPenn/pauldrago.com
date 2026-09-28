@@ -336,7 +336,7 @@ export const LAYERS = ['base', 'site', 'kit', 'page', 'utilities'];
 // the states a script turns on and off. A sheet still on its old names stays pending until it moves.
 const BEM_NAME = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:__[a-z0-9]+(?:-[a-z0-9]+)*)?(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$/;
 export const STATES = ['is-active', 'is-alt', 'is-armed', 'is-current', 'is-embedded', 'is-hot', 'is-landing', 'is-live', 'is-narrow', 'is-on', 'is-open', 'is-scaled', 'is-shown', 'is-tight', 'is-wrong'];
-export const BEM_PENDING = ['front-door.css', 'financial-services.css', 'marketing-measurement-reset.css', 'service-detail.css', 'sample-plan.css'];
+export const BEM_PENDING = ['front-door.css'];
 
 function checkBem(report, rule) {
   const selector = rule.selector.replace(/\[[^\]]*\]/g, '');

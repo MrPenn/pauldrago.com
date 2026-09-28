@@ -20,7 +20,7 @@ const rows = [
 ];
 const best = (key) => Math.max(...markets.map((m) => m[key]));
 ---
-<div class="market-table-wrap">
+<div class="table-wrap">
   <table class="market-table">
     <caption class="sr-only">Three Dallas-area counties compared on public deposit, population, and income data</caption>
     <thead>
@@ -30,10 +30,10 @@ const best = (key) => Math.max(...markets.map((m) => m[key]));
       {rows.map((r) => (
         <tr>
           <th scope="row">{r.label}</th>
-          {markets.map((m) => <td class:list={[{ 'is-best': !r.noBest && m[r.key] === best(r.key) }]}>{r.show(m)}</td>)}
+          {markets.map((m) => <td class:list={[{ 'market-table__best': !r.noBest && m[r.key] === best(r.key) }]}>{r.show(m)}</td>)}
         </tr>
       ))}
     </tbody>
   </table>
-  <p class="market-table-note">Highlighted: the strongest of the three on each measure. {data.asOf.deposits}. {data.asOf.population}. {data.asOf.households}. {data.notes.join(' ')}</p>
+  <p class="table-note">Highlighted: the strongest of the three on each measure. {data.asOf.deposits}. {data.asOf.population}. {data.asOf.households}. {data.notes.join(' ')}</p>
 </div>
