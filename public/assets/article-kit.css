@@ -1,6 +1,6 @@
 /* Article kit: the reading styles and figures articles are built from.
-   Ported from "The Digital Front Door Nobody Walks Through" (front-door.css), the reference
-   article, and documented at /ui. An article opts in with
+   Taken from "The Digital Front Door Nobody Walks Through", the reference article, which now
+   runs on it, and documented at /ui. An article opts in with
      stylesheets: ["/assets/article-kit.css"]
      scripts: ["/assets/article-kit.js"]
    in its front matter. Tokens come from site-shell.css; every class here is pd-*. */
@@ -369,14 +369,14 @@
   .pd-stack__note strong { color: var(--brass); }
 
   /* ---------- Rising columns: one column per period, the event a beat later ---------- */
-  .pd-cols { --plot: 230px; }
   .pd-cols__callouts { display: flex; justify-content: space-between; gap: var(--space-4); min-height: 48px; margin: 0 0 var(--space-2) var(--space-12); }
   .pd-cols__callout { margin: 0; line-height: var(--leading-snug); transition: opacity var(--pd-base) var(--pd-ease); }
   .pd-cols__callout-value { display: block; font-size: var(--step--1); color: var(--paper); }
   .pd-cols__callout-note { display: block; margin-top: var(--space-1); font-size: var(--step--2); color: var(--secondary); }
   .pd-cols__callout--accent { text-align: right; }
   .pd-cols__callout--accent .pd-cols__callout-value, .pd-cols__callout--accent .pd-cols__callout-note { color: var(--brass); }
-  .pd-cols__plot { position: relative; height: var(--plot); margin-left: var(--space-12); border-bottom: 1px solid var(--secondary); }
+  /* The plot sets its own height, so the columns draw the same in a figure and pinned in a sequence. */
+  .pd-cols__plot { position: relative; height: 230px; margin-left: var(--space-12); border-bottom: 1px solid var(--secondary); }
   .pd-cols__gridlines { position: absolute; inset: 0; pointer-events: none; }
   .pd-cols__gridline { position: absolute; left: 0; right: 0; height: 0; border-top: 1px solid var(--hairline); }
   .pd-cols__gridline-value { position: absolute; right: calc(100% + 8px); top: -10px; font-size: var(--step--2); font-weight: var(--weight-regular); color: var(--secondary); white-space: nowrap; font-variant-numeric: tabular-nums; }
@@ -655,7 +655,7 @@
     .pd-seg__word { display: none; }
     .pd-stack__sub { margin-bottom: var(--space-3); }
     .pd-bar__track { height: 28px; }
-    .pd-cols { --plot: 180px; }
+    .pd-cols__plot { height: 180px; }
     .pd-calc { padding: var(--space-6) var(--space-5) var(--space-5); }
     .pd-calc__title { font-size: var(--step-0); }
     .pd-field__label, .pd-calc__label { min-height: 0; }

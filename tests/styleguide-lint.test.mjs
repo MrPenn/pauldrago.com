@@ -98,10 +98,10 @@ test('readNumber reads printed values', () => {
   assert.equal(readNumber('none'), null);
 });
 
-test('the reference article passes every chart check', () => {
+test('the reference article, on the kit, has no errors', () => {
   const path = join(root, 'src/content/articles/the-digital-front-door-nobody-walks-through.md');
-  const found = lintArticle(path, readFileSync(path, 'utf8'), { ...ctx, classesFor: (h) => classesFor(h.filter((x) => x !== '/assets/article-kit.css')) });
-  assert.deepEqual(errors(found).filter((f) => !['img-aspect', 'class-defined'].includes(f.rule)), []);
+  const found = lintArticle(path, readFileSync(path, 'utf8'), ctx);
+  assert.deepEqual(errors(found), []);
 });
 
 test('the content-is-data article, on the kit, has no errors', () => {
@@ -165,10 +165,9 @@ test('class names are block, element or modifier, and is- names are states', () 
   assert.match(rule('@layer page { .market-row.is-plan { margin: 0; } }')[0], /is-plan is not a state/);
   assert.match(rule('@layer page { .card__head__title { margin: 0; } }')[0], /not block, block__element/);
   assert.match(rule('@layer page { .label.accent { margin: 0; } }')[0], /chains \.label and \.accent/);
-  assert.deepEqual(rule('@layer page { .label.accent { margin: 0; } }', 'front-door.css'), []);
 });
 
-test('every stylesheet off the pending list follows the naming convention', () => {
+test('every stylesheet follows the naming convention', () => {
   for (const f of readdirSync(join(root, 'public/assets')).filter((x) => x.endsWith('.css'))) {
     assert.deepEqual(lintCss(f, css('/assets/' + f)).filter((x) => x.rule === 'css-bem').map((x) => `${x.line}: ${x.message}`), [], f);
   }

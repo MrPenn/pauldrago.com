@@ -75,11 +75,12 @@ test('the content-is-data article is on the kit, with nothing left to decide', (
   for (const id of ['stacked-bar', 'ledger', 'calculator', 'record', 'as-of', 'illustration']) assert.ok(a.figures.some((f) => f.component === id), id);
 });
 
-test('the reference article maps onto the kit, with nothing left to remove', () => {
-  const a = auditArticle(root, resolveArticle(root, 'the-digital-front-door-nobody-walks-through'));
-  assert.equal(a.reference, true);
+// The reference article as it stood before it moved onto the kit (2026-09-27), kept to test the fd- mapping.
+const FRONT_DOOR_BEFORE = join(root, 'tests/fixtures/front-door-before.md');
+
+test('the reference article before the move maps onto the kit, with nothing left to remove', () => {
+  const a = auditArticle(root, resolveArticle(root, FRONT_DOOR_BEFORE));
   assert.deepEqual(byStatus(a, 'remove'), []);
-  assert.equal(a.summary.errors, 0);
   assert.equal(a.decisions.length, 0);
   assert.equal(a.summary.rebuild, 0);
   for (const n of ['Unit stat', 'Pinned sequence', 'Stacked bar', 'Rising columns', 'Calculator', 'Org fold', 'Unit grid', 'Pull quote']) {
@@ -87,6 +88,16 @@ test('the reference article maps onto the kit, with nothing left to remove', () 
   }
   assert.equal(figure(a, 149).component, 'calculator');
   assert.ok(!a.findings.some((f) => /fd-wide/.test(f.message)));
+});
+
+test('the reference article is on the kit, with nothing left to decide', () => {
+  const a = auditArticle(root, resolveArticle(root, 'the-digital-front-door-nobody-walks-through'));
+  assert.equal(a.reference, true);
+  assert.equal(a.summary.onKit, true);
+  assert.equal(a.summary.errors, 0);
+  assert.deepEqual(a.decisions, []);
+  assert.deepEqual(a.figures.filter((f) => f.status !== 'kit'), []);
+  for (const id of ['unit-stat', 'pinned-sequence', 'calculator', 'dialogue', 'unit-grid', 'illustration']) assert.ok(a.figures.some((f) => f.component === id), id);
 });
 
 test('the example draft is on the kit', () => {

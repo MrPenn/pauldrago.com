@@ -102,7 +102,7 @@ const jsonld = {
   <main id="main">
     <article class="article">
       <div class="container">
-        {article.data.opener === 'fd-grid' ? <FrontDoorOpener /> : article.data.opener && <div class="article-opener" data-opener={article.data.opener} aria-hidden="true"></div>}
+        {article.data.opener === 'front-door' && <FrontDoorOpener />}
         <header class="article__header">
           <p class="label article__kicker"><a href="/articles">Articles</a>{article.data.kicker && <span class="article__sep" aria-hidden="true"> / </span>}{article.data.kicker && <span>{article.data.kicker}</span>}</p>
           <h1 class="display-title article__title">{article.data.title}</h1>

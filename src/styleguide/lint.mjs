@@ -333,10 +333,9 @@ function shorthandSize(v) {
 export const LAYERS = ['base', 'site', 'kit', 'page', 'utilities'];
 
 // Class names: block, block__element, block--modifier; hyphens inside a name are fine. is- names are
-// the states a script turns on and off. A sheet still on its old names stays pending until it moves.
+// the states a script turns on and off.
 const BEM_NAME = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:__[a-z0-9]+(?:-[a-z0-9]+)*)?(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$/;
 export const STATES = ['is-active', 'is-alt', 'is-armed', 'is-current', 'is-embedded', 'is-hot', 'is-landing', 'is-live', 'is-narrow', 'is-on', 'is-open', 'is-scaled', 'is-shown', 'is-tight', 'is-wrong'];
-export const BEM_PENDING = ['front-door.css'];
 
 function checkBem(report, rule) {
   const selector = rule.selector.replace(/\[[^\]]*\]/g, '');
@@ -369,7 +368,7 @@ export function lintCss(file, text) {
       if (!layers.length) report('css-layer', rule.index, `${rule.selector.slice(0, 60)} is outside the cascade layers`);
       for (const l of layers) if (!LAYERS.includes(l)) report('css-layer', rule.index, `layer "${l}" is not one of ${LAYERS.join(', ')}`);
     }
-    if (!rule.selector.startsWith('@') && !BEM_PENDING.includes(file.split('/').pop())) checkBem(report, rule);
+    if (!rule.selector.startsWith('@')) checkBem(report, rule);
     const parts = rule.selector.split(',').map((s) => s.trim()).filter((s) => {
       const subject = s.split(/\s*[>+~]\s*|\s+/).pop();
       return TABLE_PART.test(subject) && !/::?(?:before|after|marker)/i.test(subject);
