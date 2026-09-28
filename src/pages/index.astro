@@ -49,46 +49,46 @@ const jsonld = {
 ---
 <Base {...meta} jsonld={jsonld}>
 <main id="main">
-  <section class="home-hero">
+  <section class="home">
     <div class="container">
-      <h1 class="display-title home-title">I'm Paul Drago.</h1>
-      <p class="home-intro">I advise banks and credit unions on marketing measurement, marketing operations, and market decisions.</p>
-      {latest && <p class="home-latest">If you'd like to see how I think about financial services, read the most recent article I wrote: <a href={`/articles/${latest.id}`}>{latest.data.title}</a>.</p>}
+      <h1 class="display-title home__title">I'm Paul Drago.</h1>
+      <p class="home__intro">I advise banks and credit unions on marketing measurement, marketing operations, and market decisions.</p>
+      {latest && <p class="home__latest">If you'd like to see how I think about financial services, read the most recent article I wrote: <a href={`/articles/${latest.id}`}>{latest.data.title}</a>.</p>}
 
       <nav class="link-groups" aria-label="Selected links">
         <section class="link-group" aria-labelledby="work-links">
-          <h2 class="link-group-title" id="work-links">Work</h2>
+          <h2 class="link-group__title" id="work-links">Work</h2>
           <a class="plain-link" href="/financial-services">
-            <svg class="plain-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['landmark']} />
-            <span><span class="plain-link-title">Services</span><span class="plain-link-description">Marketing measurement and operations, market analysis, acquisition footprints, and fractional leadership.</span></span>
+            <svg class="plain-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['landmark']} />
+            <span><span class="plain-link__title">Services</span><span class="plain-link__description">Marketing measurement and operations, market analysis, acquisition footprints, and fractional leadership.</span></span>
           </a>
           <a class="plain-link" href="/marketing-measurement-reset">
-            <svg class="plain-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['chart-no-axes-combined']} />
-            <span><span class="plain-link-title">Measurement reset</span><span class="plain-link-description">Connect acquisition spend to retained accounts, funded balances, and board reporting.</span></span>
+            <svg class="plain-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['chart-no-axes-combined']} />
+            <span><span class="plain-link__title">Measurement reset</span><span class="plain-link__description">Connect acquisition spend to retained accounts, funded balances, and board reporting.</span></span>
           </a>
         </section>
 
         <section class="link-group" aria-labelledby="writing-links">
-          <h2 class="link-group-title" id="writing-links">Writing</h2>
+          <h2 class="link-group__title" id="writing-links">Writing</h2>
           <a class="plain-link" href="/articles">
-            <svg class="plain-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['notebook-pen']} />
-            <span><span class="plain-link-title">Articles</span><span class="plain-link-description">Essays and working notes.</span></span>
+            <svg class="plain-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['notebook-pen']} />
+            <span><span class="plain-link__title">Articles</span><span class="plain-link__description">Essays and working notes.</span></span>
           </a>
         </section>
 
         <section class="link-group" aria-labelledby="contact-links">
-          <h2 class="link-group-title" id="contact-links">Contact</h2>
+          <h2 class="link-group__title" id="contact-links">Contact</h2>
           <a class="plain-link" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>
-            <svg class="plain-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['calendar']} />
-            <span><span class="plain-link-title">Book a call</span></span>
+            <svg class="plain-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['calendar']} />
+            <span><span class="plain-link__title">Book a call</span></span>
           </a>
           <a class="plain-link" href="mailto:paul@pauldrago.com">
-            <svg class="plain-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['mail']} />
-            <span><span class="plain-link-title">Email</span></span>
+            <svg class="plain-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['mail']} />
+            <span><span class="plain-link__title">Email</span></span>
           </a>
           <a class="plain-link" href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">
-            <svg class="plain-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['linkedin']} />
-            <span><span class="plain-link-title">LinkedIn</span></span>
+            <svg class="plain-link__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" set:html={icons['linkedin']} />
+            <span><span class="plain-link__title">LinkedIn</span></span>
           </a>
         </section>
       </nav>

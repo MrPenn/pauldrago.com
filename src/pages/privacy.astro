@@ -63,22 +63,22 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
   stylesheets={['/assets/personal-site.css', '/assets/privacy.css']}
   lastUpdated="2026-09-23"
 >
-<main id="main" class="privacy-page">
+<main id="main" class="privacy">
   <div class="container">
-    <header class="privacy-header">
-      <h1 class="display-title privacy-title">Privacy notice.</h1>
-      <p class="privacy-intro">How this site handles your information, first at a glance and then in full.</p>
-      <p class="privacy-updated">Last updated <time datetime="2026-09-23">September 23, 2026</time></p>
+    <header class="privacy__header">
+      <h1 class="display-title privacy__title">Privacy notice.</h1>
+      <p class="privacy__intro">How this site handles your information, first at a glance and then in full.</p>
+      <p class="privacy__updated">Last updated <time datetime="2026-09-23">September 23, 2026</time></p>
     </header>
 
     <section class="glance" aria-labelledby="glance-heading">
-      <h2 class="glance-heading" id="glance-heading">Your privacy at a glance</h2>
-      <p class="glance-intro">Hello. I'm Paul Drago, and this site is run by Glass Vase, LLC, my advisory company. Here's a short summary of how I handle your information and respect your privacy.</p>
-      <div class="glance-columns">
-        <div class="glance-column">
-          <div class="glance-item glance-types">
-            <div class="glance-item-head">
-              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['database']} />What I collect</h3>
+      <h2 class="glance__heading" id="glance-heading">Your privacy at a glance</h2>
+      <p class="glance__intro">Hello. I'm Paul Drago, and this site is run by Glass Vase, LLC, my advisory company. Here's a short summary of how I handle your information and respect your privacy.</p>
+      <div class="glance__columns">
+        <div class="glance__column">
+          <div class="glance__item glance__item--types">
+            <div class="glance__item-head">
+              <h3><svg class="privacy__icon glance__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['database']} />What I collect</h3>
               <a href="#types">What exactly?</a>
             </div>
             <ul>
@@ -87,9 +87,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
               <li>Emails you send me</li>
             </ul>
           </div>
-          <div class="glance-item glance-why">
-            <div class="glance-item-head">
-              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['target']} />How I use it</h3>
+          <div class="glance__item glance__item--why">
+            <div class="glance__item-head">
+              <h3><svg class="privacy__icon glance__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['target']} />How I use it</h3>
               <a href="#why">How exactly?</a>
             </div>
             <ul>
@@ -98,9 +98,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
               <li>To reply to you</li>
             </ul>
           </div>
-          <div class="glance-item glance-processors">
-            <div class="glance-item-head">
-              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['users']} />Who processes it</h3>
+          <div class="glance__item glance__item--processors">
+            <div class="glance__item-head">
+              <h3><svg class="privacy__icon glance__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['users']} />Who processes it</h3>
               <a href="#processors">What do they do?</a>
             </div>
             <p>These services process information on my behalf:</p>
@@ -111,9 +111,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
               <li>Email: Apple iCloud Mail</li>
             </ul>
           </div>
-          <div class="glance-item glance-cookies">
-            <div class="glance-item-head">
-              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['cookie']} />Cookies</h3>
+          <div class="glance__item glance__item--cookies">
+            <div class="glance__item-head">
+              <h3><svg class="privacy__icon glance__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['cookie']} />Cookies</h3>
               <a href="#cookies">How can I choose?</a>
             </div>
             <ul>
@@ -122,36 +122,36 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
               <li>Your browser's Global Privacy Control signal is honored</li>
               <li>No advertising cookies, ever</li>
             </ul>
-            <button type="button" class="glance-settings" data-cc="show-preferencesModal">Change your cookie settings</button>
+            <button type="button" class="glance__settings" data-cc="show-preferencesModal">Change your cookie settings</button>
           </div>
         </div>
 
-        <div class="glance-column">
-          <div class="glance-item glance-when">
-            <div class="glance-item-head">
-              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['eye']} />When I collect it</h3>
+        <div class="glance__column">
+          <div class="glance__item glance__item--when">
+            <div class="glance__item-head">
+              <h3><svg class="privacy__icon glance__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['eye']} />When I collect it</h3>
               <a href="#when">Am I included?</a>
             </div>
             <p>There are only four moments when information reaches me:</p>
             <div class="timeline">
-              <div class="timeline-head" aria-hidden="true">
-                <span class="timeline-key timeline-key-give"><svg class="privacy-icon" viewBox="0 0 24 24" set:html={icons['user-round']} />Data you give</span>
-                <span class="timeline-key timeline-key-auto"><svg class="privacy-icon" viewBox="0 0 24 24" set:html={icons['monitor']} />Data collected</span>
+              <div class="timeline__head" aria-hidden="true">
+                <span class="timeline__key timeline__key--give"><svg class="privacy__icon timeline__icon" viewBox="0 0 24 24" set:html={icons['user-round']} />Data you give</span>
+                <span class="timeline__key timeline__key--auto"><svg class="privacy__icon timeline__icon" viewBox="0 0 24 24" set:html={icons['monitor']} />Data collected</span>
               </div>
-              <ul class="timeline-rows">
+              <ul class="timeline__rows">
                 {moments.map((m) => (
-                  <li class="timeline-row">
-                    <span class:list={['timeline-track', 'timeline-track-give', { 'is-on': m.give }]} aria-hidden="true"></span>
-                    <span class:list={['timeline-track', 'timeline-track-auto', { 'is-on': m.auto }]} aria-hidden="true"></span>
-                    <span class="timeline-label">{m.label}<span class="sr-only">: {how(m)}</span></span>
+                  <li class="timeline__row">
+                    <span class:list={['timeline__track', 'timeline__track--give', { 'timeline__track--on': m.give }]} aria-hidden="true"></span>
+                    <span class:list={['timeline__track', 'timeline__track--auto', { 'timeline__track--on': m.auto }]} aria-hidden="true"></span>
+                    <span class="timeline__label">{m.label}<span class="sr-only">: {how(m)}</span></span>
                   </li>
                 ))}
               </ul>
             </div>
           </div>
-          <div class="glance-item glance-rights">
-            <div class="glance-item-head">
-              <h3><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['hand']} />Know your rights</h3>
+          <div class="glance__item glance__item--rights">
+            <div class="glance__item-head">
+              <h3><svg class="privacy__icon glance__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons['hand']} />Know your rights</h3>
               <a href="#rights">What can I do?</a>
             </div>
             <ul>
@@ -162,35 +162,35 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
               <li>Complain about how I handle it</li>
             </ul>
           </div>
-          <p class="glance-contact">Any concerns about your privacy? Email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>.</p>
+          <p class="glance__contact">Any concerns about your privacy? Email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>.</p>
         </div>
       </div>
-      <a class="glance-cta" href="#role">Read the full notice <span>(no legalese, promise)</span></a>
+      <a class="glance__cta" href="#role">Read the full notice <span>(no legalese, promise)</span></a>
     </section>
 
-    <div class="privacy-columns">
-      <nav class="privacy-toc" aria-label="Privacy notice contents">
-        <p class="privacy-toc-label">In full</p>
+    <div class="privacy__columns">
+      <nav class="privacy__toc" aria-label="Privacy notice contents">
+        <p class="privacy__toc-label">In full</p>
         <ol>
           {sections.map((s) => <li><a href={`#${s.id}`}>{s.title}</a></li>)}
         </ol>
       </nav>
 
-      <div class="privacy-full">
-        <section class="privacy-section" id="role" aria-labelledby="role-heading">
-          <h2 id="role-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.role.icon]} />{section.role.title}</h2>
-          <p class="privacy-summary">Glass Vase, LLC, the company through which I provide advisory services, is responsible for the information this site collects and is the data controller for it (the party that decides how it is used) where data protection law applies. You can reach me at <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>.</p>
+      <div class="privacy__full">
+        <section class="privacy__section" id="role" aria-labelledby="role-heading">
+          <h2 id="role-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.role.icon]} />{section.role.title}</h2>
+          <p class="privacy__summary">Glass Vase, LLC, the company through which I provide advisory services, is responsible for the information this site collects and is the data controller for it (the party that decides how it is used) where data protection law applies. You can reach me at <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.role.title.toLowerCase()}</span></summary>
             <p>This notice covers pauldrago.com and the booking and email links on it. It applies to anyone who visits the site, books a call, or writes to me. If we go on to work together, our engagement terms may say more about how client information is handled.</p>
           </details>
         </section>
 
-        <section class="privacy-section" id="ledger" aria-labelledby="ledger-heading">
-          <h2 id="ledger-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.ledger.icon]} />{section.ledger.title}</h2>
-          <p class="privacy-summary">For anyone doing a vendor or compliance review: every kind of information, why I have it, the legal basis, how long I keep it, and who processes it.</p>
-          <div class="ledger-wrap">
-            <table class="ledger">
+        <section class="privacy__section" id="ledger" aria-labelledby="ledger-heading">
+          <h2 id="ledger-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.ledger.icon]} />{section.ledger.title}</h2>
+          <p class="privacy__summary">For anyone doing a vendor or compliance review: every kind of information, why I have it, the legal basis, how long I keep it, and who processes it.</p>
+          <div class="ledger">
+            <table class="ledger__table">
               <thead>
                 <tr><th scope="col">Information</th><th scope="col">Why</th><th scope="col">Legal basis</th><th scope="col">Kept for</th><th scope="col">Processed by</th></tr>
               </thead>
@@ -209,9 +209,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           </div>
         </section>
 
-        <section class="privacy-section" id="when" aria-labelledby="when-heading">
-          <h2 id="when-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.when.icon]} />{section.when.title}</h2>
-          <p class="privacy-summary">Some information you give me directly. The rest is collected automatically as you use the site.</p>
+        <section class="privacy__section" id="when" aria-labelledby="when-heading">
+          <h2 id="when-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.when.icon]} />{section.when.title}</h2>
+          <p class="privacy__summary">Some information you give me directly. The rest is collected automatically as you use the site.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.when.title.toLowerCase()}</span></summary>
             <ul>
@@ -221,9 +221,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           </details>
         </section>
 
-        <section class="privacy-section" id="types" aria-labelledby="types-heading">
-          <h2 id="types-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.types.icon]} />{section.types.title}</h2>
-          <p class="privacy-summary">How you use the site, plus whatever you choose to send me when you book a call or write.</p>
+        <section class="privacy__section" id="types" aria-labelledby="types-heading">
+          <h2 id="types-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.types.icon]} />{section.types.title}</h2>
+          <p class="privacy__summary">How you use the site, plus whatever you choose to send me when you book a call or write.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.types.title.toLowerCase()}</span></summary>
             <ul>
@@ -237,9 +237,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           </details>
         </section>
 
-        <section class="privacy-section" id="why" aria-labelledby="why-heading">
-          <h2 id="why-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.why.icon]} />{section.why.title}</h2>
-          <p class="privacy-summary">To improve the site, to hold the meetings you book, and to reply to you. Never for advertising, and never sold.</p>
+        <section class="privacy__section" id="why" aria-labelledby="why-heading">
+          <h2 id="why-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.why.icon]} />{section.why.title}</h2>
+          <p class="privacy__summary">To improve the site, to hold the meetings you book, and to reply to you. Never for advertising, and never sold.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.why.title.toLowerCase()}</span></summary>
             <ul>
@@ -251,9 +251,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           </details>
         </section>
 
-        <section class="privacy-section" id="rights" aria-labelledby="rights-heading">
-          <h2 id="rights-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.rights.icon]} />{section.rights.title}</h2>
-          <p class="privacy-summary">You can change your cookie choices at any time, and you can ask me what information I hold about you, correct it, or have it deleted.</p>
+        <section class="privacy__section" id="rights" aria-labelledby="rights-heading">
+          <h2 id="rights-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.rights.icon]} />{section.rights.title}</h2>
+          <p class="privacy__summary">You can change your cookie choices at any time, and you can ask me what information I hold about you, correct it, or have it deleted.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.rights.title.toLowerCase()}</span></summary>
             <ul>
@@ -265,27 +265,27 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           </details>
         </section>
 
-        <section class="privacy-section" id="security" aria-labelledby="security-heading">
-          <h2 id="security-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.security.icon]} />{section.security.title}</h2>
-          <p class="privacy-summary">Everything travels over encrypted connections, and the site collects as little as it can.</p>
+        <section class="privacy__section" id="security" aria-labelledby="security-heading">
+          <h2 id="security-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.security.icon]} />{section.security.title}</h2>
+          <p class="privacy__summary">Everything travels over encrypted connections, and the site collects as little as it can.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.security.title.toLowerCase()}</span></summary>
             <p>The site is served only over HTTPS. Analytics requests go through pauldrago.com rather than directly to a third party, IP addresses are discarded before analytics data is stored, and cookies are not set until you allow them. No system is perfectly secure. PostHog, Cal.com, Cloudflare, and Apple each run their own security programs.</p>
           </details>
         </section>
 
-        <section class="privacy-section" id="where" aria-labelledby="where-heading">
-          <h2 id="where-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.where.icon]} />{section.where.title}</h2>
-          <p class="privacy-summary">Mainly in the United States.</p>
+        <section class="privacy__section" id="where" aria-labelledby="where-heading">
+          <h2 id="where-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.where.icon]} />{section.where.title}</h2>
+          <p class="privacy__summary">Mainly in the United States.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.where.title.toLowerCase()}</span></summary>
             <p>PostHog stores analytics data in the United States and Cal.com processes booking data in the United States. Apple handles email. Cloudflare serves the site from data centers around the world. If you visit from the UK or EU, your information is transferred to the United States under the safeguards those providers offer, such as standard contractual clauses (EU-approved contract terms for protecting data abroad).</p>
           </details>
         </section>
 
-        <section class="privacy-section" id="retention" aria-labelledby="retention-heading">
-          <h2 id="retention-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.retention.icon]} />{section.retention.title}</h2>
-          <p class="privacy-summary">Session recordings for 30 days, analytics events for up to seven years, your cookie choice for six months, and bookings and emails for as long as we're in touch.</p>
+        <section class="privacy__section" id="retention" aria-labelledby="retention-heading">
+          <h2 id="retention-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.retention.icon]} />{section.retention.title}</h2>
+          <p class="privacy__summary">Session recordings for 30 days, analytics events for up to seven years, your cookie choice for six months, and bookings and emails for as long as we're in touch.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.retention.title.toLowerCase()}</span></summary>
             <ul>
@@ -296,9 +296,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           </details>
         </section>
 
-        <section class="privacy-section" id="processors" aria-labelledby="processors-heading">
-          <h2 id="processors-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.processors.icon]} />{section.processors.title}</h2>
-          <p class="privacy-summary">Three services help run the site, and Apple handles my email. None of them receives your information to sell it or advertise to you.</p>
+        <section class="privacy__section" id="processors" aria-labelledby="processors-heading">
+          <h2 id="processors-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.processors.icon]} />{section.processors.title}</h2>
+          <p class="privacy__summary">Three services help run the site, and Apple handles my email. None of them receives your information to sell it or advertise to you.</p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.processors.title.toLowerCase()}</span></summary>
             <ul>
@@ -310,9 +310,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           </details>
         </section>
 
-        <section class="privacy-section" id="cookies" aria-labelledby="cookies-heading">
-          <h2 id="cookies-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.cookies.icon]} />{section.cookies.title}</h2>
-          <p class="privacy-summary">By default, visits are counted without cookies. Analytics cookies are used only if you accept them. <button type="button" class="privacy__settings-button" data-cc="show-preferencesModal">Change your cookie settings</button></p>
+        <section class="privacy__section" id="cookies" aria-labelledby="cookies-heading">
+          <h2 id="cookies-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.cookies.icon]} />{section.cookies.title}</h2>
+          <p class="privacy__summary">By default, visits are counted without cookies. Analytics cookies are used only if you accept them. <button type="button" class="privacy__settings-button" data-cc="show-preferencesModal">Change your cookie settings</button></p>
           <details>
             <summary>More detail<span class="sr-only"> about {section.cookies.title.toLowerCase()}</span></summary>
             <p>Without your consent, PostHog sets no cookies and stores nothing in your browser beyond a record of your choice. Visits are counted with an anonymous identifier calculated on PostHog's servers that changes daily and cannot recognize you over time.</p>
@@ -324,12 +324,12 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
                       </details>
         </section>
 
-        <section class="privacy-section" id="changes" aria-labelledby="changes-heading">
-          <h2 id="changes-heading"><svg class="privacy-icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.changes.icon]} />{section.changes.title}</h2>
-          <p class="privacy-summary">Email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> with any question. If this notice changes, the date at the top will change with it.</p>
+        <section class="privacy__section" id="changes" aria-labelledby="changes-heading">
+          <h2 id="changes-heading"><svg class="privacy__icon" viewBox="0 0 24 24" aria-hidden="true" set:html={icons[section.changes.icon]} />{section.changes.title}</h2>
+          <p class="privacy__summary">Email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> with any question. If this notice changes, the date at the top will change with it.</p>
         </section>
 
-        <p class="privacy-credit">This privacy notice is based on an open-sourced design from <a href="https://juro.com" target="_blank" rel="noopener">Juro</a> and <a href="https://stefaniapassera.com" target="_blank" rel="noopener">Stefania Passera</a> - get your own <a href="https://info.juro.com/privacy-policy-template" target="_blank" rel="noopener">free privacy policy template</a>.</p>
+        <p class="privacy__credit">This privacy notice is based on an open-sourced design from <a href="https://juro.com" target="_blank" rel="noopener">Juro</a> and <a href="https://stefaniapassera.com" target="_blank" rel="noopener">Stefania Passera</a> - get your own <a href="https://info.juro.com/privacy-policy-template" target="_blank" rel="noopener">free privacy policy template</a>.</p>
       </div>
     </div>
   </div>

@@ -159,6 +159,21 @@ test('every rule sits in a named cascade layer, and the shell declares the order
   assert.match(css('/assets/site-shell.css'), /^@layer base, site, kit, page, utilities;$/m);
 });
 
+test('class names are block, element or modifier, and is- names are states', () => {
+  const rule = (css, file = 'x.css') => lintCss(file, css).filter((f) => f.rule === 'css-bem').map((f) => f.message);
+  assert.deepEqual(rule('@layer page {\n  .booking-line__button, .btn--small, .pd-bar:not(.pd-bar--live) + .pd-ledger, .pd-calc.is-open .label, html.is-embedded body.ui-frame--page, [data-x="a.b"] { margin: 0; }\n}'), []);
+  assert.match(rule('@layer page { .market-row.is-plan { margin: 0; } }')[0], /is-plan is not a state/);
+  assert.match(rule('@layer page { .card__head__title { margin: 0; } }')[0], /not block, block__element/);
+  assert.match(rule('@layer page { .label.accent { margin: 0; } }')[0], /chains \.label and \.accent/);
+  assert.deepEqual(rule('@layer page { .label.accent { margin: 0; } }', 'front-door.css'), []);
+});
+
+test('every stylesheet off the pending list follows the naming convention', () => {
+  for (const f of readdirSync(join(root, 'public/assets')).filter((x) => x.endsWith('.css'))) {
+    assert.deepEqual(lintCss(f, css('/assets/' + f)).filter((x) => x.rule === 'css-bem').map((x) => `${x.line}: ${x.message}`), [], f);
+  }
+});
+
 test('spacing and the grid come from the base tokens', () => {
   const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'space-tokens').map((f) => f.message);
   assert.deepEqual(rule(`.a { margin: 0 auto var(--space-6); padding: var(--space-half) var(--gutter); gap: var(--space-3) 0; }

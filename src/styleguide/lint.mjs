@@ -72,6 +72,7 @@ export const RULES = [
   { id: 'css-shadow', severity: 'warn', group: 'Stylesheets', title: 'No soft shadows', why: 'Depth comes from rules and panels. A zero-blur inset shadow drawing a hairline is allowed.' },
   { id: 'type-scale', severity: 'error', group: 'Stylesheets', title: 'Font sizes come from the type scale', why: 'Every size on the site is a step of one scale in site-shell.css: body text is step 0 at 20px, each step is 1.2 times the one below, and 14px is the smallest. A size between steps, a clamp() or anything under 14px breaks the hierarchy.', bad: 'font-size: 13px;', good: 'font-size: var(--step--2);' },
   { id: 'css-breakpoint', severity: 'error', group: 'Stylesheets', title: 'Media and container queries use their breakpoint scales', why: 'The page changes layout at four widths: 480, 760, 1040 and 1180, in stylesheets and in scripts that call matchMedia. Range syntax, (width < 760px), cannot leave a 759/760 gap. Components answer to their column with container queries at 560 and 900 instead. A table keeps its columns from 760 up, so its rows turn into cards only below 760 or in print.', fix: 'Write it as (width < 760px) or (width >= 1040px), with a width from the scale.' },
+  { id: 'css-bem', severity: 'error', group: 'Stylesheets', title: 'Class names say block, element or modifier', why: 'A class names a block (booking-line), a part of one (booking-line__button) or a variant of one (btn--small), so the name says where it belongs and what it changes. is- names are kept for states a script turns on and off, such as is-open. Two blocks chained in one selector hide a variant that should be a modifier.', bad: '.market-row.is-plan { }\n.plain-link .plain-link-title { }', good: '.market-row--plan { }\n.plain-link__title { }' },
 
   // Across articles
   { id: 'signature-spacing', severity: 'warn', group: 'Across articles', title: 'Signature devices are not reused back to back', why: 'A device that identifies one piece reads as repetition in the next one. Leave at least a month and at least one article between uses.', fix: 'Pick a shared component, or hold the device for a later piece.' },
@@ -331,6 +332,28 @@ function shorthandSize(v) {
 
 export const LAYERS = ['base', 'site', 'kit', 'page', 'utilities'];
 
+// Class names: block, block__element, block--modifier; hyphens inside a name are fine. is- names are
+// the states a script turns on and off. A sheet still on its old names stays pending until it moves.
+const BEM_NAME = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:__[a-z0-9]+(?:-[a-z0-9]+)*)?(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$/;
+export const STATES = ['is-active', 'is-alt', 'is-armed', 'is-current', 'is-embedded', 'is-hot', 'is-landing', 'is-live', 'is-narrow', 'is-on', 'is-open', 'is-scaled', 'is-shown', 'is-tight', 'is-wrong'];
+export const BEM_PENDING = ['front-door.css', 'financial-services.css', 'marketing-measurement-reset.css', 'service-detail.css', 'sample-plan.css'];
+
+function checkBem(report, rule) {
+  const selector = rule.selector.replace(/\[[^\]]*\]/g, '');
+  for (const [, n] of selector.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) {
+    if (n.startsWith('is-')) {
+      if (!STATES.includes(n)) report('css-bem', rule.index, `.${n} is not a state a script sets`, { fix: `Write it as a modifier of its block, block--${n.slice(3)}, or add it to STATES if a script toggles it.` });
+    } else if (!BEM_NAME.test(n)) report('css-bem', rule.index, `.${n} is not block, block__element or block--modifier`);
+  }
+  // Chaining: two blocks on one element. What :not(), :has(), :is() and :where() hold is another element or a test.
+  for (const sel of selector.replace(/:(?:not|has|is|where)\((?:[^()]|\([^()]*\))*\)/g, '').split(',')) {
+    for (const compound of sel.trim().split(/\s*[>+~]\s*|\s+/)) {
+      const blocks = [...compound.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)].map((m) => m[1]).filter((n) => !n.startsWith('is-') && !n.includes('--'));
+      if (blocks.length > 1) report('css-bem', rule.index, `${compound} chains ${blocks.map((n) => '.' + n).join(' and ')}`, { fix: 'Make the variant a modifier (block--variant), or give the part its own element class.' });
+    }
+  }
+}
+
 export function lintCss(file, text) {
   const { findings, report } = makeReporter(file, text);
   const src = text.replace(/\/\*[\s\S]*?\*\//g, blank);
@@ -346,6 +369,7 @@ export function lintCss(file, text) {
       if (!layers.length) report('css-layer', rule.index, `${rule.selector.slice(0, 60)} is outside the cascade layers`);
       for (const l of layers) if (!LAYERS.includes(l)) report('css-layer', rule.index, `layer "${l}" is not one of ${LAYERS.join(', ')}`);
     }
+    if (!rule.selector.startsWith('@') && !BEM_PENDING.includes(file.split('/').pop())) checkBem(report, rule);
     const parts = rule.selector.split(',').map((s) => s.trim()).filter((s) => {
       const subject = s.split(/\s*[>+~]\s*|\s+/).pop();
       return TABLE_PART.test(subject) && !/::?(?:before|after|marker)/i.test(subject);

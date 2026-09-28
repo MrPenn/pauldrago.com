@@ -42,29 +42,29 @@ const jsonld = {
   jsonld={jsonld}
 >
 <main id="main">
-  <section class="articles-hero">
+  <section class="articles">
     <div class="container">
-      <h1 class="display-title articles-title">Articles.</h1>
-      <p class="articles-intro">Essays on bank marketing measurement, market expansion, acquisitions, and marketing leadership.</p>
+      <h1 class="display-title articles__title">Articles.</h1>
+      <p class="articles__intro">Essays on bank marketing measurement, market expansion, acquisitions, and marketing leadership.</p>
     </div>
   </section>
 
   <hr class="section-divider">
   <section class="article-index" aria-labelledby="article-index-heading">
     <div class="container">
-      <h2 class="article-index-heading" id="article-index-heading">Article index</h2>
+      <h2 class="article-index__heading" id="article-index-heading">Article index</h2>
       {articles.length === 0 ? (
         <div class="article-empty">
-          <div class="article-empty-label">In progress</div>
-          <p class="article-empty-copy">The first articles are being written now.</p>
+          <div class="article-empty__label">In progress</div>
+          <p class="article-empty__copy">The first articles are being written now.</p>
         </div>
       ) : (
         <ul class="article-list">
           {articles.map((a) => (
-            <li class="article-list-item">
-              <time class="article-list-date" datetime={iso(a.data.date)}>{long(a.data.date)}</time>
-              <a class="article-list-title" href={`/articles/${a.id}`}>{a.data.title}</a>
-              <p class="article-list-description">{a.data.description}</p>
+            <li class="article-list__item">
+              <time class="article-list__date" datetime={iso(a.data.date)}>{long(a.data.date)}</time>
+              <a class="article-list__title" href={`/articles/${a.id}`}>{a.data.title}</a>
+              <p class="article-list__description">{a.data.description}</p>
             </li>
           ))}
         </ul>
