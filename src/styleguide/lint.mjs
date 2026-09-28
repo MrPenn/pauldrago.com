@@ -64,12 +64,15 @@ export const RULES = [
 
   // Stylesheets
   { id: 'css-color', severity: 'error', group: 'Stylesheets', title: 'Colours come from tokens', why: 'A literal colour does not switch with the theme. The print block and token definitions are exempt.', bad: 'color: #0A192F;', good: 'color: var(--paper);' },
-  { id: 'css-font', severity: 'error', group: 'Stylesheets', title: 'Three typefaces', why: 'Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for figures and controls. Each has a metric-matched fallback in the base layout.', fix: "font-family: 'IBM Plex Sans', 'IBM Plex Sans Fallback', sans-serif;" },
+  { id: 'type-tokens', severity: 'error', group: 'Stylesheets', title: 'Faces, weights, line spacing and tracking come from the base', why: 'site-shell.css is the root of the cascade: it names the three typefaces and their fallbacks, three weights, five kinds of line spacing and the tracking for small capitals. Every other sheet uses those tokens, so one change at the root moves the whole site, and nothing drifts a shade off.', bad: "font-family: 'IBM Plex Sans', sans-serif;\nline-height: 1.42;\nfont-weight: 500;", good: 'font-family: var(--font-sans);\nline-height: var(--leading-text);\nfont-weight: var(--weight-regular);' },
+  { id: 'space-tokens', severity: 'error', group: 'Stylesheets', title: 'Spacing and the grid come from the base', why: 'Every margin, padding and gap is a step of the 4px spacing scale in site-shell.css, and the containers, gutter, rail and text measures are grid tokens, so the rhythm holds from page to page and one change at the root moves it everywhere. 0, auto, percentages, viewport units and a 1px hairline pass.', bad: 'padding: 18px 22px;\nmax-width: 68ch;', good: 'padding: var(--space-5) var(--space-6);\nmax-width: var(--measure-1);' },
+  { id: 'css-layer', severity: 'error', group: 'Stylesheets', title: 'Every rule sits in a cascade layer', why: 'site-shell.css declares the order once: base, site, kit, page, utilities. A later layer wins over an earlier one whatever its selectors, so a page never needs !important to beat the base, and the order the sheets load in stops mattering. A rule outside the layers beats all of them, and a layer with another name has no place in the order.', fix: 'Wrap the sheet in @layer base, site, kit, page or utilities: the shell and article template are site, the kit is kit, one page\'s own sheet is page.', good: '@layer page {\n  .hero { margin: 0; }\n}' },
   { id: 'css-radius', severity: 'warn', group: 'Stylesheets', title: 'Corners stay square', why: 'Rounded cards read as a software template. Bar ends and inputs round by 4px at most; a 50% radius draws a dot and is allowed.' },
   { id: 'css-gradient', severity: 'warn', group: 'Stylesheets', title: 'No gradients', why: 'Flat fills and hard rules. Hatching with repeating-linear-gradient is allowed; it draws ranges.' },
   { id: 'css-shadow', severity: 'warn', group: 'Stylesheets', title: 'No soft shadows', why: 'Depth comes from rules and panels. A zero-blur inset shadow drawing a hairline is allowed.' },
-  { id: 'type-scale', severity: 'error', group: 'Stylesheets', title: 'Font sizes come from the type scale', why: 'Every size on the site is a step of one scale in site-shell.css: body text is step 0 at 20px, each step is 1.2 times the one below, and 14px is the smallest. A size between steps, a clamp() or anything under 14px breaks the hierarchy. A page that has not moved onto the scale yet gets one note with its count instead.', bad: 'font-size: 13px;', good: 'font-size: var(--step--2);' },
+  { id: 'type-scale', severity: 'error', group: 'Stylesheets', title: 'Font sizes come from the type scale', why: 'Every size on the site is a step of one scale in site-shell.css: body text is step 0 at 20px, each step is 1.2 times the one below, and 14px is the smallest. A size between steps, a clamp() or anything under 14px breaks the hierarchy.', bad: 'font-size: 13px;', good: 'font-size: var(--step--2);' },
   { id: 'css-breakpoint', severity: 'error', group: 'Stylesheets', title: 'Media and container queries use their breakpoint scales', why: 'The page changes layout at four widths: 480, 760, 1040 and 1180, in stylesheets and in scripts that call matchMedia. Range syntax, (width < 760px), cannot leave a 759/760 gap. Components answer to their column with container queries at 560 and 900 instead. A table keeps its columns from 760 up, so its rows turn into cards only below 760 or in print.', fix: 'Write it as (width < 760px) or (width >= 1040px), with a width from the scale.' },
+  { id: 'css-bem', severity: 'error', group: 'Stylesheets', title: 'Class names say block, element or modifier', why: 'A class names a block (booking-line), a part of one (booking-line__button) or a variant of one (btn--small), so the name says where it belongs and what it changes. is- names are kept for states a script turns on and off, such as is-open. Two blocks chained in one selector hide a variant that should be a modifier.', bad: '.market-row.is-plan { }\n.plain-link .plain-link-title { }', good: '.market-row--plan { }\n.plain-link__title { }' },
 
   // Across articles
   { id: 'signature-spacing', severity: 'warn', group: 'Across articles', title: 'Signature devices are not reused back to back', why: 'A device that identifies one piece reads as repetition in the next one. Leave at least a month and at least one article between uses.', fix: 'Pick a shared component, or hold the device for a later piece.' },
@@ -231,7 +234,32 @@ export const cssClasses = (text) => new Set(
   parseCss(text).flatMap((r) => [...r.selector.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)].map((m) => m[1])),
 );
 
-const FONTS = ['archivo black', 'archivo black fallback', 'source serif 4', 'source serif 4 fallback', 'ibm plex sans', 'ibm plex sans fallback', 'georgia', 'times new roman', '-apple-system', 'blinkmacsystemfont', 'segoe ui', 'sans-serif', 'serif', 'monospace', 'inherit', 'system-ui', 'ui-monospace', 'menlo', 'consolas'];
+// The base tokens site-shell.css defines for faces, weights, line spacing and tracking.
+const CSS_KEYWORD = /^(?:inherit|initial|unset|revert|revert-layer)$/i;
+const TYPE_TOKENS = {
+  'font-family': [/^var\(--font-(?:display|serif|sans|mono)\)$/, 'var(--font-display), var(--font-serif), var(--font-sans) or var(--font-mono)'],
+  'font-weight': [/^var\(--weight-(?:regular|semibold|bold)\)$/, 'var(--weight-regular), var(--weight-semibold) or var(--weight-bold)'],
+  'line-height': [/^(?:0|normal|var\(--leading-(?:display|heading|snug|text|body|cap)\))$/, 'a --leading token, or 0'],
+  'letter-spacing': [/^(?:0|normal|var\(--tracking-caps\))$/, '0 or var(--tracking-caps)'],
+};
+// A declaration's type values that are not base tokens, as [property, value] pairs. The font
+// shorthand is read as weight, size/line-height and family.
+function offTokens(prop, value) {
+  const v = value.replace(/\s*!important\s*$/i, '').trim();
+  if (CSS_KEYWORD.test(v)) return [];
+  if (TYPE_TOKENS[prop]) return TYPE_TOKENS[prop][0].test(v) ? [] : [[prop, v]];
+  if (prop !== 'font') return [];
+  const out = [];
+  const words = v.match(/(?:[^\s(,]+|\([^)]*\))+|,/g) ?? [];
+  const at = words.findIndex((w) => shorthandSize(w) !== null);
+  if (at < 0) return [];
+  for (const w of words.slice(0, at)) if (/^(?:\d+|bold|bolder|lighter|var\(--weight-[\w-]+\))$/.test(w) && !TYPE_TOKENS['font-weight'][0].test(w)) out.push(['font-weight', w]);
+  const lh = words[at].split('/')[1];
+  if (lh && !TYPE_TOKENS['line-height'][0].test(lh)) out.push(['line-height', lh]);
+  const family = words.slice(at + 1).join(' ').replace(/\s+,/g, ',');
+  if (family && !TYPE_TOKENS['font-family'][0].test(family)) out.push(['font-family', family]);
+  return out;
+}
 
 const SCALE = BREAKPOINTS.map((b) => b.px);
 const COLUMN_SCALE = COLUMN_BREAKPOINTS.map((b) => b.px);
@@ -260,10 +288,8 @@ const phoneOrPrint = (prelude) => /^@media\b/.test(prelude) && prelude.replace(/
   });
 });
 
-// The type scale's steps, --step--2 to --step-10, and the stylesheets not on it yet. Each pending
-// sheet gets one note with its count; once it moves onto the scale, take it off this list.
+// The type scale's steps, --step--2 to --step-10.
 const STEPS = new Set(Array.from({ length: 13 }, (_, i) => i - 2));
-export const TYPE_SCALE_PENDING = ['front-door.css', 'financial-services.css', 'marketing-measurement-reset.css', 'personal-site.css', 'privacy.css', 'sample-plan.css', 'service-detail.css'];
 // A size is a step (var(--step-1)), or it takes its parent's (inherit and its kin).
 function offScaleSize(v) {
   const size = v.replace(/\s*!important\s*$/i, '').trim();
@@ -272,17 +298,63 @@ function offScaleSize(v) {
   if (step && STEPS.has(Number(step[1]))) return null;
   return size;
 }
-// The size inside a font shorthand: the token before the family, or before its /line-height.
+// Spacing: every part of a margin, padding or gap is a --space step, the gutter, 0, auto, a percentage,
+// a viewport unit or a 1px hairline; a calc() may combine those. Text measures and containers are grid tokens.
+const SPACE_PROP = /^(?:margin|padding)(?:-(?:top|right|bottom|left|block|inline|block-start|block-end|inline-start|inline-end))?$|^(?:gap|row-gap|column-gap)$/;
+function offSpace(value) {
+  const v = value.replace(/\s*!important\s*$/i, '').trim();
+  if (CSS_KEYWORD.test(v)) return [];
+  const bad = [];
+  for (const w of v.match(/(?:[^\s(]+\([^()]*(?:\([^()]*\)[^()]*)*\)[^\s]*|[^\s]+)/g) ?? []) {
+    if (/^(?:0|auto|-?1px|-?[\d.]+(?:%|vh|vw|svh|dvh|lvh))$/.test(w)) continue;
+    if (/^var\(--(?:space-(?:half|\d+)|gutter|rail-gap)\)$/.test(w)) continue;
+    if (/^calc\(/.test(w) && !/\d(?:px|em|rem|ch)\b/.test(w.replace(/\b1px\b/g, ''))) continue;
+    bad.push(w);
+  }
+  return bad;
+}
+const offGrid = (prop, value) => {
+  const bad = [];
+  if (/^(?:max-width|width|min-width)$/.test(prop)) for (const m of value.matchAll(/(\d+(?:\.\d+)?)ch\b/g)) if (Number(m[1]) >= 26) bad.push(`${m[0]} (a text measure: use a --measure token)`);
+  for (const m of value.matchAll(/\b(1240|1060)px\b/g)) bad.push(`${m[0]} (a container: use var(--container-page) or var(--container-article))`);
+  return bad;
+};
+
+// The size inside a font shorthand: the first word that is a length or a step, before any /line-height.
 function shorthandSize(v) {
   if (/^\s*(?:inherit|initial|unset|revert|revert-layer)\s*$/i.test(v)) return null;
-  const m = v.match(/(var\(--[\w-]+\)|-?[\d.]+(?:px|rem|em|%|pt)|clamp\([^)]*\)|calc\([^)]*\))(?:\s*\/\s*[\w.%()-]+)?\s+['"\w]/);
-  return m ? m[1] : null;
+  for (const word of v.match(/(?:[^\s(]+|\([^)]*\))+/g) ?? []) {
+    const size = word.split('/')[0];
+    if (/^(?:var\(--(?!weight-|font-|leading-|tracking-)[\w-]+\)|-?[\d.]+(?:px|rem|em|%|pt)|clamp\(|calc\()/.test(size)) return size;
+  }
+  return null;
+}
+
+export const LAYERS = ['base', 'site', 'kit', 'page', 'utilities'];
+
+// Class names: block, block__element, block--modifier; hyphens inside a name are fine. is- names are
+// the states a script turns on and off.
+const BEM_NAME = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:__[a-z0-9]+(?:-[a-z0-9]+)*)?(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$/;
+export const STATES = ['is-active', 'is-alt', 'is-armed', 'is-current', 'is-embedded', 'is-hot', 'is-landing', 'is-live', 'is-narrow', 'is-on', 'is-open', 'is-scaled', 'is-shown', 'is-tight', 'is-wrong'];
+
+function checkBem(report, rule) {
+  const selector = rule.selector.replace(/\[[^\]]*\]/g, '');
+  for (const [, n] of selector.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) {
+    if (n.startsWith('is-')) {
+      if (!STATES.includes(n)) report('css-bem', rule.index, `.${n} is not a state a script sets`, { fix: `Write it as a modifier of its block, block--${n.slice(3)}, or add it to STATES if a script toggles it.` });
+    } else if (!BEM_NAME.test(n)) report('css-bem', rule.index, `.${n} is not block, block__element or block--modifier`);
+  }
+  // Chaining: two blocks on one element. What :not(), :has(), :is() and :where() hold is another element or a test.
+  for (const sel of selector.replace(/:(?:not|has|is|where)\((?:[^()]|\([^()]*\))*\)/g, '').split(',')) {
+    for (const compound of sel.trim().split(/\s*[>+~]\s*|\s+/)) {
+      const blocks = [...compound.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)].map((m) => m[1]).filter((n) => !n.startsWith('is-') && !n.includes('--'));
+      if (blocks.length > 1) report('css-bem', rule.index, `${compound} chains ${blocks.map((n) => '.' + n).join(' and ')}`, { fix: 'Make the variant a modifier (block--variant), or give the part its own element class.' });
+    }
+  }
 }
 
 export function lintCss(file, text) {
   const { findings, report } = makeReporter(file, text);
-  const pending = TYPE_SCALE_PENDING.includes(basename(file));
-  let offScale = 0;
   const src = text.replace(/\/\*[\s\S]*?\*\//g, blank);
   // Media queries: widths from the scale only, written in range syntax.
   for (const m of src.matchAll(/@media\s+([^{]+)\{/g)) checkQuery(report, m.index, '@media', `@media ${m[1].trim()}`, m[1], SCALE, 'scale');
@@ -290,6 +362,13 @@ export function lintCss(file, text) {
   const columnFix = { fix: `Use a width from the column scale (${COLUMN_SCALE.join(', ')}), in range syntax: @container column (width < 560px).` };
   for (const m of src.matchAll(/@container\s+([^{]+)\{/g)) checkQuery(report, m.index, '@container', `@container ${m[1].trim()}`, m[1], COLUMN_SCALE, 'column scale', columnFix);
   for (const rule of parseCss(text)) {
+    // A style rule sits in a layer; @page and @font-face describe the paper and the fonts, not the document.
+    if (!/^@(?:page|font-face)\b/.test(rule.selector) && !rule.context.some((c) => /^@page\b/.test(c))) {
+      const layers = rule.context.filter((c) => /^@layer\b/.test(c)).map((c) => c.replace(/^@layer\s+/, '').trim());
+      if (!layers.length) report('css-layer', rule.index, `${rule.selector.slice(0, 60)} is outside the cascade layers`);
+      for (const l of layers) if (!LAYERS.includes(l)) report('css-layer', rule.index, `layer "${l}" is not one of ${LAYERS.join(', ')}`);
+    }
+    if (!rule.selector.startsWith('@')) checkBem(report, rule);
     const parts = rule.selector.split(',').map((s) => s.trim()).filter((s) => {
       const subject = s.split(/\s*[>+~]\s*|\s+/).pop();
       return TABLE_PART.test(subject) && !/::?(?:before|after|marker)/i.test(subject);
@@ -309,16 +388,12 @@ export function lintCss(file, text) {
       if ((d.prop === 'font-size' || d.prop === 'font') && !rule.print) {
         const size = d.prop === 'font-size' ? v : shorthandSize(v);
         const off = size === null ? null : offScaleSize(size);
-        if (off) {
-          offScale += 1;
-          if (!pending) report('type-scale', d.index, `${d.prop}: ${off} is not a step of the type scale`, { fix: 'Use var(--step--2) to var(--step-10); /ui/components/type-scale lists what each step is for.' });
-        }
+        if (off) report('type-scale', d.index, `${d.prop}: ${off} is not a step of the type scale`, { fix: 'Use var(--step--2) to var(--step-10); /ui/components/type-scale lists what each step is for.' });
       }
-      if (d.prop === 'font-family' || d.prop === 'font') {
-        const list = d.prop === 'font' ? (v.match(/(?:\d[\w.%/]*\s+)+(.*)$/)?.[1] ?? '') : v;
-        for (const f of list.split(',').map((s) => s.trim().replace(/^['"]|['"]$/g, '').toLowerCase()).filter(Boolean)) {
-          if (!FONTS.includes(f) && !/^var\(/.test(f)) report('css-font', d.index, `"${f}" is not one of the three typefaces or their fallbacks`);
-        }
+      if (!rule.print && SPACE_PROP.test(d.prop)) for (const off of offSpace(v)) report('space-tokens', d.index, `${d.prop}: ${off} is not a step of the spacing scale`, { fix: 'Use var(--space-half) to var(--space-32), or var(--gutter); /ui/foundations lists the scale.' });
+      if (!rule.print) for (const off of offGrid(d.prop, v)) report('space-tokens', d.index, `${d.prop}: ${off}`);
+      for (const [prop, off] of offTokens(d.prop, v)) {
+        report('type-tokens', d.index, `${prop}: ${off} is not a base token`, { fix: `Use ${TYPE_TOKENS[prop][1]}, from site-shell.css.` });
       }
       if (d.prop.includes('radius')) {
         // 50% draws a circle (a dot or a marker), which is a shape rather than a rounded card.
@@ -334,7 +409,6 @@ export function lintCss(file, text) {
       }
     }
   }
-  if (pending && offScale) report('type-scale', 0, `${offScale} font size${offScale === 1 ? ' is' : 's are'} not on the type scale yet; this page moves onto it in its own pass`, { severity: 'info', fix: '' });
   return findings;
 }
 
@@ -430,7 +504,7 @@ function checkUnits(html, where, report) {
   const value = Number(html.match(/data-value="(\d+)"/)?.[1]);
   const of = Number(html.match(/data-of="(\d+)"/)?.[1]);
   if (!Number.isFinite(value) || !Number.isFinite(of) || !of) { report('units-count', where, 'the unit stat has no data-value and data-of'); return; }
-  const printed = Number(html.match(/class="(?:pd-num is-xl|fd-stat-num)"[^>]*>\s*([\d.]+)\s*%/)?.[1]);
+  const printed = Number(html.match(/class="(?:pd-num pd-num--xl|fd-stat-num)"[^>]*>\s*([\d.]+)\s*%/)?.[1]);
   if (Number.isFinite(printed) && Math.abs((value / of) * 100 - printed) > 1) report('units-count', where, `${value} of ${of} is ${Math.round((value / of) * 1000) / 10}%, but the stat prints ${printed}%`);
   const cells = (html.match(/class="pd-cell\b/g) ?? []).length;
   if (cells) {
@@ -443,10 +517,10 @@ function checkUnits(html, where, report) {
 // Stacked bars: one scale for every segment and line, segments end to end, totals that add up.
 function checkStack(html, where, report) {
   const scale = [];
-  for (const bar of html.split(/<div class="pd-stack-bar\b/).slice(1)) {
+  for (const bar of html.split(/<div class="pd-bar"/).slice(1)) {
     // A lone segment has no label; its number is in data-value.
-    const segs = [...bar.matchAll(/<div class="pd-seg(?=[\s"])[^"]*"[^>]*style="([^"]*)"[^>]*>(?:<span class="pd-seg-label">([\s\S]*?)<\/span>)?<\/div>/g)].map((m) => {
-      const shown = (m[2] ?? '').replace(/<span class="pd-seg-word">[^<]*<\/span>/, '').replace(/<[^>]+>/g, '').trim();
+    const segs = [...bar.matchAll(/<div class="pd-seg(?=[\s"])[^"]*"[^>]*style="([^"]*)"[^>]*>(?:<span class="pd-seg__label">([\s\S]*?)<\/span>)?<\/div>/g)].map((m) => {
+      const shown = (m[2] ?? '').replace(/<span class="pd-seg__word">[^<]*<\/span>/, '').replace(/<[^>]+>/g, '').trim();
       const given = m[0].match(/data-value="([\d.]+)"/);
       return { left: geom(m[1], 'left'), width: geom(m[1], 'width'), value: given ? Number(given[1]) : money(shown), shown, places: (shown.match(/\.(\d+)/)?.[1] ?? '').length };
     });
@@ -457,7 +531,7 @@ function checkStack(html, where, report) {
       if (sg.value && sg.width) scale.push({ value: sg.value, width: sg.width, text: sg.shown || `the segment at ${sg.value}` });
     }
     // A range runs on from the end of the last segment to its data-to value, on the same scale.
-    const range = bar.match(/<div class="pd-seg-range\b[^"]*"[^>]*data-to="([\d.]+)"[^>]*style="([^"]*)"/);
+    const range = bar.match(/<div class="pd-range\b[^"]*"[^>]*data-to="([\d.]+)"[^>]*style="([^"]*)"/);
     if (range && segs.length) {
       const last = segs[segs.length - 1];
       const left = geom(range[2], 'left');
@@ -469,7 +543,7 @@ function checkStack(html, where, report) {
     }
     const mark = bar.match(/<div class="pd-mark\b[^"]*"[^>]*style="([^"]*)"[^>]*><span[^>]*>([^<]*)<\/span>/);
     if (mark && money(mark[2])) scale.push({ value: money(mark[2]), width: geom(mark[1], 'left'), text: mark[2] });
-    const shownTotal = (bar.match(/class="pd-num is-s"[^>]*>([\s\S]*?)<\/span><\/div>/)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
+    const shownTotal = (bar.match(/class="pd-num pd-num--s"[^>]*>([\s\S]*?)<\/span><\/div>/)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
     const total = money(shownTotal);
     const sum = segs.reduce((t, sg) => t + (sg.value ?? 0), 0);
     // Each printed part can be off by half its last digit, so the parts may drift that far from the total.
@@ -481,9 +555,9 @@ function checkStack(html, where, report) {
 
 // Pinned sequences: steps 1..n in order, and no part waiting for a step past n.
 function checkScrolly(html, where, report) {
-  const steps = [...html.matchAll(/class="(?:pd|fd)-step"[^>]*data-step="(\d+)"/g)].map((m) => Number(m[1]));
+  const steps = [...html.matchAll(/class="(?:pd-scrolly__step|fd-step)"[^>]*data-step="(\d+)"/g)].map((m) => Number(m[1]));
   steps.forEach((n, i) => { if (n !== i + 1) report('scrolly-steps', where, `step ${i + 1} is numbered ${n}`); });
-  const graphic = html.slice(html.search(/class="(?:pd|fd)-sticky"/));
+  const graphic = html.slice(html.search(/class="(?:pd-scrolly__sticky|fd-sticky)"/));
   const ats = [...graphic.matchAll(/data-at="(\d+)"/g)].map((m) => Number(m[1]));
   const late = ats.filter((a) => a > steps.length);
   if (late.length) report('scrolly-steps', where, `the graphic waits for step ${Math.max(...late)}, but there are ${steps.length} steps`);
@@ -607,7 +681,7 @@ export function lintArticle(file, source, ctx) {
   // Figures
   for (const f of figures(body)) {
     const where = off(f.start);
-    const named = f.type === 'calc' ? /class="[^"]*\bpd-calc-title\b/ : /class="[^"]*\b(?:pd-eyebrow|cd-widget-title)\b/;
+    const named = f.type === 'calc' ? /class="[^"]*\bpd-calc__title\b/ : /class="[^"]*\b(?:pd-eyebrow|cd-widget-title)\b/;
     if (['bars', 'tl', 'markets', 'widget', 'stack', 'cols', 'calc', 'asof'].includes(f.type) && !named.test(f.html)) report('figure-title', where, f.type === 'calc' ? 'the calculator has no pd-calc-title' : `the ${f.type} figure has no eyebrow`);
     const italicNext = /^\s*(\*[^*]|_[^_]|<p[^>]*>\s*<em>|<p class="[^"]*pd-source)/.test(f.after);
     if (['bars', 'tl', 'stat', 'record', 'units', 'stack', 'cols', 'asof'].includes(f.type) && !/<figcaption/.test(f.html) && !italicNext) report('chart-source', where, `the ${FIGURE_NAMES[f.type] ?? f.type} has no caption`);

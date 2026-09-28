@@ -1,11 +1,58 @@
 ---
 import Styleguide from '../../layouts/Styleguide.astro';
-import { colorTokens, typeSteps } from '../../styleguide/tokens.mjs';
+import { colorTokens, typeSteps, typeTokens, spaceTokens, gridTokens } from '../../styleguide/tokens.mjs';
 import { BREAKPOINTS, COLUMN_BREAKPOINTS, TYPE_SCALE } from '../../styleguide/components.mjs';
 
 const tokens = colorTokens(process.cwd());
 // The scale's sizes come from site-shell.css; what each step is for comes from the registry.
 const steps = typeSteps(process.cwd()).map((t) => ({ ...t, ...TYPE_SCALE.find((x) => x.step === t.step) }));
+const LAYER_ROWS = [
+  ['base', 'The reset, every token and the element defaults, all in site-shell.css.'],
+  ['site', 'The shell every page shares (header, footer, button, label) and the article template, article.css.'],
+  ['kit', 'The article kit, article-kit.css.'],
+  ['page', 'One page\'s own sheet: the home page, a service page, the front door, /ui.'],
+  ['utilities', 'Single-purpose classes that always win: .accent and .sr-only.'],
+];
+const NAMING = [
+  ['Block', 'block', 'booking-line, pd-calc, ui-story'],
+  ['Element', 'block__element', 'site-header__nav, pd-calc__title'],
+  ['Modifier', 'block block--modifier', 'btn btn--small, pd-bar pd-bar--live'],
+  ['State', 'is-state', 'is-open, is-shown, is-on: set by a script'],
+  ['Mix', 'atom block__element', 'label pd-mark__label: the atom, placed by its component'],
+];
+const base = typeTokens(process.cwd());
+const space = spaceTokens(process.cwd());
+const grid = gridTokens(process.cwd());
+const GRID_USE = {
+  '--container-page': 'The page: header, footer, service pages',
+  '--container-article': 'An article, and the width a calculator or pinned sequence widens to',
+  '--gutter': 'Inside each container; 20px below 760',
+  '--rail': 'The source-notes rail, 1180 and up',
+  '--rail-gap': 'Between the reading column and the rail',
+  '--measure--4': 'Pull quotes, short headings',
+  '--measure--3': 'Section headings, legends, captions beside a number',
+  '--measure--2': 'Short notes',
+  '--measure--1': 'Decks, pinned steps, record text',
+  '--measure-0': 'The reading column',
+  '--measure-1': 'Wide text: tables of notes, the styleguide',
+};
+// What each base token is for; the values come from site-shell.css.
+const USE = {
+  '--font-display': 'Archivo Black: titles, section headings, big numbers',
+  '--font-serif': 'Source Serif 4: reading text, decks, pull quotes',
+  '--font-sans': 'IBM Plex Sans: everything else, and the body default',
+  '--font-mono': 'Code in the styleguide',
+  '--weight-regular': 'Text',
+  '--weight-semibold': 'Labels, notes that need weight',
+  '--weight-bold': 'Headings, names, emphasis; the default for strong and headings',
+  '--leading-display': 'Capitals in the display face, big numbers',
+  '--leading-heading': 'Headings and titles in mixed case',
+  '--leading-snug': 'Labels, controls, subheads, short lines',
+  '--leading-text': 'Small text: captions, notes, sources',
+  '--leading-body': 'Reading text; the body default',
+  '--leading-cap': 'The drop cap\'s box, so it sits on the lines beside it',
+  '--tracking-caps': 'Small capitals; everything else is 0',
+};
 const minus = (n) => (n < 0 ? `\u2212${Math.abs(n)}` : String(n));
 // Where the reading sizes sit at each width.
 const ROLES = [
@@ -33,17 +80,17 @@ const ARTICLE = [
 
   <section class="ui-section" id="colour">
     <h2 class="ui-h2">Colour</h2>
-    <p class="ui-p">Read from <code>public/assets/site-shell.css</code> when the site builds. Each chip shows the light value over the dark one. Contrast is measured against the page ground; body text needs 4.5 to 1.</p>
+    <p class="ui-p">Read from <code>public/assets/site-shell.css</code> when the site builds, where each colour is written once as <code>light-dark(light, dark)</code>. Each chip shows the light value over the dark one. Contrast is measured against the page ground; body text needs 4.5 to 1.</p>
     <div class="ui-swatches">
       {tokens.map((t) => (
         <div class="ui-swatch">
-          <div class="ui-swatch-chips" aria-hidden="true"><span style={`background:${t.light}`}></span><span style={`background:${t.dark}`}></span></div>
+          <div class="ui-swatch__chips" aria-hidden="true"><span style={`background:${t.light}`}></span><span style={`background:${t.dark}`}></span></div>
           <div>
             <b>{t.name}</b>
             <p>{t.role}</p>
-            <p><span class="ui-num">{t.light}</span> light, <span class="ui-num">{t.dark}</span> dark</p>
-            {t.text && <p>Contrast <span class="ui-num">{t.lightContrast}:1</span> light, <span class="ui-num">{t.darkContrast}:1</span> dark</p>}
-            {t.onBrass && <p>On the accent <span class="ui-num">{t.onBrass[0]}:1</span> light, <span class="ui-num">{t.onBrass[1]}:1</span> dark</p>}
+            <p><span class="ui-num ui-swatch__value">{t.light}</span> light, <span class="ui-num ui-swatch__value">{t.dark}</span> dark</p>
+            {t.text && <p>Contrast <span class="ui-num ui-swatch__value">{t.lightContrast}:1</span> light, <span class="ui-num ui-swatch__value">{t.darkContrast}:1</span> dark</p>}
+            {t.onBrass && <p>On the accent <span class="ui-num ui-swatch__value">{t.onBrass[0]}:1</span> light, <span class="ui-num ui-swatch__value">{t.onBrass[1]}:1</span> dark</p>}
           </div>
         </div>
       ))}
@@ -59,6 +106,21 @@ const ARTICLE = [
   <section class="ui-section" id="type">
     <h2 class="ui-h2">Type</h2>
     <p class="ui-p">Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for figures, labels and controls. All three are self-hosted, and each has a fallback sized to its metrics so nothing shifts when the font arrives.</p>
+    <h3 class="ui-h3">One root</h3>
+    <p class="ui-p">The stylesheets sit in five cascade layers, declared once at the top of <code>site-shell.css</code>. A later layer wins over an earlier one whatever its selectors, so a component never needs <code>!important</code> to beat the base, and the order the sheets load in stops mattering. The linter keeps every rule in one of them (<code>css-layer</code>).</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Layer</th><th class="label">What sits in it</th></tr></thead>
+        <tbody>{LAYER_ROWS.map(([l, what]) => <tr><td><code>{l}</code></td><td>{what}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <p class="ui-p"><code>site-shell.css</code> loads first on every page and holds the basics: the colours, the three typefaces, the type scale, three weights, five kinds of line spacing and the tracking for small capitals. It also sets the defaults every element inherits, so an element nobody styled still lands on the scale. Every other sheet uses these tokens and sets only what differs from what it inherits. The linter rejects a size, face, weight, line spacing or tracking that is not a token (<code>type-scale</code>, <code>type-tokens</code>).</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
+        <tbody>{[...base.fonts, ...base.weights, ...base.leading, ...base.tracking].map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.name.startsWith('--font-') ? t.value.split(',')[0].replace(/'/g, '') : t.value}</td><td>{USE[t.name] ?? ''}</td></tr>)}</tbody>
+      </table>
+    </div>
     <h3 class="ui-h3">The scale</h3>
     <p class="ui-p">Every font size on the site is one of these thirteen steps, read here from <code>site-shell.css</code>. Body text is step 0, each step is 1.2 times the one below it, and 14px is the smallest text anywhere. The linter rejects any other size (<code>type-scale</code>). See it set on the <a href="/ui/components/type-scale">type scale</a> page.</p>
     <div class="ui-table-wrap">
@@ -81,8 +143,21 @@ const ARTICLE = [
     </ul>
   </section>
 
+  <section class="ui-section" id="spacing">
+    <h2 class="ui-h2">Spacing</h2>
+    <p class="ui-p">Every margin, padding and gap on the site is a step of one scale, read here from <code>site-shell.css</code>. It sits on a 4px grid, each token is named for how many 4px units it holds, and the steps widen as they grow. The linter rejects any other value (<code>space-tokens</code>).</p>
+    <div class="ui-space">
+      {space.map((t) => <div class="ui-space__row"><code>var({t.name})</code><span class="ui-num">{t.value}</span><i class="ui-space__bar" style={`width:${t.value}`}></i></div>)}
+    </div>
+    <ul class="ui-list">
+      <li>Sections open var(--space-20) below the last paragraph, var(--space-12) on phones, with a hairline and the section's numeral.</li>
+      <li>Figures sit var(--space-12) from the text around them.</li>
+      <li>Two things that belong together sit a small step apart; two groups sit at least two steps apart.</li>
+    </ul>
+  </section>
+
   <section class="ui-section" id="rules">
-    <h2 class="ui-h2">Rules and spacing</h2>
+    <h2 class="ui-h2">Rules</h2>
     <p class="ui-p">A few weights of rule carry the structure of every page.</p>
     <div class="ui-rules-demo">
       <div><i style="border-top:1px solid var(--hairline)"></i><span>1px hairline: over every section, above and below figures, between ledger rows.</span></div>
@@ -91,8 +166,6 @@ const ARTICLE = [
       <div><i style="border-top:4px solid var(--brass)"></i><span>4px accent: over the short version.</span></div>
     </div>
     <ul class="ui-list">
-      <li>Sections open 72px below the last paragraph (52px on phones), with a hairline and the section's numeral.</li>
-      <li>Figures sit 40 to 48px from the text around them.</li>
       <li>Corners are square, inputs included.</li>
       <li>No gradients. The one shadow is under the graphic pinned at the top of a phone screen, so the steps scroll under it.</li>
     </ul>
@@ -115,18 +188,23 @@ const ARTICLE = [
         <tbody>{COLUMN_BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</tbody>
       </table>
     </div>
-    <h3 class="ui-h3">Measures</h3>
+    <h3 class="ui-h3">Grid tokens</h3>
+    <p class="ui-p">Read from <code>site-shell.css</code>. Media queries cannot read custom properties, so the breakpoints above stay numbers and the linter holds them; everything else about the grid is a token. Measures step by 1.2 from the reading measure, like the type scale.</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
+        <tbody>{grid.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value.startsWith('var(') ? t.value.replace(/var\((--[\w-]+)\)/, (m, n) => (space.find((x) => x.name === n)?.value ?? m)) : t.value}</td><td>{GRID_USE[t.name] ?? ''}</td></tr>)}</tbody>
+      </table>
+    </div>
     <ul class="ui-list">
-      <li>Page container: 1240px, with 32px gutters, 20px below 760.</li>
-      <li>Article container: 1060px. Reading column: 62 characters.</li>
-      <li>Source-notes rail, 1180 and up: 280px wide, 84px to the right of the column.</li>
-      <li>A calculator, 1040 and up: the width of the article container.</li>
+      <li>The gutter is a step narrower below 760: 20px. Everything that reads it follows, including the pinned card and the opener that run to the page edge.</li>
+      <li>A calculator, 1040 and up, and a pinned sequence, 1180 and up, widen to the article container, less its gutters.</li>
     </ul>
     <h3 class="ui-h3">Choosing the step</h3>
     <ul class="ui-list">
       <li>Pick the lowest step where every column still reads. Two columns sit side by side from 760, and so do three or four short items. Three columns led by a big headline stack until 1040.</li>
       <li>A tool keeps its controls beside its result from 760. A table keeps its columns from 760; below it a site ledger becomes labeled cards.</li>
-      <li>Ease the tablet band. Gaps, fixed widths and big type take clamp() inside (760px &lt;= width &lt; 1040px): smallest at 760, full size by 960.</li>
+      <li>Ease the tablet band. Inside (760px &lt;= width &lt; 1040px) gaps and type take a smaller step of their scale, and only a fixed track width may use clamp().</li>
       <li>A rule scoped to a range has to help at both ends of it.</li>
       <li>Check each change before and after at 759 and 760, 1039 and 1040, and at 768, 820 and 960. Turn a phone sideways (844 by 390) for anything sticky or set by a script.</li>
     </ul>
@@ -135,9 +213,10 @@ const ARTICLE = [
 @media (width < 760px) { ... }
 @media (760px <= width < 1180px) { ... }
 
-/* The tablet band: ease toward the desktop values */
+/* The tablet band: a smaller step of the same scale */
+.closing-band__grid { gap: var(--space-16); }
 @media (760px <= width < 1040px) {
-  .closing-band-grid { gap: clamp(40px, 6.7vw, 64px); }
+  .closing-band__grid { gap: var(--space-12); }
 }
 
 /* A component: the column it sits in */
@@ -153,6 +232,25 @@ tablet.addEventListener('change', update);`}</code></pre>
         <tbody>{ARTICLE.map(([w, t]) => <tr><td class="ui-num">{w}</td><td>{t}</td></tr>)}</tbody>
       </table>
     </div>
+  </section>
+
+  <section class="ui-section" id="naming">
+    <h2 class="ui-h2">Class names</h2>
+    <p class="ui-p">Every class says what it belongs to. A block stands on its own, a part of it adds <code>__part</code> to the block's name, and a variant adds <code>--variant</code>. The markup reads as the parts a page is made of, and a change to one block's rules stays inside that block. The linter checks every stylesheet (<code>css-bem</code>).</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Kind</th><th class="label">Written</th><th class="label">Examples</th></tr></thead>
+        <tbody>{NAMING.map(([kind, written, eg]) => <tr><td>{kind}</td><td><code>{written}</code></td><td>{eg}</td></tr>)}</tbody>
+      </table>
+    </div>
+    <ul class="ui-list">
+      <li>An element sits inside its block. A wrapper outside the block is a block of its own, or the block moves up to the wrapper.</li>
+      <li>No element of an element: <code>pd-cols__callout-value</code>, not <code>pd-cols__callout__value</code>.</li>
+      <li>A modifier never stands alone in the markup: <code>class="btn btn--small"</code>.</li>
+      <li><code>is-</code> names are only for states a script turns on and off. A variant written into the markup is a modifier.</li>
+      <li>An atom keeps its own class, and the component adds its element class beside it for colour, margin and position. The atom's size and type stay the same everywhere.</li>
+      <li>Kit classes start <code>pd-</code> and the styleguide's own start <code>ui-</code>.</li>
+    </ul>
   </section>
 
   <section class="ui-section" id="accessibility">

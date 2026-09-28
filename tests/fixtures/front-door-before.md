@@ -5,7 +5,7 @@ date: 2026-09-23
 draft: false
 kicker: "Financial services"
 topics: ["Community banking", "Digital banking", "Checking account acquisition", "Deposit economics", "Bank marketing leadership"]
-opener: "front-door"
+opener: "fd-grid"
 ogImage: "/assets/front-door-social.png"
 ogImageAlt: "Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks."
 brief:
@@ -14,8 +14,9 @@ brief:
   - "The bank's pitch waits for the mortgage anyway. The median first-time buyer is 40, and independent mortgage banks earned $973 per loan when it finally arrived."
   - "Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year."
   - "What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter."
-stylesheets: ["/assets/article-kit.css"]
-scripts: ["/assets/article-kit.js"]
+notes: "custom"
+stylesheets: ["/assets/front-door.css"]
+scripts: ["/assets/front-door.js"]
 ---
 
 For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket. Add mobile deposit, card controls, digital wallets, person-to-person payments and a better app, and the trip to the branch stops being a reason to choose someone else.
@@ -32,37 +33,33 @@ The industry got the channel right. What it missed was the reason for choosing t
 
 ## A digital front door is not a reason to enter
 
-<p class="pd-deck">The industry solved access. Preference is still open.</p>
+<p class="fd-deck">The industry solved access. Preference is still open.</p>
 
 Digital account opening answered a real question: can I open this account from my phone? A bank that required paperwork, signatures and a branch visit was putting obvious friction between itself and people accustomed to doing things from a screen.
 
 Removing that friction leaves a different question. Why would I open this account from my phone?
 
-<figure class="pd-img">
-  <picture>
-  <source srcset="/assets/front-door-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/front-door.png" width="1200" height="681" loading="lazy" alt="A grand bank entrance with its doors standing open and velvet ropes slack. Footprints on the sidewalk walk past the steps.">
-  </picture>
+<figure class="fd-img" data-fd="illo">
+<picture>
+<source srcset="/assets/front-door-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
+<img src="/assets/front-door.png" width="1200" height="681" loading="lazy" alt="A grand bank entrance with its doors standing open and velvet ropes slack. Footprints on the sidewalk walk past the steps.">
+</picture>
 </figure>
 
 Those sound similar. Strategically, they are not close. One is about access; the other is about preference. A bank can solve the first without making much progress on the second.
 
-> Removing a reason to choose someone else is not the same as creating a reason to choose you.
+<blockquote class="fd-pq"><p>Removing a reason to choose someone else is not the same as creating a reason to choose you.</p></blockquote>
 
 Even Cornerstone, whose research produced the 44% figure, describes the challenge as a product problem that digital investment alone will not solve.[^1] I would go one step further: a bank can manage every product it offers without ever managing the institution itself as a product.
 
 
 ## The 4.8-star trap
 
-<p class="pd-deck">Everyone's app is fine. Fine is where everyone already is.</p>
+<p class="fd-deck">Everyone's app is fine. Fine is where everyone already is.</p>
 
 Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars. I have said that sentence in a boardroom. It was true, and it was beside the point.
 
-<figure class="pd-units" data-pd="units" data-value="19" data-of="20">
-  <div class="pd-head"><span class="pd-num pd-num--xl">95%</span><span class="pd-head__text">of consumers rate their bank's online and mobile experience good, very good or excellent.</span></div>
-  <div class="pd-units__cells" data-cols="20" aria-hidden="true"><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell"></i></div>
-  <figcaption>ABA and Morning Consult, 2025 Preferred Banking Methods survey, 4,403 U.S. adults.</figcaption>
-</figure>
+<figure class="fd-stat" data-fd="stat" data-value="19" data-of="20"><div class="fd-stat-head"><span class="fd-stat-num">95%</span><span class="fd-stat-label">of consumers rate their bank's online and mobile experience good, very good or excellent.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">ABA and Morning Consult, 2025 Preferred Banking Methods survey, 4,403 U.S. adults.</figcaption></figure>
 
 Both things can be true and still leave the competitive question unanswered. In the ABA survey, nearly everyone rated their bank's online and mobile experience as good, very good or excellent.[^2] When nearly everyone's customers say the same thing, "ours works fine" describes the whole industry.
 
@@ -70,11 +67,11 @@ A five-star review might mean the customer checked a balance, deposited a check 
 
 The benchmarking problem runs deeper than the rating. Inside the bank, the comparison is a checklist: mobile deposit, card controls, digital payments, account opening. Feature parity achieved. But a customer does not limit the comparison to other community banks. Their phone also contains products that make complicated tasks feel simple, explain what happens next and recover gracefully when something goes wrong.
 
-<figure class="pd-img pd-img--tall">
-  <picture>
-  <source srcset="/assets/app-grid-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/app-grid.png" width="623" height="997" loading="lazy" alt="A phone home screen of navy app icons. One pale tile in the middle carries a bank column and four and a half stars.">
-  </picture>
+<figure class="fd-img fd-img-tall" data-fd="illo">
+<picture>
+<source srcset="/assets/app-grid-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
+<img src="/assets/app-grid.png" width="623" height="997" loading="lazy" alt="A phone home screen of navy app icons. One pale tile in the middle carries a bank column and four and a half stars.">
+</picture>
 </figure>
 
 Your benchmark should not stop at the bank across town. It should include the best financial experience on your customer's phone. Good enough is a dangerous place to be when the customer knows what excellent feels like.
@@ -82,132 +79,107 @@ Your benchmark should not stop at the bank across town. It should include the be
 
 ## So, why should I bank with you?
 
-<p class="pd-deck">The younger customer is already profitable. The pitch pretends otherwise.</p>
+<p class="fd-deck">The younger customer is already profitable. The pitch pretends otherwise.</p>
 
 Strip away the campaign and have the conversation with a 25-year-old deciding where to send a paycheck.
 
-<div class="pd-dialogue" role="group" aria-label="The conversation">
-  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Because we're local.</p>
-  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>Okay. How does that make my life better?</p>
-  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Because we have great service.</p>
-  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>So does every bank's advertising.</p>
-  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>We can help when you're ready to buy a home.</p>
-  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>Maybe. Rocket Mortgage will be waiting too.</p>
-  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Someday, if you start a business, you'll appreciate having a relationship with a local lender.</p>
-  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>I am currently trying to get $2,000 into an emergency fund.</p>
+<div class="fd-dialogue" role="group" aria-label="The conversation">
+  <p class="fd-bank"><span class="fd-who">Bank</span>Because we're local.</p>
+  <p class="fd-cust"><span class="fd-who">Customer</span>Okay. How does that make my life better?</p>
+  <p class="fd-bank"><span class="fd-who">Bank</span>Because we have great service.</p>
+  <p class="fd-cust"><span class="fd-who">Customer</span>So does every bank's advertising.</p>
+  <p class="fd-bank"><span class="fd-who">Bank</span>We can help when you're ready to buy a home.</p>
+  <p class="fd-cust"><span class="fd-who">Customer</span>Maybe. Rocket Mortgage will be waiting too.</p>
+  <p class="fd-bank"><span class="fd-who">Bank</span>Someday, if you start a business, you'll appreciate having a relationship with a local lender.</p>
+  <p class="fd-cust"><span class="fd-who">Customer</span>I am currently trying to get $2,000 into an emergency fund.</p>
 </div>
 
-> A relationship bank should have something meaningful to offer when the customer has $500, not only when the customer needs $500,000.
+<blockquote class="fd-pq"><p>A relationship bank should have something meaningful to offer when the customer has $500, not only when the customer needs $500,000.</p></blockquote>
 
 I have written every one of the bank's lines above into a campaign brief. None of those advantages has to be false for the pitch to fail. They are distant. And behind the pitch sits an assumption the bank rarely says out loud: the younger customer is a small balance to tolerate until a mortgage or business loan makes the relationship worth having.
 
-<figure class="pd-img">
-  <picture>
-  <source srcset="/assets/jar-and-key-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/jar-and-key.png" width="1158" height="372" loading="lazy" alt="A long desk. At one end a small jar of coins labeled $2,000; at the other, a house key as long as the desk.">
-  </picture>
+<figure class="fd-img" data-fd="illo">
+<picture>
+<source srcset="/assets/jar-and-key-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
+<img src="/assets/jar-and-key.png" width="1158" height="372" loading="lazy" alt="A long desk. At one end a small jar of coins labeled $2,000; at the other, a house key as long as the desk.">
+</picture>
 </figure>
 
 ### What the customer is worth
 
-<section class="pd-scrolly" data-pd="scrolly" data-rail="block" aria-label="What one primary checking customer is worth in a year">
-<div class="pd-scrolly__steps">
-<div class="pd-scrolly__step" data-step="1">
+<section class="fd-scrolly" data-fd="scrolly" data-scrolly="math" aria-label="What one primary checking customer is worth in a year">
+<div class="fd-steps">
+<div class="fd-step" data-step="1">
 
 The public numbers do not support that. The Fed's Survey of Consumer Finances puts the median transaction account balance for households under 35 at $5,400.[^3]
 
 </div>
-<div class="pd-scrolly__step" data-step="2">
+<div class="fd-step" data-step="2">
 
 Community banks earned a 3.81% net interest margin in the second quarter of 2026,[^4] which makes that balance worth a little over $200 a year in spread before the customer does anything else.
 
 </div>
-<div class="pd-scrolly__step" data-step="3">
+<div class="fd-step" data-step="3">
 
 Then the debit card. Banks under $10 billion in assets are exempt from the Durbin interchange cap, and the Fed's Regulation II data shows exempt issuers earning an average of $0.51 per debit transaction against $0.23 for covered banks.[^5] At the 34.6 transactions a month PULSE measured for an active debit card,[^6] that is roughly another $200 a year.
 
 </div>
-<div class="pd-scrolly__step" data-step="4">
+<div class="fd-step" data-step="4">
 
 Call it a little over $400 a year from a primary checking account alone, before a single loan. That covers a typical checking acquisition cost of around $350 in the first year.[^7]
 
 </div>
-<div class="pd-scrolly__step" data-step="5">
+<div class="fd-step" data-step="5">
 
 So the 25-year-old with $5,400 and a paycheck is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. Lending is upside. It was never the business case.
 
 </div>
-<div class="pd-scrolly__step" data-step="6">
+<div class="fd-step" data-step="6">
 
 Chime's partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank's assets below $10 billion for the foreseeable future.[^8] Every community bank has the exemption. Few build the product around it.
 
 </div>
 </div>
-<div class="pd-scrolly__sticky">
-<div class="pd-scrolly__graphic">
-<p class="pd-eyebrow">One primary checking customer, one year</p>
-<div class="pd-head"><span class="pd-num pd-num--xl">$5,400</span><span class="pd-head__text">median transaction balance, under 35</span></div>
-<div class="pd-bar" data-at="2">
-  <div class="pd-bar__head"><span class="label">A community bank, under $10B</span><span class="pd-num pd-num--s">$418</span></div>
-  <div class="pd-bar__track">
-    <div class="pd-seg" data-at="2" style="left:0.0%;width:44.0%"><span class="pd-seg__label"><span class="pd-seg__word">spread </span>$206</span></div>
-    <div class="pd-seg pd-seg--accent" data-at="3" style="left:44.0%;width:45.3%"><span class="pd-seg__label"><span class="pd-seg__word">interchange </span>$212</span></div>
-    <div class="pd-mark" data-at="4" style="left:74.8%"><span class="label pd-mark__label">$350 to acquire</span></div>
-  </div>
-</div>
-<div class="pd-bar" data-at="5">
-  <div class="pd-bar__head"><span class="label">The same customer at a bank over $10B</span><span class="pd-num pd-num--s">$301</span></div>
-  <div class="pd-bar__track">
-    <div class="pd-seg" data-at="5" style="left:0.0%;width:44.0%"><span class="pd-seg__label"><span class="pd-seg__word">spread </span>$206</span></div>
-    <div class="pd-seg pd-seg--accent" data-at="5" style="left:44.0%;width:20.3%"><span class="pd-seg__label"><span class="pd-seg__word">interchange </span>$95</span></div>
-  </div>
-</div>
-<div class="pd-ledger">
-  <div class="pd-ledger__row" data-at="2"><span class="pd-ledger__label">Deposit spread <span class="pd-ledger__src">$5,400 x 3.81% net interest margin</span></span><span class="pd-num pd-ledger__value">$206</span></div>
-  <div class="pd-ledger__row" data-at="3"><span class="pd-ledger__label">Interchange, gross <span class="pd-ledger__src">34.6 transactions a month x 12 x $0.51</span></span><span class="pd-num pd-ledger__value">$212</span></div>
-  <div class="pd-ledger__row pd-ledger__row--total" data-at="3"><span class="pd-ledger__label">A year of checking, before any loan</span><span class="pd-num pd-num--l pd-ledger__value">$418</span></div>
-</div>
-<p class="pd-stack__note" data-at="4">Against a <strong>$350</strong> acquisition cost, that pays back in <strong>11 months</strong>.</p>
-</div>
-<div class="pd-scrolly__notes"></div>
+<div class="fd-sticky">
+<div class="fd-graphic fd-g-math" data-step="0"></div>
+<div class="fd-sticky-notes"></div>
 </div>
 </section>
 
-<figure class="pd-figure pd-calc" data-pd="calc" data-rail="block" data-define="spread = bal * nim / 100; ic = txn * 12 * fee; total = round(spread) + round(ic); months = cac / (total / 12); scale = max(total, cac) * 1.12">
-  <div class="pd-calc__head">
-    <p class="pd-calc__title">Run your bank's numbers</p>
-    <p class="pd-calc__lede">The five fields hold the public figures from the sequence above. Type over any of them and everything below the line recalculates.</p>
+<figure class="fd-figure fd-calc" id="fd-calc" data-fd="calc">
+  <div class="fd-calc-head">
+    <p class="fd-calc-title">Run your bank's numbers</p>
+    <p class="fd-calc-lede">The five fields hold the public figures from the sequence above. Type over any of them and everything below the line recalculates.</p>
   </div>
-  <div class="pd-calc__inputs">
-    <label class="pd-field"><span class="label pd-field__label">Average checking balance</span><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" data-var="bal" type="number" inputmode="decimal" value="5400" min="0" step="100"></span><span class="pd-field__src">SCF median, under 35</span></label>
-    <label class="pd-field"><span class="label pd-field__label">Net interest margin</span><span class="pd-input"><input class="pd-input__field" data-var="nim" type="number" inputmode="decimal" value="3.81" min="0" step="0.01"><span class="pd-input__affix">%</span></span><span class="pd-field__src">FDIC, community banks, Q2 2026</span></label>
-    <label class="pd-field"><span class="label pd-field__label">Debit transactions a month</span><span class="pd-input"><input class="pd-input__field" data-var="txn" type="number" inputmode="decimal" value="34.6" min="0" step="0.1"></span><span class="pd-field__src">PULSE, active cards</span></label>
-    <label class="pd-field"><span class="label pd-field__label">Interchange per transaction</span><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" data-var="fee" type="number" inputmode="decimal" value="0.51" min="0" step="0.01"></span><span class="pd-field__src">Fed Reg II, exempt issuers</span></label>
-    <label class="pd-field"><span class="label pd-field__label">Cost to acquire one account</span><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" data-var="cac" type="number" inputmode="decimal" value="350" min="0" step="10"></span><span class="pd-field__src">Digital Onboarding, 2021</span></label>
+  <div class="fd-calc-inputs">
+    <label class="fd-field"><span class="fd-field-label">Average checking balance</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-balance" type="number" inputmode="decimal" value="5400" min="0" step="100"></span><span class="fd-field-src">SCF median, under 35</span></label>
+    <label class="fd-field"><span class="fd-field-label">Net interest margin</span><span class="fd-input-wrap"><input class="fd-input" id="fd-in-nim" type="number" inputmode="decimal" value="3.81" min="0" max="15" step="0.01"><span class="fd-affix">%</span></span><span class="fd-field-src">FDIC, community banks, Q2 2026</span></label>
+    <label class="fd-field"><span class="fd-field-label">Debit transactions a month</span><span class="fd-input-wrap"><input class="fd-input" id="fd-in-txn" type="number" inputmode="decimal" value="34.6" min="0" step="0.1"></span><span class="fd-field-src">PULSE, active cards</span></label>
+    <label class="fd-field"><span class="fd-field-label">Interchange per transaction</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-ic" type="number" inputmode="decimal" value="0.51" min="0" step="0.01"></span><span class="fd-field-src">Fed Reg II, exempt issuers</span></label>
+    <label class="fd-field"><span class="fd-field-label">Cost to acquire one account</span><span class="fd-input-wrap"><span class="fd-affix">$</span><input class="fd-input" id="fd-in-cac" type="number" inputmode="decimal" value="350" min="0" step="10"></span><span class="fd-field-src">Digital Onboarding, 2021</span></label>
   </div>
-  <div class="pd-calc__row">
+  <div class="fd-calc-row">
     <div>
-      <p class="label pd-calc__label">Interchange regime</p>
-      <div class="pd-toggle" role="group" aria-label="Interchange regime">
-        <button type="button" class="label pd-toggle-btn is-on" data-set="fee=0.51" aria-pressed="true">Under $10B, exempt ($0.51)</button>
-        <button type="button" class="label pd-toggle-btn" data-set="fee=0.23" aria-pressed="false">Over $10B, capped ($0.23)</button>
+      <p class="fd-field-label fd-durbin-label">Interchange regime</p>
+      <div class="fd-durbin" role="group" aria-label="Interchange regime">
+        <button type="button" class="fd-durbin-btn is-on" data-ic="0.51">Under $10B, exempt ($0.51)</button>
+        <button type="button" class="fd-durbin-btn" data-ic="0.23">Over $10B, capped ($0.23)</button>
       </div>
     </div>
-    <button type="button" class="pd-text-btn" data-reset hidden>Reset to the public figures</button>
+    <button type="button" class="fd-calc-reset" id="fd-calc-reset" hidden>Reset to the public figures</button>
   </div>
-  <div class="pd-bar pd-bar--live" data-scale="scale" aria-hidden="true">
-    <div class="pd-bar__track">
-      <div class="pd-seg" data-w="spread"></div>
-      <div class="pd-seg pd-seg--accent" data-w="ic"></div>
-      <div class="pd-mark" data-x="cac"><span class="label pd-mark__label">acquisition cost</span></div>
+  <div class="fd-bar" aria-hidden="true">
+    <div class="fd-bar-track">
+      <div class="fd-bar-seg fd-bar-spread" id="fd-bar-spread"></div>
+      <div class="fd-bar-seg fd-bar-ic" id="fd-bar-ic"></div>
+      <div class="fd-bar-cac" id="fd-bar-cac"><span>acquisition cost</span></div>
     </div>
-    <p class="pd-key"><span class="pd-key__item"><i class="pd-swatch pd-swatch--ink"></i>Deposit spread</span><span class="pd-key__item"><i class="pd-swatch pd-swatch--accent"></i>Interchange</span></p>
   </div>
-  <div class="pd-ledger">
-    <div class="pd-ledger__row"><span class="pd-ledger__label">Deposit spread <span class="pd-ledger__src">balance x NIM</span></span><span class="pd-num pd-ledger__value" data-out="spread" data-format="money">$206</span></div>
-    <div class="pd-ledger__row"><span class="pd-ledger__label">Interchange, gross <span class="pd-ledger__src">transactions x 12 x fee</span></span><span class="pd-num pd-ledger__value" data-out="ic" data-format="money">$212</span></div>
-    <div class="pd-ledger__row pd-ledger__row--total"><span class="pd-ledger__label">A year of checking, before any loan</span><span class="pd-num pd-num--l pd-ledger__value" data-out="total" data-format="money" aria-live="polite">$418</span></div>
-    <div class="pd-ledger__row"><span class="pd-ledger__label">Payback on the acquisition cost</span><span class="pd-num pd-ledger__value" data-out="months" data-format="months" aria-live="polite">11 months</span></div>
+  <div class="fd-ledger">
+    <div class="fd-ledger-row"><span class="fd-ledger-label">Deposit spread <span class="fd-ledger-src">balance × NIM</span></span><span class="fd-ledger-value" id="fd-out-spread">$206</span></div>
+    <div class="fd-ledger-row"><span class="fd-ledger-label">Interchange, gross <span class="fd-ledger-src">transactions × 12 × fee</span></span><span class="fd-ledger-value" id="fd-out-ic">$212</span></div>
+    <div class="fd-ledger-row fd-ledger-total"><span class="fd-ledger-label">A year of checking, before any loan</span><span class="fd-ledger-value fd-accent" id="fd-out-total" aria-live="polite">$418</span></div>
+    <div class="fd-ledger-row"><span class="fd-ledger-label">Payback on the acquisition cost</span><span class="fd-ledger-value" id="fd-out-months" aria-live="polite">11 months</span></div>
   </div>
   <figcaption>Gross figures, before servicing, fraud and network costs. Switch the interchange regime to see what the same customer is worth at a bank over $10 billion.</figcaption>
 </figure>
@@ -215,61 +187,32 @@ Chime's partner banks are small enough to have the exemption too, and it is most
 
 ### The fifteen-year wait
 
-<section class="pd-scrolly" data-pd="scrolly" data-rail="block" aria-label="The fifteen-year wait">
-<div class="pd-scrolly__steps">
-<div class="pd-scrolly__step" data-step="1">
+<section class="fd-scrolly" data-fd="scrolly" data-scrolly="timeline" aria-label="The fifteen-year wait">
+<div class="fd-steps">
+<div class="fd-step" data-step="1">
 
 Which makes the standard pitch worse than distant. The median first-time homebuyer is now 40 years old.[^9]
 
 </div>
-<div class="pd-scrolly__step" data-step="2">
+<div class="fd-step" data-step="2">
 
 A bank that tells a 25-year-old "we'll be there when you buy a house" is proposing a fifteen-year wait.
 
 </div>
-<div class="pd-scrolly__step" data-step="3">
+<div class="fd-step" data-step="3">
 
 And when that mortgage finally arrives, independent mortgage banks earned $973 per loan on it in the second quarter of 2026.[^10]
 
 </div>
-<div class="pd-scrolly__step" data-step="4">
+<div class="fd-step" data-step="4">
 
 Banks are deferring a customer worth $400 a year for fifteen years so they can compete on rate, against Rocket, for a $973 event.
 
 </div>
 </div>
-<div class="pd-scrolly__sticky">
-<div class="pd-scrolly__graphic">
-<p class="pd-eyebrow">The fifteen-year wait</p>
-<div class="pd-cols__callouts">
-  <p class="pd-cols__callout" data-at="4"><b class="pd-cols__callout-value">$6,000 of checking</b><span class="pd-cols__callout-note">gross, at $400 a year</span></p>
-  <p class="pd-cols__callout pd-cols__callout--accent" data-at="3"><b class="pd-cols__callout-value">$973</b><span class="pd-cols__callout-note">the mortgage</span></p>
-</div>
-<div class="pd-cols__plot">
-  <div class="pd-cols__gridlines" aria-hidden="true"><span class="pd-cols__gridline" style="bottom:0.0%"><b class="pd-cols__gridline-value">$0</b></span><span class="pd-cols__gridline" style="bottom:33.3%"><b class="pd-cols__gridline-value">$2,000</b></span><span class="pd-cols__gridline" style="bottom:66.7%"><b class="pd-cols__gridline-value">$4,000</b></span><span class="pd-cols__gridline" style="bottom:100.0%"><b class="pd-cols__gridline-value">$6,000</b></span></div>
-  <div class="pd-cols__bars" data-at="2">
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:6.7%;--i:0"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:13.3%;--i:1"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:20.0%;--i:2"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:26.7%;--i:3"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:33.3%;--i:4"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:40.0%;--i:5"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:46.7%;--i:6"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:53.3%;--i:7"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:60.0%;--i:8"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:66.7%;--i:9"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:73.3%;--i:10"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:80.0%;--i:11"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:86.7%;--i:12"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:93.3%;--i:13"></i></span>
-    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:100.0%;--i:14"></i></span>
-    <span class="pd-cols__col pd-cols__col--event" data-at="1"><i class="pd-cols__fill" data-at="3" style="height:16.2%"></i></span>
-  </div>
-</div>
-<div class="pd-cols__axis" aria-hidden="true"><span class="pd-cols__tick pd-cols__tick--strong">25</span><span class="pd-cols__tick"></span><span class="pd-cols__tick"></span><span class="pd-cols__tick"></span><span class="pd-cols__tick"></span><span class="pd-cols__tick">30</span><span class="pd-cols__tick"></span><span class="pd-cols__tick"></span><span class="pd-cols__tick"></span><span class="pd-cols__tick"></span><span class="pd-cols__tick">35</span><span class="pd-cols__tick"></span><span class="pd-cols__tick"></span><span class="pd-cols__tick"></span><span class="pd-cols__tick"></span><span class="pd-cols__tick pd-cols__tick--strong">40</span></div>
-<p class="label label--accent pd-cols__marker" data-at="1">Median first-time buyer</p>
-</div>
-<div class="pd-scrolly__notes"></div>
+<div class="fd-sticky">
+<div class="fd-graphic fd-g-timeline" data-step="0" data-per-year="400" data-start="25" data-end="40" data-event="973"></div>
+<div class="fd-sticky-notes"></div>
 </div>
 </section>
 
@@ -286,7 +229,7 @@ Human judgment and local knowledge still matter. A person who understands the si
 
 ## Chime has fewer levers
 
-<p class="pd-deck">Fewer capabilities, one experience.</p>
+<p class="fd-deck">Fewer capabilities, one experience.</p>
 
 Chime's offer centers on everyday money: checking, savings, credit-building products, early access to qualifying direct deposits and overdraft features for eligible members. Its checking account leads with no monthly service fee and no minimum balance.[^8]
 
@@ -294,11 +237,7 @@ A full-service community bank has a broader set of capabilities to assemble. Alo
 
 Having more capabilities does not automatically produce a more compelling experience.
 
-<figure class="pd-units" data-pd="units" data-value="16" data-of="25">
-  <div class="pd-head"><span class="pd-num pd-num--xl">64%</span><span class="pd-head__text">of Chime's revenue in the second quarter of 2026 was payments, most of it debit interchange.</span></div>
-  <div class="pd-units__cells" data-cols="25" aria-hidden="true"><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i></div>
-  <figcaption>Chime reported results, Q2 2026: $430 million of $670 million.</figcaption>
-</figure>
+<figure class="fd-stat" data-fd="stat" data-value="16" data-of="25"><div class="fd-stat-head"><span class="fd-stat-num">64%</span><span class="fd-stat-label">of Chime's revenue in the second quarter of 2026 was payments, most of it debit interchange.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">Chime reported results, Q2 2026: $430 million of $670 million.</figcaption></figure>
 
 Chime does not literally have one product. It has multiple accounts, credit products and banking partners; Chime itself is a financial technology company, not a chartered bank. Its banking services are provided by The Bancorp Bank or Stride Bank, and Chime has agreed to acquire Stride, pending regulatory approval, with closing expected in the first half of 2027.[^8]
 
@@ -309,7 +248,7 @@ A community bank can have more to offer and still make the customer do more work
 
 ## A community bank is twelve things wearing one logo
 
-<p class="pd-deck">The org chart has become the customer experience.</p>
+<p class="fd-deck">The org chart has become the customer experience.</p>
 
 Walk inside the community bank. Marketing owns the brand, Digital owns the app, Retail owns the branches and Deposit Product owns checking. Cards manages debit; Consumer Lending and Mortgage have their own businesses. Operations handles servicing, IT manages vendors, Finance evaluates pricing and margin, and Risk and Compliance establish the boundaries.
 
@@ -318,47 +257,44 @@ I owned the first of those boxes for eight years. Nothing about the box was wron
 There is nothing wrong with specialization. A complicated financial institution needs it. The problem appears when the organizational model becomes the customer experience.
 
 
-<section class="pd-scrolly" data-pd="scrolly" data-rail="block" aria-label="Twelve functions, one bank">
-<div class="pd-scrolly__steps">
-<div class="pd-scrolly__step" data-step="1">
+<section class="fd-scrolly" data-fd="scrolly" data-scrolly="org" aria-label="Twelve functions, one bank">
+<div class="fd-steps">
+<div class="fd-step" data-step="1">
 
 Digital can deliver a respectable app while Retail provides excellent branch service. Marketing can run an effective campaign, Deposit Product can price competitive checking and Lending can meet its production goals. Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.
 
 </div>
-<div class="pd-scrolly__step" data-step="2">
+<div class="fd-step" data-step="2">
 
-<p class="pd-pull">The customer experiences one bank while the organization manages twelve functions.</p>
+<p class="fd-pull">The customer experiences one bank while the organization manages twelve functions.</p>
 
 </div>
 </div>
-<div class="pd-scrolly__sticky">
-<div class="pd-scrolly__graphic">
-<p class="pd-eyebrow pd-fold__cap" data-at="1" data-until="1">Twelve functions, every one on target</p>
-<p class="pd-eyebrow pd-fold__cap" data-at="2">What the customer sees</p>
-<div class="pd-fold" data-at="2">
-  <div class="pd-org">
-    <div class="pd-org__box"><span class="pd-org__name">Marketing</span><span class="pd-org__owns">owns the brand</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Digital</span><span class="pd-org__owns">owns the app</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Retail</span><span class="pd-org__owns">owns the branches</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Deposit Product</span><span class="pd-org__owns">owns checking</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Cards</span><span class="pd-org__owns">manages debit</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Consumer Lending</span><span class="pd-org__owns">owns loans</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Mortgage</span><span class="pd-org__owns">owns mortgages</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Operations</span><span class="pd-org__owns">handles servicing</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">IT</span><span class="pd-org__owns">manages vendors</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Finance</span><span class="pd-org__owns">pricing and margin</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Risk</span><span class="pd-org__owns">sets the limits</span><span class="label pd-org__status">on target</span></div>
-    <div class="pd-org__box"><span class="pd-org__name">Compliance</span><span class="pd-org__owns">sets the boundaries</span><span class="label pd-org__status">on target</span></div>
+<div class="fd-sticky">
+<div class="fd-graphic fd-g-org" data-step="0">
+  <p class="fd-eyebrow fd-org-cap" data-for="1">Twelve functions, every one on target</p>
+  <p class="fd-eyebrow fd-org-cap" data-for="2">What the customer sees</p>
+  <div class="fd-org">
+    <div class="fd-org-box"><span class="fd-org-name">Marketing</span><span class="fd-org-owns">owns the brand</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Digital</span><span class="fd-org-owns">owns the app</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Retail</span><span class="fd-org-owns">owns the branches</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Deposit Product</span><span class="fd-org-owns">owns checking</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Cards</span><span class="fd-org-owns">manages debit</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Consumer Lending</span><span class="fd-org-owns">owns loans</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Mortgage</span><span class="fd-org-owns">owns mortgages</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Operations</span><span class="fd-org-owns">handles servicing</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">IT</span><span class="fd-org-owns">manages vendors</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Finance</span><span class="fd-org-owns">pricing and margin</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Risk</span><span class="fd-org-owns">sets the limits</span><span class="fd-org-status">on target</span></div>
+    <div class="fd-org-box"><span class="fd-org-name">Compliance</span><span class="fd-org-owns">sets the boundaries</span><span class="fd-org-status">on target</span></div>
   </div>
-  <div class="pd-fold__one">
+  <div class="fd-one">
     <picture>
       <source srcset="/assets/one-coat-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
       <img src="/assets/one-coat.png" width="883" height="1020" loading="lazy" alt="One long overcoat with a bank crest, many arms doing different things, and twelve pairs of legs in twelve kinds of shoes beneath the hem.">
     </picture>
-    <p class="pd-fold__one-cap">One bank on the outside. Twelve departments inside, each walking its own way.</p>
+    <p class="fd-one-cap">One bank on the outside. Twelve departments inside, each walking its own way.</p>
   </div>
-</div>
-</div>
 </div>
 </section>
 
@@ -366,30 +302,26 @@ The comparison with Chime is whether the features add up to one recognizable pro
 
 ## Everyone can hit their goals and the bank can still lose
 
-<p class="pd-deck">A third of new accounts leave inside a year, and no department's number moves.</p>
+<p class="fd-deck">A third of new accounts leave inside a year, and no department's number moves.</p>
 
 Once you see the problem this way, good enough becomes understandable. If the app is treated as a servicing channel, uptime, adoption and satisfaction are sensible measures. If checking is a deposit product, balances and cost of funds matter. If Marketing owns acquisition, applications and cost per account matter.
 
 No individual executive needs to be making a bad decision. The failure happens between the decisions.
 
 
-<figure class="pd-units" data-pd="units" data-value="34" data-of="100">
-  <div class="pd-head"><span class="pd-num pd-num--xl">34%</span><span class="pd-head__text">of activated new checking customers went inactive or left within their first year, by the institutions' own estimate.</span></div>
-  <div class="pd-units__cells" data-cols="50" aria-hidden="true"><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell is-on"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i></div>
-  <figcaption>Digital Banking Report for Pinwheel, The Power of Primacy, March 2024.</figcaption>
-</figure>
+<figure class="fd-stat" data-fd="stat" data-value="34" data-of="100"><div class="fd-stat-head"><span class="fd-stat-num">34%</span><span class="fd-stat-label">of activated new checking customers went inactive or left within their first year, by the institutions' own estimate.</span></div><div class="fd-stat-units" aria-hidden="true"></div><figcaption class="fd-stat-src">Digital Banking Report for Pinwheel, The Power of Primacy, March 2024.</figcaption></figure>
 
 In March 2024 research published in *The Power of Primacy*, financial institutions estimated that a third of activated new customers became inactive or churned within their first year. The report also presented an estimated direct-deposit penetration rate of 55%.[^11] These were institution-reported estimates, not an audit of individual account histories. They are useful here because they distinguish an account opened from a relationship established.
 
-> Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.
+<blockquote class="fd-pq"><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>
 
 Marketing meets its application target and Digital meets its adoption target while the customers they counted never make the bank part of their everyday financial lives. The departmental scorecards register the symptoms without explaining the cause.
 
-<figure class="pd-img pd-img--tall">
-  <picture>
-  <source srcset="/assets/gauges-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/gauges.png" width="619" height="963" loading="lazy" alt="Twelve gauges on a wall, every needle in the green. Below them, an exit door standing open.">
-  </picture>
+<figure class="fd-img fd-img-tall" data-fd="illo">
+<picture>
+<source srcset="/assets/gauges-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
+<img src="/assets/gauges.png" width="619" height="963" loading="lazy" alt="Twelve gauges on a wall, every needle in the green. Below them, an exit door standing open.">
+</picture>
 </figure>
 
 Someone needs to ask the larger question: what should banking with us feel like for this customer? The whole bank, start to finish, and every handoff in between.
@@ -398,9 +330,9 @@ That is a product-management question, and it does not get answered merely becau
 
 ## This is why the Gen Z campaign keeps happening
 
-<p class="pd-deck">Advertising is the only lever one department can pull alone.</p>
+<p class="fd-deck">Advertising is the only lever one department can pull alone.</p>
 
-> The skateboard is what a structural problem looks like after it has been handed to the one department that can ship something by Friday.
+<blockquote class="fd-pq"><p>The skateboard is what a structural problem looks like after it has been handed to the one department that can ship something by Friday.</p></blockquote>
 
 Suppose Marketing does the research properly. YouGov's U.S. research among employed Gen Z consumers places low or no maintenance fees, security and reliability, and brand trustworthiness among the leading account-selection factors. Digital usability matters too.[^12] Separate YouGov research found that building an emergency fund was Gen Z's most frequently cited savings goal.[^13]
 
@@ -415,11 +347,11 @@ That meeting is harder. I have been the marketing executive in it. The advertisi
 
 The photography gets younger. The palette gets brighter. Someone wants TikTok. The copy turns conspicuously casual, and a hundred-year-old bank puts on a hoodie and picks up a skateboard.
 
-<figure class="pd-img pd-img--spot">
-  <picture>
-  <source srcset="/assets/bank-hoodie-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/bank-hoodie.png" width="861" height="865" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">
-  </picture>
+<figure class="fd-illo" data-fd="illo">
+<picture>
+<source srcset="/assets/bank-hoodie-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
+<img src="/assets/bank-hoodie.png" width="861" height="865" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">
+</picture>
 </figure>
 
 Age is the wrong diagnosis. A bank should not be embarrassed that it has existed for a century. Longevity signals stability, and stability matters when someone is deciding where to send a paycheck. The problem is confusing looking young with understanding someone who is young.
@@ -429,7 +361,7 @@ Modern and young are different things. Building for the customer is a different 
 
 ## What if the bank actually used all of its advantages?
 
-<p class="pd-deck">The same bank, run as one product.</p>
+<p class="fd-deck">The same bank, run as one product.</p>
 
 Imagine the same community bank behaving as a single product.
 
@@ -448,7 +380,7 @@ Local employers, merchants and community relationships strengthen that further w
 
 ## Somebody has to own the whole bank
 
-<p class="pd-deck">Where to start.</p>
+<p class="fd-deck">Where to start.</p>
 
 Community banks do not need to copy Chime's palette, vocabulary or roadmap. The lesson is coherence: product, brand and experience that reinforce each other.
 
@@ -457,7 +389,7 @@ A bank has several ways to do that. Digital provides speed, people provide judgm
 
 Getting there requires more than a rebrand or a new box on the organizational chart. These are the three decisions I could not make from the marketing seat, and the ones I would ask for first if I were back in it.
 
-<ol class="pd-decisions">
+<ol class="fd-decisions">
 <li><strong>Someone owns the proposition.</strong> Give a senior leader responsibility for the chosen younger-customer proposition across product, digital, retail and marketing, with the budget and decision rights to resolve tradeoffs. The title matters less than the authority. The work stays within the bank's risk and compliance framework, but it cannot depend on a committee whose members are accountable only for their own departments.</li>
 <li><strong>The scorecard measures the relationship and its economics.</strong> Keep uptime and app satisfaction, but stop treating them as sufficient evidence of competitiveness. Track new-to-bank acquisition, direct-deposit activation, meaningful account use and twelve-month retention alongside acquisition cost per activated relationship and contribution by acquisition cohort. Agree on funding, servicing, fraud and acquisition-cost assumptions with Finance, so the number the owner is judged on is one Finance already believes.</li>
 <li><strong>Start with one journey.</strong> Take the first paycheck arriving in a newly opened account and manage the surrounding experience as a single product for one quarter. Bring the relevant functions together, give the owner authority to decide and test the redesigned journey against a credible baseline. Use the quarter to evaluate execution and early activation, then follow those customers long enough to assess retention and economics. Prove that the bank can behave as one thing in one place before asking it to do so everywhere.</li>
@@ -465,15 +397,15 @@ Getting there requires more than a rebrand or a new box on the organizational ch
 
 Community banks have built digital front doors. The question is no longer simply whether a 25-year-old can get in. It is whether anyone inside the building is responsible for what they find when they do.
 
-<figure class="pd-img">
-  <picture>
-  <source srcset="/assets/corridor-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/corridor.png" width="1107" height="925" loading="lazy" alt="Looking down a long corridor from the open front door: twelve closed office doors with nameplates, and at the far end an empty chair under a spotlight.">
-  </picture>
+<figure class="fd-img" data-fd="illo">
+<picture>
+<source srcset="/assets/corridor-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
+<img src="/assets/corridor.png" width="1107" height="925" loading="lazy" alt="Looking down a long corridor from the open front door: twelve closed office doors with nameplates, and at the far end an empty chair under a spotlight.">
+</picture>
 </figure>
 
-<figure class="pd-figure pd-grid pd-grid--callback" data-pd="grid" data-pace="0" data-alt-pace="300" data-delay="400">
-  <div class="pd-grid__cells" aria-hidden="true"><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell is-alt"></i><i class="pd-cell is-alt"></i><i class="pd-cell is-alt"></i><i class="pd-cell is-alt"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i><i class="pd-cell"></i></div>
+<figure class="fd-figure fd-grid-close" data-fd="grid-empty">
+  <div class="fd-grid-cells"><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell is-community"></div><div class="fd-cell is-community"></div><div class="fd-cell is-community"></div><div class="fd-cell is-community"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div><div class="fd-cell"></div></div>
   <figcaption>Four of every 100 new checking accounts went to community banks.</figcaption>
 </figure>
 

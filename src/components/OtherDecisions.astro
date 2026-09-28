@@ -11,12 +11,12 @@ const services = [
 ---
 <nav class="other-decisions" aria-labelledby="other-decisions-heading">
   <div class="container">
-    <h2 class="label accent" id="other-decisions-heading">Facing a different decision?</h2>
-    <ul class="other-decisions-list">
+    <h2 class="label label--accent" id="other-decisions-heading">Facing a different decision?</h2>
+    <ul class="other-decisions__list">
       {services.map((s) => (
-        <li><a href={s.href}><span class="other-decisions-name">{s.name}</span><span class="other-decisions-question">{s.question}</span></a></li>
+        <li><a class="other-decisions__link" href={s.href}><span class="other-decisions__name">{s.name}</span><span class="other-decisions__question">{s.question}</span></a></li>
       ))}
     </ul>
-    <a class="other-decisions-all" href="/financial-services">All services</a>
+    <a class="other-decisions__all" href="/financial-services">All services</a>
   </div>
 </nav>

@@ -33,17 +33,17 @@ npm test                                # the linter's own tests</code></pre>
       <h2 class="ui-h2">{g.name}</h2>
       {g.rules.map((r) => (
         <article class="ui-rule" id={r.id}>
-          <div class="ui-rule-head">
+          <div class="ui-rule__head">
             <h3>{r.title}</h3>
             <code>{r.id}</code>
-            <span class={`label ui-chip is-${r.severity}`}>{SEVERITY[r.severity]}</span>
+            <span class={`label ui-chip ui-chip--${r.severity}`}>{SEVERITY[r.severity]}</span>
           </div>
           <p>{r.why}</p>
           {r.fix && <p><strong>Fix.</strong> {r.fix}</p>}
           {(r.bad || r.good) && (
-            <div class="ui-rule-eg">
-              {r.bad && <div class="is-bad"><b class="label">Flagged</b><pre><code set:html={code(r.bad)}></code></pre></div>}
-              {r.good && <div><b class="label">Passes</b><pre><code set:html={code(r.good)}></code></pre></div>}
+            <div class="ui-examples">
+              {r.bad && <div class="ui-examples__item ui-examples__item--bad"><b class="label">Flagged</b><pre><code set:html={code(r.bad)}></code></pre></div>}
+              {r.good && <div class="ui-examples__item"><b class="label">Passes</b><pre><code set:html={code(r.good)}></code></pre></div>}
             </div>
           )}
         </article>

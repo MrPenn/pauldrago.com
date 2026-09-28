@@ -14,10 +14,10 @@ const latest = (await getCollection('articles', ({ data }) => !data.draft)).sort
   stylesheets={['/assets/personal-site.css']}
 >
 <main id="main">
-  <section class="articles-hero">
+  <section class="articles">
     <div class="container">
-      <h1 class="display-title articles-title">Not found.</h1>
-      <p class="articles-intro">There is no page at this address. It may have moved, or the link may be mistyped. These are the places most people are looking for:</p>
+      <h1 class="display-title articles__title">Not found.</h1>
+      <p class="articles__intro">There is no page at this address. It may have moved, or the link may be mistyped. These are the places most people are looking for:</p>
       <ul class="not-found-links">
         <li><a href="/financial-services">Services</a>: measurement, market analysis, acquisitions, and fractional leadership.</li>
         {latest && <li><a href={`/articles/${latest.id}`}>{latest.data.title}</a>: the most recent article.</li>}

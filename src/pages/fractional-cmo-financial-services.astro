@@ -79,18 +79,18 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 ---
 <Base {...meta} jsonld={jsonld}>
 <main id="main">
-  <section class="service-hero">
+  <section class="hero">
     <div class="container">
-      <div class="hero-grid hero-grid-with-model">
+      <div class="hero__grid">
         <div>
           <p class="eyebrow">For banks and regulated financial-services companies</p>
-          <h1 class="display-title hero-title">Put a senior marketing operator <span class="accent">in the seat</span>.</h1>
-          <p class="hero-subhead">Set priorities, direct the team, align finance and compliance, and report clearly to leadership.</p>
+          <h1 class="display-title hero__title">Put a senior marketing operator <span class="accent">in the seat</span>.</h1>
+          <p class="subhead">Set priorities, direct the team, align finance and compliance, and report clearly to leadership.</p>
         </div>
-        <figure class="decision-model" aria-labelledby="cadence-model-title">
-          <p class="model-label">What leadership sees</p>
-          <p class="model-title" id="cadence-model-title">The first quarter, and every month after</p>
-          <table class="cadence-table">
+        <figure class="model" aria-labelledby="cadence-model-title">
+          <p class="model__label">What leadership sees</p>
+          <p class="model__title" id="cadence-model-title">The first quarter, and every month after</p>
+          <table class="model__table">
             <caption class="sr-only">An illustrative first quarter and monthly reporting rhythm</caption>
             <tbody>
               <tr><th scope="row">Weeks 1 to 4</th><td>Priorities set, decision rights written down, the team's work re-planned against them.</td></tr>
@@ -99,7 +99,7 @@ import OtherDecisions from '../components/OtherDecisions.astro';
               <tr><th scope="row">Every month</th><td>Results against plan, what changed, and the next decision leadership owns.</td></tr>
             </tbody>
           </table>
-          <figcaption class="model-note">Illustration, not client data. The cadence is set with the executive team in the first two weeks.</figcaption>
+          <figcaption class="model__note">Illustration, not client data. The cadence is set with the executive team in the first two weeks.</figcaption>
         </figure>
       </div>
     </div>
@@ -108,45 +108,45 @@ import OtherDecisions from '../components/OtherDecisions.astro';
   <hr class="section-divider">
   <section class="problem-band">
     <div class="container">
-      <h2 class="section-title section-title-plain">A leadership gap does not need another strategy deck.</h2>
+      <h2 class="section-title-plain">A leadership gap does not need another strategy deck.</h2>
       <p class="section-intro">It needs someone accountable for choosing the priorities, giving the team direction, keeping finance and compliance in the room, and carrying decisions through execution.</p>
       <div class="signal-grid">
-        <div class="signal"><h3 class="signal-title">Decision rights</h3><p class="signal-copy">Clarify what marketing owns, what requires leadership approval, and what finance, compliance, product, and sales need to decide together.</p></div>
-        <div class="signal"><h3 class="signal-title">Weekly and monthly rhythm</h3><p class="signal-copy">Set the meetings, reports, and review points for priorities, budgets, campaigns, vendors, risks, and stalled decisions.</p></div>
-        <div class="signal"><h3 class="signal-title">Executive reporting</h3><p class="signal-copy">Give leadership and the board a concise view of spend, progress, tradeoffs, and the decisions required next.</p></div>
+        <div class="signal"><h3 class="signal__title">Decision rights</h3><p class="signal__copy">Clarify what marketing owns, what requires leadership approval, and what finance, compliance, product, and sales need to decide together.</p></div>
+        <div class="signal"><h3 class="signal__title">Weekly and monthly rhythm</h3><p class="signal__copy">Set the meetings, reports, and review points for priorities, budgets, campaigns, vendors, risks, and stalled decisions.</p></div>
+        <div class="signal"><h3 class="signal__title">Executive reporting</h3><p class="signal__copy">Give leadership and the board a concise view of spend, progress, tradeoffs, and the decisions required next.</p></div>
       </div>
     </div>
   </section>
 
   <section class="build-section">
     <div class="container">
-      <h2 class="section-title section-title-plain">A marketing function with clear owners and reporting.</h2>
+      <h2 class="section-title-plain">A marketing function with clear owners and reporting.</h2>
       <div class="deliverables">
-        <div class="deliverable-row"><div class="deliverable-num">01</div><h3 class="deliverable-title">Priorities and decision register</h3><p class="deliverable-copy">A short, maintained view of the priority work, its owner, the decision needed, and what can wait.</p></div>
-        <div class="deliverable-row"><div class="deliverable-num">02</div><h3 class="deliverable-title">Finance and board reporting</h3><p class="deliverable-copy">Reporting that shows what was spent, what changed, what remains uncertain, and what leadership needs to decide next.</p></div>
-        <div class="deliverable-row"><div class="deliverable-num">03</div><h3 class="deliverable-title">Team and partner direction</h3><p class="deliverable-copy">Clear briefs, expectations, review points, and accountability for internal staff, agencies, and specialist vendors.</p></div>
-        <div class="deliverable-row"><div class="deliverable-num">04</div><h3 class="deliverable-title">Meeting and reporting rhythm</h3><p class="deliverable-copy">A schedule the team can continue, including the meetings, decisions, reports, and ownership required to run the function.</p></div>
+        <div class="deliverable"><div class="deliverable__num">01</div><h3 class="deliverable__title">Priorities and decision register</h3><p class="deliverable__copy">A short, maintained view of the priority work, its owner, the decision needed, and what can wait.</p></div>
+        <div class="deliverable"><div class="deliverable__num">02</div><h3 class="deliverable__title">Finance and board reporting</h3><p class="deliverable__copy">Reporting that shows what was spent, what changed, what remains uncertain, and what leadership needs to decide next.</p></div>
+        <div class="deliverable"><div class="deliverable__num">03</div><h3 class="deliverable__title">Team and partner direction</h3><p class="deliverable__copy">Clear briefs, expectations, review points, and accountability for internal staff, agencies, and specialist vendors.</p></div>
+        <div class="deliverable"><div class="deliverable__num">04</div><h3 class="deliverable__title">Meeting and reporting rhythm</h3><p class="deliverable__copy">A schedule the team can continue, including the meetings, decisions, reports, and ownership required to run the function.</p></div>
       </div>
     </div>
   </section>
 
-  <section class="offer-section">
+  <section class="offer">
     <div class="container">
-      <div class="offer-grid">
+      <div class="offer__grid">
         <div>
-          <p class="offer-label">Monthly retainer, six-month minimum</p>
-          <h2 class="offer-title">Fractional CMO, Financial Services</h2>
-          <p class="offer-copy">This is embedded leadership for an active marketing function. The scope is set around the decisions, team, budget, and executive reporting that need an accountable owner.</p>
-          <div class="produces"><p class="produces-copy">You get one senior operator accountable for priorities, decisions, reporting, and execution.</p></div>
+          <p class="offer__label">Monthly retainer, six-month minimum</p>
+          <h2 class="offer__title">Fractional CMO, Financial Services</h2>
+          <p class="offer__copy">This is embedded leadership for an active marketing function. The scope is set around the decisions, team, budget, and executive reporting that need an accountable owner.</p>
+          <div class="offer__produces"><p class="offer__produces-copy">You get one senior operator accountable for priorities, decisions, reporting, and execution.</p></div>
         </div>
         <div>
-          <div class="input-list-title">Typical starting inputs</div>
-          <div class="input-list">
-            <div class="input-row"><span>01</span><span>The current marketing plan and budget</span></div>
-            <div class="input-row"><span>02</span><span>The team, agency, and vendor roster</span></div>
-            <div class="input-row"><span>03</span><span>Existing executive and board reports</span></div>
-            <div class="input-row"><span>04</span><span>The compliance review process</span></div>
-            <div class="input-row"><span>05</span><span>The decisions and work currently waiting</span></div>
+          <div class="offer__inputs-title">Typical starting inputs</div>
+          <div class="offer__inputs">
+            <div class="offer__input"><span>01</span><span>The current marketing plan and budget</span></div>
+            <div class="offer__input"><span>02</span><span>The team, agency, and vendor roster</span></div>
+            <div class="offer__input"><span>03</span><span>Existing executive and board reports</span></div>
+            <div class="offer__input"><span>04</span><span>The compliance review process</span></div>
+            <div class="offer__input"><span>05</span><span>The decisions and work currently waiting</span></div>
           </div>
         </div>
       </div>
@@ -156,9 +156,9 @@ import OtherDecisions from '../components/OtherDecisions.astro';
   <OtherDecisions current="/fractional-cmo-financial-services" />
   <section class="closing-band">
     <div class="container">
-      <div class="closing-grid">
-        <div><h2 class="display-title closing-title">Bring the current plan and the decision that keeps waiting.</h2><p class="closing-copy">We will decide whether the work needs an embedded leader or a defined project.</p></div>
-        <aside class="call-prep"><div class="call-prep-title">Bring to the call</div><ul><li>The current plan and team structure</li><li>The most urgent unresolved decision</li><li>The executive or board expectation</li></ul><a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a></aside>
+      <div class="closing-band__grid">
+        <div><h2 class="display-title closing-band__title">Bring the current plan and the decision that keeps waiting.</h2><p class="closing-band__copy">We will decide whether the work needs an embedded leader or a defined project.</p></div>
+        <aside class="call-prep"><div class="call-prep__title">Bring to the call</div><ul><li>The current plan and team structure</li><li>The most urgent unresolved decision</li><li>The executive or board expectation</li></ul><a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a></aside>
       </div>
     </div>
   </section>

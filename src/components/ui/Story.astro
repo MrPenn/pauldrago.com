@@ -12,38 +12,38 @@ const LANG = { html: 'HTML', markdown: 'Markdown', yaml: 'Front matter' };
 const H = heading;
 ---
 <section class="ui-story" id={live ? 'build' : `story-${story.id}`} data-story={frameId}>
-  <div class="ui-story-head">
-    {!live && <H class="ui-story-title">{story.name}</H>}
+  <div class="ui-story__head">
+    {!live && <H class="ui-story__title">{story.name}</H>}
     <!-- slop-ok: option-overload (grouped by width, theme and step) -->
-    <div class="ui-toolbar">
-      <div class="ui-seg" role="group" aria-label="Preview width">
+    <div class="ui-story__toolbar">
+      <div class="ui-seg ui-seg--small" role="group" aria-label="Preview width">
         <button type="button" data-width="375" aria-pressed="false">Phone</button>
         <button type="button" data-width="768" aria-pressed="false">Tablet</button>
         <button type="button" data-width="" aria-pressed={story.steps ? 'false' : 'true'}>Full</button>
         <button type="button" data-width="1280" aria-pressed={story.steps ? 'true' : 'false'} title="Rendered at 1280px wide and scaled to fit">Desktop</button>
       </div>
-      <div class="ui-seg" role="group" aria-label="Preview theme">
+      <div class="ui-seg ui-seg--small" role="group" aria-label="Preview theme">
         <button type="button" data-theme="" aria-pressed="true">Auto</button>
         <button type="button" data-theme="light" aria-pressed="false">Light</button>
         <button type="button" data-theme="dark" aria-pressed="false">Dark</button>
       </div>
       {story.steps && (
-        <div class="ui-seg" role="group" aria-label="Step">
+        <div class="ui-seg ui-seg--small" role="group" aria-label="Step">
           {Array.from({ length: story.steps }, (_, i) => <button type="button" data-step={i + 1} aria-pressed={i === 0 ? 'true' : 'false'}>{`Step ${i + 1}`}</button>)}
         </div>
       )}
-      {(story.motion || live) && <div class="ui-seg"><button type="button" data-replay>Replay</button></div>}
-      <a class="ui-open" href={`/ui/frame/${frameId}`} target="_blank" rel="noopener">Open alone</a>
+      {(story.motion || live) && <div class="ui-seg ui-seg--small"><button type="button" data-replay>Replay</button></div>}
+      <a class="ui-story__open" href={`/ui/frame/${frameId}`} target="_blank" rel="noopener">Open alone</a>
     </div>
   </div>
   <div class="ui-canvas">
     <iframe src={`/ui/frame/${frameId}`} title={`${component.name} example: ${story.name}`} loading={live ? 'eager' : 'lazy'} data-live={live ? '' : undefined} data-initial-width={story.steps ? '1280' : undefined}></iframe>
   </div>
   <div class="ui-code">
-    <div class="label ui-code-head">
+    <div class="label ui-code__head">
       <span>{LANG[lang]}</span>
-      <button type="button" class="ui-link-btn" data-copy={codeId}>Copy</button>
-      <span class="ui-copy-msg" role="status"></span>
+      <button type="button" class="ui-link-btn ui-code__copy" data-copy={codeId}>Copy</button>
+      <span class="ui-code__status" role="status"></span>
     </div>
     <pre><code id={codeId} set:html={highlight(code, lang)}></code></pre>
   </div>

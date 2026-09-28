@@ -14,7 +14,7 @@
 
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var wide = window.matchMedia('(width >= 1180px)');
-  var body = document.querySelector('.article-body') || document.body;
+  var body = document.querySelector('.article__body') || document.body;
   // data-pd-arm on the root makes every figure wait for the reader, wherever it sits; the
   // styleguide's frames use it, since each frame starts with its figure at the top.
   var armAll = document.documentElement.hasAttribute('data-pd-arm');
@@ -41,7 +41,7 @@
 
   /* ---------- Org fold: each box heads for the centre, the outer ones first ---------- */
   function aim(fold) {
-    var boxes = fold.querySelectorAll('.pd-org-box');
+    var boxes = fold.querySelectorAll('.pd-org__box');
     var r = fold.getBoundingClientRect();
     var cx = r.left + r.width / 2, cy = r.top + r.height / 2, max = 0, ds = [];
     boxes.forEach(function (b) {
@@ -61,13 +61,13 @@
   /* ---------- Stacked bars: a segment too narrow for its label shows none ---------- */
   function fit(root) {
     root.querySelectorAll('.pd-seg').forEach(function (seg) {
-      var label = seg.querySelector('.pd-seg-label');
+      var label = seg.querySelector('.pd-seg__label');
       var track = seg.parentNode;
       if (!label || !track) return;
       var share = parseFloat(seg.style.width) / 100 || 0;
       // A range's label may run on over its hatching.
       var next = seg.nextElementSibling;
-      if (next && next.classList.contains('pd-seg-range')) share += parseFloat(next.style.width) / 100 || 0;
+      if (next && next.classList.contains('pd-range')) share += parseFloat(next.style.width) / 100 || 0;
       seg.classList.toggle('is-tight', share * track.getBoundingClientRect().width < label.scrollWidth + 18);
     });
   }
@@ -145,7 +145,7 @@
     });
     fig.querySelectorAll('[data-count]').forEach(function (n) {
       var target = +n.getAttribute('data-count');
-      var isAlt = n.closest('.pd-legend-row') && n.closest('.pd-legend-row').querySelector('.pd-swatch.is-ink');
+      var isAlt = n.closest('.pd-legend') && n.closest('.pd-legend').querySelector('.pd-swatch--ink');
       countUp(n, target, isAlt ? alt.length * altPace + 200 : on.length * pace + 200, isAlt ? altStart : start);
     });
   }
@@ -181,15 +181,15 @@
   // sentence show, and "Full note" opens the rest.
   function brief(note, li) {
     if (!li || note.querySelector('[data-note-more]')) return;
-    var num = note.querySelector('.sidenote-num');
+    var num = note.querySelector('.sidenote__num');
     var strong = li.querySelector('strong');
     var text = li.textContent.replace(/\s*\u21a9\s*$/, '').trim();
     if (strong) text = text.replace(strong.textContent, '').trim();
     var m = text.match(/^(.{40,260}?[.!?])(\s|$)/);
     var full = li.innerHTML.replace(/<a[^>]*data-footnote-backref[^>]*>[\s\S]*?<\/a>/g, '').replace(/^\s*<p>/, '').replace(/<\/p>\s*$/, '');
     note.innerHTML = (num ? num.outerHTML : '') + (strong ? '<strong>' + strong.textContent + '</strong> ' : '') +
-      '<span class="pd-note-brief"></span><span class="pd-note-full">' + full + '</span> <button type="button" class="pd-text-btn" data-note-more aria-expanded="false">Full note</button>';
-    note.querySelector('.pd-note-brief').textContent = m ? m[1] : text.slice(0, 200);
+      '<span class="pd-scrolly__note-brief"></span><span class="pd-scrolly__note-full">' + full + '</span> <button type="button" class="pd-text-btn" data-note-more aria-expanded="false">Full note</button>';
+    note.querySelector('.pd-scrolly__note-brief').textContent = m ? m[1] : text.slice(0, 200);
     var more = note.querySelector('[data-note-more]');
     more.addEventListener('click', function () {
       var open = note.classList.toggle('is-open');
@@ -199,8 +199,8 @@
   }
   var sequences = [];
   document.querySelectorAll('[data-pd="scrolly"]').forEach(function (sec) {
-    var steps = Array.prototype.slice.call(sec.querySelectorAll('.pd-step'));
-    var graphic = sec.querySelector('.pd-graphic');
+    var steps = Array.prototype.slice.call(sec.querySelectorAll('.pd-scrolly__step'));
+    var graphic = sec.querySelector('.pd-scrolly__graphic');
     if (!graphic || !steps.length) return;
     var seq = { el: sec, graphic: graphic, active: -1, manual: false };
     sequences.push(seq);
@@ -209,7 +209,7 @@
     fit(graphic);
 
     // Sources cited in a step move under the graphic and appear with their step.
-    var notes = sec.querySelector('.pd-sticky-notes');
+    var notes = sec.querySelector('.pd-scrolly__notes');
     steps.forEach(function (step) {
       step.querySelectorAll('[data-footnote-ref]').forEach(function (ref) {
         var id = (ref.getAttribute('href') || '').replace(/^#/, '');
@@ -239,7 +239,7 @@
       if (seq.manual) return;
       var r = sec.getBoundingClientRect();
       if (r.bottom < 0 || r.top > window.innerHeight) return;
-      var line = wide.matches ? window.innerHeight * 0.5 : (sec.querySelector('.pd-sticky').getBoundingClientRect().bottom + window.innerHeight * 0.14);
+      var line = wide.matches ? window.innerHeight * 0.5 : (sec.querySelector('.pd-scrolly__sticky').getBoundingClientRect().bottom + window.innerHeight * 0.14);
       var n = 0;
       steps.forEach(function (s) { if (s.getBoundingClientRect().top <= line) n = +s.getAttribute('data-step'); });
       seq.set(Math.max(1, n));
@@ -308,7 +308,7 @@
       inputs.forEach(function (el) { var x = parseFloat(el.value); v[el.getAttribute('data-var')] = isFinite(x) && x >= 0 ? x : 0; });
       defs.forEach(function (d) { v[d[0].trim()] = evaluate(d[1], v); });
       outs.forEach(function (o) { o.textContent = format(v[o.getAttribute('data-out')], o.getAttribute('data-format') || 'number'); });
-      calc.querySelectorAll('.pd-bar').forEach(function (bar) {
+      calc.querySelectorAll('.pd-bar--live').forEach(function (bar) {
         var scale = evaluate(bar.getAttribute('data-scale') || 'scale', v) || 1;
         var left = 0;
         bar.querySelectorAll('.pd-seg[data-w]').forEach(function (seg) {
@@ -357,16 +357,16 @@
   function dayName(t) { return new Date(t).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' }); }
   var asofs = [];
   document.querySelectorAll('[data-pd="asof"]').forEach(function (fig) {
-    var range = fig.querySelector('.pd-asof-range');
-    var out = fig.querySelector('.pd-asof-day');
+    var range = fig.querySelector('.pd-slider');
+    var out = fig.querySelector('.pd-asof__day');
     if (!range || !out) return;
     var t0 = day(fig.getAttribute('data-start'));
     var t1 = day(fig.getAttribute('data-end'));
-    var versions = Array.prototype.slice.call(fig.querySelectorAll('.pd-asof-versions li')).map(function (li, i) {
-      return { n: i + 1, f: day(li.getAttribute('data-from')), t: li.getAttribute('data-to') ? day(li.getAttribute('data-to')) : t1, copy: li.querySelector('.pd-asof-copy').innerHTML, meta: li.querySelector('.pd-asof-meta').innerHTML };
+    var versions = Array.prototype.slice.call(fig.querySelectorAll('.pd-asof__versions li')).map(function (li, i) {
+      return { n: i + 1, f: day(li.getAttribute('data-from')), t: li.getAttribute('data-to') ? day(li.getAttribute('data-to')) : t1, copy: li.querySelector('.pd-asof__copy').innerHTML, meta: li.querySelector('.pd-asof__meta').innerHTML };
     });
     if (!versions.length) return;
-    var bands = fig.querySelectorAll('.pd-asof-band');
+    var bands = fig.querySelectorAll('.pd-asof__band');
     var live = fig.querySelector('[data-show="live"]');
     var latest = fig.querySelector('[data-show="latest"]');
     var last = versions[versions.length - 1];
@@ -378,13 +378,13 @@
       range.setAttribute('aria-valuetext', dayName(t));
       bands.forEach(function (b, i) { b.classList.toggle('is-live', i === v.n - 1); });
       if (live) {
-        live.querySelector('.pd-asof-copy').innerHTML = v.copy;
-        live.querySelector('.pd-asof-meta').innerHTML = v.meta;
+        live.querySelector('.pd-asof__copy').innerHTML = v.copy;
+        live.querySelector('.pd-asof__meta').innerHTML = v.meta;
       }
       if (latest) {
         var wrong = v !== last;
         latest.classList.toggle('is-wrong', wrong);
-        var verdict = latest.querySelector('.pd-asof-verdict');
+        var verdict = latest.querySelector('.pd-asof__verdict');
         if (verdict) verdict.textContent = latest.getAttribute(wrong ? 'data-wrong' : 'data-right') || '';
       }
     }
@@ -430,17 +430,17 @@
     clearTimeout(timer);
     timer = setTimeout(function () {
       builds.concat(sequences.map(function (s) { return s.graphic; })).forEach(fit);
-      document.querySelectorAll('.pd-calc .pd-bar').forEach(fit);
-      document.querySelectorAll('.pd-fold').forEach(function (f) { f.querySelectorAll('.pd-org-box').forEach(function (b) { b.style.removeProperty('--dx'); }); aim(f); });
+      document.querySelectorAll('.pd-calc .pd-bar--live').forEach(fit);
+      document.querySelectorAll('.pd-fold').forEach(function (f) { f.querySelectorAll('.pd-org__box').forEach(function (b) { b.style.removeProperty('--dx'); }); aim(f); });
       asofs.forEach(function (f) { if (f.offsetWidth !== f.pdWidth) { f.pdWidth = f.offsetWidth; f.pdSettle(); } });
     }, 150);
   });
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { builds.forEach(fit); document.querySelectorAll('.pd-calc .pd-bar').forEach(fit); sequences.forEach(function (s) { fit(s.graphic); }); asofs.forEach(function (f) { f.pdSettle(); }); });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { builds.forEach(fit); document.querySelectorAll('.pd-calc .pd-bar--live').forEach(fit); sequences.forEach(function (s) { fit(s.graphic); }); asofs.forEach(function (f) { f.pdSettle(); }); });
   // A face that arrives after the first measure (an italic, a late weight) changes line lengths, so
   // the slider's held sizes and the segment labels are measured again whenever one finishes loading.
   window.addEventListener('load', function () { asofs.forEach(function (f) { f.pdSettle(); }); });
   if (document.fonts && document.fonts.addEventListener) {
-    document.fonts.addEventListener('loadingdone', function () { builds.forEach(fit); document.querySelectorAll('.pd-calc .pd-bar').forEach(fit); asofs.forEach(function (f) { f.pdSettle(); }); });
+    document.fonts.addEventListener('loadingdone', function () { builds.forEach(fit); document.querySelectorAll('.pd-calc .pd-bar--live').forEach(fit); asofs.forEach(function (f) { f.pdSettle(); }); });
   }
 
   /* ---------- For the styleguide: replay a figure, or hold a sequence on one step ---------- */
@@ -455,6 +455,6 @@
       sequences.forEach(function (s) { s.manual = true; s.active = -1; s.set(0); setTimeout(function () { s.set(1); }, 60); });
     },
     step: function (n) { sequences.forEach(function (s) { s.manual = true; s.set(n); }); },
-    fit: function () { all('[data-pd="build"], .pd-graphic').forEach(fit); },
+    fit: function () { all('[data-pd="build"], .pd-scrolly__graphic').forEach(fit); },
   };
 })();

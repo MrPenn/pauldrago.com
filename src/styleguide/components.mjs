@@ -7,7 +7,7 @@
 // status: template  - the article template renders it; write front matter or markdown, not HTML
 //         shared    - use in any article
 //         signature - a device that identifies one piece; see SIGNATURE_DEVICES and the spacing rule
-// stories[].wrap: body (inside .article-body, the default) | article (inside the article column,
+// stories[].wrap: body (inside .article__body, the default) | article (inside the article column,
 //         outside the body) | page (the story is the whole article)
 // stories[].motion: the frame's toolbar gets a Replay button; stories[].steps: step buttons.
 import { stack, cols, units, grid, record, asof } from './build.mjs';
@@ -95,14 +95,14 @@ const stepMd = (t) => t.replace(/\{(\d+)\}/g, '[^$1]');
 const citedIn = (steps) => [...new Set(steps.flatMap((t) => [...t.matchAll(/\{(\d+)\}/g)].map((m) => Number(m[1]))))];
 const sequence = ({ label, steps, graphic }, markdown) => [
   `<section class="pd-scrolly" data-pd="scrolly" data-rail="block" aria-label="${label}">`,
-  '<div class="pd-steps">',
-  ...steps.map((t, i) => (markdown ? `<div class="pd-step" data-step="${i + 1}">\n\n${stepMd(t)}\n\n</div>` : `<div class="pd-step" data-step="${i + 1}">\n<p>${stepHtml(t)}</p>\n</div>`)),
+  '<div class="pd-scrolly__steps">',
+  ...steps.map((t, i) => (markdown ? `<div class="pd-scrolly__step" data-step="${i + 1}">\n\n${stepMd(t)}\n\n</div>` : `<div class="pd-scrolly__step" data-step="${i + 1}">\n<p>${stepHtml(t)}</p>\n</div>`)),
   '</div>',
-  '<div class="pd-sticky">',
-  '<div class="pd-graphic">',
+  '<div class="pd-scrolly__sticky">',
+  '<div class="pd-scrolly__graphic">',
   graphic,
   '</div>',
-  '<div class="pd-sticky-notes"></div>',
+  '<div class="pd-scrolly__notes"></div>',
   '</div>',
   '</section>',
   markdown ? `\n${notesMd(citedIn(steps))}` : notesHtml(citedIn(steps)),
@@ -113,18 +113,18 @@ const WAIT = { label: 'The fifteen-year wait', steps: WAIT_STEPS, graphic: cols(
 // Twelve functions, one bank: the front door's third sequence.
 const ORG = [['Marketing', 'owns the brand'], ['Digital', 'owns the app'], ['Retail', 'owns the branches'], ['Deposit Product', 'owns checking'], ['Cards', 'manages debit'], ['Consumer Lending', 'owns loans'], ['Mortgage', 'owns mortgages'], ['Operations', 'handles servicing'], ['IT', 'manages vendors'], ['Finance', 'pricing and margin'], ['Risk', 'sets the limits'], ['Compliance', 'sets the boundaries']];
 const foldGraphic = [
-  '<p class="pd-eyebrow pd-fold-cap" data-at="1" data-until="1">Twelve functions, every one on target</p>',
-  '<p class="pd-eyebrow pd-fold-cap" data-at="2">What the customer sees</p>',
+  '<p class="pd-eyebrow pd-fold__cap" data-at="1" data-until="1">Twelve functions, every one on target</p>',
+  '<p class="pd-eyebrow pd-fold__cap" data-at="2">What the customer sees</p>',
   '<div class="pd-fold" data-at="2">',
   '  <div class="pd-org">',
-  ...ORG.map(([n, o]) => `    <div class="pd-org-box"><span class="pd-org-name">${n}</span><span class="pd-org-owns">${o}</span><span class="label pd-org-status">on target</span></div>`),
+  ...ORG.map(([n, o]) => `    <div class="pd-org__box"><span class="pd-org__name">${n}</span><span class="pd-org__owns">${o}</span><span class="label pd-org__status">on target</span></div>`),
   '  </div>',
-  '  <div class="pd-one">',
+  '  <div class="pd-fold__one">',
   '    <picture>',
   '      <source srcset="/assets/one-coat-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">',
   '      <img src="/assets/one-coat.png" width="883" height="1020" loading="lazy" alt="One long overcoat with a bank crest, many arms doing different things, and twelve pairs of legs in twelve kinds of shoes beneath the hem.">',
   '    </picture>',
-  '    <p class="pd-one-cap">One bank on the outside. Twelve departments inside, each walking its own way.</p>',
+  '    <p class="pd-fold__one-cap">One bank on the outside. Twelve departments inside, each walking its own way.</p>',
   '  </div>',
   '</div>',
 ].join('\n');
@@ -134,12 +134,12 @@ const ORG_STEPS = [
 ];
 const orgSequence = (markdown) => [
   '<section class="pd-scrolly" data-pd="scrolly" data-rail="block" aria-label="Twelve functions, one bank">',
-  '<div class="pd-steps">',
-  `<div class="pd-step" data-step="1">\n${markdown ? `\n${ORG_STEPS[0]}\n` : `<p>${ORG_STEPS[0]}</p>`}\n</div>`,
-  `<div class="pd-step" data-step="2">\n${markdown ? '\n' : ''}${ORG_STEPS[1]}${markdown ? '\n' : ''}\n</div>`,
+  '<div class="pd-scrolly__steps">',
+  `<div class="pd-scrolly__step" data-step="1">\n${markdown ? `\n${ORG_STEPS[0]}\n` : `<p>${ORG_STEPS[0]}</p>`}\n</div>`,
+  `<div class="pd-scrolly__step" data-step="2">\n${markdown ? '\n' : ''}${ORG_STEPS[1]}${markdown ? '\n' : ''}\n</div>`,
   '</div>',
-  '<div class="pd-sticky">',
-  '<div class="pd-graphic">',
+  '<div class="pd-scrolly__sticky">',
+  '<div class="pd-scrolly__graphic">',
   foldGraphic,
   '</div>',
   '</div>',
@@ -173,20 +173,20 @@ export const SHARES_DEMO = {
 const CALLBACK = { variant: 'callback', total: 100, on: 0, alt: 4, altFrom: 44, caption: 'Four of every 100 new checking accounts went to community banks.' };
 
 const calcHtml = `<figure class="pd-figure pd-calc" data-pd="calc" data-rail="block" data-define="spread = bal * nim / 100; ic = txn * 12 * fee; total = round(spread) + round(ic); months = cac / (total / 12); scale = max(total, cac) * 1.12">
-  <div class="pd-calc-head">
-    <p class="pd-calc-title">Run your bank's numbers</p>
-    <p class="pd-calc-lede">The five fields hold the public figures from the sequence above. Type over any of them and everything below the line recalculates.</p>
+  <div class="pd-calc__head">
+    <p class="pd-calc__title">Run your bank's numbers</p>
+    <p class="pd-calc__lede">The five fields hold the public figures from the sequence above. Type over any of them and everything below the line recalculates.</p>
   </div>
-  <div class="pd-calc-inputs">
-    <label class="pd-field"><span class="label">Average checking balance</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" data-var="bal" type="number" inputmode="decimal" value="5400" min="0" step="100"></span><span class="pd-field-src">SCF median, under 35</span></label>
-    <label class="pd-field"><span class="label">Net interest margin</span><span class="pd-input-wrap"><input class="pd-input" data-var="nim" type="number" inputmode="decimal" value="3.81" min="0" step="0.01"><span class="pd-affix">%</span></span><span class="pd-field-src">FDIC, community banks, Q2 2026</span></label>
-    <label class="pd-field"><span class="label">Debit transactions a month</span><span class="pd-input-wrap"><input class="pd-input" data-var="txn" type="number" inputmode="decimal" value="34.6" min="0" step="0.1"></span><span class="pd-field-src">PULSE, active cards</span></label>
-    <label class="pd-field"><span class="label">Interchange per transaction</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" data-var="fee" type="number" inputmode="decimal" value="0.51" min="0" step="0.01"></span><span class="pd-field-src">Fed Reg II, exempt issuers</span></label>
-    <label class="pd-field"><span class="label">Cost to acquire one account</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" data-var="cac" type="number" inputmode="decimal" value="350" min="0" step="10"></span><span class="pd-field-src">Digital Onboarding, 2021</span></label>
+  <div class="pd-calc__inputs">
+    <label class="pd-field"><span class="label pd-field__label">Average checking balance</span><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" data-var="bal" type="number" inputmode="decimal" value="5400" min="0" step="100"></span><span class="pd-field__src">SCF median, under 35</span></label>
+    <label class="pd-field"><span class="label pd-field__label">Net interest margin</span><span class="pd-input"><input class="pd-input__field" data-var="nim" type="number" inputmode="decimal" value="3.81" min="0" step="0.01"><span class="pd-input__affix">%</span></span><span class="pd-field__src">FDIC, community banks, Q2 2026</span></label>
+    <label class="pd-field"><span class="label pd-field__label">Debit transactions a month</span><span class="pd-input"><input class="pd-input__field" data-var="txn" type="number" inputmode="decimal" value="34.6" min="0" step="0.1"></span><span class="pd-field__src">PULSE, active cards</span></label>
+    <label class="pd-field"><span class="label pd-field__label">Interchange per transaction</span><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" data-var="fee" type="number" inputmode="decimal" value="0.51" min="0" step="0.01"></span><span class="pd-field__src">Fed Reg II, exempt issuers</span></label>
+    <label class="pd-field"><span class="label pd-field__label">Cost to acquire one account</span><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" data-var="cac" type="number" inputmode="decimal" value="350" min="0" step="10"></span><span class="pd-field__src">Digital Onboarding, 2021</span></label>
   </div>
-  <div class="pd-calc-row">
+  <div class="pd-calc__row">
     <div>
-      <p class="label">Interchange regime</p>
+      <p class="label pd-calc__label">Interchange regime</p>
       <div class="pd-toggle" role="group" aria-label="Interchange regime">
         <button type="button" class="label pd-toggle-btn is-on" data-set="fee=0.51" aria-pressed="true">Under $10B, exempt ($0.51)</button>
         <button type="button" class="label pd-toggle-btn" data-set="fee=0.23" aria-pressed="false">Over $10B, capped ($0.23)</button>
@@ -194,19 +194,19 @@ const calcHtml = `<figure class="pd-figure pd-calc" data-pd="calc" data-rail="bl
     </div>
     <button type="button" class="pd-text-btn" data-reset hidden>Reset to the public figures</button>
   </div>
-  <div class="pd-bar" data-scale="scale" aria-hidden="true">
-    <div class="pd-stack-track">
+  <div class="pd-bar pd-bar--live" data-scale="scale" aria-hidden="true">
+    <div class="pd-bar__track">
       <div class="pd-seg" data-w="spread"></div>
-      <div class="pd-seg is-accent" data-w="ic"></div>
-      <div class="pd-mark" data-x="cac"><span class="label">acquisition cost</span></div>
+      <div class="pd-seg pd-seg--accent" data-w="ic"></div>
+      <div class="pd-mark" data-x="cac"><span class="label pd-mark__label">acquisition cost</span></div>
     </div>
-    <p class="pd-key"><span><i class="pd-swatch is-ink"></i>Deposit spread</span><span><i class="pd-swatch is-accent"></i>Interchange</span></p>
+    <p class="pd-key"><span class="pd-key__item"><i class="pd-swatch pd-swatch--ink"></i>Deposit spread</span><span class="pd-key__item"><i class="pd-swatch pd-swatch--accent"></i>Interchange</span></p>
   </div>
   <div class="pd-ledger">
-    <div class="pd-ledger-row"><span class="pd-ledger-label">Deposit spread <span class="pd-ledger-src">balance x NIM</span></span><span class="pd-num pd-ledger-value" data-out="spread" data-format="money">$206</span></div>
-    <div class="pd-ledger-row"><span class="pd-ledger-label">Interchange, gross <span class="pd-ledger-src">transactions x 12 x fee</span></span><span class="pd-num pd-ledger-value" data-out="ic" data-format="money">$212</span></div>
-    <div class="pd-ledger-row pd-ledger-total"><span class="pd-ledger-label">A year of checking, before any loan</span><span class="pd-num is-l pd-ledger-value" data-out="total" data-format="money" aria-live="polite">$418</span></div>
-    <div class="pd-ledger-row"><span class="pd-ledger-label">Payback on the acquisition cost</span><span class="pd-num pd-ledger-value" data-out="months" data-format="months" aria-live="polite">11 months</span></div>
+    <div class="pd-ledger__row"><span class="pd-ledger__label">Deposit spread <span class="pd-ledger__src">balance x NIM</span></span><span class="pd-num pd-ledger__value" data-out="spread" data-format="money">$206</span></div>
+    <div class="pd-ledger__row"><span class="pd-ledger__label">Interchange, gross <span class="pd-ledger__src">transactions x 12 x fee</span></span><span class="pd-num pd-ledger__value" data-out="ic" data-format="money">$212</span></div>
+    <div class="pd-ledger__row pd-ledger__row--total"><span class="pd-ledger__label">A year of checking, before any loan</span><span class="pd-num pd-num--l pd-ledger__value" data-out="total" data-format="money" aria-live="polite">$418</span></div>
+    <div class="pd-ledger__row"><span class="pd-ledger__label">Payback on the acquisition cost</span><span class="pd-num pd-ledger__value" data-out="months" data-format="months" aria-live="polite">11 months</span></div>
   </div>
   <figcaption>Gross figures, before servicing, fraud and network costs. Switch the interchange regime to see what the same customer is worth at a bank over $10 billion.</figcaption>
 </figure>`;
@@ -217,15 +217,15 @@ const foldLines = calcHtml.split('\n').filter((l) => FOLD_FIELDS.some((v) => l.i
 const calcFoldHtml = calcHtml
   .split('\n').filter((l) => !foldLines.includes(l)).join('\n')
   .replace('The five fields hold the public figures from the sequence above.', 'The three fields hold the public figures from the sequence above, and the other two sit in the fold.')
-  .replace('  <div class="pd-calc-row">', [
-    '  <details class="pd-calc-more">',
+  .replace('  <div class="pd-calc__row">', [
+    '  <details class="pd-calc__more">',
     '    <summary>Change the other 2 numbers</summary>',
-    '    <div class="pd-calc-inputs is-more">',
-    '      <p class="label">Interchange and acquisition</p>',
+    '    <div class="pd-calc__inputs pd-calc__inputs--more">',
+    '      <p class="label pd-calc__group">Interchange and acquisition</p>',
     ...foldLines.map((l) => `    ${l}`),
     '    </div>',
     '  </details>',
-    '  <div class="pd-calc-row">',
+    '  <div class="pd-calc__row">',
   ].join('\n'));
 
 // The H2C fine from "Your Content Has No Parent".
@@ -258,16 +258,16 @@ export const ASOF_DEMO = {
 
 // The layout grid, drawn with the real containers so it is true at whatever width the frame is.
 const GRID_HTML = `<div class="ui-grid">
-  <p class="ui-grid-now">At this width: <strong class="ui-grid-bp"></strong></p>
-  <div class="container ui-grid-band ui-grid-site"><span class="ui-grid-tag">Page container: 1240px, gutters 32px (20px below 760)</span></div>
+  <p class="ui-grid__now">At this width: <strong class="ui-grid__step"></strong></p>
+  <div class="container ui-grid__band ui-grid__band--site"><span class="ui-grid__tag">Page container: 1240px, gutters 32px (20px below 760)</span></div>
   <div class="article">
-    <div class="container ui-grid-band ui-grid-art">
-      <span class="ui-grid-tag">Article container: 1060px</span>
-      <div class="article-body ui-grid-band ui-grid-col">
-        <span class="ui-grid-tag">Reading column: 62 characters. Kit components answer to this width.</span>
-        <p class="ui-grid-compact">The column is under 560px, so kit components here take their compact form.</p>
-        <div class="ui-grid-band ui-grid-wide"><span class="ui-grid-tag">A calculator: the column, then the article container at 1040 and up</span></div>
-        <div class="ui-grid-rail"><span class="ui-grid-tag">Source notes: 1180 and up</span></div>
+    <div class="container ui-grid__band ui-grid__band--article">
+      <span class="ui-grid__tag">Article container: 1060px</span>
+      <div class="article__body ui-grid__band ui-grid__band--column">
+        <span class="ui-grid__tag">Reading column: 62 characters. Kit components answer to this width.</span>
+        <p class="ui-grid__compact">The column is under 560px, so kit components here take their compact form.</p>
+        <div class="ui-grid__band ui-grid__band--wide"><span class="ui-grid__tag">A calculator: the column, then the article container at 1040 and up</span></div>
+        <div class="ui-grid__rail"><span class="ui-grid__tag">Source notes: 1180 and up</span></div>
       </div>
     </div>
   </div>
@@ -292,9 +292,9 @@ export const TYPE_SCALE = [
   { step: 10, px: 124, face: 'serif', sample: '“', roles: 'The pull quote\'s opening mark.' },
 ];
 export const stepName = (n) => `--step-${n < 0 ? '-' + Math.abs(n) : n}`;
-const stepClass = (n) => `ui-step-${n < 0 ? 'm' + Math.abs(n) : n}`;
+const stepClass = (n) => `ui-scale__sample--step-${n < 0 ? 'm' + Math.abs(n) : n}`;
 // Every step at its size, in the face its main role uses.
-const SCALE_HTML = `<div class="ui-scale">\n${TYPE_SCALE.map((t) => `  <div class="ui-scale-row"><span class="label">Step ${t.step < 0 ? '−' + Math.abs(t.step) : t.step}, ${t.px}px</span><span class="ui-scale-sample ui-scale-${t.face} ${stepClass(t.step)}">${t.sample}</span></div>`).join('\n')}\n</div>`;
+const SCALE_HTML = `<div class="ui-scale">\n${TYPE_SCALE.map((t) => `  <div class="ui-scale__row"><span class="label">Step ${t.step < 0 ? '−' + Math.abs(t.step) : t.step}, ${t.px}px</span><span class="ui-scale__sample ui-scale__sample--${t.face} ${stepClass(t.step)}">${t.sample}</span></div>`).join('\n')}\n</div>`;
 
 // The layout grid. The page changes layout at four widths, and nowhere else; the linter holds every
 // media query to them. Components answer to the column they sit in (container queries), so their
@@ -376,12 +376,12 @@ export const COMPONENTS = [
     avoid: ['Opening on a figure or a heading. The piece starts with a sentence.'],
     rules: ['The opening paragraph states the situation the piece starts from, in two or three sentences.'],
     a11y: ['The drop cap is a style on the first letter; the text reads normally.'],
-    classes: ['article-lede'],
+    classes: ['article__lede'],
     lint: [],
     stories: [{
       id: 'opening',
       name: 'The opening paragraph',
-      html: `<p class="article-lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket. Add mobile deposit, card controls, digital wallets, person-to-person payments and a better app, and the trip to the branch stops being a reason to choose someone else.</p>`,
+      html: `<p class="article__lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket. Add mobile deposit, card controls, digital wallets, person-to-person payments and a better app, and the trip to the branch stops being a reason to choose someone else.</p>`,
       code: `For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket.`,
       lang: 'markdown',
     }],
@@ -408,11 +408,11 @@ export const COMPONENTS = [
     summary: 'Small capitals in the sans face: 14px, semibold and tracked. The one label on the site, in the secondary colour or, with accent, in the accent.',
     use: ['Naming something in a few words: a bar, a field, a speaker, a group of fields, an answer, a line to clear, the kicker over a title.', 'Over a figure, in the accent, it is the eyebrow.'],
     avoid: ['A sentence. A label names; a sentence goes in a caption or a note.', 'A label style of its own. Add the class, and let the component set only its colour, margin and position.'],
-    rules: ['`class="label"`, and `class="label accent"` for the accent.', 'A component never sets a label\'s size, weight, tracking or case.', 'Sentence case in the source; the style sets the capitals.', 'Markdown table headers and the eyebrow take the same style from the stylesheet, since neither carries the class.'],
+    rules: ['`class="label"`, and `class="label label--accent"` for the accent.', 'A component never sets a label\'s size, weight, tracking or case.', 'Sentence case in the source; the style sets the capitals.', 'Markdown table headers and the eyebrow take the same style from the stylesheet, since neither carries the class.'],
     a11y: ['The capitals come from the stylesheet, so a screen reader reads words, not letters.', 'At 14px it is the smallest text on the page, so it keeps its colour at full strength, never faded.'],
-    classes: ['label', 'accent'],
+    classes: ['label', 'label--accent'],
     lint: ['type-scale'],
-    stories: [{ id: 'colours', name: 'In the secondary colour and in the accent', html: `<p class="label">Average checking balance</p>\n<p class="label accent">One primary checking customer, one year</p>` }],
+    stories: [{ id: 'colours', name: 'In the secondary colour and in the accent', html: `<p class="label">Average checking balance</p>\n<p class="label label--accent">One primary checking customer, one year</p>` }],
   },
   {
     id: 'eyebrow',
@@ -479,11 +479,11 @@ export const COMPONENTS = [
     summary: 'A figure in Archivo Black with even-width numerals, in four sizes: beside a label, in a row, a total, and the number a figure leads with.',
     use: ['Every number a figure prints in the display face: a bar\'s value, ledger values and totals, legend counts, the day on an as-of slider, the number a figure leads with.'],
     avoid: ['Numbers in running text. They stay in the body face.', 'A size of its own. Pick one of the four.'],
-    rules: ['`class="pd-num"` for a number in a row (29px). Add is-s beside a label (24px), is-l for a total or a count (41px), is-xl for the number a figure leads with (60px).', 'In a column narrower than 560px each size takes the step below: 24, 24, 29 and 41.', 'A component sets a number\'s colour and alignment, never its size.', 'The numerals are even width, so values in a column line up and a total that changes as the reader types does not jump.', 'The decisions\' numerals are the same number, drawn by the stylesheet.'],
+    rules: ['`class="pd-num"` for a number in a row (29px). Add pd-num--s beside a label (24px), pd-num--l for a total or a count (41px), pd-num--xl for the number a figure leads with (60px).', 'In a column narrower than 560px each size takes the step below: 24, 24, 29 and 41.', 'A component sets a number\'s colour and alignment, never its size.', 'The numerals are even width, so values in a column line up and a total that changes as the reader types does not jump.', 'The decisions\' numerals are the same number, drawn by the stylesheet.'],
     a11y: ['A number that changes as the reader types carries aria-live where it is the result.'],
-    classes: ['pd-num'],
+    classes: ['pd-num', 'pd-num--s', 'pd-num--l', 'pd-num--xl'],
     lint: ['type-scale'],
-    stories: [{ id: 'sizes', name: 'The four sizes', html: `<div class="ui-specimens">\n  <div><span class="pd-num is-xl">$5,400</span><p class="label">is-xl: the number a figure leads with</p></div>\n  <div><span class="pd-num is-l">$418</span><p class="label">is-l: a total or a count</p></div>\n  <div><span class="pd-num">$206</span><p class="label">A number in a row</p></div>\n  <div><span class="pd-num is-s">$350</span><p class="label">is-s: beside a label</p></div>\n</div>` }],
+    stories: [{ id: 'sizes', name: 'The four sizes', html: `<div class="ui-specimens">\n  <div class="ui-specimens__item"><span class="pd-num pd-num--xl">$5,400</span><p class="label ui-specimens__name">pd-num--xl: the number a figure leads with</p></div>\n  <div class="ui-specimens__item"><span class="pd-num pd-num--l">$418</span><p class="label ui-specimens__name">pd-num--l: a total or a count</p></div>\n  <div class="ui-specimens__item"><span class="pd-num">$206</span><p class="label ui-specimens__name">A number in a row</p></div>\n  <div class="ui-specimens__item"><span class="pd-num pd-num--s">$350</span><p class="label ui-specimens__name">pd-num--s: beside a label</p></div>\n</div>` }],
   },
   {
     id: 'swatch',
@@ -493,11 +493,11 @@ export const COMPONENTS = [
     summary: 'A 12px square that keys a colour: ink, the accent, or empty with a hairline for the rest.',
     use: ['In a key or a legend, beside the name of what the colour marks.'],
     avoid: ['A colour with no name beside it.'],
-    rules: ['`<i class="pd-swatch is-accent"></i>`, is-ink, or no modifier for the empty square.', 'Its fill matches the marks it keys: accent for accent segments and squares, ink for ink ones.'],
+    rules: ['`<i class="pd-swatch pd-swatch--accent"></i>`, pd-swatch--ink, or no modifier for the empty square.', 'Its fill matches the marks it keys: accent for accent segments and squares, ink for ink ones.'],
     a11y: ['Decorative: the name beside it carries the meaning.', 'In forced-colours mode it takes the same system colours as the marks it keys.'],
-    classes: ['pd-swatch'],
+    classes: ['pd-swatch', 'pd-swatch--ink', 'pd-swatch--accent'],
     lint: [],
-    stories: [{ id: 'three', name: 'Ink, accent and empty', html: `<p class="ui-row"><i class="pd-swatch is-ink"></i> <i class="pd-swatch is-accent"></i> <i class="pd-swatch"></i></p>` }],
+    stories: [{ id: 'three', name: 'Ink, accent and empty', html: `<p class="ui-frame__row"><i class="pd-swatch pd-swatch--ink"></i> <i class="pd-swatch pd-swatch--accent"></i> <i class="pd-swatch"></i></p>` }],
   },
   {
     id: 'unit-square',
@@ -511,7 +511,7 @@ export const COMPONENTS = [
     a11y: ['The squares are aria-hidden; the figure\'s number and sentence carry the reading.', 'In forced-colours mode the two fills take two system colours.'],
     classes: ['pd-cell'],
     lint: ['units-count'],
-    stories: [{ id: 'states', name: 'Accent, ink and empty', html: `<div class="pd-units-cells" data-cols="10" aria-hidden="true">${'<i class="pd-cell is-on"></i>'.repeat(4)}${'<i class="pd-cell is-alt"></i>'.repeat(2)}${'<i class="pd-cell"></i>'.repeat(4)}</div>` }],
+    stories: [{ id: 'states', name: 'Accent, ink and empty', html: `<div class="pd-units__cells" data-cols="10" aria-hidden="true">${'<i class="pd-cell is-on"></i>'.repeat(4)}${'<i class="pd-cell is-alt"></i>'.repeat(2)}${'<i class="pd-cell"></i>'.repeat(4)}</div>` }],
   },
   {
     id: 'segment',
@@ -521,11 +521,11 @@ export const COMPONENTS = [
     summary: 'One part of a bar, in ink or the accent: solid, outlined for a figure the text doubts, or hatched for a range, with its value inside when there is room.',
     use: ['Inside a bar row\'s track, one per part.'],
     avoid: ['More than three in a bar; the labels stop fitting.'],
-    rules: ['`<div class="pd-seg" style="left:…;width:…">`. Position and width are the one inline style, and the builders compute them.', 'is-accent for the part the sentence is about; is-outline for a figure the text doubts.', 'A range runs on from the last segment to its high end, hatched: pd-seg-range.', 'The value inside (pd-seg-label) is 14px bold. A segment too narrow for it hides it (is-tight), and the ledger carries the number.'],
+    rules: ['`<div class="pd-seg" style="left:…;width:…">`. Position and width are the one inline style, and the builders compute them.', 'pd-seg--accent for the part the sentence is about; pd-seg--outline for a figure the text doubts.', 'A range runs on from the last segment to its high end, hatched: pd-range.', 'The value inside (pd-seg__label) is 14px bold. A segment too narrow for it hides it (the script sets is-tight), and the ledger carries the number.'],
     a11y: ['Every value a segment shows is printed in the bar row or the ledger as well.'],
-    classes: ['pd-seg', 'pd-seg-label', 'pd-seg-word', 'pd-seg-range'],
+    classes: ['pd-seg', 'pd-seg--accent', 'pd-seg--outline', 'pd-seg__label', 'pd-seg__word', 'pd-range', 'pd-range--accent'],
     lint: ['stack-scale', 'inline-style'],
-    stories: [{ id: 'kinds', name: 'Ink, accent and a range', html: `<div class="pd-stack-track">\n  <div class="pd-seg" style="left:0.0%;width:42.0%"><span class="pd-seg-label"><span class="pd-seg-word">spread </span>$206</span></div>\n  <div class="pd-seg is-accent" style="left:42.0%;width:43.2%"><span class="pd-seg-label"><span class="pd-seg-word">interchange </span>$212</span></div>\n  <div class="pd-seg-range is-accent" style="left:85.2%;width:10.0%"></div>\n</div>` }],
+    stories: [{ id: 'kinds', name: 'Ink, accent and a range', html: `<div class="pd-bar__track">\n  <div class="pd-seg" style="left:0.0%;width:42.0%"><span class="pd-seg__label"><span class="pd-seg__word">spread </span>$206</span></div>\n  <div class="pd-seg pd-seg--accent" style="left:42.0%;width:43.2%"><span class="pd-seg__label"><span class="pd-seg__word">interchange </span>$212</span></div>\n  <div class="pd-range pd-range--accent" style="left:85.2%;width:10.0%"></div>\n</div>` }],
   },
   {
     id: 'mark',
@@ -535,11 +535,11 @@ export const COMPONENTS = [
     summary: 'A vertical line across a bar at the amount its total has to clear, named by a label under the bar.',
     use: ['A cost, a target or a threshold the parts are measured against: "$350 to acquire".'],
     avoid: ['More than one on a bar.'],
-    rules: ['`<div class="pd-mark" style="left:…"><span class="label">$350 to acquire</span></div>`, inside the track.', 'It sits on the bar\'s scale, and the linter checks it.', 'The label hangs under the line, set to the left of it, or to the right (is-left) when the line falls in the first 40% of the bar.', 'It arrives at its own step, after the parts it is measured against.'],
+    rules: ['`<div class="pd-mark" style="left:…"><span class="label pd-mark__label">$350 to acquire</span></div>`, inside the track.', 'It sits on the bar\'s scale, and the linter checks it.', 'The label hangs under the line, set to the left of it, or to the right (pd-mark--left) when the line falls in the first 40% of the bar.', 'It arrives at its own step, after the parts it is measured against.'],
     a11y: ['The label is text, and the amount is in the ledger or the note under the bar as well.'],
-    classes: ['pd-mark'],
+    classes: ['pd-mark', 'pd-mark--left', 'pd-mark__label'],
     lint: ['stack-scale'],
-    stories: [{ id: 'cost', name: 'Across a bar', html: `<div class="pd-stack-track">\n  <div class="pd-seg" style="left:0.0%;width:44.0%"></div>\n  <div class="pd-seg is-accent" style="left:44.0%;width:45.3%"></div>\n  <div class="pd-mark" style="left:74.8%"><span class="label">$350 to acquire</span></div>\n</div>` }],
+    stories: [{ id: 'cost', name: 'Across a bar', html: `<div class="pd-bar__track">\n  <div class="pd-seg" style="left:0.0%;width:44.0%"></div>\n  <div class="pd-seg pd-seg--accent" style="left:44.0%;width:45.3%"></div>\n  <div class="pd-mark" style="left:74.8%"><span class="label pd-mark__label">$350 to acquire</span></div>\n</div>` }],
   },
   {
     id: 'button',
@@ -551,14 +551,14 @@ export const COMPONENTS = [
     avoid: ['Inside the body. The closing booking line is a link.'],
     rules: ['Square corners.', 'The label says what happens: "Book a call".', 'Keep the Cal.com data attributes so the booking opens in place.'],
     a11y: ['44px tall on phones; a 3px focus ring in the ink colour.'],
-    classes: ['btn', 'btn-small'],
+    classes: ['btn', 'btn--small'],
     lint: [],
     stories: [{
       id: 'sizes',
       name: 'Header and author box sizes',
       wrap: 'article',
-      html: `<p class="ui-row"><a class="btn" href="${BOOKING}" ${CAL}>Book a call</a> <a class="btn btn-small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a></p>`,
-      code: `<a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n<a class="btn btn-small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a>`,
+      html: `<p class="ui-frame__row"><a class="btn" href="${BOOKING}" ${CAL}>Book a call</a> <a class="btn btn--small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a></p>`,
+      code: `<a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n<a class="btn btn--small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a>`,
     }],
   },
   {
@@ -573,7 +573,7 @@ export const COMPONENTS = [
     a11y: ['A real button, so it takes focus and answers Enter and Space; a 3px focus ring in the accent.', 'One that opens something carries aria-expanded.'],
     classes: ['pd-text-btn'],
     lint: [],
-    stories: [{ id: 'two', name: 'Reset and full note', html: `<p class="ui-row"><button type="button" class="pd-text-btn">Reset to the public figures</button> <button type="button" class="pd-text-btn" aria-expanded="false">Full note</button></p>` }],
+    stories: [{ id: 'two', name: 'Reset and full note', html: `<p class="ui-frame__row"><button type="button" class="pd-text-btn">Reset to the public figures</button> <button type="button" class="pd-text-btn" aria-expanded="false">Full note</button></p>` }],
   },
   {
     id: 'toggle-button',
@@ -587,7 +587,7 @@ export const COMPONENTS = [
     a11y: ['aria-pressed says which case is in force.', '44px tall, with a 3px focus ring in ink.'],
     classes: ['pd-toggle-btn'],
     lint: [],
-    stories: [{ id: 'states', name: 'In force and not', html: `<p class="ui-row"><button type="button" class="label pd-toggle-btn is-on" aria-pressed="true">Under $10B, exempt ($0.51)</button> <button type="button" class="label pd-toggle-btn" aria-pressed="false">Over $10B, capped ($0.23)</button></p>` }],
+    stories: [{ id: 'states', name: 'In force and not', html: `<p class="ui-frame__row"><button type="button" class="label pd-toggle-btn is-on" aria-pressed="true">Under $10B, exempt ($0.51)</button> <button type="button" class="label pd-toggle-btn" aria-pressed="false">Over $10B, capped ($0.23)</button></p>` }],
   },
   {
     id: 'number-input',
@@ -597,11 +597,11 @@ export const COMPONENTS = [
     summary: 'A boxed number field with its unit inside the box, in the accent: $ before the number, % after it.',
     use: ['Inside a field.'],
     avoid: ['Text. The kit\'s inputs take numbers.'],
-    rules: ['`<span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" type="number" inputmode="decimal"></span>`', 'The number is 24px semibold, 20px in a narrow column.', 'The browser\'s spin buttons are hidden; the reader types.'],
+    rules: ['`<span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" type="number" inputmode="decimal"></span>`', 'The number is 24px semibold, 20px in a narrow column.', 'The browser\'s spin buttons are hidden; the reader types.'],
     a11y: ['The box border turns accent on focus, with a 3px ring in ink.', 'inputmode="decimal" brings up the number pad on phones.'],
-    classes: ['pd-input-wrap', 'pd-input', 'pd-affix'],
+    classes: ['pd-input', 'pd-input__field', 'pd-input__affix'],
     lint: [],
-    stories: [{ id: 'units', name: 'Dollars and percent', html: `<p class="ui-row"><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" type="number" inputmode="decimal" value="5400" aria-label="Average checking balance"></span> <span class="pd-input-wrap"><input class="pd-input" type="number" inputmode="decimal" value="3.81" aria-label="Net interest margin"><span class="pd-affix">%</span></span></p>` }],
+    stories: [{ id: 'units', name: 'Dollars and percent', html: `<p class="ui-frame__row"><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" type="number" inputmode="decimal" value="5400" aria-label="Average checking balance"></span> <span class="pd-input"><input class="pd-input__field" type="number" inputmode="decimal" value="3.81" aria-label="Net interest margin"><span class="pd-input__affix">%</span></span></p>` }],
   },
   {
     id: 'slider',
@@ -611,11 +611,11 @@ export const COMPONENTS = [
     summary: 'A range input in ink, the full width of its figure, that picks a day along a strip.',
     use: ['Under a strip of versions, to pick the day an as-of slider shows.'],
     avoid: ['An exact number. Use a number input.'],
-    rules: ['`<input class="pd-asof-range" type="range">` with an aria-label that names what it picks.', 'Ink, so the accent marks only the result.', 'It ships hidden and holds its line until the script is ready.'],
+    rules: ['`<input class="pd-slider" type="range">` with an aria-label that names what it picks.', 'Ink, so the accent marks only the result.', 'It ships hidden and holds its line until the script is ready.'],
     a11y: ['A native range input: the arrow keys move it a step, and it announces its value.'],
-    classes: ['pd-asof-range'],
+    classes: ['pd-slider'],
     lint: [],
-    stories: [{ id: 'day', name: 'Picking a day', html: `<input class="pd-asof-range" type="range" min="0" max="176" step="1" value="68" aria-label="Day the customer saw the disclosure">` }],
+    stories: [{ id: 'day', name: 'Picking a day', html: `<input class="pd-slider" type="range" min="0" max="176" step="1" value="68" aria-label="Day the customer saw the disclosure">` }],
   },
   {
     id: 'data-mark',
@@ -647,14 +647,14 @@ export const COMPONENTS = [
     avoid: ['A percentage or a time-left counter.'],
     rules: ['2px wide, 16px from the left edge, the accent at 12% for the empty rail and full strength for the fill.', 'Driven by a scroll timeline where the browser has one, and by a scroll listener in article.js where it does not.', 'Hidden on phones.'],
     a11y: ['Decorative and aria-hidden.'],
-    classes: ['trace-rail', 'trace-fill'],
+    classes: ['trace-rail', 'trace-rail__fill'],
     lint: [],
     stories: [{
       id: 'rail',
       name: 'Two fifths of the way down',
       wrap: 'page',
-      html: `<div class="ui-rail-demo"><div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div></div>`,
-      code: `<!-- src/layouts/Base.astro draws it; site-shell.css styles it. -->\n<div class="trace-rail" aria-hidden="true"><div class="trace-fill"></div></div>`,
+      html: `<div class="ui-rail-demo"><div class="trace-rail" aria-hidden="true"><div class="trace-rail__fill"></div></div></div>`,
+      code: `<!-- src/layouts/Base.astro draws it; site-shell.css styles it. -->\n<div class="trace-rail" aria-hidden="true"><div class="trace-rail__fill"></div></div>`,
     }],
   },
 
@@ -711,13 +711,13 @@ export const COMPONENTS = [
     status: 'shared',
     summary: 'The number a figure leads with and the sentence it belongs to. The sentence sits beside the number and wraps under it when the column has no room.',
     use: ['Leading a unit stat, a stacked bar or a record.'],
-    avoid: ['Two in one figure.', 'A figure with no number to lead with. Say what its bars count under the eyebrow instead, with pd-stack-sub.'],
-    rules: ['`<div class="pd-head"><span class="pd-num is-xl">95%</span><span class="pd-head-text">of consumers rate their bank\'s app good or better.</span></div>`', 'The sentence starts where the number leaves off, in the body face at 20px, 17px in a narrow column.', 'A record puts the record\'s own words under the sentence, inside pd-head-text.'],
+    avoid: ['Two in one figure.', 'A figure with no number to lead with. Say what its bars count under the eyebrow instead, with pd-stack__sub.'],
+    rules: ['`<div class="pd-head"><span class="pd-num pd-num--xl">95%</span><span class="pd-head__text">of consumers rate their bank\'s app good or better.</span></div>`', 'The sentence starts where the number leaves off, in the body face at 20px, 17px in a narrow column.', 'A record puts the record\'s own words under the sentence, inside pd-head__text.'],
     a11y: ['The number and the sentence read in order, as one statement.'],
-    classes: ['pd-head', 'pd-head-text'],
+    classes: ['pd-head', 'pd-head__text'],
     parts: ['number'],
     lint: [],
-    stories: [{ id: 'balance', name: 'A number and its sentence', html: `<div class="pd-head"><span class="pd-num is-xl">$5,400</span><span class="pd-head-text">median transaction balance, under 35</span></div>` }],
+    stories: [{ id: 'balance', name: 'A number and its sentence', html: `<div class="pd-head"><span class="pd-num pd-num--xl">$5,400</span><span class="pd-head__text">median transaction balance, under 35</span></div>` }],
   },
   {
     id: 'bar-row',
@@ -727,9 +727,9 @@ export const COMPONENTS = [
     summary: 'One bar: its name as a label, its value as a number at the end of the line, and a track that holds its segments and any line to clear.',
     use: ['Every bar in a stacked bar and in a calculator.'],
     avoid: ['A bar on a scale of its own. Every bar in a figure shares one.'],
-    rules: ['`<div class="pd-stack-bar">` in a stacked bar; `<div class="pd-bar">` in a calculator, where the script sets the widths.', 'The name can carry a second line that says what the bar counts (pd-stack-what).', 'The value prints once, at the end of the name line, as a number (is-s).', 'Build it with the stacked bar controls so the widths are right.'],
+    rules: ['`<div class="pd-bar">` in a stacked bar; `<div class="pd-bar pd-bar--live">` in a calculator, where the script sets the widths.', 'The name can carry a second line that says what the bar counts (pd-bar__what).', 'The value prints once, at the end of the name line, as a number (pd-num--s).', 'Build it with the stacked bar controls so the widths are right.'],
     a11y: ['The name and the value are text, so the bar reads without its track.'],
-    classes: ['pd-stack-bar', 'pd-stack-head', 'pd-stack-what', 'pd-stack-track', 'pd-bar'],
+    classes: ['pd-bar', 'pd-bar--live', 'pd-bar__head', 'pd-bar__what', 'pd-bar__track'],
     parts: ['label', 'number', 'segment', 'mark'],
     lint: ['stack-scale'],
     stories: [{ id: 'one', name: 'A bar with a line to clear', html: stack({ bars: STACK_DEMO.bars.map(({ at, segs, mark, ...b }) => ({ ...b, segs: segs.map(({ at: _, ...sg }) => sg), mark: { value: mark.value, label: mark.label } })), graphic: true }) }],
@@ -742,12 +742,12 @@ export const COMPONENTS = [
     summary: 'A swatch and a name for each colour in a bar, in one row.',
     use: ['Beside a bar whose segments carry no words, as in a calculator.'],
     avoid: ['A figure whose parts are named inside it already.'],
-    rules: ['`<p class="pd-key"><span><i class="pd-swatch is-ink"></i>Deposit spread</span>…</p>`', 'Names run in the order the segments do.'],
+    rules: ['`<p class="pd-key"><span class="pd-key__item"><i class="pd-swatch pd-swatch--ink"></i>Deposit spread</span>…</p>`', 'Names run in the order the segments do.'],
     a11y: ['The names are text; the swatches only repeat the colour.'],
-    classes: ['pd-key'],
+    classes: ['pd-key', 'pd-key__item'],
     parts: ['swatch'],
     lint: [],
-    stories: [{ id: 'two', name: 'Two colours', html: `<p class="pd-key"><span><i class="pd-swatch is-ink"></i>Deposit spread</span><span><i class="pd-swatch is-accent"></i>Interchange</span></p>` }],
+    stories: [{ id: 'two', name: 'Two colours', html: `<p class="pd-key"><span class="pd-key__item"><i class="pd-swatch pd-swatch--ink"></i>Deposit spread</span><span class="pd-key__item"><i class="pd-swatch pd-swatch--accent"></i>Interchange</span></p>` }],
   },
   {
     id: 'legend-row',
@@ -757,12 +757,12 @@ export const COMPONENTS = [
     summary: 'A swatch, a count and what it counts: one row for each group of squares in a unit grid.',
     use: ['Under a unit grid.'],
     avoid: ['More than three rows.'],
-    rules: ['The count is a number (is-l) that counts up with its squares (data-count).', 'A third row with an empty swatch names the rest.'],
+    rules: ['The count is a number (pd-num--l) that counts up with its squares (data-count).', 'A third row with an empty swatch names the rest.'],
     a11y: ['The grid states the counts in its aria-label; the rows repeat them as text.'],
-    classes: ['pd-legend-row', 'pd-legend-label'],
+    classes: ['pd-legend', 'pd-legend__swatch', 'pd-legend__num', 'pd-legend__label'],
     parts: ['swatch', 'number'],
     lint: [],
-    stories: [{ id: 'three', name: 'Three groups', html: `<div class="pd-grid-legend">\n  <div class="pd-legend-row"><span class="pd-swatch is-accent"></span><span class="pd-num is-l">44</span><span class="pd-legend-label">of every 100 new checking accounts opened in 2024 went to digital banks and fintechs</span></div>\n  <div class="pd-legend-row"><span class="pd-swatch is-ink"></span><span class="pd-num is-l">4</span><span class="pd-legend-label">went to community banks</span></div>\n  <div class="pd-legend-row"><span class="pd-swatch"></span><span class="pd-num is-l">52</span><span class="pd-legend-label">went to everyone else</span></div>\n</div>` }],
+    stories: [{ id: 'three', name: 'Three groups', html: `<div class="pd-grid__legend">\n  <div class="pd-legend"><span class="pd-swatch pd-legend__swatch pd-swatch--accent"></span><span class="pd-num pd-num--l pd-legend__num">44</span><span class="pd-legend__label">of every 100 new checking accounts opened in 2024 went to digital banks and fintechs</span></div>\n  <div class="pd-legend"><span class="pd-swatch pd-legend__swatch pd-swatch--ink"></span><span class="pd-num pd-num--l pd-legend__num">4</span><span class="pd-legend__label">went to community banks</span></div>\n  <div class="pd-legend"><span class="pd-swatch pd-legend__swatch"></span><span class="pd-num pd-num--l pd-legend__num">52</span><span class="pd-legend__label">went to everyone else</span></div>\n</div>` }],
   },
   {
     id: 'ledger',
@@ -772,15 +772,15 @@ export const COMPONENTS = [
     summary: 'Rows of named amounts with the arithmetic under each name, and the total in a box in the accent.',
     use: ['Under a calculator or a stacked bar, to show how the total is built.'],
     avoid: ['Amounts that do not add up to the total. The total is the sum of the rounded rows.'],
-    rules: ['Each row names the amount and shows its arithmetic in small type: "balance x NIM".', 'The total is the sum of the rows as shown, so the ledger always adds up.', 'Values are numbers, and the total is is-l in the accent.', 'A value that changes flashes in the accent for a moment.'],
+    rules: ['Each row names the amount and shows its arithmetic in small type: "balance x NIM".', 'The total is the sum of the rows as shown, so the ledger always adds up.', 'Values are numbers, and the total is pd-num--l, in the accent.', 'A value that changes flashes in the accent for a moment.'],
     a11y: ['The total and the payback carry aria-live, so a change is announced.'],
-    classes: ['pd-ledger', 'pd-ledger-row', 'pd-ledger-label', 'pd-ledger-src', 'pd-ledger-value', 'pd-ledger-total'],
+    classes: ['pd-ledger', 'pd-ledger__row', 'pd-ledger__label', 'pd-ledger__src', 'pd-ledger__value', 'pd-ledger__row--total'],
     parts: ['number'],
     lint: [],
     stories: [{
       id: 'rows',
       name: 'Two parts and a total',
-      html: `<div class="pd-ledger">\n  <div class="pd-ledger-row"><span class="pd-ledger-label">Deposit spread <span class="pd-ledger-src">balance x NIM</span></span><span class="pd-num pd-ledger-value">$206</span></div>\n  <div class="pd-ledger-row"><span class="pd-ledger-label">Interchange, gross <span class="pd-ledger-src">transactions x 12 x fee</span></span><span class="pd-num pd-ledger-value">$212</span></div>\n  <div class="pd-ledger-row pd-ledger-total"><span class="pd-ledger-label">A year of checking, before any loan</span><span class="pd-num is-l pd-ledger-value">$418</span></div>\n</div>`,
+      html: `<div class="pd-ledger">\n  <div class="pd-ledger__row"><span class="pd-ledger__label">Deposit spread <span class="pd-ledger__src">balance x NIM</span></span><span class="pd-num pd-ledger__value">$206</span></div>\n  <div class="pd-ledger__row"><span class="pd-ledger__label">Interchange, gross <span class="pd-ledger__src">transactions x 12 x fee</span></span><span class="pd-num pd-ledger__value">$212</span></div>\n  <div class="pd-ledger__row pd-ledger__row--total"><span class="pd-ledger__label">A year of checking, before any loan</span><span class="pd-num pd-num--l pd-ledger__value">$418</span></div>\n</div>`,
     }],
   },
   {
@@ -793,13 +793,13 @@ export const COMPONENTS = [
     avoid: ['A placeholder in place of a label.'],
     rules: ['A label names the input: "Average checking balance". In a tool that asks readers about their own team, it asks a plain question instead: "How many assets do you ship a year?"', 'The line under it names the source of the default: "SCF median, under 35".', 'The unit sits in the box: $, %.', 'In a calculator, data-var names the value for the formulas.'],
     a11y: ['The label element wraps the input, so the label is its name.', 'inputmode="decimal" brings up the number pad on phones.'],
-    classes: ['pd-field', 'pd-field-src'],
+    classes: ['pd-field', 'pd-field__label', 'pd-field__src'],
     parts: ['label', 'number-input'],
     lint: [],
     stories: [{
       id: 'set',
       name: 'Three fields',
-      html: `<div class="pd-calc-inputs">\n  <label class="pd-field"><span class="label">Average checking balance</span><span class="pd-input-wrap"><span class="pd-affix">$</span><input class="pd-input" type="number" inputmode="decimal" value="5400"></span><span class="pd-field-src">SCF median, under 35</span></label>\n  <label class="pd-field"><span class="label">Net interest margin</span><span class="pd-input-wrap"><input class="pd-input" type="number" inputmode="decimal" value="3.81"><span class="pd-affix">%</span></span><span class="pd-field-src">FDIC, community banks, Q2 2026</span></label>\n  <label class="pd-field"><span class="label">Debit transactions a month</span><span class="pd-input-wrap"><input class="pd-input" type="number" inputmode="decimal" value="34.6"></span><span class="pd-field-src">PULSE, active cards</span></label>\n</div>`,
+      html: `<div class="pd-calc__inputs">\n  <label class="pd-field"><span class="label pd-field__label">Average checking balance</span><span class="pd-input"><span class="pd-input__affix">$</span><input class="pd-input__field" type="number" inputmode="decimal" value="5400"></span><span class="pd-field__src">SCF median, under 35</span></label>\n  <label class="pd-field"><span class="label pd-field__label">Net interest margin</span><span class="pd-input"><input class="pd-input__field" type="number" inputmode="decimal" value="3.81"><span class="pd-input__affix">%</span></span><span class="pd-field__src">FDIC, community banks, Q2 2026</span></label>\n  <label class="pd-field"><span class="label pd-field__label">Debit transactions a month</span><span class="pd-input"><input class="pd-input__field" type="number" inputmode="decimal" value="34.6"></span><span class="pd-field__src">PULSE, active cards</span></label>\n</div>`,
     }],
   },
   {
@@ -829,9 +829,9 @@ export const COMPONENTS = [
     summary: 'A closed section under a calculator\'s main fields that opens when the reader asks: "Change the other 2 numbers".',
     use: ['A calculator with more than six fields.'],
     avoid: ['Hiding a number the text discusses.'],
-    rules: ['`<details class="pd-calc-more"><summary>Change the other 2 numbers</summary><div class="pd-calc-inputs is-more">…</div></details>`', 'Closed by default. Opening it is the one change in size the reader asks for.', 'The summary counts the fields it holds; labels across the row group them.'],
+    rules: ['`<details class="pd-calc__more"><summary>Change the other 2 numbers</summary><div class="pd-calc__inputs pd-calc__inputs--more">…</div></details>`', 'Closed by default. Opening it is the one change in size the reader asks for.', 'The summary counts the fields it holds; labels across the row group them.'],
     a11y: ['A native details element, so the keyboard and screen readers treat it as a disclosure.'],
-    classes: ['pd-calc-more'],
+    classes: ['pd-calc__more'],
     parts: ['label', 'field'],
     lint: [],
     stories: [{ id: 'fold', name: 'Two fields in the fold', html: `<div class="pd-calc">\n${calcFoldHtml.slice(calcFoldHtml.indexOf('  <details'), calcFoldHtml.indexOf('</details>') + 10)}\n</div>` }],
@@ -846,13 +846,13 @@ export const COMPONENTS = [
     avoid: ['Invented quotes attributed to real people.'],
     rules: ['Four to eight lines.', 'Speakers are roles, set as labels: Bank, Customer. The reader\'s side is in the accent.', 'On phones the reader\'s side carries an accent rule instead of an indent.'],
     a11y: ['A group with an aria-label; each speaker label is text.'],
-    classes: ['pd-dialogue', 'pd-us', 'pd-them'],
+    classes: ['pd-dialogue', 'pd-dialogue__us', 'pd-dialogue__them', 'pd-dialogue__who'],
     parts: ['label'],
     lint: ['signature-spacing'],
     stories: [{
       id: 'exchange',
       name: 'Bank and customer',
-      html: `<div class="pd-dialogue" role="group" aria-label="The conversation">\n  <p class="pd-us"><span class="label">Bank</span>Because we're local.</p>\n  <p class="pd-them"><span class="label">Customer</span>Okay. How does that make my life better?</p>\n  <p class="pd-us"><span class="label">Bank</span>Because we have great service.</p>\n  <p class="pd-them"><span class="label">Customer</span>So does every bank's advertising.</p>\n</div>`,
+      html: `<div class="pd-dialogue" role="group" aria-label="The conversation">\n  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Because we're local.</p>\n  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>Okay. How does that make my life better?</p>\n  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Because we have great service.</p>\n  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>So does every bank's advertising.</p>\n</div>`,
     }],
   },
   {
@@ -903,13 +903,13 @@ export const COMPONENTS = [
     summary: 'A flat editorial illustration, one deadpan object gag, drawn in a light and a dark version that swap with the theme and rise into place when they arrive.',
     use: ['Three to six per article, at the turns in the argument.'],
     avoid: ['People, logos, stock photography, or text inside the image.', 'Explaining the joke in a caption.'],
-    rules: ['Light: flat #F1F2F4 ground, navy #0A192F line, one terracotta #D9552B accent. Dark: navy ground, off-white #F4F0EA line, one brass #E0A938 accent.', 'The accent marks the one object the scene is about.', 'Both files share one aspect ratio, and the img carries that width and height.', 'Full width by default; is-tall for a portrait image (420px), is-spot for a small square one (520px).', 'A drawing whose ground is a shade off the page colour takes is-blend, which blends it into the page in light mode; better still, export it on the exact page colour.'],
+    rules: ['Light: flat #F1F2F4 ground, navy #0A192F line, one terracotta #D9552B accent. Dark: navy ground, off-white #F4F0EA line, one brass #E0A938 accent.', 'The accent marks the one object the scene is about.', 'Both files share one aspect ratio, and the img carries that width and height.', 'Full width by default; pd-img--tall for a portrait image (420px), pd-img--spot for a small square one (520px).', 'A drawing whose ground is a shade off the page colour takes pd-img--blend, which blends it into the page in light mode; better still, export it on the exact page colour.'],
     a11y: ['The alt text describes the scene in one or two sentences.', 'Reduced motion shows it in place.'],
-    classes: ['pd-img'],
+    classes: ['pd-img', 'pd-img--tall', 'pd-img--spot', 'pd-img--blend'],
     lint: ['img-attrs', 'img-dark', 'img-files', 'img-aspect', 'img-weight'],
     stories: [
       { id: 'wide', name: 'Full width', motion: true, html: `<figure class="pd-img">\n  <picture>\n    <source srcset="/assets/front-door-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">\n    <img src="/assets/front-door.png" width="1200" height="681" loading="lazy" alt="A grand bank entrance with its doors standing open and velvet ropes slack. Footprints on the sidewalk walk past the steps.">\n  </picture>\n</figure>` },
-      { id: 'spot', name: 'A spot illustration', motion: true, html: `<figure class="pd-img is-spot">\n  <picture>\n    <source srcset="/assets/bank-hoodie-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">\n    <img src="/assets/bank-hoodie.png" width="861" height="865" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">\n  </picture>\n</figure>` },
+      { id: 'spot', name: 'A spot illustration', motion: true, html: `<figure class="pd-img pd-img--spot">\n  <picture>\n    <source srcset="/assets/bank-hoodie-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">\n    <img src="/assets/bank-hoodie.png" width="861" height="865" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">\n  </picture>\n</figure>` },
     ],
   },
   {
@@ -928,7 +928,7 @@ export const COMPONENTS = [
     stories: [{
       id: 'inline',
       name: 'A source opened on a phone',
-      html: `<p>Community banks took 4, by Cornerstone Advisors' estimate, across all ages.<sup><a href="#fn-1" data-footnote-ref class="is-active">1</a></sup></p>\n<div class="note-inline"><span class="sidenote-num">1</span><p><strong>Cornerstone Advisors.</strong> Where new checking accounts were opened in 2024, by type of provider. <a href="https://www.crnrstone.com/">Cornerstone Advisors</a></p></div>`,
+      html: `<p>Community banks took 4, by Cornerstone Advisors' estimate, across all ages.<sup><a href="#fn-1" data-footnote-ref class="is-active">1</a></sup></p>\n<div class="note-inline"><span class="sidenote__num">1</span><p><strong>Cornerstone Advisors.</strong> Where new checking accounts were opened in 2024, by type of provider. <a href="https://www.crnrstone.com/">Cornerstone Advisors</a></p></div>`,
       code: `Community banks took 4, by Cornerstone Advisors' estimate, across all ages.[^1]\n\n[^1]: **Cornerstone Advisors.** Where new checking accounts were opened in 2024, by type of provider. [Cornerstone Advisors](https://www.crnrstone.com/)`,
       lang: 'markdown',
     }],
@@ -943,13 +943,13 @@ export const COMPONENTS = [
     avoid: ['A second call to action in the body.'],
     rules: ['"If you want to see this with your organization\'s own numbers, book twenty minutes."', 'A piece-specific ask goes in the paragraph above it.'],
     a11y: ['A plain link that opens the booking in place.'],
-    classes: ['article-cta'],
+    classes: ['booking-line'],
     parts: ['link'],
     lint: [],
     stories: [{
       id: 'line',
       name: 'As every article ends',
-      html: `<p class="article-cta">If you want to see this with your organization's own numbers, <a href="${BOOKING}" ${CAL}>book twenty minutes</a>.</p>`,
+      html: `<p class="booking-line">If you want to see this with your organization's own numbers, <a href="${BOOKING}" ${CAL}>book twenty minutes</a>.</p>`,
       code: `<!-- src/components/BookingLine.astro renders it; articles do not include it. -->`,
     }],
   },
@@ -963,13 +963,13 @@ export const COMPONENTS = [
     avoid: ['Teasers. Each point states a finding with its number.'],
     rules: ['Three to six points; five is typical.', 'The last point starts "What changes:" and names the changes.', 'Points are HTML strings in YAML, so marks and entities work.'],
     a11y: ['An aside labelled "The short version" holding an ordered list.'],
-    classes: ['article-brief', 'article-brief-label'],
+    classes: ['brief', 'brief__label'],
     parts: ['label'],
     lint: ['fm-brief'],
     stories: [{
       id: 'brief',
       name: 'Rendered from the brief',
-      html: `<aside class="article-brief" aria-label="The short version">\n  <p class="label accent article-brief-label">The short version</p>\n  <ol>\n    <li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li>\n    <li>Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year.</li>\n    <li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li>\n  </ol>\n</aside>`,
+      html: `<aside class="brief" aria-label="The short version">\n  <p class="label label--accent brief__label">The short version</p>\n  <ol>\n    <li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li>\n    <li>Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year.</li>\n    <li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li>\n  </ol>\n</aside>`,
       code: `brief:\n  - "Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts."\n  - "Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year."\n  - "What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter."`,
       lang: 'yaml',
     }],
@@ -986,7 +986,7 @@ export const COMPONENTS = [
     avoid: ['Values that are not a share of a whole.', 'Two in a row.'],
     rules: ['The units match the number: 95% is 19 of 20, 64% is 16 of 25, 34% is 34 of 100.', 'The sentence starts where the number leaves off: "of consumers rate their bank\'s...".', 'Twenty or twenty-five units read at a glance; a hundred draw two rows of fifty.', 'The caption names the survey, the year and the sample.'],
     a11y: ['The units are aria-hidden; the number and sentence carry the reading.', 'Reduced motion shows the filled row at once.'],
-    classes: ['pd-units', 'pd-units-cells'],
+    classes: ['pd-units', 'pd-units__cells'],
     parts: ['number-head', 'unit-square', 'caption'],
     lint: ['units-count', 'signature-spacing'],
     controls: 'units',
@@ -1005,7 +1005,7 @@ export const COMPONENTS = [
     avoid: ['A number that is a share of a whole; use a unit stat.', 'Numbers that add up to something; use a ledger.', 'More than one in a section.'],
     rules: ['The number is the record\'s own figure, printed the way the record prints it.', 'The sentence names who did what, and the quote is the record\'s words, not a summary of them.', 'The caption names the record: who issued it, what kind, and when.', 'The full source goes in a footnote cited from the text.'],
     a11y: ['The quotation marks come from the stylesheet, so a screen reader reads the quote as text.'],
-    classes: ['pd-record', 'pd-record-quote'],
+    classes: ['pd-record', 'pd-record__head', 'pd-record__text', 'pd-record__quote'],
     parts: ['number-head', 'caption'],
     lint: ['chart-source', 'signature-spacing'],
     stories: [{ id: 'fine', name: 'One fine', html: record(RECORD_DEMO) }],
@@ -1020,7 +1020,7 @@ export const COMPONENTS = [
     avoid: ['More than three segments; the labels stop fitting.', 'Parts measured in different units.'],
     rules: ['Every bar shares one scale: the longest bar or line, times 1.12. Shares of a whole run to 100% instead (max: 100), so the track reads as the whole.', 'A bar with one segment prints its value once, at the end of the bar. Only the parts of a bar with several segments carry labels inside them.', 'A figure the text doubts (a number with no published method) is drawn as an outline beside the measured ones (outline: true), and the caption says why.', 'Ink for the first part, the accent for the part the sentence is about.', 'Each part appears at its step (data-at): the first part, then the next, then the line, then the second case.', 'The bar\'s total is the sum of the parts as shown; the ledger repeats them with their arithmetic.', 'Every value prints with its unit. Dollars by default; set the prefix and suffix for percents, counts, weeks or millions.', 'A value known only as a range ("two to three months", "3 to 5") runs solid to the low end and hatched to the high end, on the bar\'s last segment, and prints the whole range.', 'Build it with the controls below so the widths and positions are right.'],
     a11y: ['Every amount is printed: at the end of the bar, inside each part of a bar with several, and in the ledger.', 'A segment too narrow for its label hides the label; the ledger still carries the number.', 'Reduced motion shows the finished bar.'],
-    classes: ['pd-stack', 'pd-stack-sub', 'pd-stack-note'],
+    classes: ['pd-stack', 'pd-stack__sub', 'pd-stack__note'],
     parts: ['eyebrow', 'number-head', 'bar-row', 'ledger', 'caption'],
     lint: ['stack-scale', 'figure-title', 'inline-style'],
     controls: 'stack',
@@ -1041,7 +1041,7 @@ export const COMPONENTS = [
     avoid: ['Fewer than six periods; use a stacked bar.', 'Two series.'],
     rules: ['The dashed line through the event comes first, before anything has built: the wait.', 'The columns rise left to right in about 0.8 seconds; the event lands 0.4 seconds later.', 'The callouts name the two totals at the top: the build on the left, the event on the right.', 'Label every fifth period, with the first and the last in bold.'],
     a11y: ['The figure carries an aria-label that states the whole comparison in a sentence.'],
-    classes: ['pd-cols', 'pd-cols-callouts', 'pd-cols-callout', 'pd-cols-plot', 'pd-cols-grid', 'pd-cols-bars', 'pd-col', 'pd-cols-x', 'pd-cols-marker'],
+    classes: ['pd-cols', 'pd-cols__callouts', 'pd-cols__callout', 'pd-cols__callout--accent', 'pd-cols__callout-value', 'pd-cols__callout-note', 'pd-cols__plot', 'pd-cols__gridlines', 'pd-cols__gridline', 'pd-cols__gridline-value', 'pd-cols__bars', 'pd-cols__col', 'pd-cols__col--event', 'pd-cols__fill', 'pd-cols__axis', 'pd-cols__tick', 'pd-cols__tick--strong', 'pd-cols__marker'],
     parts: ['eyebrow', 'label', 'caption'],
     lint: ['figure-title', 'inline-style'],
     controls: 'cols',
@@ -1055,9 +1055,9 @@ export const COMPONENTS = [
     summary: 'The argument in steps on the left and a graphic that holds still on the right; each part of the graphic appears as the reader reaches its step. On phones the graphic pins to the top and the steps scroll under it.',
     use: ['A calculation or comparison the text builds one number at a time.'],
     avoid: ['A graphic that shows nothing new at each step.', 'More than six steps.'],
-    rules: ['Steps are markdown inside <div class="pd-step" data-step="n">, with a blank line after the opening tag.', 'Any part of the graphic with data-at="n" appears at step n: a bar, a segment, a line, a ledger row.', 'Sources cited in a step appear under the graphic with that step: the publisher and the first sentence, with a "Full note" link that opens the rest. On narrower screens they open under the paragraph instead.', 'Keep the graphic free of blank lines.', 'Any graphic can be pinned: a stacked bar, rising columns, an org fold.'],
+    rules: ['Steps are markdown inside <div class="pd-scrolly__step" data-step="n">, with a blank line after the opening tag.', 'Any part of the graphic with data-at="n" appears at step n: a bar, a segment, a line, a ledger row.', 'Sources cited in a step appear under the graphic with that step: the publisher and the first sentence, with a "Full note" link that opens the rest. On narrower screens they open under the paragraph instead.', 'Keep the graphic free of blank lines.', 'Any graphic can be pinned: a stacked bar, rising columns, an org fold.'],
     a11y: ['The section carries an aria-label naming the graphic.', 'Every step is readable text; the graphic repeats what the steps say.', 'Reduced motion shows the finished graphic.'],
-    classes: ['pd-scrolly', 'pd-steps', 'pd-step', 'pd-sticky', 'pd-graphic', 'pd-sticky-notes'],
+    classes: ['pd-scrolly', 'pd-scrolly__steps', 'pd-scrolly__step', 'pd-scrolly__sticky', 'pd-scrolly__graphic', 'pd-scrolly__notes', 'pd-scrolly__note-brief', 'pd-scrolly__note-full'],
     parts: ['stacked-bar', 'rising-columns', 'org-fold', 'pull-quote', 'sources', 'text-button'],
     lint: ['scrolly-steps', 'signature-spacing'],
     stories: [
@@ -1075,7 +1075,7 @@ export const COMPONENTS = [
     avoid: ['A share you can say in one number; use a unit stat.', 'More than two filled groups.'],
     rules: ['The accent squares fill left to right in about 0.7 seconds (16ms apart), a 520ms beat, then the ink squares land 140ms apart, each with a small pop.', 'Legend numbers count up with their squares and sit beside a swatch; a third row with an empty swatch names the rest.', 'The source sits under the legend with its link.', 'The callback is a 10 by 10 square, 200px wide, centred; only its ink squares fill, 300ms apart, and only when it arrives below the fold.', 'Above the headline, the article template renders the opener from a small component such as src/components/FrontDoorOpener.astro; in the body, paste it.', '25 across on wide screens, 20 across on phones.'],
     a11y: ['The squares are aria-hidden; the grid carries an aria-label that states the counts in a sentence.', 'The finished grid ships in the HTML, so it reads correctly with scripts off; reduced motion leaves it finished.'],
-    classes: ['pd-grid', 'pd-grid-inner', 'pd-grid-cells', 'pd-grid-legend', 'pd-grid-source'],
+    classes: ['pd-grid', 'pd-grid--opener', 'pd-grid--callback', 'pd-grid__inner', 'pd-grid__cells', 'pd-grid__legend', 'pd-grid__source'],
     parts: ['unit-square', 'legend-row'],
     lint: ['signature-spacing'],
     stories: [
@@ -1093,7 +1093,7 @@ export const COMPONENTS = [
     avoid: ['As a plain org chart. The point is the fold.'],
     rules: ['Two steps: the grid with its caption, then the fold with a new caption.', 'Each box names the function, what it owns, and its status: a label with a green dot.', 'The boxes fold 0.9 seconds toward the centre, outer ones up to 260ms earlier; the replacement arrives 520ms after.', 'The replacement is an illustration with a one-line italic caption.', 'Four across on wide screens, three on phones, where the "owns" line drops out.'],
     a11y: ['The section has an aria-label; the boxes are text, and the caption changes with the step.', 'Reduced motion switches between the two states without the fold.'],
-    classes: ['pd-fold', 'pd-fold-cap', 'pd-org', 'pd-org-box', 'pd-org-name', 'pd-org-owns', 'pd-org-status', 'pd-one', 'pd-one-cap'],
+    classes: ['pd-fold', 'pd-fold__cap', 'pd-org', 'pd-org__box', 'pd-org__name', 'pd-org__owns', 'pd-org__status', 'pd-fold__one', 'pd-fold__one-cap'],
     parts: ['label', 'illustration'],
     lint: ['scrolly-steps', 'signature-spacing'],
     stories: [{ id: 'twelve', name: 'Twelve functions, one bank', steps: 2, html: orgSequence(false), code: orgSequence(true), lang: 'markdown' }],
@@ -1108,7 +1108,7 @@ export const COMPONENTS = [
     avoid: ['Extra outputs the text does not discuss.'],
     rules: ['It opens on the public figures from the text, and each field names its source.', 'Formulas go in data-define on the figure: "spread = bal * nim / 100; ...". Names come from each input\'s data-var.', 'Outputs name their value with data-out and a format: money, millions ($5.4 million), months, int, percent or number.', 'The bar\'s segments take data-w and the line takes data-x; the kit stacks and scales them.', 'The reset is a text button that appears once a value changes, in a line the tool already holds, so nothing moves.', 'Past six fields, the main ones stay in the row and the rest go in a fold under it ("Change the other 12 numbers"), closed by default and grouped under labels. Opening it is the one change in size the reader asks for.', 'Formulas use + - * / and parentheses, with round, ceil, floor, min, max and abs.', 'Fields count their columns from the calculator\'s own width: two across under 560px, three to 900px, then one row. Fields in a row share their label, box and note lines, so the boxes line up however long a label runs.'],
     a11y: ['The total and the payback carry aria-live.', 'The bar\'s track is aria-hidden. Every number is in the ledger or in a bar\'s name line, which stays readable.'],
-    classes: ['pd-calc', 'pd-calc-head', 'pd-calc-title', 'pd-calc-lede', 'pd-calc-inputs', 'pd-calc-row'],
+    classes: ['pd-calc', 'pd-calc__head', 'pd-calc__title', 'pd-calc__lede', 'pd-calc__inputs', 'pd-calc__inputs--more', 'pd-calc__group', 'pd-calc__row', 'pd-calc__label'],
     parts: ['field', 'toggle', 'fold', 'bar-row', 'key', 'ledger', 'text-button', 'caption'],
     lint: ['calc-names'],
     stories: [
@@ -1126,7 +1126,7 @@ export const COMPONENTS = [
     avoid: ['More than about eight versions; the bands get too thin to read.', 'A history the text never asks about.'],
     rules: ['Every version ships in the HTML as a list with its dates; the script reads it, adds the slider and hides the list.', 'The slider starts on the day the text is about.', 'The accent marks only what the customer saw: the live version\'s band and an answer that shows it. The slider is ink, the other bands are gray, and a wrong answer gets a faint rule.', 'Each band can print a short value (band: "4.25%"), so the strip reads as a history before anyone moves the slider.', 'Nothing changes size while the slider moves: the answers and the date hold the size of their largest state, measured again when the width changes.', 'The caption says whose versions they are, or that they are an example.'],
     a11y: ['The slider is a range input with a label; it announces each date as its value.', 'Without the script, every version is listed with its dates.', 'The bands and the months are aria-hidden; the answers carry the reading.'],
-    classes: ['pd-asof', 'pd-asof-head', 'pd-asof-q', 'pd-asof-day', 'pd-asof-bands', 'pd-asof-band', 'pd-asof-band-label', 'pd-asof-months', 'pd-asof-answers', 'pd-asof-answer', 'pd-asof-copy', 'pd-asof-meta', 'pd-asof-verdict', 'pd-asof-versions'],
+    classes: ['pd-asof', 'pd-asof__head', 'pd-asof__q', 'pd-asof__day', 'pd-asof__bands', 'pd-asof__bands--labeled', 'pd-asof__band', 'pd-asof__band-label', 'pd-asof__months', 'pd-asof__month', 'pd-asof__answers', 'pd-asof__answers--single', 'pd-asof__answer', 'pd-asof__label', 'pd-asof__copy', 'pd-asof__meta', 'pd-asof__verdict', 'pd-asof__versions', 'pd-asof__version'],
     parts: ['eyebrow', 'number', 'slider', 'label', 'caption'],
     lint: ['figure-title', 'chart-source', 'kit-assets', 'signature-spacing'],
     stories: [{ id: 'disclosure', name: 'What rendered on a given day', html: asof(ASOF_DEMO) }],
@@ -1141,14 +1141,14 @@ export const COMPONENTS = [
     avoid: ['A title that needs the dek to make sense.'],
     rules: ['The title is short and in title case: "The Digital Front Door Nobody Walks Through".', 'The description is the dek: one or two sentences, 70 to 200 characters. It is also the search snippet.', 'The kicker names the topic area: "Financial services". It is a label.', 'The title climbs one step of the type scale at each breakpoint: 35, 41, 50 and 60px.'],
     a11y: ['The title is the page\'s only h1.'],
-    classes: ['article-header', 'article-kicker', 'article-title', 'article-intro', 'article-date', 'article-byline'],
+    classes: ['article__header', 'article__kicker', 'article__title', 'article__intro', 'article__date', 'article__byline'],
     parts: ['label'],
     lint: ['fm-description', 'fm-kicker', 'fm-title-case'],
     stories: [{
       id: 'header',
       name: 'From front matter',
       wrap: 'article',
-      html: `<header class="article-header">\n  <p class="label article-kicker"><a href="/articles">Articles</a><span class="article-kicker-sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article-title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article-intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article-date"><time datetime="2026-09-23">September 23, 2026</time><span class="article-meta-sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n  <p class="article-byline">By <a href="/">Paul Drago</a>, advisor to banks and credit unions</p>\n</header>`,
+      html: `<header class="article__header">\n  <p class="label article__kicker"><a href="/articles">Articles</a><span class="article__sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article__title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article__intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article__date"><time datetime="2026-09-23">September 23, 2026</time><span class="article__sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n  <p class="article__byline">By <a href="/">Paul Drago</a>, advisor to banks and credit unions</p>\n</header>`,
       code: `---\ntitle: "The Digital Front Door Nobody Walks Through"\ndescription: "Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?"\ndate: 2026-09-23\nkicker: "Financial services"\ntopics: ["Community banking", "Digital banking", "Checking account acquisition"]\n---`,
       lang: 'yaml',
     }],
@@ -1163,14 +1163,14 @@ export const COMPONENTS = [
     avoid: ['A per-article bio.'],
     rules: ['Firsthand stories name the kind of organization, never the employer.', 'One filled button: the booking call.'],
     a11y: ['An aside labelled "About the author".'],
-    classes: ['article-author', 'article-author-label', 'article-author-bio', 'article-author-links', 'article-author-link'],
+    classes: ['author', 'author__label', 'author__bio', 'author__links', 'author__link'],
     parts: ['label', 'button', 'link'],
     lint: [],
     stories: [{
       id: 'box',
       name: 'Under the article',
       wrap: 'article',
-      html: `<aside class="article-author" aria-label="About the author">\n  <p class="label accent article-author-label">About the author</p>\n  <p class="article-author-bio">Paul Drago advises banks and credit unions on marketing measurement, marketing operations and market decisions.</p>\n  <p class="article-author-links"><a class="btn btn-small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a> <a class="article-author-link" href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a class="article-author-link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a></p>\n</aside>`,
+      html: `<aside class="author" aria-label="About the author">\n  <p class="label label--accent author__label">About the author</p>\n  <p class="author__bio">Paul Drago advises banks and credit unions on marketing measurement, marketing operations and market decisions.</p>\n  <p class="author__links"><a class="btn btn--small" href="${BOOKING}" ${CAL}>Book a 20-minute call</a> <a class="author__link" href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a class="author__link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a></p>\n</aside>`,
       code: `<!-- [slug].astro renders it from src/data/author.ts; articles do not include it. -->`,
     }],
   },
@@ -1184,14 +1184,14 @@ export const COMPONENTS = [
     avoid: ['A second navigation inside an article.'],
     rules: ['Two links and one button: Services, Articles, Book a call.', 'The line under the name says who the site serves: "Advisor to banks and credit unions".', 'On phones the line wraps under the name and the button shrinks to 44px tall.'],
     a11y: ['A nav labelled Primary; the current section carries aria-current="page".', 'A skip link to the content comes before it.'],
-    classes: ['header-inner', 'brand-home', 'brand-group', 'brand-name', 'brand-subline', 'header-actions', 'header-link'],
+    classes: ['site-header', 'site-header__inner', 'site-header__nav', 'site-header__link', 'brand', 'brand__group', 'brand__name', 'brand__line'],
     parts: ['label', 'button'],
     lint: [],
     stories: [{
       id: 'article',
       name: 'On an article',
       wrap: 'page',
-      html: `<header data-c="site-header">\n  <div class="container">\n    <div class="header-inner">\n      <a class="brand-home" href="/"><span class="brand-group"><span class="brand-name">Paul Drago</span><span class="brand-subline">Advisor to banks and credit unions</span></span></a>\n      <nav class="header-actions" aria-label="Primary">\n        <a class="header-link" href="/financial-services">Services</a>\n        <a class="header-link" href="/articles" aria-current="page">Articles</a>\n        <a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n      </nav>\n    </div>\n  </div>\n</header>`,
+      html: `<header class="site-header" data-c="site-header">\n  <div class="container">\n    <div class="site-header__inner">\n      <a class="brand" href="/"><span class="brand__group"><span class="brand__name">Paul Drago</span><span class="brand__line">Advisor to banks and credit unions</span></span></a>\n      <nav class="site-header__nav" aria-label="Primary">\n        <a class="site-header__link" href="/financial-services">Services</a>\n        <a class="site-header__link" href="/articles" aria-current="page">Articles</a>\n        <a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n      </nav>\n    </div>\n  </div>\n</header>`,
       code: `<!-- src/layouts/Base.astro renders it on every page. -->`,
     }],
   },
@@ -1205,13 +1205,13 @@ export const COMPONENTS = [
     avoid: ['A second call to action here; the header and the booking line carry it.'],
     rules: ['Links: Home, Services, Articles, the email address, LinkedIn, Privacy, and Cookie settings.', 'The line under the rule describes the section: "Writing on marketing measurement, markets, and accountable growth."'],
     a11y: ['Cookie settings is a button, since it opens a dialog rather than a page.'],
-    classes: ['footer-top', 'footer-brand', 'footer-links', 'footer-link-button', 'footer-meta'],
+    classes: ['site-footer', 'site-footer__top', 'site-footer__brand', 'site-footer__links', 'site-footer__link', 'site-footer__button', 'site-footer__meta'],
     lint: [],
     stories: [{
       id: 'article',
       name: 'On an article',
       wrap: 'page',
-      html: `<footer>\n  <div class="container">\n    <div class="footer-top">\n      <div class="footer-brand">Paul Drago</div>\n      <div class="footer-links"><a href="/">Home</a> <a href="/financial-services">Services</a> <a href="/articles">Articles</a> <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> <a href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a href="/privacy">Privacy</a> <button type="button" class="footer-link-button">Cookie settings</button></div>\n    </div>\n    <div class="footer-meta"><div>Writing on marketing measurement, markets, and accountable growth.</div></div>\n  </div>\n</footer>`,
+      html: `<footer class="site-footer">\n  <div class="container">\n    <div class="site-footer__top">\n      <div class="site-footer__brand">Paul Drago</div>\n      <div class="site-footer__links"><a class="site-footer__link" href="/">Home</a> <a class="site-footer__link" href="/financial-services">Services</a> <a class="site-footer__link" href="/articles">Articles</a> <a class="site-footer__link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> <a class="site-footer__link" href="https://www.linkedin.com/in/pauldrago" target="_blank" rel="noopener noreferrer">LinkedIn</a> <a class="site-footer__link" href="/privacy">Privacy</a> <button type="button" class="site-footer__button">Cookie settings</button></div>\n    </div>\n    <div class="site-footer__meta"><div>Writing on marketing measurement, markets, and accountable growth.</div></div>\n  </div>\n</footer>`,
       code: `<!-- src/layouts/Base.astro renders it; an article passes footerNote. -->`,
     }],
   },
@@ -1229,11 +1229,11 @@ export const COMPONENTS = [
       'The page changes layout at 480, 760, 1040 and 1180, and nowhere else.',
       'Two columns sit side by side from 760, and so do three or four short items (links, fields). Three columns led by a big headline stack until 1040.',
       'A tool whose controls sit beside its result keeps them there from 760, so the reader sees the result move. A table keeps its columns from 760; below it a site ledger becomes labeled cards and an article table scrolls inside its own frame.',
-      'When a layout moves down to 760, ease its gaps, fixed widths and big type with clamp() inside (760px <= width < 1040px), so 761 still reads and the wide end looks as designed.',
+      'When a layout moves down to 760, ease it inside (760px <= width < 1040px): gaps and type take a smaller step of their scale there, so 761 still reads and the wide end looks as designed. Only a fixed track width may use clamp().',
       'Write media queries in range syntax: @media (width < 760px) and @media (width >= 1040px). There is no 759 or 761. Scripts use the same queries in matchMedia and listen for changes, since a phone turned sideways crosses 760.',
       'Components answer to the column they sit in: @container column (width < 560px) is their compact form. A calculator\'s fields count from the calculator\'s own width: two across under 560px, three to 900px, then one row.',
-      'The page container is 1240px with 32px gutters, 20px below 760. Articles use a 1060px container and a reading column of 62 characters.',
-      'At 1180 and up the article gains its source-notes rail, 84px to the right of the column and 280px wide, and pinned charts sit beside their steps.',
+      'The page container is var(--container-page), 1240px, with var(--gutter) inside it: 32px, 20px below 760. Articles use var(--container-article), 1060px, and a reading column of var(--measure-0), 62 characters.',
+      'At 1180 and up the article gains its source-notes rail, var(--rail-gap) to the right of the column and var(--rail) wide, and pinned charts sit beside their steps.',
       'At 1040 and up a calculator widens past the column to the article container.',
       'A rule scoped to a width range has to help across the whole range. Moving a query onto the scale changes its range, so check the page at both ends of the new one.',
       'Check a layout change before and after at both sides of each step it touches (759 and 760, 1039 and 1040) and inside the tablet range at 768, 820 and 960.',
@@ -1261,7 +1261,7 @@ export const COMPONENTS = [
       name: 'A specimen built from the kit',
       wrap: 'page',
       motion: true,
-      html: `<article class="article">\n<div class="container">\n<header class="article-header">\n  <p class="label article-kicker"><a href="/articles">Articles</a><span class="article-kicker-sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article-title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article-intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article-date"><time datetime="2026-09-23">September 23, 2026</time><span class="article-meta-sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n</header>\n<div class="article-body" data-notes="custom">\n<aside class="article-brief" aria-label="The short version"><p class="label accent article-brief-label">The short version</p><ol><li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li><li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li></ol></aside>\n<p class="article-lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket.</p>\n<h2 id="the-48-star-trap">The 4.8-star trap</h2>\n<p class="pd-deck">Everyone's app is fine. Fine is where everyone already is.</p>\n<p>Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars.</p>\n${units(UNITS_DEMO)}\n<blockquote><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>\n<h3 id="what-the-customer-is-worth">What the customer is worth</h3>\n${stack(STACK_DEMO)}\n<h2 id="where-to-start">Somebody has to own the whole bank</h2>\n<p class="pd-deck">Where to start.</p>\n<ol class="pd-decisions"><li><strong>Someone owns the proposition.</strong> Give a senior leader responsibility for the chosen younger-customer proposition across product, digital, retail and marketing.</li><li><strong>Start with one journey.</strong> Take the first paycheck arriving in a newly opened account and manage the surrounding experience as a single product for one quarter.</li></ol>\n<p class="article-cta">If you want to see this with your organization's own numbers, <a href="${BOOKING}">book twenty minutes</a>.</p>\n</div>\n</div>\n</article>`,
+      html: `<article class="article">\n<div class="container">\n<header class="article__header">\n  <p class="label article__kicker"><a href="/articles">Articles</a><span class="article__sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article__title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article__intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article__date"><time datetime="2026-09-23">September 23, 2026</time><span class="article__sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n</header>\n<div class="article__body" data-notes="custom">\n<aside class="brief" aria-label="The short version"><p class="label label--accent brief__label">The short version</p><ol><li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li><li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li></ol></aside>\n<p class="article__lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket.</p>\n<h2 id="the-48-star-trap">The 4.8-star trap</h2>\n<p class="pd-deck">Everyone's app is fine. Fine is where everyone already is.</p>\n<p>Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars.</p>\n${units(UNITS_DEMO)}\n<blockquote><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>\n<h3 id="what-the-customer-is-worth">What the customer is worth</h3>\n${stack(STACK_DEMO)}\n<h2 id="where-to-start">Somebody has to own the whole bank</h2>\n<p class="pd-deck">Where to start.</p>\n<ol class="pd-decisions"><li><strong>Someone owns the proposition.</strong> Give a senior leader responsibility for the chosen younger-customer proposition across product, digital, retail and marketing.</li><li><strong>Start with one journey.</strong> Take the first paycheck arriving in a newly opened account and manage the surrounding experience as a single product for one quarter.</li></ol>\n<p class="booking-line">If you want to see this with your organization's own numbers, <a href="${BOOKING}">book twenty minutes</a>.</p>\n</div>\n</div>\n</article>`,
       code: `---\ntitle: "Your Title in Title Case"\ndescription: "One or two sentences that state the argument. They double as the search snippet."\ndate: 2026-10-15\ndraft: true\nkicker: "Financial services"\ntopics: ["Community banking"]\nnotes: "rail"\nstylesheets: ["/assets/article-kit.css"]\nscripts: ["/assets/article-kit.js"]\nbrief:\n  - "The finding, with its number."\n  - "What changes: the changes, in one sentence."\n---\n\nThe opening paragraph: the situation the piece starts from. It takes the drop cap.\n\n## A section heading that states a claim\n\n<p class="pd-deck">One line that says what this section finds.</p>\n\nBody paragraphs in markdown, with footnotes.[^1]\n\n> The line a reader should carry out of the section.\n\n## Somebody has to own it\n\n<p class="pd-deck">Where to start.</p>\n\n<ol class="pd-decisions">\n<li><strong>The first change.</strong> What it involves and who has the authority.</li>\n</ol>\n\n## About the numbers\n\nWhen the research was checked, and which figures are estimates.\n\n[^1]: **Publisher.** Title, date. What was measured. What it does not show. [Report title](https://example.com)`,
       lang: 'markdown',
     }],
@@ -1347,10 +1347,10 @@ export const LEGACY = [
     how: 'One bar per case in the unit the text uses (weeks), on one scale; a duration given as a range (two to three months) takes `to` for the range segment. Rising columns fit six or more periods; a pinned sequence fits a story told in steps.' },
   { match: '^cd-stat$', kind: 'derivative', name: 'Stat line', kit: 'ledger',
     why: 'Arithmetic in a line, which the kit shows in a ledger.',
-    how: 'The result is a ledger row with the arithmetic in pd-ledger-src. Next to a calculator, it becomes a row of the calculator\'s ledger.' },
+    how: 'The result is a ledger row with the arithmetic in pd-ledger__src. Next to a calculator, it becomes a row of the calculator\'s ledger.' },
   { match: '^cd-record', kind: 'equivalent', kit: 'record', note: 'Paul added it to the kit on 2026-09-26. Rebuild it with record() in build.mjs; the source line under it becomes the figcaption.' },
   { match: '^(cd-markets|cd-sheet|cd-slot|k$)', kind: 'declined', name: 'Small multiples', why: 'Paul decided on 2026-09-26 not to add it to the kit.', how: 'A table (/ui/components/table) with the cases as columns and the slots as rows; each cell names the status and the owner, which replaces the colour key.' },
-  { match: '^cd-(fold|parts)', kind: 'equivalent', kit: 'calculator', part: true, note: 'The calculator fold (pd-calc-more), added to the kit on 2026-09-26.' },
+  { match: '^cd-(fold|parts)', kind: 'equivalent', kit: 'calculator', part: true, note: 'The calculator fold (pd-calc__more), added to the kit on 2026-09-26.' },
   { match: '^cd-(focus|map|asof|answer|chain|rep)', kind: 'declined', part: true, name: 'Parts of a script-drawn figure', why: 'Drawn by the article\'s own script.', how: 'They go with their figure; see Figures for what each one becomes.' },
 ];
 

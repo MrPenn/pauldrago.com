@@ -1,14 +1,14 @@
 // Tests for the styleguide linter, the kit builders and the registry. Run with `npm test`.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { RULES, lintArticle, lintCss, lintScript, lintSite, cssClasses, imageSize, registryIds, frontMatter } from '../src/styleguide/lint.mjs';
 import * as BUILD from '../src/styleguide/build.mjs';
 import { stack, cols, units, offScale, readNumber, highlight } from '../src/styleguide/build.mjs';
 import { COMPONENTS, SIGNATURE_DEVICES, STACK_DEMO, COLS_DEMO, UNITS_DEMO, RECORD_DEMO, ASOF_DEMO, TYPE_SCALE, stepName } from '../src/styleguide/components.mjs';
-import { typeSteps } from '../src/styleguide/tokens.mjs';
+import { typeSteps, typeTokens } from '../src/styleguide/tokens.mjs';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const css = (href) => readFileSync(join(root, 'public', href), 'utf8');
@@ -48,7 +48,7 @@ test('the builders and the chart checks agree', () => {
 });
 
 test('a stacked bar whose total does not add up is caught', () => {
-  const html = stack(STACK_DEMO).replace('<span class="pd-num is-s">$418</span>', '<span class="pd-num is-s">$450</span>');
+  const html = stack(STACK_DEMO).replace('<span class="pd-num pd-num--s">$418</span>', '<span class="pd-num pd-num--s">$450</span>');
   assert.ok(lint(html).some((f) => f.rule === 'stack-scale' && /\$450/.test(f.message)));
 });
 
@@ -65,14 +65,14 @@ test('a unit stat whose units disagree with its number is caught', () => {
 });
 
 test('a pinned sequence that waits for a missing step is caught', () => {
-  const html = '<section class="pd-scrolly" data-pd="scrolly" aria-label="x">\n<div class="pd-steps">\n<div class="pd-step" data-step="1">\n<p>One.</p>\n</div>\n<div class="pd-step" data-step="3">\n<p>Two.</p>\n</div>\n</div>\n<div class="pd-sticky">\n<div class="pd-graphic"><p class="pd-eyebrow" data-at="4">x</p></div>\n</div>\n</section>';
+  const html = '<section class="pd-scrolly" data-pd="scrolly" aria-label="x">\n<div class="pd-scrolly__steps">\n<div class="pd-scrolly__step" data-step="1">\n<p>One.</p>\n</div>\n<div class="pd-scrolly__step" data-step="3">\n<p>Two.</p>\n</div>\n</div>\n<div class="pd-scrolly__sticky">\n<div class="pd-scrolly__graphic"><p class="pd-eyebrow" data-at="4">x</p></div>\n</div>\n</section>';
   const found = lint(html).filter((f) => f.rule === 'scrolly-steps').map((f) => f.message);
   assert.ok(found.some((m) => /step 2 is numbered 3/.test(m)), JSON.stringify(found));
   assert.ok(found.some((m) => /waits for step 4/.test(m)), JSON.stringify(found));
 });
 
 test('a calculator formula that names nothing is caught', () => {
-  const html = '<figure class="pd-figure pd-calc" data-pd="calc" data-define="spread = bal * nim / 100; total = spread + fees"><p class="pd-calc-title">T</p><input data-var="bal"><input data-var="nim"><span data-out="total" data-format="money">$0</span><span data-out="payback">x</span></figure>';
+  const html = '<figure class="pd-figure pd-calc" data-pd="calc" data-define="spread = bal * nim / 100; total = spread + fees"><p class="pd-calc__title">T</p><input data-var="bal"><input data-var="nim"><span data-out="total" data-format="money">$0</span><span data-out="payback">x</span></figure>';
   const found = lint(html).filter((f) => f.rule === 'calc-names').map((f) => f.message);
   assert.ok(found.some((m) => /"fees"/.test(m)), JSON.stringify(found));
   assert.ok(found.some((m) => /"payback"/.test(m)), JSON.stringify(found));
@@ -98,10 +98,10 @@ test('readNumber reads printed values', () => {
   assert.equal(readNumber('none'), null);
 });
 
-test('the reference article passes every chart check', () => {
+test('the reference article, on the kit, has no errors', () => {
   const path = join(root, 'src/content/articles/the-digital-front-door-nobody-walks-through.md');
-  const found = lintArticle(path, readFileSync(path, 'utf8'), { ...ctx, classesFor: (h) => classesFor(h.filter((x) => x !== '/assets/article-kit.css')) });
-  assert.deepEqual(errors(found).filter((f) => !['img-aspect', 'class-defined'].includes(f.rule)), []);
+  const found = lintArticle(path, readFileSync(path, 'utf8'), ctx);
+  assert.deepEqual(errors(found), []);
 });
 
 test('the content-is-data article, on the kit, has no errors', () => {
@@ -125,7 +125,7 @@ See [here](https://example.com).[^9]
 
 <p class="pd-deck" style="color:#B8411E">The **finding**.</p>
 
-<figure class="pd-figure pd-stack" data-pd="build"><div class="pd-stack-bar"><div class="pd-stack-track"></div></div></figure>
+<figure class="pd-figure pd-stack" data-pd="build"><div class="pd-bar"><div class="pd-bar__track"></div></div></figure>
 
 <p class="pd-dek">Typo.</p>
 
@@ -148,7 +148,60 @@ test('stylesheet rules find literal colours, fonts, radii, gradients and soft sh
 .ok { border-radius: 50%; background: repeating-linear-gradient(90deg, var(--paper) 0 3px, transparent 3px 6px); box-shadow: inset 0 0 0 1px var(--hairline); }
 :root { --ground: #F1F2F4; }
 @media print { .p { color: #000; } }`));
-  assert.deepEqual(found, ['css-color', 'css-font', 'css-gradient', 'css-radius', 'css-shadow']);
+  assert.deepEqual(found, ['css-color', 'css-gradient', 'css-layer', 'css-radius', 'css-shadow', 'type-tokens']);
+});
+
+test('every rule sits in a named cascade layer, and the shell declares the order', () => {
+  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'css-layer').map((f) => f.message);
+  assert.deepEqual(rule('@layer page {\n  .a { margin: 0; }\n  @media (width < 760px) { .b { margin: 0; } }\n}\n@media print { @page { margin: 1in; } }'), []);
+  assert.equal(rule('.a { margin: 0; }').length, 1);
+  assert.match(rule('@layer components { .a { margin: 0; } }')[0], /components/);
+  assert.match(css('/assets/site-shell.css'), /^@layer base, site, kit, page, utilities;$/m);
+});
+
+test('class names are block, element or modifier, and is- names are states', () => {
+  const rule = (css, file = 'x.css') => lintCss(file, css).filter((f) => f.rule === 'css-bem').map((f) => f.message);
+  assert.deepEqual(rule('@layer page {\n  .booking-line__button, .btn--small, .pd-bar:not(.pd-bar--live) + .pd-ledger, .pd-calc.is-open .label, html.is-embedded body.ui-frame--page, [data-x="a.b"] { margin: 0; }\n}'), []);
+  assert.match(rule('@layer page { .market-row.is-plan { margin: 0; } }')[0], /is-plan is not a state/);
+  assert.match(rule('@layer page { .card__head__title { margin: 0; } }')[0], /not block, block__element/);
+  assert.match(rule('@layer page { .label.accent { margin: 0; } }')[0], /chains \.label and \.accent/);
+});
+
+test('every stylesheet follows the naming convention', () => {
+  for (const f of readdirSync(join(root, 'public/assets')).filter((x) => x.endsWith('.css'))) {
+    assert.deepEqual(lintCss(f, css('/assets/' + f)).filter((x) => x.rule === 'css-bem').map((x) => `${x.line}: ${x.message}`), [], f);
+  }
+});
+
+test('spacing and the grid come from the base tokens', () => {
+  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'space-tokens').map((f) => f.message);
+  assert.deepEqual(rule(`.a { margin: 0 auto var(--space-6); padding: var(--space-half) var(--gutter); gap: var(--space-3) 0; }
+.b { margin: calc(-1 * var(--gutter)) 0 0 calc(50% - 50vw); padding: 4vh 0; margin-top: -1px; max-width: var(--measure-0); }
+.c { margin: 0 10%; padding: inherit; width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter)); }
+@media print { .p { margin: 0.5in; } }
+:root { --space-5: 20px; }`), []);
+  assert.equal(rule('.a { margin: 18px 0; }').length, 1);
+  assert.equal(rule('.a { padding: 0 1.5em; }').length, 1);
+  assert.equal(rule('.a { gap: clamp(40px, 6.7vw, 64px); }').length, 1);
+  assert.equal(rule('.a { margin: calc(-1 * 20px); }').length, 1);
+  assert.equal(rule('.a { max-width: 68ch; }').length, 1);
+  assert.equal(rule('.a { max-width: 1060px; }').length, 1);
+  assert.deepEqual(rule('.a { min-width: 2ch; flex: 1 1 14ch; }'), []);
+});
+
+test('faces, weights, line spacing and tracking come from the base tokens', () => {
+  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'type-tokens').map((f) => f.message);
+  assert.deepEqual(rule(`.a { font-family: var(--font-serif); font-weight: var(--weight-bold); line-height: var(--leading-body); letter-spacing: var(--tracking-caps); }
+.b { font: var(--weight-semibold) var(--step--2)/var(--leading-snug) var(--font-sans); }
+.c { font: inherit; line-height: 0; letter-spacing: 0; font-weight: inherit; }
+:root { --font-sans: 'IBM Plex Sans', sans-serif; }`), []);
+  assert.equal(rule(".a { font-family: 'IBM Plex Sans', sans-serif; }").length, 1);
+  assert.equal(rule('.a { font-weight: 500; }').length, 1);
+  assert.equal(rule('.a { line-height: 1.42; }').length, 1);
+  assert.equal(rule('.a { line-height: 24px; }').length, 1);
+  assert.equal(rule('.a { letter-spacing: 0.08em; }').length, 1);
+  // The shorthand is read in its parts.
+  assert.deepEqual(rule(".a { font: 600 var(--step--2)/1.2 'IBM Plex Sans', sans-serif; }").map((m) => m.split(':')[0]).sort(), ['font-family', 'font-weight', 'line-height']);
 });
 
 test('image sizes are read from WebP and PNG headers', () => {
@@ -213,17 +266,17 @@ test('a signature device in consecutive articles is flagged', () => {
 
 test('highlight escapes markup and marks tags and attributes', () => {
   const out = highlight('<p class="x">a &amp; b</p>');
-  assert.match(out, /<span class="t-tag">&lt;p<\/span>/);
-  assert.match(out, /<span class="t-attr">class<\/span>=<span class="t-val">&quot;x&quot;<\/span>/);
+  assert.match(out, /<span class="ui-syntax__tag">&lt;p<\/span>/);
+  assert.match(out, /<span class="ui-syntax__attr">class<\/span>=<span class="ui-syntax__value">&quot;x&quot;<\/span>/);
   assert.ok(!out.includes('<p'));
 });
 
 test('the column builder scales columns to the top gridline and labels every fifth period', () => {
   const html = cols(COLS_DEMO);
-  assert.match(html, /<span class="pd-col"><i style="height:6\.7%;--i:0"><\/i><\/span>/);
-  assert.match(html, /<span class="pd-col is-event" data-at="1"><i data-at="3" style="height:16\.2%"><\/i><\/span>/);
-  assert.match(html, /<span class="is-strong">25<\/span>/);
-  assert.match(html, /<span class="is-strong">40<\/span>/);
+  assert.match(html, /<span class="pd-cols__col"><i class="pd-cols__fill" style="height:6\.7%;--i:0"><\/i><\/span>/);
+  assert.match(html, /<span class="pd-cols__col pd-cols__col--event" data-at="1"><i class="pd-cols__fill" data-at="3" style="height:16\.2%"><\/i><\/span>/);
+  assert.match(html, /<span class="pd-cols__tick pd-cols__tick--strong">25<\/span>/);
+  assert.match(html, /<span class="pd-cols__tick pd-cols__tick--strong">40<\/span>/);
 });
 
 test('lintSite runs over the whole repository and the kit is clean', () => {
@@ -246,15 +299,15 @@ test('the new figures carry their titles and sources, and the slider needs the k
 
 test('a range segment sits on the chart scale, and a range drawn off it is caught', () => {
   const html = stack({ eyebrow: 'Weeks', prefix: '', suffix: ' weeks', decimals: 1, bars: [{ name: 'A', segs: [{ value: 8.7, to: 13, text: 'two to three months' }] }, { name: 'B', segs: [{ value: 2 }] }], caption: 'Source, 2026.' });
-  assert.match(html, /<div class="pd-seg-range" data-to="13" style="left:\d+\.\d%;width:\d+\.\d%"><\/div>/);
+  assert.match(html, /<div class="pd-range" data-to="13" style="left:\d+\.\d%;width:\d+\.\d%"><\/div>/);
   assert.deepEqual(lint(html).filter((f) => f.rule === 'stack-scale'), []);
-  const off = html.replace(/(pd-seg-range" data-to="13" style="left:[\d.]+%;width:)[\d.]+%/, '$120.0%');
+  const off = html.replace(/(pd-range" data-to="13" style="left:[\d.]+%;width:)[\d.]+%/, '$120.0%');
   assert.ok(lint(off).some((f) => f.rule === 'stack-scale' && /range to 13/.test(f.message)));
 });
 
 test('the calculator fold keeps its fields in the formulas', () => {
   const fold = COMPONENTS.find((c) => c.id === 'calculator').stories.find((s) => s.id === 'fold').html;
-  assert.match(fold, /<details class="pd-calc-more">[\s\S]*data-var="fee"[\s\S]*data-var="cac"[\s\S]*<\/details>/);
+  assert.match(fold, /<details class="pd-calc__more">[\s\S]*data-var="fee"[\s\S]*data-var="cac"[\s\S]*<\/details>/);
   assert.deepEqual(lint(fold).filter((f) => f.rule === 'calc-names'), []);
 });
 
@@ -268,16 +321,11 @@ test('font sizes are steps of the type scale', () => {
   assert.equal(rule('.a { font: 600 13px/1.2 \'IBM Plex Sans\', sans-serif; }').length, 1);
   // Print is exempt, and custom properties are the scale itself.
   assert.deepEqual(rule('@media print { .a { font-size: 10pt; } }\n:root { --step-0: 20px; }'), []);
-  // A page not on the scale yet gets one note with its count.
-  const pending = rule('.a { font-size: 13px; }\n.b { font-size: 15px; }', 'public/assets/privacy.css');
-  assert.equal(pending.length, 1);
-  assert.equal(pending[0].severity, 'info');
-  assert.match(pending[0].message, /^2 font sizes/);
 });
 
-test('the article stylesheets are on the type scale', () => {
-  for (const href of ['/assets/site-shell.css', '/assets/article.css', '/assets/article-kit.css', '/assets/styleguide.css', '/assets/styleguide-frame.css']) {
-    assert.deepEqual(lintCss(href, css(href)).filter((f) => f.rule === 'type-scale'), [], href);
+test('every stylesheet takes its type from the base', () => {
+  for (const f of readdirSync(join(root, 'public/assets')).filter((x) => x.endsWith('.css'))) {
+    assert.deepEqual(lintCss(f, css('/assets/' + f)).filter((x) => ['type-scale', 'type-tokens', 'space-tokens', 'css-color', 'css-layer'].includes(x.rule)), [], f);
   }
 });
 
@@ -288,6 +336,15 @@ test('the type scale in the registry is the one site-shell.css defines', () => {
   assert.equal(steps.find((t) => t.step === 0).px, 20);
   // Each step is 1.2 times the one below, rounded to the pixel.
   for (const t of steps) assert.equal(t.px, Math.round(20 * 1.2 ** t.step), stepName(t.step));
+});
+
+test('the base defines every type token the linter accepts', () => {
+  const t = typeTokens(root);
+  const names = new Set([...t.fonts, ...t.weights, ...t.leading, ...t.tracking].map((x) => x.name));
+  for (const n of ['--font-display', '--font-serif', '--font-sans', '--font-mono', '--weight-regular', '--weight-semibold', '--weight-bold', '--leading-display', '--leading-heading', '--leading-snug', '--leading-text', '--leading-body', '--leading-cap', '--tracking-caps']) assert.ok(names.has(n), n);
+  // Line spacing runs from tight to open.
+  const lead = ['display', 'heading', 'snug', 'text', 'body'].map((k) => Number(t.leading.find((x) => x.name === `--leading-${k}`).value));
+  assert.deepEqual([...lead].sort((a, b) => a - b), lead);
 });
 
 test('every part a component names exists, is smaller or the same size, and each class has one owner', () => {

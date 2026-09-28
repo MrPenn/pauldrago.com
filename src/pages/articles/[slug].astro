@@ -102,31 +102,31 @@ const jsonld = {
   <main id="main">
     <article class="article">
       <div class="container">
-        {article.data.opener === 'fd-grid' ? <FrontDoorOpener /> : article.data.opener && <div class="article-opener" data-opener={article.data.opener} aria-hidden="true"></div>}
-        <header class="article-header">
-          <p class="label article-kicker"><a href="/articles">Articles</a>{article.data.kicker && <span class="article-kicker-sep" aria-hidden="true"> / </span>}{article.data.kicker && <span>{article.data.kicker}</span>}</p>
-          <h1 class="display-title article-title">{article.data.title}</h1>
-          <p class="article-intro">{article.data.description}</p>
-          <p class="article-date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time><span class="article-meta-sep" aria-hidden="true"> / </span><span>{minutes}-minute read</span></p>
-          <p class="article-byline" data-c="author-byline">By <a href="/">{AUTHOR.name}</a>, {AUTHOR.byline}</p>
+        {article.data.opener === 'front-door' && <FrontDoorOpener />}
+        <header class="article__header">
+          <p class="label article__kicker"><a href="/articles">Articles</a>{article.data.kicker && <span class="article__sep" aria-hidden="true"> / </span>}{article.data.kicker && <span>{article.data.kicker}</span>}</p>
+          <h1 class="display-title article__title">{article.data.title}</h1>
+          <p class="article__intro">{article.data.description}</p>
+          <p class="article__date"><time datetime={iso(article.data.date)}>{long(article.data.date)}</time><span class="article__sep" aria-hidden="true"> / </span><span>{minutes}-minute read</span></p>
+          <p class="article__byline" data-c="author-byline">By <a href="/">{AUTHOR.name}</a>, {AUTHOR.byline}</p>
         </header>
-        <div class="article-body" data-notes={article.data.notes}>
+        <div class="article__body" data-notes={article.data.notes}>
           {article.data.brief.length > 0 && (
-            <aside class="article-brief" aria-label="The short version" data-c="short-version">
-              <p class="label accent article-brief-label">The short version</p>
+            <aside class="brief" aria-label="The short version" data-c="short-version">
+              <p class="label label--accent brief__label">The short version</p>
               <ol>{article.data.brief.map((item) => <li set:html={curlHtml(item)} />)}</ol>
             </aside>
           )}
           <Content />
           <BookingLine />
         </div>
-        <aside class="article-author" aria-label="About the author" data-c="author-bio">
-          <p class="label accent article-author-label">About the author</p>
-          <p class="article-author-bio">{AUTHOR.bio}</p>
-          <p class="article-author-links">
-            <a class="btn btn-small" href={AUTHOR.booking} {...AUTHOR.calAttrs}>Book a 20-minute call</a>
-            <a class="article-author-link" href={AUTHOR.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a class="article-author-link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
+        <aside class="author" aria-label="About the author" data-c="author-bio">
+          <p class="label label--accent author__label">About the author</p>
+          <p class="author__bio">{AUTHOR.bio}</p>
+          <p class="author__links">
+            <a class="btn btn--small" href={AUTHOR.booking} {...AUTHOR.calAttrs}>Book a 20-minute call</a>
+            <a class="author__link" href={AUTHOR.linkedin} target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="author__link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>
           </p>
         </aside>
       </div>
