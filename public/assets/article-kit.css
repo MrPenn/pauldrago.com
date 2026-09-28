@@ -323,6 +323,9 @@
   .pd-bar:has(.pd-mark) + .pd-bar { margin-top: var(--space-12); }
   /* The bar's name is a label; its value is a number (is-s). */
   .pd-bar__head { display: flex; justify-content: space-between; align-items: baseline; gap: var(--space-4); margin-bottom: var(--space-2); }
+  /* A value in words ("under two weeks") wraps within half the row instead of squeezing the name
+     to a word a line; a number has no space to break at, so it stays on one line. */
+  .pd-bar__value { max-width: 50%; text-align: right; white-space: normal; text-wrap: balance; }
   /* What a bar counts, under its name. */
   .pd-bar__what { display: block; max-width: var(--measure--2); margin-top: var(--space-1); font-size: var(--step--2); font-weight: var(--weight-regular); line-height: var(--leading-snug); letter-spacing: 0; text-transform: none; }
   .pd-bar__track { position: relative; height: 34px; background: color-mix(in srgb, var(--paper) 6%, transparent); }
@@ -411,8 +414,9 @@
   /* ---------- Build states: parts wait for their step (data-at) ---------- */
   /* article-kit.js adds is-armed to a figure below the fold, or to a pinned graphic, and marks
      each part is-shown as the reader reaches it. Without the script everything shows. */
-  /* A bar takes no room until its step, as in the front door's graphic. */
-  .is-armed .pd-bar { max-height: 120px; transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease), max-height var(--pd-base) var(--pd-ease), margin var(--pd-base) var(--pd-ease); }
+  /* A bar takes no room until its step, as in the front door's graphic. The ceiling it grows to
+     is in rem, and tall enough for a name and value that wrap, so a bar never runs into the next. */
+  .is-armed .pd-bar { max-height: 24rem; transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease), max-height var(--pd-base) var(--pd-ease), margin var(--pd-base) var(--pd-ease); }
   .is-armed .pd-bar[data-at]:not(.is-shown) { max-height: 0; margin-top: 0; opacity: 0; transform: translateY(6px); }
   .is-armed .pd-seg[data-at]:not(.is-shown) { width: 0 !important; }
   .is-armed .pd-seg[data-at]:not(.is-shown) .pd-seg__label { opacity: 0; transition-delay: 0ms; }
@@ -466,6 +470,9 @@
       box-shadow: 0 14px 22px -14px var(--shadow);
     }
     .pd-scrolly__graphic { padding: var(--space-4) 0 var(--space-3); border-top: 0; }
+    /* A card taller than two thirds of the screen (a phone held sideways) would hide the steps under it,
+       so article-kit.js lets it scroll with the page, finished, above them. */
+    .pd-scrolly.is-unpinned .pd-scrolly__sticky { position: static; box-shadow: none; }
     .pd-scrolly__notes { display: none; }
     .pd-scrolly__step { min-height: 0; padding: var(--space-5) 0; justify-content: flex-start; }
     .pd-scrolly__step:first-child { padding-top: var(--space-6); min-height: 0; }

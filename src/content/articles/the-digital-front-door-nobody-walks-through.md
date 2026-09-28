@@ -148,7 +148,7 @@ Chime's partner banks are small enough to have the exemption too, and it is most
 <p class="pd-eyebrow">One primary checking customer, one year</p>
 <div class="pd-head"><span class="pd-num pd-num--xl">$5,400</span><span class="pd-head__text">median transaction balance, under 35</span></div>
 <div class="pd-bar" data-at="2">
-  <div class="pd-bar__head"><span class="label">A community bank, under $10B</span><span class="pd-num pd-num--s">$418</span></div>
+  <div class="pd-bar__head"><span class="label">A community bank, under $10B</span><span class="pd-num pd-num--s pd-bar__value">$418</span></div>
   <div class="pd-bar__track">
     <div class="pd-seg" data-at="2" style="left:0.0%;width:44.0%"><span class="pd-seg__label"><span class="pd-seg__word">spread </span>$206</span></div>
     <div class="pd-seg pd-seg--accent" data-at="3" style="left:44.0%;width:45.3%"><span class="pd-seg__label"><span class="pd-seg__word">interchange </span>$212</span></div>
@@ -156,7 +156,7 @@ Chime's partner banks are small enough to have the exemption too, and it is most
   </div>
 </div>
 <div class="pd-bar" data-at="5">
-  <div class="pd-bar__head"><span class="label">The same customer at a bank over $10B</span><span class="pd-num pd-num--s">$301</span></div>
+  <div class="pd-bar__head"><span class="label">The same customer at a bank over $10B</span><span class="pd-num pd-num--s pd-bar__value">$301</span></div>
   <div class="pd-bar__track">
     <div class="pd-seg" data-at="5" style="left:0.0%;width:44.0%"><span class="pd-seg__label"><span class="pd-seg__word">spread </span>$206</span></div>
     <div class="pd-seg pd-seg--accent" data-at="5" style="left:44.0%;width:20.3%"><span class="pd-seg__label"><span class="pd-seg__word">interchange </span>$95</span></div>
