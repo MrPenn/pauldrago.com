@@ -1,8 +1,9 @@
 ---
 // The offer on a service-detail page: what the engagement is and produces, and its numbered
 // inputs. The label above the title is optional.
+import { twoDigit } from '../data/format';
+interface Props { label?: string; title: string; copy: string; producesCopy: string; inputsTitle: string; inputs: string[] }
 const { label, title, copy, producesCopy, inputsTitle, inputs } = Astro.props;
-const num = (i) => String(i + 1).padStart(2, '0');
 ---
 <section class="offer">
   <div class="container">
@@ -16,7 +17,7 @@ const num = (i) => String(i + 1).padStart(2, '0');
       <div>
         <div class="kicker offer__inputs-title">{inputsTitle}</div>
         <div class="offer__inputs">
-          {inputs.map((input, i) => <div class="offer__input"><span>{num(i)}</span><span>{input}</span></div>)}
+          {inputs.map((input, i) => <div class="offer__input"><span>{twoDigit(i)}</span><span>{input}</span></div>)}
         </div>
       </div>
     </div>

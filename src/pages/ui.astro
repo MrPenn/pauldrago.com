@@ -2,17 +2,20 @@
 import { getCollection } from 'astro:content';
 import UiTable from '../components/ui/UiTable.astro';
 import Styleguide from '../layouts/Styleguide.astro';
-import { COMPONENTS, LEVELS, STATUSES, SIGNATURE_DEVICES, REFERENCE } from '../styleguide/components.mjs';
-import { RULES } from '../styleguide/lint.mjs';
+import { COMPONENTS, LEVELS, STATUSES, SIGNATURE_DEVICES, REFERENCE } from '../styleguide/components.ts';
+import { RULES } from '../styleguide/lint.ts';
+import { must } from '../data/must.ts';
+import type { StatusId } from '../styleguide/components.ts';
 
 const articles = await getCollection('articles', ({ data }) => !data.draft);
 const bySlug = Object.fromEntries(articles.map((a) => [a.id, a]));
-const long = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const long = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 const devices = SIGNATURE_DEVICES.filter((d) => bySlug[d.article]).map((d) => {
   const a = bySlug[d.article];
   return { ...d, title: a.data.title, date: a.data.date, free: new Date(a.data.date.valueOf() + 30 * 86400000) };
 });
-const count = (key, id) => COMPONENTS.filter((c) => c[key] === id).length;
+const count = (key: 'level' | 'status', id: string) => COMPONENTS.filter((c) => c[key] === id).length;
+const statusName = (id: StatusId) => must(STATUSES.find((s) => s.id === id), `status ${id}`).name;
 
 const PRINCIPLES = [
   ['Lead with the decision.', 'The short version, the decks and the report at the end of every tool say what to do next, and what the reader gets by doing it.'],
@@ -62,7 +65,7 @@ const PRINCIPLES = [
         <h3 class="ui-h3">{l.name}</h3>
         <ul class="ui-index__list">
           {COMPONENTS.filter((c) => c.level === l.id).map((c) => (
-            <li><a class="link" href={`/ui/components/${c.id}`}>{c.name}</a><span class={`label ui-chip ui-chip--${c.status}`}>{STATUSES.find((s) => s.id === c.status).name}</span><p>{c.summary}</p></li>
+            <li><a class="link" href={`/ui/components/${c.id}`}>{c.name}</a><span class={`label ui-chip ui-chip--${c.status}`}>{statusName(c.status)}</span><p>{c.summary}</p></li>
           ))}
         </ul>
       </div>

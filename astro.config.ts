@@ -2,8 +2,8 @@ import { defineConfig } from 'astro/config';
 import { readdirSync, readFileSync } from 'node:fs';
 import sitemap from '@astrojs/sitemap';
 import lineage from './src/integrations/lineage.ts';
-import { smartQuotes } from './src/integrations/smart-quotes.mjs';
-import { tableA11y } from './src/integrations/table-a11y.mjs';
+import { smartQuotes } from './src/integrations/smart-quotes.ts';
+import { tableA11y } from './src/integrations/table-a11y.ts';
 
 // Drafts are only built by `npm run build:drafts`; keep them out of the sitemap even then.
 const drafts = readdirSync('src/content/articles')

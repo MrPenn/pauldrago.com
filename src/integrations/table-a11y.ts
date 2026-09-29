@@ -5,30 +5,31 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
+import type { AstroIntegration } from 'astro';
 
-const ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'", nbsp: ' ' };
-const plain = (html) => html.replace(/<[^>]+>/g, '').replace(/&(#?\w+);/g, (m, n) => ENTITIES[n] ?? m).replace(/\s+/g, ' ').trim();
-const attr = (s) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+const ENTITIES: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', '#39': "'", nbsp: ' ' };
+const plain = (html: string) => html.replace(/<[^>]+>/g, '').replace(/&(#?\w+);/g, (m: string, n: string) => ENTITIES[n] ?? m).replace(/\s+/g, ' ').trim();
+const attr = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;');
 
 // A header cell without a scope heads its column in the table head and its row in the body.
-function scope(table) {
+function scope(table: string) {
   const head = table.match(/<thead\b[\s\S]*?<\/thead>/)?.[0] ?? '';
-  const scoped = (part, s) => part.replace(/<th\b(?![^>]*\bscope=)/g, `<th scope="${s}"`);
-  return head ? table.replace(head, scoped(head, 'col')).replace(/<tbody\b[\s\S]*?<\/tbody>/g, (b) => scoped(b, 'row')) : scoped(table, 'row');
+  const scoped = (part: string, s: string) => part.replace(/<th\b(?![^>]*\bscope=)/g, `<th scope="${s}"`);
+  return head ? table.replace(head, scoped(head, 'col')).replace(/<tbody\b[\s\S]*?<\/tbody>/g, (b: string) => scoped(b, 'row')) : scoped(table, 'row');
 }
 
-export function tableA11yHtml(html) {
+export function tableA11yHtml(html: string) {
   let heading = '';
-  return html.replace(/<h([23])\b[^>]*>([\s\S]*?)<\/h\1>|<table\b[\s\S]*?<\/table>/g, (m, level, inner) => {
+  return html.replace(/<h([23])\b[^>]*>([\s\S]*?)<\/h\1>|<table\b[\s\S]*?<\/table>/g, (m: string, level: string | undefined, inner: string) => {
     if (level) { heading = plain(inner); return m; }
     const caption = m.match(/<caption\b[^>]*>([\s\S]*?)<\/caption>/);
-    const label = (caption ? plain(caption[1]) : heading) || 'Table';
+    const label = (caption ? plain(caption[1] ?? '') : heading) || 'Table';
     return `<div class="article__table" role="region" aria-label="${attr(label)}" tabindex="0">${scope(m)}</div>`;
   });
 }
 
 // Astro integration: rewrite each built article's body.
-export function tableA11y() {
+export function tableA11y(): AstroIntegration {
   return {
     name: 'table-a11y',
     hooks: {

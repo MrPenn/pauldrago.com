@@ -3,9 +3,9 @@ import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 
 const articles = (await getCollection('articles', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.date - a.data.date);
-const iso = (d) => d.toISOString().slice(0, 10);
-const long = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+const long = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 const jsonld = {
   '@context': 'https://schema.org',
   '@graph': [

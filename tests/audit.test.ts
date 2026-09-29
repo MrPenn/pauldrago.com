@@ -1,17 +1,18 @@
-// Tests for the kit audit (src/styleguide/audit.mjs). Run with `npm test`.
+// Tests for the kit audit (src/styleguide/audit.ts). Run with `npm test`.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { writeFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { auditArticle, formatAudit, resolveArticle } from '../src/styleguide/audit.mjs';
-import { LEGACY, legacyFor, legacyForTag, COMPONENTS } from '../src/styleguide/components.mjs';
-import { units, stack, asof } from '../src/styleguide/build.mjs';
-import { STACK_DEMO, UNITS_DEMO } from '../src/styleguide/components.mjs';
+import { auditArticle, formatAudit, resolveArticle } from '../src/styleguide/audit.ts';
+import type { Audit } from '../src/styleguide/audit.ts';
+import { LEGACY, legacyFor, legacyForTag, COMPONENTS } from '../src/styleguide/components.ts';
+import { units, stack, asof } from '../src/styleguide/build.ts';
+import { STACK_DEMO, UNITS_DEMO } from '../src/styleguide/components.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
-const byStatus = (a, st) => a.devices.filter((d) => d.status === st).map((d) => d.name);
+const byStatus = (a: Audit, st: string) => a.devices.filter((d) => d.status === st).map((d) => d.name);
 
 test('every legacy entry is sorted, names real kit components, and a new device carries a proposal', () => {
   const ids = new Set(COMPONENTS.map((c) => c.id));
@@ -19,27 +20,31 @@ test('every legacy entry is sorted, names real kit components, and a new device 
     assert.ok(['equivalent', 'derivative', 'novel', 'declined', 'remove'].includes(l.kind), `${l.match ?? l.attr} kind`);
     if (l.kind === 'declined') assert.ok(l.how && l.name, `${l.attr ?? l.match} needs the fallback Paul chose`);
     assert.ok(l.match || l.attr, 'match or attr');
-    if (l.kind === 'equivalent' || l.kind === 'derivative') assert.ok(ids.has(l.kit), `${l.match ?? l.attr} -> ${l.kit}`);
+    if (l.kind === 'equivalent' || l.kind === 'derivative') assert.ok(ids.has(l.kit ?? ''), `${l.match ?? l.attr} -> ${l.kit}`);
     if (l.kind === 'derivative') assert.ok(l.how && l.why && l.name, `${l.match} needs a name, a reason and a how`);
     for (const i of l.alt ?? []) assert.ok(ids.has(i), `${l.match} alt ${i}`);
     if (l.kind === 'novel' && !l.part && l.proposal !== null) assert.ok(l.proposal?.name && l.proposal.shows && l.otherwise, `${l.match ?? l.attr} needs a proposal`);
     if (l.kind === 'remove') assert.ok(l.why && l.name);
   }
-  assert.equal(legacyFor('fd-stat-units').kit, 'unit-stat');
-  assert.equal(legacyFor('cd-bars-row').kind, 'derivative');
-  assert.equal(legacyFor('cd-widget-title').kit, 'eyebrow');
-  assert.equal(legacyForTag('<figure class="cd-widget" data-cd="asof">').kit, 'as-of');
-  assert.equal(legacyForTag('<figure class="cd-widget" data-cd="graph">').kind, 'declined');
-  assert.equal(legacyFor('cd-record').kit, 'record');
+  assert.equal(legacyFor('fd-stat-units')?.kit, 'unit-stat');
+  assert.equal(legacyFor('cd-bars-row')?.kind, 'derivative');
+  assert.equal(legacyFor('cd-widget-title')?.kit, 'eyebrow');
+  assert.equal(legacyForTag('<figure class="cd-widget" data-cd="asof">')?.kit, 'as-of');
+  assert.equal(legacyForTag('<figure class="cd-widget" data-cd="graph">')?.kind, 'declined');
+  assert.equal(legacyFor('cd-record')?.kit, 'record');
 });
 
-const figure = (a, line) => a.figures.find((f) => f.line === line);
+const figure = (a: Audit, line: number) => {
+  const f = a.figures.find((x) => x.line === line);
+  assert.ok(f, `no figure at line ${line}`);
+  return f;
+};
 
 // The article as it stood before it moved onto the kit (2026-09-26), kept to test the mapping.
 const BEFORE = join(root, 'tests/fixtures/content-is-data-before.md');
 
 test('the content-is-data article before the move: derivatives rebuild on the kit, new devices go to Paul', () => {
-  const a = auditArticle(root, resolveArticle(root, BEFORE));
+  const a = auditArticle(root, resolveArticle(root, BEFORE)!);
   assert.equal(a.kit.css, false);
   // Every static bar chart, all five of them, moves to the stacked bar; none becomes a table.
   const bars = a.figures.filter((f) => f.name === 'Static bar chart');
@@ -49,10 +54,10 @@ test('the content-is-data article before the move: derivatives rebuild on the ki
   assert.equal(figure(a, 111).component, 'ledger');
   assert.equal(figure(a, 115).component, 'calculator');
   // The unit stat fits a share, but the front door ran two days earlier.
-  assert.ok(figure(a, 53).alt.find((x) => x.id === 'unit-stat').blocked);
+  assert.ok(figure(a, 53).alt.find((x) => x.id === 'unit-stat')?.blocked);
   // Paul's calls on 2026-09-26: the record and the slider joined the kit; the source map, small
   // multiples and the self-check did not, so each takes its fallback and nothing waits on him.
-  assert.deepEqual(a.decisions, []);
+  assert.equal(a.decisions.length, 0);
   for (const line of [200, 241, 247]) assert.equal(figure(a, line).status, 'declined', `line ${line}`);
   assert.ok(!a.decisions.some((d) => d.kind === 'gap'));
   assert.equal(figure(a, 146).component, 'record');
@@ -61,13 +66,13 @@ test('the content-is-data article before the move: derivatives rebuild on the ki
   // The widget title is the eyebrow, not a second figure.
   assert.ok(!a.figures.some((f) => f.name === 'Custom interactive figure'));
   assert.ok(byStatus(a, 'equivalent').includes('Deck'));
-  assert.deepEqual(a.devices.find((d) => d.name === 'Deck').lines, [21, 37, 59, 79, 97, 123, 156, 180, 210, 232]);
+  assert.deepEqual(a.devices.find((d) => d.name === 'Deck')?.lines, [21, 37, 59, 79, 97, 123, 156, 180, 210, 232]);
   assert.equal(a.summary.unknown, 0);
   assert.match(formatAudit(a), /## Decisions for Paul/);
 });
 
 test('the content-is-data article is on the kit, with nothing left to decide', () => {
-  const a = auditArticle(root, resolveArticle(root, 'your-content-has-no-parent'));
+  const a = auditArticle(root, resolveArticle(root, 'your-content-has-no-parent')!);
   assert.equal(a.summary.onKit, true);
   assert.equal(a.summary.errors, 0);
   assert.deepEqual(a.decisions, []);
@@ -79,7 +84,7 @@ test('the content-is-data article is on the kit, with nothing left to decide', (
 const FRONT_DOOR_BEFORE = join(root, 'tests/fixtures/front-door-before.md');
 
 test('the reference article before the move maps onto the kit, with nothing left to remove', () => {
-  const a = auditArticle(root, resolveArticle(root, FRONT_DOOR_BEFORE));
+  const a = auditArticle(root, resolveArticle(root, FRONT_DOOR_BEFORE)!);
   assert.deepEqual(byStatus(a, 'remove'), []);
   assert.equal(a.decisions.length, 0);
   assert.equal(a.summary.rebuild, 0);
@@ -91,7 +96,7 @@ test('the reference article before the move maps onto the kit, with nothing left
 });
 
 test('the reference article is on the kit, with nothing left to decide', () => {
-  const a = auditArticle(root, resolveArticle(root, 'the-digital-front-door-nobody-walks-through'));
+  const a = auditArticle(root, resolveArticle(root, 'the-digital-front-door-nobody-walks-through')!);
   assert.equal(a.reference, true);
   assert.equal(a.summary.onKit, true);
   assert.equal(a.summary.errors, 0);
@@ -101,7 +106,7 @@ test('the reference article is on the kit, with nothing left to decide', () => {
 });
 
 test('the example draft is on the kit', () => {
-  const a = auditArticle(root, resolveArticle(root, 'example-article'));
+  const a = auditArticle(root, resolveArticle(root, 'example-article')!);
   assert.equal(a.kit.css && a.kit.js, true);
   assert.equal(a.summary.onKit, true);
   assert.equal(a.summary.errors, 0);
@@ -133,7 +138,7 @@ ${stack(STACK_DEMO).replace('<span class="pd-num pd-num--s pd-bar__value">$418</
 <figure class="cd-bars"><p class="cd-widget-title">T</p></figure>
 `);
   try {
-    const a = auditArticle(root, resolveArticle(root, path));
+    const a = auditArticle(root, resolveArticle(root, path)!);
     const rules = new Set(a.findings.map((f) => f.rule));
     for (const r of ['kit-assets', 'units-count', 'stack-scale', 'class-defined', 'signature-spacing']) assert.ok(rules.has(r), `${r} in ${[...rules]}`);
     assert.ok(byStatus(a, 'rebuild').includes('Static bar chart'));
@@ -147,7 +152,7 @@ ${stack(STACK_DEMO).replace('<span class="pd-num pd-num--s pd-bar__value">$418</
 });
 
 // A draft outside the articles folder, audited and then removed.
-function auditDraft(body, date = '2026-11-20', extra = '') {
+function auditDraft(body: string, date = '2026-11-20', extra = '') {
   const dir = mkdtempSync(join(tmpdir(), 'audit-'));
   const path = join(dir, 'draft.md');
   writeFileSync(path, `---
@@ -170,7 +175,7 @@ brief:
 ${body}
 `);
   try {
-    return auditArticle(root, resolveArticle(root, path));
+    return auditArticle(root, resolveArticle(root, path)!);
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
@@ -179,7 +184,7 @@ ${body}
 test('figures inside code fences and comments are not figures', () => {
   const a = auditDraft('```html\n<p class="ck-flow">fenced</p>\n```\n\n<div class="pd-figure">\n<!-- remove this <div> later -->\n<p>Real content</p>\n</div>\n\n<div class="ck-flow">Bands</div>');
   assert.equal(a.figures.filter((f) => f.name === 'ck-flow').length, 1);
-  assert.equal(a.figures.find((f) => f.name === 'ck-flow').line, 27);
+  assert.equal(a.figures.find((f) => f.name === 'ck-flow')?.line, 27);
 });
 
 test('a class defined nowhere keeps the article off the kit', () => {
@@ -193,6 +198,7 @@ test('a percent stack built by the builder passes its own lint, rounding include
   assert.ok(!a.findings.some((f) => f.rule === 'stack-scale'), JSON.stringify(a.findings.filter((f) => f.rule === 'stack-scale')));
   const off = auditDraft(html.replace('>100%<', '>90%<'));
   const finding = off.findings.find((f) => f.rule === 'stack-scale');
+  assert.ok(finding);
   assert.match(finding.message, /prints 90%/);
   assert.doesNotMatch(finding.message, /\$/);
 });

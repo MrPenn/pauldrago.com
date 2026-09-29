@@ -8,15 +8,26 @@
 // `npm run audit:article -- <slug or path>` prints it.
 import { readFileSync, existsSync } from 'node:fs';
 import { join, basename, isAbsolute, resolve } from 'node:path';
-import { COMPONENTS, legacyFor, legacyForTag, SIGNATURE_DEVICES, REFERENCE } from './components.mjs';
-import { frontMatter, lintSite, cssClasses, readArticles, maskBody, RULES } from './lint.mjs';
+import { COMPONENTS, legacyFor, legacyForTag, SIGNATURE_DEVICES, REFERENCE } from './components.ts';
+import type { Legacy, Proposal } from './components.ts';
+import { frontMatter, lintSite, cssClasses, readArticles, maskBody, RULES } from './lint.ts';
+
+// Where a figure or a group of classes stands against the kit.
+type Status = 'decide' | 'unknown' | 'custom' | 'declined' | 'remove' | 'rebuild' | 'equivalent' | 'kit' | 'template';
+// How one class, or a bare block with no class, sorts.
+type Sorted = { key?: string; status: Status; component: string | null; name: string; legacy?: Legacy; note?: string };
+type Cooldown = { name: string; slug: string; days: number; clears: string; adjacent: boolean };
+type Decision =
+  | { kind: 'new'; name: string; lines: number[]; why: string; proposal: Proposal | null; otherwise: string }
+  | { kind: 'gap'; name: string; gaps: string[]; component: string | null; componentName: string; lines: number[] };
+const list = (v: unknown): string[] => (Array.isArray(v) ? v : []);
 
 const TEMPLATE_CSS = ['/assets/site-shell.css', '/assets/article.css'];
 const KIT_CSS = '/assets/article-kit.css';
 const KIT_JS = '/assets/article-kit.js';
 const DAY = 86400000;
 
-export function resolveArticle(root, arg) {
+export function resolveArticle(root: string, arg: string | undefined) {
   if (!arg) return null;
   const direct = isAbsolute(arg) ? arg : resolve(process.cwd(), arg);
   if (existsSync(direct) && direct.endsWith('.md')) return direct;
@@ -25,8 +36,8 @@ export function resolveArticle(root, arg) {
 }
 
 // For a figure the audit cannot sort: the kit component its class name points to, as a lead to check.
-const HINTS = [[/bars?\b|barchart/, 'stacked-bar'], [/cols|columns|years/, 'rising-columns'], [/quote|\bpq\b/, 'pull-quote'], [/stat\b/, 'ledger or unit-stat'], [/timeline|\btl\b/, 'stacked-bar or rising-columns'], [/deck/, 'deck'], [/img|illo|image/, 'illustration'], [/calc/, 'calculator'], [/table/, 'table']];
-function suggest(classes) {
+const HINTS: [RegExp, string][] = [[/bars?\b|barchart/, 'stacked-bar'], [/cols|columns|years/, 'rising-columns'], [/quote|\bpq\b/, 'pull-quote'], [/stat\b/, 'ledger or unit-stat'], [/timeline|\btl\b/, 'stacked-bar or rising-columns'], [/deck/, 'deck'], [/img|illo|image/, 'illustration'], [/calc/, 'calculator'], [/table/, 'table']];
+function suggest(classes: string[]) {
   const stem = classes[0]?.split('-').slice(1).join(' ') ?? '';
   const hit = HINTS.find(([re]) => re.test(stem));
   const lead = hit ? ` Its class name points to ${hit[1]}; check what it shows before trusting that.` : '';
@@ -34,34 +45,34 @@ function suggest(classes) {
 }
 
 // Kit components that only ever sit inside another figure.
-const PARTS = new Set(['eyebrow', 'caption', 'field', 'toggle', 'button', 'data-mark']);
-const lineAt = (text, index) => text.slice(0, index).split('\n').length;
-const classesOf = (attrs) => (attrs.match(/\sclass="([^"]*)"/)?.[1] ?? '').split(/\s+/).filter(Boolean);
-const text = (html) => html.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' ').replace(/\s+/g, ' ').trim();
-const clip = (s, n = 70) => (s.length <= n ? s : `${s.slice(0, n).replace(/\s+\S*$/, '')}...`);
+const PARTS = new Set<string | null>(['eyebrow', 'caption', 'field', 'toggle', 'button', 'data-mark']);
+const lineAt = (text: string, index: number) => text.slice(0, index).split('\n').length;
+const classesOf = (attrs: string) => (attrs.match(/\sclass="([^"]*)"/)?.[1] ?? '').split(/\s+/).filter(Boolean);
+const text = (html: string) => html.replace(/<[^>]+>/g, ' ').replace(/&[a-z]+;/g, ' ').replace(/\s+/g, ' ').trim();
+const clip = (s: string, n = 70) => (s.length <= n ? s : `${s.slice(0, n).replace(/\s+\S*$/, '')}...`);
 // A value printed as a range: "60 to 70%", "3 to 5", "two to three months".
 const RANGE = /\b(\d[\d,.]*|one|two|three|four|five|six|seven|eight|nine|ten)\s*(?:to|-)\s*(\d[\d,.]*|one|two|three|four|five|six|seven|eight|nine|ten)\b/i;
 
 // A chart that prints one of its values as a range, or draws one.
-const drawsRange = (html) => /class="[^"]*-range\b/.test(html)
-  || [...html.matchAll(/class="[^"]*\b[a-z-]+-(?:val|v|value)\b[^"]*"[^>]*>([\s\S]*?)<\/(?:span|p|div)>/g)].some((m) => RANGE.test(text(m[1])));
+const drawsRange = (html: string) => /class="[^"]*-range\b/.test(html)
+  || [...html.matchAll(/class="[^"]*\b[a-z-]+-(?:val|v|value)\b[^"]*"[^>]*>([\s\S]*?)<\/(?:span|p|div)>/g)].some((m) => RANGE.test(text(m[1] ?? '')));
 
 // Block-level HTML in the body: a line that opens a tag, through the line that closes it.
 const BLOCK = /^<(figure|section|div|aside|details|table|ol|ul|p|blockquote|picture|img)\b([^>]*)>/;
 const TEXT_TAGS = new Set(['p', 'ol', 'ul', 'blockquote']);
-function blocks(body, firstLine) {
+function blocks(body: string, firstLine: number) {
   const lines = body.split('\n');
-  const out = [];
+  const out: { tag: string; attrs: string; open: string; line: number; html: string }[] = [];
   for (let i = 0; i < lines.length; i += 1) {
-    const m = lines[i].match(BLOCK);
+    const m = (lines[i] ?? '').match(BLOCK);
     if (!m) continue;
-    const [, tag, attrs] = m;
+    const [, tag = '', attrs = ''] = m;
     let j = i;
     if (tag !== 'img') {
       let depth = 0;
       for (; j < lines.length; j += 1) {
-        depth += (lines[j].match(new RegExp(`<${tag}\\b`, 'g')) ?? []).length;
-        depth -= (lines[j].match(new RegExp(`</${tag}>`, 'g')) ?? []).length;
+        depth += ((lines[j] ?? '').match(new RegExp(`<${tag}\\b`, 'g')) ?? []).length;
+        depth -= ((lines[j] ?? '').match(new RegExp(`</${tag}>`, 'g')) ?? []).length;
         if (depth <= 0) break;
       }
       j = Math.min(j, lines.length - 1);
@@ -76,19 +87,19 @@ function blocks(body, firstLine) {
  * Signature devices this article cannot use: one that runs in the article before or after it, or
  * in any article less than 30 days away. Returns { id: { name, slug, days, from } }.
  */
-export function cooldowns(root, path, date) {
+export function cooldowns(root: string, path: string, date: unknown) {
   const slug = basename(path).replace(/\.md$/, '');
-  const when = new Date(date);
+  const when = new Date(String(date));
   if (Number.isNaN(when.getTime())) return {};
-  const others = readArticles(root, [path]).filter((a) => a.slug !== slug && !a.draft && !Number.isNaN(a.date.getTime())).sort((a, b) => a.date - b.date);
+  const others = readArticles(root, [path]).filter((a) => a.slug !== slug && !a.draft && !Number.isNaN(a.date.getTime())).sort((a, b) => a.date.getTime() - b.date.getTime());
   const prev = others.filter((a) => a.date <= when).pop();
   const next = others.find((a) => a.date > when);
-  const out = {};
+  const out: Record<string, Cooldown> = {};
   for (const other of others) {
-    const days = Math.round(Math.abs(other.date - when) / DAY);
+    const days = Math.round(Math.abs(other.date.getTime() - when.getTime()) / DAY);
     if (!(other === prev || other === next || days < 30)) continue;
     for (const id of other.devices) {
-      if (out[id] && out[id].days <= days) continue;
+      if ((out[id]?.days ?? Infinity) <= days) continue;
       const device = SIGNATURE_DEVICES.find((d) => d.id === id);
       const adjacent = other === prev || other === next;
       // Next to it, the device waits for another article in between, whatever the date.
@@ -99,31 +110,31 @@ export function cooldowns(root, path, date) {
   return out;
 }
 
-export function auditArticle(root, path) {
+export function auditArticle(root: string, path: string) {
   const source = readFileSync(path, 'utf8');
   const { data, bodyStart } = frontMatter(source);
-  const sheets = data.stylesheets ?? [];
-  const scripts = Array.isArray(data.scripts) ? data.scripts : [];
-  const read = (href) => (existsSync(join(root, 'public', href)) ? readFileSync(join(root, 'public', href), 'utf8') : '');
+  const sheets = list(data.stylesheets);
+  const scripts = list(data.scripts);
+  const read = (href: string) => (existsSync(join(root, 'public', href)) ? readFileSync(join(root, 'public', href), 'utf8') : '');
   const kitClasses = cssClasses(read(KIT_CSS));
   const templateClasses = new Set(TEMPLATE_CSS.flatMap((h) => [...cssClasses(read(h))]));
   const ownSheets = sheets.filter((s) => s !== KIT_CSS);
   const ownClasses = new Set(ownSheets.flatMap((h) => [...cssClasses(read(h))]));
-  const componentOf = new Map();
+  const componentOf = new Map<string, string>();
   for (const c of COMPONENTS) for (const cls of c.classes) if (!componentOf.has(cls)) componentOf.set(cls, c.id);
-  const comp = (id) => COMPONENTS.find((c) => c.id === id);
-  const nameOf = (id) => comp(id)?.name ?? id;
+  const comp = (id: string | null | undefined) => COMPONENTS.find((c) => c.id === id);
+  const nameOf = (id: string | null | undefined) => comp(id)?.name ?? id ?? '';
   const signatureIds = new Set(COMPONENTS.filter((c) => c.status === 'signature').map((c) => c.id));
   const cool = cooldowns(root, path, data.date);
-  const blocked = (id) => (signatureIds.has(id) && cool[id] ? cool[id] : null);
+  const blocked = (id: string) => (signatureIds.has(id) && cool[id] ? cool[id] : null);
 
   // How one class sorts: a kit component, a template class, an older class and what becomes of
   // it, the article's own styles, or defined nowhere.
-  const sortClass = (cls) => {
+  const sortClass = (cls: string): Sorted | null => {
     if (/^is-/.test(cls)) return null;
-    if (componentOf.has(cls) && (kitClasses.has(cls) || templateClasses.has(cls))) {
-      const id = componentOf.get(cls);
-      return { key: `kit:${id}`, status: comp(id).status === 'template' ? 'template' : 'kit', component: id, name: comp(id).name };
+    const id = componentOf.get(cls);
+    if (id && (kitClasses.has(cls) || templateClasses.has(cls))) {
+      return { key: `kit:${id}`, status: comp(id)?.status === 'template' ? 'template' : 'kit', component: id, name: nameOf(id) };
     }
     if (kitClasses.has(cls) && cls.startsWith('pd-')) return { key: 'kit:other', status: 'kit', component: null, name: 'Kit classes' };
     const legacy = /^(fd|cd)-|^k$/.test(cls) ? legacyFor(cls) : null;
@@ -138,10 +149,10 @@ export function auditArticle(root, path) {
   };
 
   // Every class in the brief and the body, with every line it appears on.
-  const uses = new Map();
-  const scan = (chunk, offsetLine) => {
+  const uses = new Map<string, { count: number; lines: number[] }>();
+  const scan = (chunk: string, offsetLine: number) => {
     for (const m of chunk.matchAll(/\sclass="([^"]*)"/g)) {
-      for (const cls of m[1].split(/\s+/).filter(Boolean)) {
+      for (const cls of (m[1] ?? '').split(/\s+/).filter(Boolean)) {
         if (/^is-/.test(cls)) continue;
         const u = uses.get(cls) ?? { count: 0, lines: [] };
         u.count += 1;
@@ -156,30 +167,33 @@ export function auditArticle(root, path) {
   scan(source.slice(0, bodyStart), 1);
   scan(body, bodyLine);
 
-  const devices = new Map();
+  type Device = { status: Status; component: string | null; name: string; note: string; why: string; classes: string[]; count: number; lines: number[] };
+  const devices = new Map<string, Device>();
   for (const [cls, u] of uses) {
     const s = sortClass(cls);
     if (!s) continue;
-    const d = devices.get(s.key) ?? { status: s.status, component: s.component, name: s.name, note: s.legacy?.note ?? '', why: s.legacy?.why ?? '', classes: [], count: 0, lines: [] };
+    const key = s.key ?? s.name;
+    const d = devices.get(key) ?? { status: s.status, component: s.component, name: s.name, note: s.legacy?.note ?? '', why: s.legacy?.why ?? '', classes: [], count: 0, lines: [] };
     d.classes.push(cls);
     d.count += u.count;
     d.lines.push(...u.lines);
-    devices.set(s.key, d);
+    devices.set(key, d);
   }
   const deviceList = [...devices.values()].map((d) => ({ ...d, lines: [...new Set(d.lines)].sort((a, b) => a - b) }))
-    .sort((a, b) => ORDER[a.status] - ORDER[b.status] || a.lines[0] - b.lines[0]);
+    .sort((a, b) => ORDER[a.status] - ORDER[b.status] || (a.lines[0] ?? 0) - (b.lines[0] ?? 0));
 
   // Every figure in the body, sorted as a whole. A figure's device comes from its opening tag,
   // then its own classes, then the first device inside it; other devices inside are its parts.
-  const figures = [];
+  type Figure = { line: number; status: Status; name: string; title: string; component: string | null; parts: string[]; why: string; how: string; alt: { id: string; name: string; blocked: Cooldown | null }[]; blocked: Cooldown | null; gap: string; gapName: string; proposal: Proposal | null; otherwise: string };
+  const figures: Figure[] = [];
   for (const b of blocks(body, bodyLine)) {
     const rootClasses = classesOf(b.attrs);
-    const inner = [...b.html.matchAll(/\sclass="([^"]*)"/g)].flatMap((m) => m[1].split(/\s+/)).filter(Boolean);
-    let legacy = legacyForTag(b.open);
-    let sorted = null;
+    const inner = [...b.html.matchAll(/\sclass="([^"]*)"/g)].flatMap((m) => (m[1] ?? '').split(/\s+/)).filter(Boolean);
+    let legacy: Legacy | null = legacyForTag(b.open);
+    let sorted: Sorted | null = null;
     if (!legacy) {
-      const candidates = [...rootClasses, ...inner].map(sortClass).filter((s) => s && s.status !== 'template');
-      const rank = (c) => (c.status === 'remove' ? 3 : c.legacy?.part || PARTS.has(c.component) || (!c.component && !c.legacy) ? 2 : 0);
+      const candidates = [...rootClasses, ...inner].map(sortClass).filter((s): s is Sorted => !!s && s.status !== 'template');
+      const rank = (c: Sorted) => (c.status === 'remove' ? 3 : c.legacy?.part || PARTS.has(c.component) || (!c.component && !c.legacy) ? 2 : 0);
       sorted = candidates.map((c, i) => ({ c, i })).sort((x, y) => rank(x.c) - rank(y.c) || x.i - y.i)[0]?.c ?? null;
       legacy = sorted?.legacy ?? null;
     }
@@ -189,8 +203,8 @@ export function auditArticle(root, path) {
       else if (b.tag === 'p' && !rootClasses.length) sorted = { status: 'equivalent', component: 'body-text', name: 'Paragraph in HTML', note: 'Body text is markdown; raw HTML is for figures.' };
       else continue;
     }
-    const status = legacy ? STATUS_OF[legacy.kind] : sorted.status;
-    const component = legacy ? legacy.kit ?? null : sorted.component;
+    const status = legacy ? STATUS_OF[legacy.kind] : sorted?.status ?? 'unknown';
+    const component = legacy ? legacy.kit ?? null : sorted?.component ?? null;
     if (status === 'template') continue;
     if (TEXT_TAGS.has(b.tag) && (status === 'kit' || (status === 'equivalent' && component !== 'body-text'))) continue;
     const label = b.attrs.match(/aria-label="([^"]*)"/)?.[1] ?? '';
@@ -199,9 +213,9 @@ export function auditArticle(root, path) {
       || (b.html.match(/<img\b[^>]*\salt="([^"]*)"/)?.[1] ?? '')
       || text(b.html.match(/<figcaption>([\s\S]*?)<\/figcaption>/)?.[1] ?? '')
       || text(b.html));
-    const dead = rootClasses.map(sortClass).filter((c) => c && c.status === 'remove' && c !== sorted).map((c) => `${c.legacy.match.replace(/[\^$]/g, '')} does nothing: remove it.`);
-    const parts = [...new Set(inner.map(sortClass).filter((s) => s && !s.legacy?.part && !PARTS.has(s.component) && s.status !== 'template' && s.component && s.component !== component).map((s) => nameOf(s.component)))];
-    const fig = {
+    const dead = rootClasses.map(sortClass).filter((c): c is Sorted => !!c && c.status === 'remove' && c !== sorted).map((c) => `${(c.legacy?.match ?? '').replace(/[\^$]/g, '')} does nothing: remove it.`);
+    const parts = [...new Set(inner.map(sortClass).filter((s): s is Sorted => !!s && !s.legacy?.part && !PARTS.has(s.component) && s.status !== 'template' && !!s.component && s.component !== component).map((s) => nameOf(s.component)))];
+    const fig: Figure = {
       line: b.line,
       status,
       name: legacy?.name ?? sorted?.name ?? nameOf(component),
@@ -221,14 +235,14 @@ export function auditArticle(root, path) {
   }
 
   // What Paul decides: each new device once, with every figure it covers, and each kit gap.
-  const decisions = [];
+  const decisions: Decision[] = [];
   for (const f of figures.filter((x) => x.status === 'decide')) {
     const d = decisions.find((x) => x.kind === 'new' && x.name === f.name);
     if (d) d.lines.push(f.line);
     else decisions.push({ kind: 'new', name: f.name, lines: [f.line], why: f.why, proposal: f.proposal, otherwise: f.otherwise });
   }
   for (const f of figures.filter((x) => x.gap)) {
-    const d = decisions.find((x) => x.kind === 'gap' && x.component === f.component && x.name === f.gapName);
+    const d = decisions.find((x): x is Extract<Decision, { kind: 'gap' }> => x.kind === 'gap' && x.component === f.component && x.name === f.gapName);
     if (d) {
       d.lines.push(f.line);
       if (!d.gaps.includes(f.gap)) d.gaps.push(f.gap);
@@ -243,16 +257,16 @@ export function auditArticle(root, path) {
   const signature = SIGNATURE_DEVICES.filter((d) => d.classes.some((c) => uses.has(c)) || (d.selector && source.includes(d.selector)))
     .map((d) => ({ id: d.id, name: d.name, from: d.article }));
 
-  const count = (st) => figures.filter((f) => f.status === st).length;
+  const count = (st: Status) => figures.filter((f) => f.status === st).length;
   return {
     file: path.replace(root + '/', ''),
     slug,
-    title: data.title ?? '',
-    date: data.date ?? '',
+    title: String(data.title ?? ''),
+    date: String(data.date ?? ''),
     draft: data.draft === true,
     reference: slug === REFERENCE.slug,
-    opener: data.opener ?? '',
-    kit: { css: sheets.includes(KIT_CSS), js: scripts.includes(KIT_JS), notes: data.notes ?? 'rail', stylesheets: sheets, scripts },
+    opener: String(data.opener ?? ''),
+    kit: { css: sheets.includes(KIT_CSS), js: scripts.includes(KIT_JS), notes: String(data.notes ?? 'rail'), stylesheets: sheets, scripts },
     figures,
     decisions,
     devices: deviceList,
@@ -276,10 +290,10 @@ export function auditArticle(root, path) {
   };
 }
 
-const STATUS_OF = { equivalent: 'equivalent', derivative: 'rebuild', novel: 'decide', declined: 'declined', remove: 'remove' };
-const ORDER = { decide: 0, unknown: 1, custom: 2, declined: 3, remove: 4, rebuild: 5, equivalent: 6, kit: 7, template: 8 };
+const STATUS_OF: Record<Legacy['kind'], Status> = { equivalent: 'equivalent', derivative: 'rebuild', novel: 'decide', declined: 'declined', remove: 'remove' };
+const ORDER: Record<Status, number> = { decide: 0, unknown: 1, custom: 2, declined: 3, remove: 4, rebuild: 5, equivalent: 6, kit: 7, template: 8 };
 const RULE = Object.fromEntries(RULES.map((r) => [r.id, r]));
-const STATUS = {
+const STATUS: Record<Status, string> = {
   decide: 'New to the kit: Paul decides',
   unknown: 'Defined nowhere: needs a verdict',
   custom: "The article's own styles: needs a verdict",
@@ -290,12 +304,13 @@ const STATUS = {
   kit: 'On the kit',
   template: 'Template',
 };
-const link = (id) => `[${id}](/ui/components/${id})`;
-const cell = (s) => String(s ?? '').replace(/\|/g, '/').replace(/\n/g, ' ');
+const link = (id: string | null) => `[${id}](/ui/components/${id})`;
+const cell = (s: unknown) => String(s ?? '').replace(/\|/g, '/').replace(/\n/g, ' ');
 
 /** The audit as markdown: the evidence a report is written from. */
-export function formatAudit(a) {
-  const out = [];
+export type Audit = ReturnType<typeof auditArticle>;
+export function formatAudit(a: Audit) {
+  const out: string[] = [];
   out.push(`# Kit audit: ${a.title || a.slug}`, '');
   out.push(`File: ${a.file}${a.draft ? ' (draft)' : ''}${a.date ? `, dated ${String(a.date).slice(0, 10)}` : ''}${a.reference ? '. This is the reference article the kit was taken from.' : ''}`);
   out.push(`Kit stylesheet: ${a.kit.css ? 'loaded' : 'not loaded'}. Kit script: ${a.kit.js ? 'loaded' : 'not loaded'}. Sources: ${a.kit.notes}. Own stylesheets: ${a.kit.stylesheets.filter((s) => s !== KIT_CSS).join(', ') || 'none'}.${a.opener ? ` Opener above the headline: "${a.opener}", rendered by a template component (the kit's unit grid).` : ''}`);

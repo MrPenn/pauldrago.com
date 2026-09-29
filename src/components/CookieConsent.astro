@@ -7,7 +7,7 @@
   // has been idle for a second after load, so neither its script nor its styles compete with the
   // first render. PostHog keeps its own record of a returning visitor's choice, so the wait never
   // changes what is tracked.
-  let started = null;
+  let started: Promise<void> | null = null;
   let ready = false;
   function startConsent() {
     started ??= Promise.all([
@@ -32,7 +32,7 @@
     startConsent().then(() => import('vanilla-cookieconsent')).then((CookieConsent) => CookieConsent.showPreferences());
   });
 
-  function runConsent(CookieConsent, baseCss) {
+  function runConsent(CookieConsent: typeof import('vanilla-cookieconsent'), baseCss: string) {
     // Theme values come from the site's own tokens (both colour schemes).
     const theme = `
   #cc-main {
@@ -155,7 +155,7 @@
       // The library moves focus to the banner when it opens; give it back if the visitor
       // was already somewhere on the page, so keyboard users don't lose their place.
       if (!gpc && !CookieConsent.validConsent()) {
-        const previous = document.activeElement;
+        const previous = document.activeElement as HTMLElement | null;
         CookieConsent.show();
         if (previous && previous !== document.body) setTimeout(() => previous.focus({ preventScroll: true }), 150);
       }

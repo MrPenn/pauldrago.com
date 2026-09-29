@@ -10,7 +10,8 @@
 // stories[].wrap: body (inside .article__body, the default) | article (inside the article column,
 //         outside the body) | page (the story is the whole article)
 // stories[].motion: the frame's toolbar gets a Replay button; stories[].steps: step buttons.
-import { stack, cols, units, grid, record, asof } from './build.mjs';
+import { stack, cols, units, grid, record, asof } from './build.ts';
+import type { GridOptions } from './build.ts';
 import { AUTHOR } from '../data/author.ts';
 
 const BOOKING = AUTHOR.booking;
@@ -19,7 +20,7 @@ const CAL = Object.entries(AUTHOR.calAttrs).map(([k, v]) => (v.includes('"') ? `
 export const REFERENCE = { slug: 'the-digital-front-door-nobody-walks-through', title: 'The Digital Front Door Nobody Walks Through' };
 
 // One primary checking customer, one year: the front door's first pinned sequence.
-const customer = (first) => ({
+const customer = (first: number) => ({
   eyebrow: 'One primary checking customer, one year',
   num: '$5,400',
   sub: 'median transaction balance, under 35',
@@ -64,7 +65,7 @@ export const UNITS_DEMO = { num: '95%', label: "of consumers rate their bank's o
 
 // The front door's own sources for its two number sequences, rendered as the site's markdown renders
 // footnotes, so the kit can move each one under the pinned graphic with its step.
-const NOTES = {
+const NOTES: Record<number, string> = {
   3: '<strong>Federal Reserve Board.</strong> 2022 Survey of Consumer Finances, Historic Tables, Table 6, family holdings of financial assets by age of reference person. Median transaction account holdings for families under 35 that hold such an account: $5,400 (mean $20,536). The 2022 survey is the most recent published as of this writing. Transaction accounts include checking, savings, money market and call accounts, so the checking-only balance is lower and the figure here is generous to the bank. <a href="https://www.federalreserve.gov/econres/scfindex.htm">SCF index and tables</a>',
   4: '<strong>FDIC.</strong> Quarterly Banking Profile, Second Quarter 2026, released August 25, 2026. Community bank net interest margin 3.81%; average yield on earning assets 5.66%; average funding cost 1.85%; industry NIM 3.32%. Applying NIM to a noninterest-bearing checking balance understates its value, since that balance costs the bank close to nothing to fund. <a href="https://www.fdic.gov/quarterly-banking-profile/quarterly-banking-profile-second-quarter-2026.pdf">Read the QBP</a>',
   5: '<strong>Federal Reserve Board.</strong> Regulation II, Average Debit Card Interchange Fee by Payment Card Network, 2024 data, published December 19, 2025. All-network average per transaction: $0.51 for exempt issuers (1.21% of transaction value), $0.23 for covered issuers (0.47%). Interchange is gross revenue; network fees and processing costs come out of it. <a href="https://www.federalreserve.gov/paymentsystems/regii-average-interchange-fee.htm">Fed Regulation II data</a>',
@@ -74,9 +75,9 @@ const NOTES = {
   9: '<strong>National Association of Realtors.</strong> 2025 Profile of Home Buyers and Sellers, November 4, 2025. Median age of first-time homebuyers: 40, up from 38 the prior year; first-time buyer share 21%. <a href="https://www.nar.realtor/press-releases/first-time-home-buyer-share-falls-to-historic-low-of-21-median-age-rises-to-40">NAR release</a>',
   10: '<strong>Mortgage Bankers Association.</strong> Quarterly Mortgage Bankers Performance Report, Second Quarter 2026, released August 18, 2026. Net production income of $973 per loan (25 basis points) for independent mortgage banks and mortgage subsidiaries of chartered banks; total production revenue 333 basis points. A bank that portfolios the loan earns spread over its life instead, which depends on its funding and credit assumptions. <a href="https://www.mba.org/news-and-research/newsroom/news/2026/08/18/imbs-production-profits-increase-in-second-quarter-of-2026">MBA release</a>',
 };
-const ref = (n) => `<sup><a href="#user-content-fn-${n}" id="user-content-fnref-${n}" data-footnote-ref aria-describedby="footnote-label">${n}</a></sup>`;
-const notesHtml = (ns) => `<section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>\n<ol>\n${ns.map((n) => `<li id="user-content-fn-${n}"><p>${NOTES[n]} <a href="#user-content-fnref-${n}" data-footnote-backref class="data-footnote-backref" aria-label="Back to reference ${n}">&#8617;</a></p></li>`).join('\n')}\n</ol>\n</section>`;
-const notesMd = (ns) => ns.map((n) => `[^${n}]: ${NOTES[n].replace(/<strong>(.*?)<\/strong>/, '**$1**').replace(/<a href="([^"]+)">([^<]+)<\/a>/g, '[$2]($1)')}`).join('\n');
+const ref = (n: number | string) => `<sup><a href="#user-content-fn-${n}" id="user-content-fnref-${n}" data-footnote-ref aria-describedby="footnote-label">${n}</a></sup>`;
+const notesHtml = (ns: number[]) => `<section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>\n<ol>\n${ns.map((n) => `<li id="user-content-fn-${n}"><p>${NOTES[n]} <a href="#user-content-fnref-${n}" data-footnote-backref class="data-footnote-backref" aria-label="Back to reference ${n}">&#8617;</a></p></li>`).join('\n')}\n</ol>\n</section>`;
+const notesMd = (ns: number[]) => ns.map((n) => `[^${n}]: ${NOTES[n].replace(/<strong>(.*?)<\/strong>/, '**$1**').replace(/<a href="([^"]+)">([^<]+)<\/a>/g, '[$2]($1)')}`).join('\n');
 
 // Steps are [html, markdown] pairs; {n} marks where a footnote is cited.
 const STEPS = [
@@ -94,10 +95,10 @@ const WAIT_STEPS = [
   'And when that mortgage finally arrives, independent mortgage banks earned $973 per loan on it in the second quarter of 2026.{10}',
   'Banks are deferring a customer worth $400 a year for fifteen years so they can compete on rate, against Rocket, for a $973 event.',
 ];
-const stepHtml = (t) => t.replace(/\{(\d+)\}/g, (_, n) => ref(n));
-const stepMd = (t) => t.replace(/\{(\d+)\}/g, '[^$1]');
-const citedIn = (steps) => [...new Set(steps.flatMap((t) => [...t.matchAll(/\{(\d+)\}/g)].map((m) => Number(m[1]))))];
-const sequence = ({ label, steps, graphic }, markdown) => [
+const stepHtml = (t: string) => t.replace(/\{(\d+)\}/g, (_: string, n: string) => ref(n));
+const stepMd = (t: string) => t.replace(/\{(\d+)\}/g, '[^$1]');
+const citedIn = (steps: string[]) => [...new Set(steps.flatMap((t) => [...t.matchAll(/\{(\d+)\}/g)].map((m) => Number(m[1]))))];
+const sequence = ({ label, steps, graphic }: { label: string; steps: string[]; graphic: string }, markdown?: boolean) => [
   `<section class="pd-scrolly" data-pd="scrolly" data-rail="block" aria-label="${label}">`,
   '<div class="pd-scrolly__steps">',
   ...steps.map((t, i) => (markdown ? `<div class="pd-scrolly__step" data-step="${i + 1}">\n\n${stepMd(t)}\n\n</div>` : `<div class="pd-scrolly__step" data-step="${i + 1}">\n<p>${stepHtml(t)}</p>\n</div>`)),
@@ -136,7 +137,7 @@ const ORG_STEPS = [
   'Digital can deliver a respectable app while Retail provides excellent branch service. Marketing can run an effective campaign, Deposit Product can price competitive checking and Lending can meet its production goals. Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.',
   '<p class="pd-pull">The customer experiences one bank while the organization manages twelve functions.</p>',
 ];
-const orgSequence = (markdown) => [
+const orgSequence = (markdown?: boolean) => [
   '<section class="pd-scrolly" data-pd="scrolly" data-rail="block" aria-label="Twelve functions, one bank">',
   '<div class="pd-scrolly__steps">',
   `<div class="pd-scrolly__step" data-step="1">\n${markdown ? `\n${ORG_STEPS[0]}\n` : `<p>${ORG_STEPS[0]}</p>`}\n</div>`,
@@ -150,7 +151,7 @@ const orgSequence = (markdown) => [
   '</section>',
 ].join('\n');
 
-const OPENER = {
+const OPENER: GridOptions = {
   variant: 'opener', total: 100, on: 44, alt: 4,
   label: 'Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks.',
   legend: [
@@ -174,7 +175,7 @@ export const SHARES_DEMO = {
   ],
   caption: 'Cornerstone Advisors, Beyond the Paycheck Motel, 2025 research recap. New checking accounts across all ages.',
 };
-const CALLBACK = { variant: 'callback', total: 100, on: 0, alt: 4, altFrom: 44, caption: 'Four of every 100 new checking accounts went to community banks.' };
+const CALLBACK: GridOptions = { variant: 'callback', total: 100, on: 0, alt: 4, altFrom: 44, caption: 'Four of every 100 new checking accounts went to community banks.' };
 
 const calcHtml = `<figure class="pd-figure pd-calc" data-pd="calc" data-rail="block" data-define="spread = bal * nim / 100; ic = txn * 12 * fee; total = round(spread) + round(ic); months = cac / (total / 12); scale = max(total, cac) * 1.12">
   <div class="pd-calc__head">
@@ -296,8 +297,8 @@ export const TYPE_SCALE = [
   { step: 9, px: 103, face: 'display', sample: '103', roles: 'Not in articles. Kept for service page headlines.' },
   { step: 10, px: 124, face: 'serif', sample: '“', roles: 'The pull quote\'s opening mark.' },
 ];
-export const stepName = (n) => `--step-${n < 0 ? '-' + Math.abs(n) : n}`;
-const stepClass = (n) => `ui-scale__sample--step-${n < 0 ? 'm' + Math.abs(n) : n}`;
+export const stepName = (n: number) => `--step-${n < 0 ? '-' + Math.abs(n) : n}`;
+const stepClass = (n: number) => `ui-scale__sample--step-${n < 0 ? 'm' + Math.abs(n) : n}`;
 // Every step at its size, in the face its main role uses.
 const SCALE_HTML = `<div class="ui-scale">\n${TYPE_SCALE.map((t) => `  <div class="ui-scale__row"><span class="label">Step ${t.step < 0 ? '−' + Math.abs(t.step) : t.step}, ${t.px}px</span><span class="ui-scale__sample ui-scale__sample--${t.face} ${stepClass(t.step)}">${t.sample}</span></div>`).join('\n')}\n</div>`;
 
@@ -315,20 +316,73 @@ export const COLUMN_BREAKPOINTS = [
   { px: 900, name: 'Wide calculator', changes: 'A calculator this wide sets all its main fields in one row.' },
 ];
 
-export const LEVELS = [
+export type LevelId = 'atom' | 'molecule' | 'organism' | 'template';
+export type StatusId = 'template' | 'shared' | 'signature';
+// One example of a component: the HTML its frame renders, and the code /ui offers to copy when that
+// differs (markdown, or front matter). `wrap` is what the frame puts around it, `steps` the steps
+// of a pinned sequence, `notes` whether it cites sources.
+export type Story = {
+  id: string;
+  name: string;
+  html: string;
+  code?: string;
+  lang?: 'html' | 'markdown' | 'yaml';
+  wrap?: 'body' | 'article' | 'page';
+  motion?: boolean;
+  steps?: number;
+  notes?: boolean;
+};
+export type Component = {
+  id: string;
+  name: string;
+  level: LevelId;
+  status: StatusId;
+  summary: string;
+  use: string[];
+  avoid: string[];
+  rules: string[];
+  a11y: string[];
+  classes: string[];
+  lint: string[];
+  stories: Story[];
+  parts?: string[];
+  controls?: 'units' | 'stack' | 'cols';
+};
+// How the article audit sorts a class or figure from before the kit.
+// A new device carries a proposal for the kit and a fallback if Paul says no; a kit component that
+// cannot yet draw what the article shows carries the gap.
+export type Proposal = { name: string; shows: string; reuses: string; uses: string };
+export type Legacy = {
+  match?: string;
+  attr?: string;
+  kind: 'equivalent' | 'derivative' | 'novel' | 'declined' | 'remove';
+  kit?: string;
+  part?: boolean;
+  note?: string;
+  name?: string;
+  why?: string;
+  how?: string;
+  alt?: string[];
+  gap?: string;
+  gapName?: string;
+  proposal?: Proposal;
+  otherwise?: string;
+};
+
+export const LEVELS: { id: LevelId; name: string; about: string }[] = [
   { id: 'atom', name: 'Atoms', about: 'The smallest parts: the type scale, a label, a number, a swatch, a bar segment, a button.' },
   { id: 'molecule', name: 'Molecules', about: 'Atoms that work as a unit: a number head, a bar row, a ledger, a field, a pull quote.' },
   { id: 'organism', name: 'Organisms', about: 'Whole figures and page sections, built from atoms and molecules: a stacked bar, a calculator, a pinned sequence, the site header.' },
   { id: 'template', name: 'Templates', about: 'The article page the template assembles around the markdown.' },
 ];
 
-export const STATUSES = [
+export const STATUSES: { id: StatusId; name: string; about: string }[] = [
   { id: 'template', name: 'Template', about: 'The article template renders it on every article. You write front matter or markdown, never its HTML.' },
   { id: 'shared', name: 'Shared', about: 'Use it in any article, as often as the argument needs it.' },
   { id: 'signature', name: 'Signature', about: 'A device that identifies one piece. Never in consecutive articles, and a month or more apart.' },
 ];
 
-export const COMPONENTS = [
+export const COMPONENTS: Component[] = [
   // ---------------------------------------------------------------- Atoms
   {
     id: 'type-scale',
@@ -1332,16 +1386,16 @@ export const COMPONENTS = [
 // Smallest first, so the pager walks atoms, then molecules, organisms and templates, and a class two
 // entries list belongs to the smaller one. The sort is stable, so each level keeps its order above.
 const LEVEL_ORDER = Object.fromEntries(LEVELS.map((l, i) => [l.id, i]));
-COMPONENTS.sort((a, b) => LEVEL_ORDER[a.level] - LEVEL_ORDER[b.level]);
+COMPONENTS.sort((a, b) => (LEVEL_ORDER[a.level] ?? 0) - (LEVEL_ORDER[b.level] ?? 0));
 
 /** What a component is built from, and what is built from it. */
-export const partsOf = (c) => (c.parts ?? []).map((id) => COMPONENTS.find((x) => x.id === id)).filter(Boolean);
-export const usedIn = (id) => COMPONENTS.filter((c) => (c.parts ?? []).includes(id));
+export const partsOf = (c: Component) => (c.parts ?? []).map((id) => COMPONENTS.find((x) => x.id === id)).filter((x): x is Component => Boolean(x));
+export const usedIn = (id: string) => COMPONENTS.filter((c) => (c.parts ?? []).includes(id));
 
 // Devices that identify a piece. The spacing rule warns when one appears in two consecutive
 // articles or in two articles less than a month apart. `classes` are how the linter finds them;
 // the fd-, cd- and pd- names of one device count as the same device.
-export const SIGNATURE_DEVICES = [
+export const SIGNATURE_DEVICES: { id: string; name: string; article: string; classes: string[]; selector?: string }[] = [
   { id: 'unit-stat', name: 'Unit stats', article: 'the-digital-front-door-nobody-walks-through', classes: ['pd-units', 'fd-stat'] },
   { id: 'pinned-sequence', name: 'Pinned sequences', article: 'the-digital-front-door-nobody-walks-through', classes: ['pd-scrolly', 'fd-scrolly'] },
   { id: 'dialogue', name: 'Scripted dialogue', article: 'the-digital-front-door-nobody-walks-through', classes: ['pd-dialogue', 'fd-dialogue', 'cd-dialogue'] },
@@ -1369,7 +1423,7 @@ export const SIGNATURE_DEVICES = [
 // `match` tests a class. `attr` tests a figure's opening tag, for devices that share one frame
 // and differ only by a data attribute; the audit checks `attr` entries first. The front door's
 // fd- classes are the source the kit was taken from, so each has an equivalent.
-export const LEGACY = [
+export const LEGACY: Legacy[] = [
   { match: '^fd-deck$', kind: 'equivalent', kit: 'deck' },
   { match: '^fd-eyebrow$', kind: 'equivalent', kit: 'eyebrow', part: true },
   { match: '^fd-figure$', kind: 'equivalent', kit: 'caption', part: true, note: 'The figure frame is pd-figure.' },
@@ -1415,13 +1469,13 @@ export const LEGACY = [
   { match: '^cd-(focus|map|asof|answer|chain|rep)', kind: 'declined', part: true, name: 'Parts of a script-drawn figure', why: 'Drawn by the article\'s own script.', how: 'They go with their figure; see Figures for what each one becomes.' },
 ];
 
-export function legacyFor(cls) {
+export function legacyFor(cls: string) {
   return LEGACY.find((l) => l.match && new RegExp(l.match).test(cls)) ?? null;
 }
 
 /** The LEGACY entry for a figure whose opening tag carries a distinguishing attribute. */
-export function legacyForTag(tag) {
+export function legacyForTag(tag: string) {
   return LEGACY.find((l) => l.attr && tag.includes(l.attr)) ?? null;
 }
 
-export const byId = (id) => COMPONENTS.find((c) => c.id === id);
+export const byId = (id: string) => COMPONENTS.find((c) => c.id === id);

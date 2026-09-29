@@ -2,7 +2,7 @@
 // Opener for "The Digital Front Door Nobody Walks Through": the kit's unit grid, 100 units above the
 // headline. Rendered at build time with the real figures, so it reads correctly without JavaScript;
 // article-kit.js only animates it. The figures are the registry's, which are the article's own.
-import { grid } from '../styleguide/build.mjs';
-import { GRID_DEMO } from '../styleguide/components.mjs';
+import { grid } from '../styleguide/build.ts';
+import { GRID_DEMO } from '../styleguide/components.ts';
 ---
 <Fragment set:html={grid(GRID_DEMO)} />

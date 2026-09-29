@@ -5,7 +5,7 @@ import { AUTHOR } from '../../data/author';
 import { breadcrumb } from '../../data/schema';
 import FrontDoorOpener from '../../components/FrontDoorOpener.astro';
 import BookingLine from '../../components/BookingLine.astro';
-import { curlHtml } from '../../integrations/smart-quotes.mjs';
+import { curlHtml } from '../../integrations/smart-quotes.ts';
 
 export async function getStaticPaths() {
   // `npm run build:drafts` also builds drafts, for previewing locally; they are never listed or indexed.
@@ -15,15 +15,15 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props;
 const { Content } = await render(article);
-const iso = (d) => d.toISOString().slice(0, 10);
-const long = (d) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+const long = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 const path = `/articles/${article.id}`;
 const words = [...article.data.brief, article.body ?? ''].join(' ').replace(/\[\^\d+\]:.*$/gm, '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
 const minutes = Math.max(1, Math.round(words / 230));
 // Footnotes become schema.org citations: "[^n]: **Publisher.** Title. ... [link](url)".
 // Footnote text is markdown, so inline tags (component marks) are dropped and named entities decoded.
-const ENTITIES = { amp: '&', quot: '"', sect: '\u00a7', times: '\u00d7', iacute: '\u00ed', auml: '\u00e4', eacute: '\u00e9' };
-const clean = (s) => s.replace(/<[^>]+>/g, '').replace(/&([a-z]+);/gi, (m, n) => ENTITIES[n] ?? m);
+const ENTITIES: Record<string, string> = { amp: '&', quot: '"', sect: '\u00a7', times: '\u00d7', iacute: '\u00ed', auml: '\u00e4', eacute: '\u00e9' };
+const clean = (s: string) => s.replace(/<[^>]+>/g, '').replace(/&([a-z]+);/gi, (m, n: string) => ENTITIES[n] ?? m);
 const citations = [...(article.body ?? '').matchAll(/^\[\^\d+\]:\s*\*\*(.+?)\*\*\s*(.*)$/gm)].map(([, rawWho, rawRest]) => {
   const who = clean(rawWho);
   const rest = clean(rawRest);

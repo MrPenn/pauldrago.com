@@ -8,7 +8,7 @@ const COMMENT = /\/\*[\s\S]*?\*\//g;
 const RELATIVE_URL = /url\((?!\s*['"]?(?:[a-z][a-z\d+.-]*:|[/#]))/i;
 
 /** The sheets at public/<href>, in order, with comments and blank lines removed. */
-export function inlineSheets(hrefs, root = process.cwd()) {
+export function inlineSheets(hrefs: string[], root = process.cwd()) {
   return hrefs.map((href) => {
     const css = readFileSync(join(root, 'public', href), 'utf8')
       .replace(COMMENT, '')

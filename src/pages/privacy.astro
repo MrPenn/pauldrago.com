@@ -2,6 +2,7 @@
 import Base from '../layouts/Base.astro';
 import Icon from '../components/Icon.astro';
 import PrivacySection from '../components/PrivacySection.astro';
+import type { IconName } from '../data/icons';
 
 // When information is collected: each situation, and whether you give it, the site collects it, or both.
 const moments = [
@@ -10,10 +11,10 @@ const moments = [
   { label: 'You book a call', give: true, auto: false },
   { label: 'You email me', give: true, auto: false },
 ];
-const how = (m) => [m.give && 'you give it', m.auto && 'collected automatically'].filter(Boolean).join(' and ');
+const how = (m: (typeof moments)[number]) => [m.give && 'you give it', m.auto && 'collected automatically'].filter(Boolean).join(' and ');
 
 // The full notice, in order. The contents list and section headings are built from this.
-const sections = [
+const sections: { id: string; icon: IconName; title: string }[] = [
   { id: 'role', icon: 'user-round', title: 'Who is responsible' },
   { id: 'ledger', icon: 'sliders-horizontal', title: 'Everything in one table' },
   { id: 'when', icon: 'eye', title: 'When I collect information' },

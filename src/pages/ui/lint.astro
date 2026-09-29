@@ -1,12 +1,12 @@
 ---
 import Styleguide from '../../layouts/Styleguide.astro';
-import { RULES } from '../../styleguide/lint.mjs';
-import { highlight } from '../../styleguide/build.mjs';
+import { RULES } from '../../styleguide/lint.ts';
+import { highlight } from '../../styleguide/build.ts';
 
 const groups = [...new Set(RULES.map((r) => r.group))].map((g) => ({ name: g, rules: RULES.filter((r) => r.group === g) }));
 const SEVERITY = { error: 'Error', warn: 'Warning', info: 'Info' };
-const lang = (s) => (/^\s*</.test(s) ? 'html' : /^[\w-]+:\s|^\s+-\s/.test(s) ? 'yaml' : /^(#|\[\^|\*)/.test(s) ? 'markdown' : 'text');
-const code = (s) => (lang(s) === 'text' ? highlight(s, 'markdown') : highlight(s, lang(s)));
+const lang = (s: string) => (/^\s*</.test(s) ? 'html' : /^[\w-]+:\s|^\s+-\s/.test(s) ? 'yaml' : /^(#|\[\^|\*)/.test(s) ? 'markdown' : 'text');
+const code = (s: string) => (lang(s) === 'text' ? highlight(s, 'markdown') : highlight(s, lang(s)));
 ---
 <Styleguide title="Linter" description="Every rule the styleguide linter checks, with the reason for it and how to fix it." path="/ui/lint">
   <h1 class="display-title ui-title">Linter</h1>
@@ -25,7 +25,7 @@ npm test                                # the linter's own tests</code></pre>
     <p class="ui-p">Put a comment on the same line or the line above, name the rule, and say why. The linter skips that rule on that line only.</p>
     <pre class="ui-terminal"><code set:html={highlight('<!-- style-ok: percent-in-prose (quoted from the survey) -->')}></code></pre>
     <pre class="ui-terminal"><code>/* style-ok: css-gradient (the fade marks a bar that is still running) */</code></pre>
-    <p class="ui-p">The linter lives in <code>src/styleguide/lint.mjs</code>. To add a rule, add it to <code>RULES</code> with its reason, report it from a check, and add a case to <code>tests/styleguide-lint.test.mjs</code>. This page updates on the next build.</p>
+    <p class="ui-p">The linter lives in <code>src/styleguide/lint.ts</code>. To add a rule, add it to <code>RULES</code> with its reason, report it from a check, and add a case to <code>tests/styleguide-lint.test.mjs</code>. This page updates on the next build.</p>
   </section>
 
   {groups.map((g) => (

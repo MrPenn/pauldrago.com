@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { tableA11yHtml } from '../src/integrations/table-a11y.mjs';
+import { tableA11yHtml } from '../src/integrations/table-a11y.ts';
 
 test('an article table sits in a named region with scoped headers', () => {
   const out = tableA11yHtml('<h2 id="x">Rules &amp; records</h2><p>Text.</p><table><thead><tr><th>Rule</th><th>Binds</th></tr></thead><tbody><tr><th>FINRA</th><td>Brokers</td></tr></tbody></table>');

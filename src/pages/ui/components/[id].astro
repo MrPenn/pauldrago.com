@@ -1,33 +1,35 @@
 ---
 import Styleguide from '../../../layouts/Styleguide.astro';
 import Story from '../../../components/ui/Story.astro';
-import { COMPONENTS, LEVELS, STATUSES, STACK_DEMO, COLS_DEMO, UNITS_DEMO, partsOf, usedIn } from '../../../styleguide/components.mjs';
-import { RULES } from '../../../styleguide/lint.mjs';
-import { inline } from '../../../styleguide/build.mjs';
+import { COMPONENTS, LEVELS, STATUSES, STACK_DEMO, COLS_DEMO, UNITS_DEMO, partsOf, usedIn } from '../../../styleguide/components.ts';
+import { RULES } from '../../../styleguide/lint.ts';
+import { inline } from '../../../styleguide/build.ts';
+import { must } from '../../../data/must.ts';
+import type { Component } from '../../../styleguide/components.ts';
 
 export function getStaticPaths() {
   return COMPONENTS.map((c, i) => ({ params: { id: c.id }, props: { c, prev: COMPONENTS[i - 1], next: COMPONENTS[i + 1] } }));
 }
 
 const { c, prev, next } = Astro.props;
-const level = LEVELS.find((l) => l.id === c.level);
-const status = STATUSES.find((s) => s.id === c.status);
-const rules = c.lint.map((id) => RULES.find((r) => r.id === id));
+const level = must(LEVELS.find((l) => l.id === c.level), `level ${c.level}`);
+const status = must(STATUSES.find((s) => s.id === c.status), `status ${c.status}`);
+const rules = c.lint.map((id) => must(RULES.find((r) => r.id === id), `lint rule ${id}`));
 // Where it sits in the kit: the smaller parts it is built from, and the larger ones built from it.
 const parts = partsOf(c);
 const users = usedIn(c.id);
-const levelName = (x) => LEVELS.find((l) => l.id === x.level).name.replace(/s$/, '').toLowerCase();
+const levelName = (x: Component) => must(LEVELS.find((l) => l.id === x.level), `level ${x.level}`).name.replace(/s$/, '').toLowerCase();
 const DEMOS = { stack: STACK_DEMO, cols: COLS_DEMO, units: UNITS_DEMO };
-const demo = DEMOS[c.controls] ?? null;
 // The controls start from the story built from the same demo data.
 const LIVE = { stack: 'one-bar', cols: 'wait', units: 'twenty' };
-const liveStory = demo ? c.stories.find((s) => s.id === LIVE[c.controls]) : null;
 const WHAT = { stack: 'bar', cols: 'columns', units: 'stat' };
 const HINT = {
   stack: 'Each segment takes its own step, and the line to clear comes after the last one. The scale is the longest bar or line times 1.12.',
   cols: 'The event column lands after the rest. The scale top is the highest gridline; leave it blank to use the largest value.',
   units: 'Twenty or twenty-five units read at a glance. A hundred draw as two rows of fifty.',
 };
+const kind = c.controls;
+const build = kind ? { demo: DEMOS[kind], story: must(c.stories.find((s) => s.id === LIVE[kind]), `story ${LIVE[kind]}`), what: WHAT[kind], hint: HINT[kind] } : null;
 ---
 <Styleguide title={c.name} description={c.summary} path={`/ui/components/${c.id}`}>
   <p class="ui-crumb"><a class="link" href="/ui">Styleguide</a> <span aria-hidden="true">/</span> {level.name}</p>
@@ -50,15 +52,15 @@ const HINT = {
     {c.stories.map((s) => <Story component={c} story={s} heading="h2" />)}
   </div>
 
-  {demo && (
+  {build && (
     <section class="ui-section ui-build" aria-labelledby="build-title">
       <h2 id="build-title" class="ui-h2">Build one</h2>
-      <p class="ui-p">Type the values and the {WHAT[c.controls]} and its HTML update together, ready to paste into an article. {HINT[c.controls]} Press Replay to see it build.</p>
+      <p class="ui-p">Type the values and the {build.what} and its HTML update together, ready to paste into an article. {build.hint} Press Replay to see it build.</p>
       <div class="ui-controls" data-controls={c.controls}>
-        <script type="application/json" set:html={JSON.stringify(demo)}></script>
+        <script type="application/json" set:html={JSON.stringify(build.demo)}></script>
         <p class="ui-p ui-controls__fallback">The controls need JavaScript. The snippet below is the example above.</p>
       </div>
-      <Story component={c} story={liveStory} live />
+      <Story component={c} story={build.story} live />
     </section>
   )}
 

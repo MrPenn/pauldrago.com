@@ -6,7 +6,7 @@
 // devices it uses or cannot use yet. Exit codes: 0 no errors, 1 lint errors, 2 bad arguments.
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { auditArticle, formatAudit, resolveArticle } from '../src/styleguide/audit.mjs';
+import { auditArticle, formatAudit, resolveArticle } from '../src/styleguide/audit.ts';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const args = process.argv.slice(2);

@@ -1,16 +1,16 @@
-// Tests for the stylesheet inliner (src/layouts/inline-css.mjs). Run with `npm test`.
+// Tests for the stylesheet inliner (src/layouts/inline-css.ts). Run with `npm test`.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { transform } from 'lightningcss';
-import { inlineSheets } from '../src/layouts/inline-css.mjs';
+import { inlineSheets } from '../src/layouts/inline-css.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 
 // Parses a sheet, counts its rules and declarations, and prints it back without comments.
-const parse = (filename, css) => {
+const parse = (filename: string, css: string) => {
   let rules = 0;
   let declarations = 0;
   const { code } = transform({ filename, code: Buffer.from(css), visitor: { Rule() { rules++; }, Declaration() { declarations++; } } });

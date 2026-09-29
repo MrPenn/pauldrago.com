@@ -3,13 +3,13 @@
 // Figures come from src/data/dfw-markets.json (scripts/build-dfw-markets.py).
 import data from '../data/dfw-markets.json';
 import ScrollTable from './ScrollTable.astro';
+import { pct, num, money } from '../data/format';
 
 const markets = data.markets;
-const money = (b) => `$${b.toFixed(1)}B`;
-const pct = (n) => `${Math.round(n)}%`;
-const k = (n) => `$${Math.round(n / 1000)}K`;
-const num = (n) => Math.round(n).toLocaleString('en-US');
-const rows = [
+type Market = (typeof markets)[number];
+type Measure = 'deposits' | 'depositGrowthPct' | 'populationGrowthPct' | 'medianIncome' | 'householdsPerBranch' | 'communityShare' | 'medianCommunityBranch';
+const k = (n: number) => `$${Math.round(n / 1000)}K`;
+const rows: { label: string; key: Measure | 'leader'; show: (m: Market) => string }[] = [
   { label: 'Local deposits, June 2026', key: 'deposits', show: (m) => money(m.deposits) },
   { label: 'Deposit growth, 2021 to 2026', key: 'depositGrowthPct', show: (m) => `+${pct(m.depositGrowthPct)}` },
   { label: 'Population growth, 2020 to 2025', key: 'populationGrowthPct', show: (m) => `+${pct(m.populationGrowthPct)}` },
@@ -17,9 +17,9 @@ const rows = [
   { label: 'Households per bank branch', key: 'householdsPerBranch', show: (m) => num(m.householdsPerBranch) },
   { label: 'Deposits held by community banks', key: 'communityShare', show: (m) => pct(m.communityShare) },
   { label: 'Typical community-bank branch', key: 'medianCommunityBranch', show: (m) => `$${m.medianCommunityBranch}M` },
-  { label: "Largest bank's share", key: 'leader', show: (m) => pct(m.leaders[0].share), noBest: true },
+  { label: "Largest bank's share", key: 'leader', show: (m) => pct(m.leaders[0].share) },
 ];
-const best = (key) => Math.max(...markets.map((m) => m[key]));
+const best = (key: Measure) => Math.max(...markets.map((m) => m[key]));
 ---
 <ScrollTable label="Three Dallas-area counties compared">
   <table class="market-table">
@@ -31,7 +31,7 @@ const best = (key) => Math.max(...markets.map((m) => m[key]));
       {rows.map((r) => (
         <tr>
           <th scope="row">{r.label}</th>
-          {markets.map((m) => <td class:list={[{ 'market-table__best': !r.noBest && m[r.key] === best(r.key) }]}>{r.show(m)}</td>)}
+          {markets.map((m) => <td class:list={[{ 'market-table__best': r.key !== 'leader' && m[r.key] === best(r.key) }]}>{r.show(m)}</td>)}
         </tr>
       ))}
     </tbody>

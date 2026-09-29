@@ -2,6 +2,7 @@
 // A reference table on the /ui pages: a caption screen readers announce, column headers as
 // labels, and the rows from the slot, in a region the keyboard can scroll.
 import ScrollTable from '../ScrollTable.astro';
+interface Props { caption: string; headers: string[] }
 const { caption, headers } = Astro.props;
 ---
 <ScrollTable label={caption} class="ui-table-wrap">

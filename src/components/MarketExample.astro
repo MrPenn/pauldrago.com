@@ -6,6 +6,7 @@ import MarketTable from './MarketTable.astro';
 import data from '../data/dfw-markets.json';
 import { CRITERIA, PRESETS, INSTITUTION, scoreMarkets } from '../data/market-scoring';
 import { PLAN, planModel } from '../data/branch-plan';
+import { pct, num, money, mUSD, shortName } from '../data/format';
 
 const markets = data.markets;
 const by = Object.fromEntries(markets.map((m) => [m.county, m]));
@@ -14,10 +15,6 @@ const mapView = scoreMarkets(markets, PRESETS.map.weights);
 const fullCase = scoreMarkets(markets, PRESETS.full.weights);
 const publicOnly = scoreMarkets(markets, { ...PRESETS.full.weights, customers: 0 });
 const holdsOnPublicData = publicOnly[0].county === fullCase[0].county;
-const money = (b) => `$${b.toFixed(1)}B`;
-const pct = (n) => `${Math.round(n)}%`;
-const num = (n) => Math.round(n).toLocaleString('en-US');
-const shortName = (name) => name.replace(/, National Association$/, '').replace(/ Bank$/, '');
 const collinLeaders = Collin.leaders.map((l) => shortName(l.bank));
 const collinLeaderShare = Collin.leaders.reduce((sum, l) => sum + l.share, 0);
 const branchRatio = (Kaufman.medianCommunityBranch / Collin.medianCommunityBranch).toFixed(1);
@@ -25,7 +22,6 @@ const growthVsKaufman = (Collin.depositGrowth / Kaufman.deposits).toFixed(1);
 const groups = [...new Set(CRITERIA.map((c) => c.group))];
 const model = planModel(data.ramp);
 const sites = PLAN.map((b) => b.site);
-const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
 ---
 
 <section class="market-example" id="worked-example" aria-labelledby="market-example-heading">
@@ -92,39 +88,40 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
 <script>
   import { CRITERIA, PRESETS, scoreMarkets } from '../data/market-scoring';
 
-  const root = document.querySelector('[data-market-scorecard]');
+  // Every element below is in the component's markup; the data attributes a selector matched are there.
+  const root = document.querySelector<HTMLElement>('[data-market-scorecard]');
   const dataEl = document.getElementById('market-data');
-  if (root && dataEl) {
+  const list = root?.querySelector<HTMLElement>('[data-ranking]');
+  if (root && dataEl && list) {
     const markets = JSON.parse(dataEl.textContent || '[]');
     const inputs = [...root.querySelectorAll<HTMLInputElement>('[data-weight]')];
-    const outputs = Object.fromEntries([...root.querySelectorAll<HTMLOutputElement>('[data-weight-out]')].map((o) => [o.dataset.weightOut, o]));
+    const outputs = Object.fromEntries([...root.querySelectorAll<HTMLOutputElement>('[data-weight-out]')].map((o) => [o.dataset.weightOut!, o]));
     const presetButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-preset]')];
-    const list = root.querySelector('[data-ranking]');
     const status = root.querySelector('[data-ranking-status]');
-    const items = Object.fromEntries([...root.querySelectorAll<HTMLElement>('[data-county]')].map((li) => [li.dataset.county, li]));
+    const items = Object.fromEntries([...root.querySelectorAll<HTMLElement>('[data-county]')].map((li) => [li.dataset.county!, li]));
 
-    function render() {
-      const weights = Object.fromEntries(inputs.map((i) => [i.dataset.weight, Number(i.value)]));
-      inputs.forEach((i) => { outputs[i.dataset.weight].textContent = i.value; });
+    const render = () => {
+      const weights = Object.fromEntries(inputs.map((i) => [i.dataset.weight!, Number(i.value)]));
+      inputs.forEach((i) => { outputs[i.dataset.weight!]!.textContent = i.value; });
       const ranked = scoreMarkets(markets, weights);
       ranked.forEach((r) => {
-        const li = items[r.county];
-        li.querySelector<HTMLElement>('.scorecard__rank-bar span').style.width = `${r.score}%`;
-        li.querySelector('.scorecard__rank-score').textContent = String(r.score);
+        const li = items[r.county]!;
+        li.querySelector<HTMLElement>('.scorecard__rank-bar span')!.style.width = `${r.score}%`;
+        li.querySelector('.scorecard__rank-score')!.textContent = String(r.score);
         list.appendChild(li);
       });
       // Announce only the leader, so a screen reader isn't read the whole list on every step.
       if (status) status.textContent = `${ranked[0].county} leads with ${ranked[0].score}.`;
       const match = Object.entries(PRESETS).find(([, p]) => CRITERIA.every((c) => (p.weights[c.key] || 0) === weights[c.key]));
       presetButtons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.preset === match?.[0])));
-    }
+    };
 
     inputs.forEach((i) => { i.disabled = false; i.addEventListener('input', render); });
     presetButtons.forEach((b) => b.addEventListener('click', () => {
-      const w = PRESETS[b.dataset.preset].weights;
-      inputs.forEach((i) => { i.value = String(w[i.dataset.weight] || 0); });
+      const w = PRESETS[b.dataset.preset!]!.weights;
+      inputs.forEach((i) => { i.value = String(w[i.dataset.weight!] || 0); });
       render();
     }));
-    root.querySelector('[data-presets]').hidden = false;
+    root.querySelector<HTMLElement>('[data-presets]')!.hidden = false;
   }
 </script>
