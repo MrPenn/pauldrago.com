@@ -1,0 +1,24 @@
+---
+// The offer on a service-detail page: what the engagement is and produces, and its numbered
+// inputs. The label above the title is optional.
+const { label, title, copy, producesCopy, inputsTitle, inputs } = Astro.props;
+const num = (i) => String(i + 1).padStart(2, '0');
+---
+<section class="offer">
+  <div class="container">
+    <div class="offer__grid">
+      <div>
+        {label && <p class="kicker">{label}</p>}
+        <h2 class="display-title offer__title">{title}</h2>
+        <p class="offer__copy">{copy}</p>
+        <div class="offer__produces"><p class="display-title offer__produces-copy">{producesCopy}</p></div>
+      </div>
+      <div>
+        <div class="kicker offer__inputs-title">{inputsTitle}</div>
+        <div class="offer__inputs">
+          {inputs.map((input, i) => <div class="offer__input"><span>{num(i)}</span><span>{input}</span></div>)}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

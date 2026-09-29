@@ -3,7 +3,7 @@
   .sample-plan { padding: var(--space-10) 0 var(--space-24); }
   .sample-plan .container { max-width: 1040px; }
   .sample-plan__banner { padding: var(--space-3) var(--space-4); border: 1px solid var(--hairline); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
-  .sample-plan__banner a { margin-left: var(--space-2); color: var(--paper); font-weight: var(--weight-bold); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+  .sample-plan__banner a { margin-left: var(--space-2); color: var(--paper); font-weight: var(--weight-bold); }
 
   .report-cover { margin-top: var(--space-10); padding-bottom: var(--space-5); border-bottom: 2px solid var(--paper); }
   .report-cover__title { max-width: 24ch; font-size: var(--step-2); line-height: var(--leading-display); text-wrap: balance; }
@@ -19,26 +19,29 @@
     align-items: baseline;
     padding-top: var(--space-5);
     border-top: 2px solid var(--paper);
-    font-family: var(--font-display);
     font-size: var(--step-1);
-    line-height: var(--leading-heading);
-    text-transform: uppercase;
-    text-wrap: balance;
   }
   @media (width >= 1040px) { .report-section__title { font-size: var(--step-2); } }
   .report-section__title span { color: var(--brass); }
   .report-section__subhead { margin-top: var(--space-10); font-size: var(--step-0); line-height: var(--leading-snug); }
   .report-p, .report-lede { max-width: var(--measure-1); margin-top: var(--space-4); color: var(--secondary); font-size: var(--step--1); line-height: var(--leading-body); text-wrap: pretty; }
   .report-lede { color: var(--paper); font-size: var(--step-0); line-height: var(--leading-body); }
+  @media (width < 760px) { .report-lede { font-size: var(--step--1); } }
   .report-p--small { font-size: var(--step--2); }
 
   .report-figures { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: var(--space-8) 0 0; border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
   .report-figures div { padding: var(--space-5) var(--space-5) var(--space-5) 0; }
   .report-figures div + div { padding-left: var(--space-5); border-left: 1px solid var(--hairline); }
+  @media (width < 1040px) {
+    .report-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .report-figures div:nth-child(3) { padding-left: 0; border-left: 0; }
+    .report-figures div:nth-child(n + 3) { border-top: 1px solid var(--hairline); }
+  }
   .report-figures dt { color: var(--secondary); font-size: var(--step--2); font-weight: var(--weight-semibold); line-height: var(--leading-snug); }
   .report-figures dd { margin: var(--space-2) 0 0; }
-  .report-figures__value { display: block; color: var(--paper); font-size: var(--step-2); font-weight: var(--weight-bold); line-height: var(--leading-heading); font-variant-numeric: tabular-nums; }
-  .report-figures__note { display: block; margin-top: var(--space-2); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
+  .report-figures__value { display: block; font-size: var(--step-2); line-height: var(--leading-heading); }
+  @media (width < 760px) { .report-figures__value { font-size: var(--step-1); } }
+  .report-figures__note { display: block; margin-top: var(--space-2); }
 
   .report-risks { max-width: var(--measure-1); margin: var(--space-4) 0 0; padding-left: 0; list-style: none; }
   .report-risks li { padding: var(--space-3) 0; color: var(--secondary); font-size: var(--step--1); line-height: var(--leading-body); }
@@ -48,7 +51,7 @@
   .report-rules { max-width: var(--measure-1); margin: var(--space-4) 0 0; padding: 0; list-style: none; }
   .report-rules li { padding: var(--space-2) 0; color: var(--secondary); }
 
-  .sample-plan .table-wrap { max-width: none; overflow-x: auto; }
+  .sample-plan .table-wrap { max-width: none; }
   .sample-plan .table-note { max-width: var(--measure-1); }
   .market-table--sequence th, .market-table--sequence td, .market-table--towns th, .market-table--towns td { text-align: left; vertical-align: top; }
   .market-table--sequence td:first-child { width: 56px; color: var(--brass); font-weight: var(--weight-bold); }
@@ -63,41 +66,31 @@
   .market-table--towns .market-table__county { display: block; color: var(--secondary); font-size: var(--step--2); font-weight: var(--weight-regular); }
   .market-table--towns tr.market-table__plan-row th { color: var(--paper); font-weight: var(--weight-bold); }
 
-
-  .sample-plan .findings__item h3 { font-size: var(--step--1); line-height: var(--leading-snug); }
   .pipeline.pipeline--two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
   .report-sources { max-width: var(--measure-1); margin: var(--space-4) 0 0; padding-left: var(--space-5); }
   .report-sources li { padding: var(--space-1) 0; color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-body); }
-  .report-sources a, .report-p a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+  .report-sources a, .report-p a { color: var(--paper); }
 
-  .report-cta { max-width: var(--measure-1); margin-top: var(--space-20); padding: var(--space-8) var(--space-8); border: 2px solid var(--brass); background: var(--dark-navy); }
+  .report-cta { max-width: var(--measure-1); margin-top: var(--space-20); padding: var(--space-8) var(--space-8); border: 2px solid var(--brass); background: var(--well); }
   .report-cta p:last-child { display: flex; flex-wrap: wrap; gap: var(--space-4); align-items: center; margin-top: var(--space-3); color: var(--paper); font-size: var(--step--1); line-height: var(--leading-body); }
 
-  @media (width < 1040px) {
-    .report-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .report-figures div:nth-child(3) { padding-left: 0; border-left: 0; }
-    .report-figures div:nth-child(n + 3) { border-top: 1px solid var(--hairline); }
-  }
   @media (width < 760px) {
     .sample-plan { padding-top: var(--space-6); }
     .pipeline.pipeline--two { grid-template-columns: 1fr; }
-    .report-figures__value { font-size: var(--step-1); }
-    .report-lede { font-size: var(--step--1); }
     .market-table--sequence, .market-table--sequence tbody, .market-table--sequence tr, .market-table--sequence th, .market-table--sequence td { display: block; width: auto !important; }
     .market-table--sequence thead { display: none; }
     .market-table--sequence tr { padding: var(--space-3) 0; border-top: 1px solid var(--hairline); }
     .market-table--sequence th, .market-table--sequence td { padding: var(--space-half) 0; border: 0; }
     .market-table--sequence td:first-child::before { content: "Year "; }
-    .market-table--sequence td.market-table__crit { display: inline-block; width: auto !important; margin-right: var(--space-4); text-align: left !important; }
+    .market-table--sequence td.market-table__crit { display: inline-block; margin-right: var(--space-4); }
     .market-table--sequence td.market-table__crit:empty { display: none; }
     .market-table--sequence td.market-table__crit::after { content: " " attr(data-label); }
     .market-table--options, .market-table--options tbody, .market-table--options tr, .market-table--options th, .market-table--options td { display: block; width: auto !important; }
     .market-table--options tr { padding: var(--space-3) 0; border-top: 1px solid var(--hairline); }
-    .market-table--options th, .market-table--options td { padding: var(--space-half) 0 !important; border: 0 !important; }
+    .market-table--options th, .market-table--options td { padding: var(--space-half) 0; border: 0; }
     .report-cta { padding: var(--space-6) var(--space-5); }
-    .table-wrap:has(.market-table--towns, .market-table--network) .table-note { position: sticky; left: 0; max-width: calc(100vw - 40px); }
-    .market-table--towns th:first-child, .market-table--network th:first-child, .market-table--econ th:first-child, .market-table--pace th:first-child { position: sticky; left: 0; z-index: 1; max-width: 132px; background: var(--ground); box-shadow: 1px 0 0 var(--hairline); }
+    .market-table--towns th:first-child, .market-table--network th:first-child, .market-table--econ th:first-child, .market-table--pace th:first-child { position: sticky; left: 0; z-index: var(--z-table-head); max-width: 132px; background: var(--ground); box-shadow: 1px 0 0 var(--hairline); }
     .market-table--towns thead th, .market-table--network thead th, .market-table--pace thead th, .market-table--econ thead th { white-space: nowrap; }
     .market-table--econ, .market-table--pace { min-width: 560px; }
     .table-wrap:has(.market-table--towns, .market-table--network, .market-table--econ, .market-table--pace)::after { content: "Scroll for more \2192"; position: sticky; left: 0; display: block; margin-top: var(--space-2); color: var(--secondary); font-size: var(--step--2); }
@@ -108,7 +101,7 @@
   .report-cover__status strong { padding: 1px var(--space-2); border: 1px solid var(--paper); color: var(--paper); font-size: var(--step--2); }
   .report-brief__why { max-width: var(--measure-1); margin-top: var(--space-3); }
   .report-brief__p { max-width: var(--measure-1); margin-top: var(--space-2); font-size: var(--step--2); }
-  .market-table--options th { width: 220px; color: var(--paper) !important; font-weight: var(--weight-bold) !important; text-align: left; vertical-align: top; }
+  .market-table--options th { width: 220px; color: var(--paper); font-weight: var(--weight-bold); text-align: left; vertical-align: top; }
   .market-table--options td { text-align: left; color: var(--secondary); line-height: var(--leading-body); }
   .market-table--options tr.market-table__plan-row td { color: var(--paper); }
   .market-table--options tbody tr:first-child th, .market-table--options tbody tr:first-child td { border-top: 0; }
@@ -129,15 +122,15 @@
   .market-table--pace thead th:first-child, .market-table--pace tbody th { text-align: left; }
   .market-table--pace tr.market-table__plan-row th, .market-table--pace tr.market-table__plan-row td { color: var(--paper); font-weight: var(--weight-bold); }
   .market-table--cumulative { min-width: 640px; }
-  .report-brief__note { max-width: var(--measure-1); margin-top: var(--space-3); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-body); }
-  .report-brief__note a, .report-lede a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+  .report-brief__note { max-width: var(--measure-1); margin-top: var(--space-3); }
+  .report-brief__note a, .report-lede a { color: var(--paper); }
   .report-brief__page-two { margin-top: var(--space-3); }
   .report-brief__page-two .county-maps { margin-top: var(--space-8); }
   .report-brief .table-wrap { margin-top: var(--space-3); }
   .report-brief__risks li { padding: var(--space-2) 0; font-size: var(--step--2); }
   .sample-plan__brief-label { margin-top: var(--space-8); color: var(--secondary); font-size: var(--step--2); font-weight: var(--weight-bold); }
   .appendix-open { margin-top: var(--space-24); padding-top: var(--space-8); border-top: 3px solid var(--paper); }
-  .appendix-open__title { font-family: var(--font-display); font-size: var(--step-2); line-height: var(--leading-display); text-transform: uppercase; }
+  .appendix-open__title { font-size: var(--step-2); }
   @media (width >= 760px) { .appendix-open__title { font-size: var(--step-3); } }
   @media (width >= 1040px) { .appendix-open__title { font-size: var(--step-4); } }
   .appendix-open__index { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-6); margin-top: var(--space-4); }
@@ -147,7 +140,7 @@
   /* Criteria columns: an X where the town meets the criterion. */
   .market-table th.market-table__crit, .market-table td.market-table__crit { width: 72px; text-align: center !important; }
   .market-table td.market-table__crit { color: var(--paper); font-weight: var(--weight-bold); }
-  .market-table th.market-table__crit-group { text-align: center !important; border-bottom: 1px solid var(--hairline); padding-bottom: var(--space-1); }
+  .market-table th.market-table__crit-group { text-align: center; border-bottom: 1px solid var(--hairline); padding-bottom: var(--space-1); }
   .market-table thead tr + tr th { border-top: 0; }
   .report-rules li strong { color: var(--paper); margin-right: var(--space-2); }
 
@@ -157,20 +150,21 @@
   .county-maps__title { font-size: var(--step-1); line-height: var(--leading-heading); }
   .county-maps__head p { margin-top: var(--space-2); color: var(--secondary); }
   .county-maps__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-8); align-items: start; margin-top: var(--space-6); }
+  @media (width < 760px) { .county-maps__grid { grid-template-columns: 1fr; gap: var(--space-8); } }
   .county-maps__map-name { font-size: var(--step--1); line-height: var(--leading-snug); }
   .county-maps__map-sub { margin-top: var(--space-half); color: var(--secondary); font-size: var(--step--2); }
   .county-maps__map svg { display: block; width: 100%; height: auto; margin-top: var(--space-3); }
   .county-maps__band--none { fill: var(--hairline); }
-  .county-maps__band--0 { fill: color-mix(in srgb, var(--brass) 3%, var(--ground)); }
-  .county-maps__band--1 { fill: color-mix(in srgb, var(--brass) 22%, var(--ground)); }
-  .county-maps__band--2 { fill: color-mix(in srgb, var(--brass) 40%, var(--ground)); }
-  .county-maps__band--3 { fill: color-mix(in srgb, var(--brass) 60%, var(--ground)); }
-  .county-maps__band--4 { fill: color-mix(in srgb, var(--brass) 85%, var(--ground)); }
+  .county-maps__band--0 { --band: color-mix(in srgb, var(--brass) 3%, var(--ground)); fill: var(--band); }
+  .county-maps__band--1 { --band: color-mix(in srgb, var(--brass) 22%, var(--ground)); fill: var(--band); }
+  .county-maps__band--2 { --band: color-mix(in srgb, var(--brass) 40%, var(--ground)); fill: var(--band); }
+  .county-maps__band--3 { --band: color-mix(in srgb, var(--brass) 60%, var(--ground)); fill: var(--band); }
+  .county-maps__band--4 { --band: color-mix(in srgb, var(--brass) 85%, var(--ground)); fill: var(--band); }
   .county-maps__tracts path { stroke: var(--ground); stroke-width: 1; stroke-linejoin: round; }
   .county-maps__lmi { stroke: none; }
   .county-maps__hatch { stroke: var(--paper); stroke-width: 1.4; stroke-opacity: 0.55; }
   .county-maps__outline { fill: none; stroke: var(--paper); stroke-width: 2; stroke-linejoin: round; }
-  .county-maps__radius { fill: color-mix(in srgb, var(--paper) 6%, transparent); stroke: var(--paper); stroke-width: 2.5; }
+  .county-maps__radius { fill: var(--wash); stroke: var(--paper); stroke-width: 2.5; }
   .county-maps__radius--review { fill: none; stroke-width: 2; stroke-dasharray: 7 6; }
   .county-maps__branch { fill: var(--paper); stroke: var(--ground); stroke-width: 1.5; }
   .county-maps__branch--large { fill: var(--ground); stroke: var(--paper); stroke-width: 2.5; stroke-linejoin: miter; }
@@ -186,19 +180,14 @@
   .county-maps__legend-title { color: var(--paper); font-size: var(--step--2); font-weight: var(--weight-bold); }
   .county-maps__legend-scale { display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); margin: var(--space-2) 0 0; padding: 0; list-style: none; }
   .county-maps__legend-scale li, .county-maps__keys li { display: flex; gap: var(--space-2); align-items: center; color: var(--secondary); font-size: var(--step--2); }
-  .county-maps__swatch { display: inline-block; width: 22px; height: 14px; }
-  .county-maps__swatch.county-maps__band--0 { background: color-mix(in srgb, var(--brass) 3%, var(--ground)); box-shadow: inset 0 0 0 1px var(--hairline); }
-  .county-maps__swatch.county-maps__band--1 { background: color-mix(in srgb, var(--brass) 22%, var(--ground)); }
-  .county-maps__swatch.county-maps__band--2 { background: color-mix(in srgb, var(--brass) 40%, var(--ground)); }
-  .county-maps__swatch.county-maps__band--3 { background: color-mix(in srgb, var(--brass) 60%, var(--ground)); }
-  .county-maps__swatch.county-maps__band--4 { background: color-mix(in srgb, var(--brass) 85%, var(--ground)); }
+  .county-maps__swatch { display: inline-block; width: 22px; height: 14px; background: var(--band); }
+  .county-maps__swatch.county-maps__band--0 { box-shadow: inset 0 0 0 1px var(--hairline); }
   .county-maps__keys { display: grid; grid-template-columns: repeat(2, auto); gap: var(--space-2) var(--space-6); margin: 0; padding: 0; list-style: none; }
   .county-maps__keys svg { width: 20px; height: 20px; flex: none; overflow: hidden; }
   .county-maps__hatch-bg { fill: var(--ground); stroke: var(--hairline); }
   .county-maps__scale-print { display: none !important; }
-  .county-maps__note { margin-top: var(--space-3); color: var(--secondary); font-size: var(--step--2); }
+  .county-maps__note { margin-top: var(--space-3); }
   @media (width < 760px) {
-    .county-maps__grid { grid-template-columns: 1fr; gap: var(--space-8); }
     .county-maps__keys { grid-template-columns: 1fr; }
     .county-maps__site .county-maps__site-label { font-size: var(--step-1); }
     .county-maps__town { font-size: var(--step-0); }
@@ -214,7 +203,7 @@
   .pipeline__brings { padding: 1px var(--space-2); border: 1px solid var(--brass); color: var(--brass); font-weight: var(--weight-bold); }
   .pipeline__title { margin-top: var(--space-2); color: var(--paper); font-size: var(--step--1); font-weight: var(--weight-bold); line-height: var(--leading-snug); }
   .pipeline__detail { margin-top: var(--space-1); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
-  .pipeline__detail a, .local-questions a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+  .pipeline__detail a, .local-questions a { color: var(--paper); }
   .pipeline__watch { margin-top: var(--space-3); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); }
   .pipeline__watch strong { color: var(--paper); }
 
@@ -228,32 +217,31 @@
   .plan-chart { margin: var(--space-5) 0 0; }
   .plan-chart svg { display: block; width: 100%; height: auto; }
   .plan-chart figcaption { margin-top: var(--space-3); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-body); }
-  .plan-chart__grid line { stroke: var(--hairline); stroke-width: 1; }
-  .plan-chart__grid text, .plan-chart__axis { fill: var(--secondary); font-size: var(--step--2); font-variant-numeric: tabular-nums; }
-  .plan-chart__grid text { text-anchor: end; }
-  .plan-chart__axis { text-anchor: middle; }
+  .plan-chart__plot { position: relative; }
+  .plan-chart__grid { stroke: var(--hairline); stroke-width: 1; }
+  .plan-chart__tick, .plan-chart__axis, .plan-chart__label { position: absolute; font-size: var(--step--2); line-height: var(--leading-snug); white-space: nowrap; }
+  .plan-chart__tick, .plan-chart__axis { color: var(--secondary); font-variant-numeric: tabular-nums; }
+  .plan-chart__tick { transform: translateY(-50%); }
+  .plan-chart__tick--base { transform: translateY(-100%); }
+  .plan-chart__axis { transform: translateX(-50%); }
   .plan-chart__band { fill: color-mix(in srgb, var(--brass) 20%, transparent); }
   .plan-chart__median { fill: none; stroke: var(--brass); stroke-width: 3; stroke-linejoin: round; }
   .plan-chart__target { stroke: var(--paper); stroke-width: 1.5; }
   .plan-chart__breakeven { stroke: var(--paper); stroke-width: 1.5; stroke-dasharray: 5 4; }
-  .plan-chart__label { fill: var(--paper); font-size: var(--step--2); font-weight: var(--weight-bold); }
-  .plan-chart__label--end { text-anchor: end; }
+  .plan-chart__label { color: var(--paper); font-weight: var(--weight-bold); transform: translateY(-100%); }
+  .plan-chart__label--below { transform: none; }
   .market-table--outcomes thead th:first-child, .market-table--network thead th:first-child { text-align: left; }
   .market-table .market-table__total th, .market-table .market-table__total td { border-top: 2px solid var(--paper); color: var(--paper); font-weight: var(--weight-bold); }
   .market-table--network { min-width: 560px; }
   .market-table--network td { white-space: nowrap; }
-  .table-wrap:has(.market-table--network) { overflow-x: auto; }
-  .table-note a { color: var(--paper); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
+  .table-note a { color: var(--paper); }
   .market-table--outcomes thead th { white-space: nowrap; }
-  /* Chart beside table from 760: labels grow as the chart narrows and table cells tighten, back to full values by 960. */
+  /* Chart beside table from 760: the table cells tighten until 1040. */
   @media (760px <= width < 1040px) {
-    .plan-ramp { gap: var(--space-10); }
-    .plan-chart__grid text, .plan-chart__axis, .plan-chart__label { font-size: var(--step--1); }
     .market-table--outcomes th, .market-table--outcomes td { padding-right: var(--space-3); }
   }
   @media (width < 760px) {
     .plan-ramp { grid-template-columns: 1fr; gap: var(--space-2); }
-    .plan-chart__grid text, .plan-chart__axis, .plan-chart__label { font-size: var(--step-1); }
     .market-table--network { font-size: var(--step--2); }
     .pipeline { grid-template-columns: 1fr; gap: var(--space-6); }
   }
@@ -262,8 +250,8 @@
   /* A board pack: letter pages, folios and a running footer, black and white, six type sizes
      (22 title, 18 figures, 13 section, 11 lede, 9.5 body, 8.5 tables and notes). */
   @media print {
-    .site-header, .site-footer, .trace-rail, .skip-link, .sample-plan__banner, .report-cta, #cc-main, .appendix-open, .sample-plan__brief-label, .county-maps__head p, .county-maps__note, .county-maps__map-sub { display: none !important; }
-    :root { --paper: #000; --secondary: #333; --hairline: #bbb; --brass: #8a2f14; --dark-navy: #fff; --ground: #fff; }
+    .sample-plan__banner, .report-cta, .appendix-open, .sample-plan__brief-label, .county-maps__head p, .county-maps__note, .county-maps__map-sub { display: none !important; }
+    :root { --paper: #000; --secondary: #333; --hairline: #bbb; --brass: #8a2f14; --well: #fff; --ground: #fff; }
     body { background: #fff !important; font-size: 9.5pt; }
     .sample-plan { padding: 0; }
     .sample-plan .container { max-width: none; padding: 0; }
@@ -341,7 +329,6 @@
     .pipeline.pipeline--two { display: block !important; }
     .pipeline--two .pipeline__county + .pipeline__county { margin-top: 12px; }
     .plan-ramp { grid-template-columns: 1fr 1fr !important; gap: 18px; }
-    .plan-chart__grid text, .plan-chart__axis, .plan-chart__label { font-size: 21px !important; }
     .sample-plan .table-wrap { overflow: visible; }
     .market-table--towns tbody th { font-size: 8.5pt !important; }
     .market-table--towns .market-table__county { font-size: 7.5pt !important; color: #555; font-weight: var(--weight-regular); }

@@ -1,0 +1,7 @@
+---
+// The link that opens the booking scheduler. The address and the Cal.com attributes come from
+// src/data/author.ts; the caller sets the class and the text.
+import { AUTHOR } from '../data/author';
+const { class: className } = Astro.props;
+---
+<a class={className} href={AUTHOR.booking} {...AUTHOR.calAttrs}><slot /></a>

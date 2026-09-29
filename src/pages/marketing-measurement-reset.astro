@@ -1,24 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-const meta = {
-  "title": "Bank Marketing Measurement Reset | Paul Drago",
-  "description": "Connect bank marketing spend to retained accounts, funded balances, and board reporting through a documented four-to-six-week measurement reset.",
-  "path": "/marketing-measurement-reset",
-  "variant": "product",
-  "subline": "Marketing Measurement Reset",
-  "footerNote": "Marketing Measurement Reset for banks and credit unions. Written and maintained by Paul Drago.",
-  "ogType": "website",
-  "ogImage": "https://pauldrago.com/assets/evidence-table-social.jpg",
-  "ogImageAlt": "Financial reporting table used to connect marketing spend with funded balances",
-  "robots": "",
-  "stylesheets": [
-    "/assets/marketing-measurement-reset.css"
-  ],
-  "scripts": [
-    "/assets/measurement-calculator.js"
-  ],
-  "lastUpdated": "2026-09-23"
-};
+import BookCallLink from '../components/BookCallLink.astro';
+import { breadcrumb } from '../data/schema';
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
@@ -59,29 +42,27 @@ const jsonld = {
       },
       "areaServed": "United States"
     },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://pauldrago.com/marketing-measurement-reset#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Services",
-          "item": "https://pauldrago.com/financial-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Marketing Measurement Reset",
-          "item": "https://pauldrago.com/marketing-measurement-reset"
-        }
-      ]
-    }
+    breadcrumb('https://pauldrago.com/marketing-measurement-reset#breadcrumb', [
+      ['Services', 'https://pauldrago.com/financial-services'],
+      ['Marketing Measurement Reset', 'https://pauldrago.com/marketing-measurement-reset'],
+    ])
   ]
 };
 import OtherDecisions from '../components/OtherDecisions.astro';
 ---
-<Base {...meta} jsonld={jsonld}>
+<Base
+  title="Bank Marketing Measurement Reset | Paul Drago"
+  description="Connect bank marketing spend to retained accounts, funded balances, and board reporting through a documented four-to-six-week measurement reset."
+  path="/marketing-measurement-reset"
+  footerNote="Marketing Measurement Reset for banks and credit unions. Written and maintained by Paul Drago."
+  ogType="website"
+  ogImage="https://pauldrago.com/assets/evidence-table-social.jpg"
+  ogImageAlt="Financial reporting table used to connect marketing spend with funded balances"
+  stylesheets={['/assets/services.css', '/assets/marketing-measurement-reset.css']}
+  scripts={['/assets/measurement-calculator.js']}
+  lastUpdated="2026-09-23"
+  jsonld={jsonld}
+>
 <main id="main">
 <!-- 01 HERO -->
 <section class="hero">
@@ -105,66 +86,61 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <div class="calc">
 <div class="calc__eyebrow">Run the survival math on last year's online accounts</div>
 <div class="calc__inputs">
-<div class="calc__field">
-<label class="calc__label" for="calc-input-accounts">Accounts opened last year</label>
-<div class="calc__box">
-<input class="calc__input" id="calc-input-accounts" min="0" type="number" inputmode="numeric" value="1000" aria-describedby="calc-src-accounts"/>
+<div class="pd-field">
+<label class="label pd-field__label" for="calc-input-accounts">Accounts opened last year</label>
+<div class="pd-input">
+<input class="pd-input__field" id="calc-input-accounts" min="0" type="number" inputmode="numeric" value="1000" aria-describedby="calc-src-accounts"/>
 </div>
-<div class="calc__source" id="calc-src-accounts">Your number</div>
+<div class="pd-field__src" id="calc-src-accounts">Your number</div>
 </div>
-<div class="calc__field">
-<label class="calc__label" for="calc-input-cost">Cost to acquire each</label>
-<div class="calc__box">
-<span class="calc__affix calc__affix--leading">$</span>
-<input class="calc__input" id="calc-input-cost" min="0" type="number" inputmode="decimal" value="300" aria-describedby="calc-src-cost"/>
+<div class="pd-field">
+<label class="label pd-field__label" for="calc-input-cost">Cost to acquire each</label>
+<div class="pd-input">
+<span class="pd-input__affix">$</span>
+<input class="pd-input__field" id="calc-input-cost" min="0" type="number" inputmode="decimal" value="300" aria-describedby="calc-src-cost"/>
 </div>
-<div class="calc__source" id="calc-src-cost">Assumed. Fintel Connect, September 2026: $75 to $400+</div>
+<div class="pd-field__src" id="calc-src-cost">Assumed. Fintel Connect, September 2026: $75 to $400+</div>
 </div>
-<div class="calc__field">
-<label class="calc__label" for="calc-input-closed">Closed within 90 days</label>
-<div class="calc__box">
-<input class="calc__input" id="calc-input-closed" max="100" min="0" type="number" inputmode="decimal" value="45" aria-describedby="calc-src-closed"/>
-<span class="calc__affix calc__affix--trailing">%</span>
+<div class="pd-field">
+<label class="label pd-field__label" for="calc-input-closed">Closed within 90 days</label>
+<div class="pd-input">
+<input class="pd-input__field" id="calc-input-closed" max="100" min="0" type="number" inputmode="decimal" value="45" aria-describedby="calc-src-closed"/>
+<span class="pd-input__affix">%</span>
 </div>
-<div class="calc__source" id="calc-src-closed">Curinos SalesScape, 2022</div>
-</div>
-</div>
-<div class="calc-ledger">
-<div class="calc-ledger__row">
-<div class="calc-ledger__label">Acquisition spend</div>
-<span class="calc-ledger__value" id="calc-spend">$300,000</span>
-</div>
-<div class="calc-ledger__row">
-<div class="calc-ledger__label">Spend attached to accounts closed by day 90</div>
-<span class="calc-ledger__value accent" id="calc-closed-spend">$135,000</span>
-</div>
-<div class="calc-ledger__row">
-<div class="calc-ledger__label">
-<div class="calc-ledger__stack">
-<span>Still open at one year, estimated</span>
-<span class="calc-ledger__source">Curinos, July 2026; scaled to your 90-day rate</span>
+<div class="pd-field__src" id="calc-src-closed">Curinos SalesScape, 2022</div>
 </div>
 </div>
-<span class="calc-ledger__value" id="calc-survivors">410</span>
+<div class="pd-ledger">
+<div class="pd-ledger__row">
+<div class="pd-ledger__label">Acquisition spend</div>
+<span class="pd-num pd-num--s pd-ledger__value" id="calc-spend">$300,000</span>
 </div>
-<div class="calc-ledger__row">
-<div class="calc-ledger__label">Acquisition spend per surviving account</div>
-<span class="calc-ledger__value accent" id="calc-per-survivor" aria-live="polite">$732</span>
+<div class="pd-ledger__row">
+<div class="pd-ledger__label">Spend attached to accounts closed by day 90</div>
+<span class="pd-num pd-num--s pd-ledger__value accent" id="calc-closed-spend">$135,000</span>
+</div>
+<div class="pd-ledger__row">
+<div class="pd-ledger__label">Still open at one year, estimated <span class="pd-ledger__src">Curinos, July 2026; scaled to your 90-day rate</span></div>
+<span class="pd-num pd-num--s pd-ledger__value" id="calc-survivors">410</span>
+</div>
+<div class="pd-ledger__row">
+<div class="pd-ledger__label">Acquisition spend per surviving account</div>
+<span class="pd-num pd-num--s pd-ledger__value accent" id="calc-per-survivor" aria-live="polite">$732</span>
 </div>
 </div>
 <div class="calc-compare">
             <div>
               <div class="calc-compare__label">Reported cost per new account</div>
-              <div class="calc-compare__value" id="calc-reported">$300</div>
+              <div class="pd-num pd-num--m calc-compare__value" id="calc-reported">$300</div>
             </div>
             <div>
               <div class="calc-compare__label">What an account that lasted a year cost</div>
-              <div class="calc-compare__value accent" id="calc-hole">$732</div>
+              <div class="pd-num pd-num--m calc-compare__value accent" id="calc-hole">$732</div>
             </div>
           </div>
 <p class="calc__assumption">Illustration only. The one-year estimate preserves the relationship between Curinos' published 90-day and one-year retention benchmarks. Client reporting uses the institution's actual cohort data and agreed definitions.</p>
 <div>
-<a class="calc__cta" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
+<BookCallLink class="btn calc__cta">Book a call</BookCallLink>
 </div>
 </div>
 </div>
@@ -178,11 +154,11 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <p class="evidence__bridge">The opening report shows volume. It does not show which accounts stayed open, which ones funded, what balances remained, or what acquisition spend is still attached to them ninety days later.</p>
 <dl class="evidence__ledger">
 <div class="evidence__row">
-<dt class="evidence__figure">45% <span class="evidence__vs">vs 4%</span></dt>
+<dt class="pd-num pd-num--m evidence__figure">45% <span class="evidence__vs">vs 4%</span></dt>
 <dd class="evidence__text">of accounts opened online close within three months, against 4% of accounts opened in a branch. <span class="evidence__cite">Curinos SalesScape, 2022</span></dd>
 </div>
 <div class="evidence__row">
-<dt class="evidence__figure">6 in 10</dt>
+<dt class="pd-num pd-num--m evidence__figure">6 in 10</dt>
 <dd class="evidence__text">marketing executives say their core or CRM system cannot measure return. <span class="evidence__cite">Cornerstone Advisors, April 2026, survey of 126 executives</span></dd>
 </div>
 </dl>
@@ -231,29 +207,29 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <h2 class="display-title section-title">Four to six weeks, then optional monthly support.</h2>
 <div class="offers__grid">
 <!-- Left Offer -->
-<div class="offer">
-<div class="offer__badge">Fixed fee, four to six weeks</div>
-<h3 class="offer__title">Marketing Measurement Reset</h3>
-<p class="offer__body">
+<div class="offer-card">
+<div class="offer-card__badge">Fixed fee, four to six weeks</div>
+<h3 class="display-title offer-card__title">Marketing Measurement Reset</h3>
+<p class="offer-card__body">
             A focused build for banks that need the marketing number to stand up in a budget conversation. It connects spend, digital account opening, retained accounts, funded balances, and board reporting without asking the bank to replace its core, CRM, or reporting stack.
           </p>
-<div class="offer__produces">You receive a board report with the definitions and source logic attached.</div>
+<div class="offer-card__produces">You receive a board report with the definitions and source logic attached.</div>
 
 </div>
 <!-- Right Offer -->
-<div class="offer">
-<div class="offer__badge">Optional operating support</div>
-<h3 class="offer__title">Monthly Measurement Support</h3>
-<p class="offer__body">
+<div class="offer-card">
+<div class="offer-card__badge">Optional operating support</div>
+<h3 class="display-title offer-card__title">Monthly Measurement Support</h3>
+<p class="offer-card__body">
             After the reset, the same reporting line can be run monthly: definitions maintained, exceptions explained, budget questions prepared, and the board deck kept aligned with the numbers finance is using.
           </p>
-<div class="offer__produces">Monthly support keeps the definitions, exceptions, and board report current.</div>
+<div class="offer-card__produces">Monthly support keeps the definitions, exceptions, and board report current.</div>
 </div>
 </div>
 <div class="artifact" role="group" aria-label="Illustrative marketing measurement report">
 <div class="artifact__head">
 <div>
-<div class="artifact__kicker">Illustrative output</div>
+<div class="kicker">Illustrative output</div>
 <div class="artifact__title">Acquisition cohort reporting line</div>
 </div>
 <div class="artifact__status">Definitions agreed</div>
@@ -266,7 +242,7 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <div class="artifact__note">This is the reporting structure, not client data. The delivered model includes source fields, exclusions, attribution rules, and finance-approved definitions.</div>
 </div>
 <div class="offers__cta">
-<a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
+<BookCallLink class="btn">Book a call</BookCallLink>
 </div>
 <div class="offers__not-sold">
         Outside this project: brand creative, campaign production, events, hands-on paid media, branch-site modeling, and acquisition analysis. Those services are listed on the <a href="/financial-services">services page</a>.
@@ -283,11 +259,11 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <p class="body-copy closing-band__copy">
           I will trace where the reporting line stops and what it would take to connect spend to retained, funded value. If the fix is small, I will say so.
         </p>
-<a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
+<BookCallLink class="btn">Book a call</BookCallLink>
 </div>
 <div class="closing-band__aside">
-<aside class="call-prep" aria-label="What to bring to the call">
-<div class="call-prep__title">Bring one working question</div>
+<aside class="call-panel call-prep" aria-label="What to bring to the call">
+<div class="kicker call-prep__title">Bring one working question</div>
 <ul class="call-prep__list">
 <li>The current marketing or board report</li>
 <li>An account-opening or campaign-spend export</li>

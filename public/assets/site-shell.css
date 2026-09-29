@@ -1,13 +1,15 @@
 /* The root of the cascade. Every page loads this sheet first, and it holds the basics every other
-   sheet builds on: the colours, the three typefaces, the type scale, the weights, the line spacing,
-   the tracking, the spacing scale and the grid, then the defaults every element inherits. Other
-   sheets use these tokens and set only what differs from what they inherit. The linter holds them
-   to it (type-scale, type-tokens, space-tokens, css-color, css-layer).
+   sheet builds on: the colours, the three typefaces, the type scale and three title sizes, the
+   weights, the line spacing, the tracking, the spacing scale, the grid, the motion, the focus ring's
+   offsets and the stacking order, then the defaults every element inherits. Other sheets use these
+   tokens and set only what differs from what they inherit. The linter holds them to it (type-scale,
+   type-tokens, space-tokens, css-color, css-layer).
 
    Cascade layers make the order explicit. A later layer wins over an earlier one whatever the
    selectors, so a component never needs !important to beat the base:
      base       this sheet's reset, tokens and element defaults
-     site       the shell every page shares (this sheet) and the article template (article.css)
+     site       the shell every page shares (this sheet), the article template (article.css) and
+                the parts the service pages share (services.css)
      kit        the article kit (article-kit.css)
      page       one page's own sheet (the home page, a service page, the front door, /ui)
      utilities  single-purpose classes that always win: .accent, .sr-only */
@@ -26,18 +28,23 @@
      single accent. The reader's browser picks the theme; data-theme forces one. */
   :root {
     --ground: light-dark(#F1F2F4, #0A192F);
-    --dark-navy: light-dark(#FFFFFF, #081220);
+    --well: light-dark(#FFFFFF, #081220);
     --panel: light-dark(#E7E9ED, #0E203A);
     --panel-2: light-dark(#DDE0E6, #102846);
     --paper: light-dark(#0A192F, #F4F0EA);
     --secondary: light-dark(#4B5568, #A9B0C0);
     --brass: light-dark(#B8411E, #E8734A);
     --on-brass: light-dark(#FFFFFF, #081220);
-    /* A button in the accent, pressed or hovered: darker, in either theme. */
-    --brass-hover: color-mix(in srgb, var(--brass) 86%, #000);
-    --brass-active: color-mix(in srgb, var(--brass) 74%, #000);
+    /* A button in the accent, hovered or pressed: darker in light, lighter in dark, so the text on
+       it keeps its contrast in both themes. */
+    --brass-hover: light-dark(color-mix(in srgb, var(--brass) 86%, #000), color-mix(in srgb, var(--brass) 90%, #fff));
+    --brass-active: light-dark(color-mix(in srgb, var(--brass) 74%, #000), color-mix(in srgb, var(--brass) 80%, #fff));
     --hairline: light-dark(#C9CED6, #2A3448);
-    --shadow: light-dark(color-mix(in srgb, var(--ground) 16%, transparent), color-mix(in srgb, var(--dark-navy) 90%, transparent));
+    /* Three tints drawn over the page: a faint wash of the ink behind a panel or a track, a divider
+       rule in the ink, and a strong tint of the accent. */
+    --wash: color-mix(in srgb, var(--paper) 6%, transparent);
+    --divider: color-mix(in srgb, var(--paper) 16%, transparent);
+    --tint-strong: color-mix(in srgb, var(--brass) 40%, transparent);
     --ok: light-dark(#1F8A5B, #4CC38A);
     color-scheme: light dark;
 
@@ -65,6 +72,13 @@
     --step-8: 5.375rem;
     --step-9: 6.4375rem;
     --step-10: 7.75rem;
+
+    /* Three title sizes that climb the type scale as the window widens, for titles that share one
+       ladder across pages: a section title, 35 to 60px; a smaller title, 29 to 41px; and a lead
+       line, 24 to 35px. Media queries after :root set them at each breakpoint, like the gutter. */
+    --title-section: var(--step-3);
+    --title-sub: var(--step-2);
+    --title-lead: var(--step-1);
 
     /* Three weights. Archivo Black has one, which is the regular. */
     --weight-regular: 400;
@@ -116,6 +130,31 @@
     --measure--1: 52ch;
     --measure-0: 62ch;
     --measure-1: 74ch;
+
+    /* Motion: one easing and three durations, used everywhere. */
+    --pd-ease: cubic-bezier(0.22, 1, 0.36, 1);
+    --pd-fast: 260ms;
+    --pd-base: 620ms;
+    --pd-slow: 900ms;
+
+    /* Tap targets: 44px for a control, 36px for the dense rows of presets and sliders. */
+    --target: 44px;
+    --target-dense: 36px;
+
+    /* The focus ring's gap from what it outlines: 4px by default, 2px on the smaller controls in
+       figures, calculators and /ui. */
+    --focus-offset: 4px;
+    --focus-offset-tight: 2px;
+
+    /* The stacking order, lowest first: a wide table's sticky first column, the pinned sequence's
+       steps and then its card, the sticky nav on the financial services page, the reading rail,
+       and the skip link over everything. */
+    --z-table-head: 1;
+    --z-scrolly-steps: 2;
+    --z-scrolly-pin: 3;
+    --z-sticky-nav: 5;
+    --z-rail: 20;
+    --z-skip: 100;
   }
 
   /* A theme forced on the page, as the /ui frames do. */
@@ -126,6 +165,29 @@
     /* The gutter is a step narrower on phones; everything that reads it follows. */
     :root {
       --gutter: var(--space-5);
+    }
+  }
+
+  /* The title sizes climb a step at each breakpoint; every title that reads them follows. */
+  @media (width >= 760px) {
+    :root {
+      --title-section: var(--step-4);
+    }
+  }
+
+  @media (width >= 1040px) {
+    :root {
+      --title-section: var(--step-5);
+      --title-sub: var(--step-3);
+      --title-lead: var(--step-2);
+    }
+  }
+
+  @media (width >= 1180px) {
+    :root {
+      --title-section: var(--step-6);
+      --title-sub: var(--step-4);
+      --title-lead: var(--step-3);
     }
   }
 
@@ -156,15 +218,16 @@
   :where(small, sup, sub) { font-size: var(--step--2); }
   :where(sup, sub) { line-height: 0; }
   :where(code, kbd, samp, pre) { font-family: var(--font-mono); font-size: var(--step--2); }
+  :where(table) { width: 100%; border-collapse: collapse; line-height: var(--leading-text); }
   :where(button, input, select, textarea) { font: inherit; letter-spacing: inherit; color: inherit; }
 
   a {
     color: inherit;
   }
 
-  :where(a, button, input, summary):focus-visible {
+  :where(a, button, input, summary, [tabindex]):focus-visible {
     outline: 3px solid var(--paper);
-    outline-offset: 4px;
+    outline-offset: var(--focus-offset);
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -192,7 +255,7 @@
     position: fixed;
     top: 12px;
     left: 24px;
-    z-index: 100;
+    z-index: var(--z-skip);
     padding: var(--space-3) var(--space-4);
     background: var(--paper);
     color: var(--ground);
@@ -208,9 +271,9 @@
     position: fixed;
     top: 0;
     left: 16px;
-    z-index: 20;
+    z-index: var(--z-rail);
     width: 2px;
-    height: 100vh;
+    height: 100dvh;
     background: color-mix(in srgb, var(--brass) 12%, transparent);
     pointer-events: none;
   }
@@ -237,21 +300,20 @@
     }
   }
 
-  /* Elsewhere only pages with a script can fill the rail, so pages without one hide it. */
-  @supports not (animation-timeline: scroll()) {
-    .no-trace-script .trace-rail {
-      display: none;
-    }
-  }
-
+  /* The display voice. The kit's calculator titles and decision names sit in article markup, so
+     they are listed here instead of carrying the class. */
   .display-title,
+  .pd-calc__title,
+  .pd-decisions strong,
   .brand__name,
   .site-footer__brand {
     font-family: var(--font-display);
     text-transform: uppercase;
   }
 
-  .display-title {
+  .display-title,
+  .pd-calc__title,
+  .pd-decisions strong {
     color: var(--paper);
     line-height: var(--leading-display);
     /* Long single words never get clipped on narrow screens. */
@@ -280,6 +342,170 @@
     color: var(--brass);
   }
 
+  /* The kicker: a few words in sentence case, bold and in the accent, naming what follows. It sets
+     no line height, so a heading keeps its own. */
+  .kicker {
+    color: var(--brass);
+    font-size: var(--step--2);
+    font-weight: var(--weight-bold);
+  }
+
+  /* The note: small print under a table, a map or a tool, in the secondary colour. */
+  .note {
+    color: var(--secondary);
+    font-size: var(--step--2);
+    line-height: var(--leading-body);
+  }
+
+  /* The link: underlined in the accent, 3px under the text. Markdown links cannot carry a class,
+     so the article body's links are listed here. The strong link is bold, on a heavier line. */
+  .link,
+  .article__body a {
+    text-decoration-line: underline;
+    text-decoration-color: var(--brass);
+    text-underline-offset: 3px;
+  }
+
+  .link--strong {
+    font-weight: var(--weight-bold);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 4px;
+  }
+
+  /* The disclosure row: a details element's summary, 48px tall, with a plus in the accent that
+     turns to a minus once it opens. The component sets its size and colour. */
+  .disclosure__summary {
+    display: flex;
+    align-items: center;
+    min-height: 48px;
+    font-weight: var(--weight-bold);
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .disclosure__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .disclosure__summary::before {
+    content: "+";
+    width: 1.4em;
+    color: var(--brass);
+  }
+
+  [open] > .disclosure__summary::before {
+    content: "\2212";
+  }
+
+  /* The icon: a Lucide outline stroked in the colour of the text around it. The component that
+     places one sets its size and colour. */
+  .icon {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  /* The number: every figure set in the display face. The default is a value in a row; --s a value
+     beside a label; --m a figure that leads a short block; --l a total or a count; --xl the number a
+     figure leads with. In an article's narrow column the kit takes each size a step down. The kit's
+     decision numerals are the same number, drawn by the stylesheet. */
+  .pd-num, .pd-decisions li::before {
+    font-family: var(--font-display);
+    font-weight: var(--weight-regular);
+    line-height: var(--leading-display);
+    font-variant-numeric: lining-nums tabular-nums;
+    color: var(--paper);
+  }
+  .pd-num { font-size: var(--step-2); white-space: nowrap; }
+  .pd-num--s { font-size: var(--step-1); }
+  .pd-num--m { font-size: var(--step-3); }
+  .pd-num--l { font-size: var(--step-4); }
+  .pd-num--xl { font-size: var(--step-6); }
+
+  /* The value: a figure in running sans text, bold on tabular digits so a column of them lines up. */
+  .value {
+    color: var(--paper);
+    font-weight: var(--weight-bold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* The field: a label, a box the reader types in, and the source of the number under it. Two
+     lines are held for the label, so the boxes in a row line up. */
+  .pd-field { display: flex; flex-direction: column; }
+  .pd-field__label, .pd-calc__label {
+    display: flex;
+    align-items: flex-end;
+    min-height: 2lh;
+    margin: 0 0 var(--space-2);
+  }
+  .pd-input {
+    display: flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    border: 1.5px solid var(--secondary);
+    background: var(--well);
+    cursor: text;
+    transition: border-color var(--pd-fast) var(--pd-ease);
+  }
+  .pd-input:hover { border-color: var(--paper); }
+  .pd-input:focus-within { border-color: var(--brass); outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
+  .pd-input__field {
+    width: 100%;
+    min-width: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    font-family: var(--font-sans);
+    font-size: var(--step-1);
+    font-weight: var(--weight-semibold);
+    line-height: var(--leading-heading);
+    font-variant-numeric: tabular-nums;
+  }
+  .pd-input__field::-webkit-outer-spin-button, .pd-input__field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .pd-input__field[type=number] { -moz-appearance: textfield; appearance: textfield; }
+  .pd-input__affix { color: var(--brass); font-weight: var(--weight-bold); font-size: var(--step--1); }
+  .pd-input__affix:first-child { margin-right: var(--space-1); }
+  .pd-input__affix:last-child { margin-left: var(--space-1); }
+  .pd-field__src { margin-top: var(--space-2); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-snug); }
+
+  /* The ledger: named amounts, the arithmetic under each name, and the total. Values are numbers;
+     the total is --l. */
+  .pd-ledger { margin-top: var(--space-6); }
+  .pd-ledger__row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-4) 0; border-top: 1px solid var(--divider); transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease); }
+  .pd-ledger__label { font-size: var(--step--1); line-height: var(--leading-snug); }
+  .pd-ledger__src { display: block; margin-top: var(--space-half); color: var(--secondary); font-size: var(--step--2); }
+  .pd-ledger__value { text-align: right; transition: color var(--pd-base) var(--pd-ease); }
+  .pd-ledger__value.is-hot { color: var(--brass); }
+  .pd-ledger__row--total { margin-top: var(--space-1); padding: var(--space-5) var(--space-5); border-top: 0; background: var(--well); box-shadow: inset 0 0 0 1px var(--hairline); }
+  .pd-ledger__row--total .pd-ledger__label { font-weight: var(--weight-semibold); }
+  .pd-ledger__row--total .pd-ledger__value { color: var(--brass); }
+
+  /* The text button: an action written as a link, in the accent. It keeps a 44px target without
+     making the line taller, and one that appears later holds its line, so nothing moves. */
+  .pd-text-btn {
+    position: relative;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--brass);
+    font-size: var(--step--2);
+    font-weight: var(--weight-semibold);
+    line-height: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+  .pd-text-btn::after { content: ""; position: absolute; inset: -12px -4px; }
+  .pd-text-btn:hover { color: var(--paper); }
+  .pd-text-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
+  .pd-text-btn[hidden] { display: inline-block; visibility: hidden; }
+  /* In a sentence the text button takes the size of the text around it. */
+  .pd-text-btn--inline { font-size: inherit; }
+
   .site-header {
     padding: var(--space-6) 0;
     border-bottom: 1px solid var(--hairline);
@@ -297,13 +523,29 @@
     gap: var(--space-8);
   }
 
+  @media (width < 760px) {
+    .site-header__inner {
+      align-items: flex-start;
+      gap: var(--space-4);
+    }
+  }
+
+  /* The nav wraps under the smallest phones' width, so the button drops to a second row instead of
+     running off the screen. */
   .site-header__nav {
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--space-8);
   }
 
+  @media (width < 760px) {
+    .site-header__nav {
+      justify-content: flex-end;
+      gap: var(--space-4);
+    }
+  }
+
   .brand {
-    color: inherit;
     text-decoration: none;
   }
 
@@ -316,6 +558,12 @@
     color: var(--paper);
     font-size: var(--step-1);
     line-height: var(--leading-display);
+  }
+
+  @media (width < 760px) {
+    .brand__name {
+      font-size: var(--step-0);
+    }
   }
 
   .site-header__link {
@@ -343,9 +591,17 @@
     font-weight: var(--weight-bold);
     line-height: var(--leading-body);
     text-decoration: none;
-    text-transform: none;
     cursor: pointer;
     transition: background-color 120ms ease;
+  }
+
+  @media (width < 760px) {
+    .btn {
+      min-height: var(--target);
+      padding: var(--space-3) var(--space-4);
+      font-size: var(--step--2);
+      white-space: nowrap;
+    }
   }
 
   .btn:hover {
@@ -354,6 +610,19 @@
 
   .btn:active {
     background: var(--brass-active);
+  }
+
+  /* High contrast mode drops the fill, so the button keeps an outline and a pressed state. */
+  @media (forced-colors: active) {
+    .btn {
+      border: 1px solid ButtonText;
+    }
+
+    .btn:active {
+      background: Highlight;
+      color: HighlightText;
+      forced-color-adjust: none;
+    }
   }
 
   .section-divider {
@@ -409,7 +678,6 @@
     border: 0;
     background: none;
     color: var(--paper);
-    font: inherit;
     font-weight: var(--weight-semibold);
     cursor: pointer;
   }
@@ -425,41 +693,12 @@
   }
 
   @media (width < 760px) {
-
     .trace-rail {
       display: none;
     }
 
-    .site-header {
-      padding: var(--space-6) 0;
-    }
-
-    .site-header__inner {
-      align-items: flex-start;
-      gap: var(--space-4);
-    }
-
-    .site-header__nav {
-      width: auto;
-      justify-content: flex-end;
-      gap: var(--space-4);
-      padding-top: 0;
-      border-top: 0;
-    }
-
-    .brand__name {
-      font-size: var(--step-0);
-    }
-
     .brand__line {
       max-width: 180px;
-    }
-
-    .btn {
-      min-height: 44px;
-      padding: var(--space-3) var(--space-4);
-      font-size: var(--step--2);
-      white-space: nowrap;
     }
 
     .site-footer__top,
@@ -467,79 +706,21 @@
       flex-direction: column;
       align-items: flex-start;
     }
+  }
 
-    .site-footer__meta {
-      line-height: var(--leading-body);
+  /* Print the page's content: the header, footer, reading rail, skip link, cookie controls,
+     booking buttons and text buttons stay on screen. */
+  @media print {
+    .site-header,
+    .site-footer,
+    .trace-rail,
+    .skip-link,
+    .btn,
+    .pd-text-btn,
+    #cc-main {
+      display: none;
     }
   }
-
-  /* Other decisions: sibling services at the end of each product page */
-  .other-decisions {
-    padding: var(--space-16) 0;
-    border-top: 1px solid var(--hairline);
-  }
-
-  .other-decisions__list {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 0 var(--space-8);
-    margin-top: var(--space-5);
-    list-style: none;
-  }
-
-  .other-decisions__link {
-    display: block;
-    height: 100%;
-    padding: var(--space-5) 0;
-    border-top: 2px solid var(--paper);
-    color: inherit;
-    text-decoration: none;
-  }
-
-  .other-decisions__name {
-    display: block;
-    color: var(--paper);
-    font-size: var(--step--1);
-    font-weight: var(--weight-bold);
-    line-height: var(--leading-snug);
-  }
-
-  .other-decisions__question {
-    display: block;
-    margin-top: var(--space-2);
-    color: var(--secondary);
-    font-size: var(--step--2);
-    line-height: var(--leading-text);
-  }
-
-  .other-decisions__link:hover .other-decisions__name {
-    color: var(--brass);
-  }
-
-  .other-decisions__all {
-    display: inline-block;
-    margin-top: var(--space-3);
-    padding: var(--space-1) 0;
-    color: var(--paper);
-    font-size: var(--step--2);
-    font-weight: var(--weight-bold);
-    text-decoration: underline;
-    text-decoration-color: var(--brass);
-    text-underline-offset: 4px;
-  }
-
-  @media (width < 760px) {
-    .other-decisions__list {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* Supporting section headings on service pages: calm, sentence case. The display face is kept
-     for the page title, the featured section and the closing call. */
-  h2.section-title-plain { max-width: var(--measure--3); font-size: var(--step-1); line-height: var(--leading-heading); text-transform: none; }
-  @media (width >= 760px) { h2.section-title-plain { font-size: var(--step-2); } }
-  @media (width >= 1040px) { h2.section-title-plain { font-size: var(--step-3); } }
-
 }
 
 @layer utilities {

@@ -58,7 +58,7 @@ Cal.ns['20-min-intro-call']('ui', {
   theme: 'auto',
   cssVarsPerTheme: {
     light: {
-      'cal-brand': '#0A192F'
+      'cal-brand': '#B8411E'
     },
     dark: {
       'cal-brand': '#E8734A'

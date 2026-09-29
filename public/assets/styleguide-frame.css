@@ -43,7 +43,7 @@
   .ui-grid__band--column { padding: var(--space-8) 0 var(--space-3); }
   .ui-grid__compact { display: none; margin: var(--space-2) var(--space-3) var(--space-3); font-size: var(--step--2); color: var(--secondary); }
   @container column (width < 560px) { .ui-grid__compact { display: block; } }
-  .ui-grid__band--wide { margin: var(--space-3) 0 0; background: color-mix(in srgb, var(--paper) 6%, transparent); }
+  .ui-grid__band--wide { margin: var(--space-3) 0 0; background: var(--wash); }
   @media (width >= 1040px) { .ui-grid__band--wide { width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter)); } }
   .ui-grid__rail { display: none; }
   @media (width >= 1180px) {

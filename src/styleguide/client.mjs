@@ -237,7 +237,7 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
       schema.row.forEach((f) => set.append(field(f, row[f.key], (v) => { row[f.key] = v; render(); }, `r${i}`)));
       const remove = document.createElement('button');
       remove.type = 'button';
-      remove.className = 'ui-link-btn ui-controls__remove';
+      remove.className = 'pd-text-btn ui-controls__remove';
       remove.textContent = `Remove row ${i + 1}`;
       remove.addEventListener('click', () => { state.rows.splice(i, 1); draw(); render(); });
       set.append(remove);
@@ -252,7 +252,7 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
     add.addEventListener('click', () => { state.rows.push({ ...schema.blank }); draw(); render(); });
     const reset = document.createElement('button');
     reset.type = 'button';
-    reset.className = 'ui-link-btn';
+    reset.className = 'pd-text-btn';
     reset.textContent = 'Back to the example';
     reset.addEventListener('click', () => { state = structuredClone(start); draw(); render(); });
     actions.append(add, reset);

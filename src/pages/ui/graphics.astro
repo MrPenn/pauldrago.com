@@ -1,5 +1,6 @@
 ---
 import { readFileSync } from 'node:fs';
+import UiTable from '../../components/ui/UiTable.astro';
 import { join } from 'node:path';
 import Styleguide from '../../layouts/Styleguide.astro';
 import { REFERENCE } from '../../styleguide/components.mjs';
@@ -81,29 +82,24 @@ const CHOOSE = [
       <li>Write the alt text, and paste the snippet from the <a href="/ui/components/illustration">illustration component</a>.</li>
     </ol>
     <div class="ui-code">
-      <div class="label ui-code__head"><span>Dark prompt</span><button type="button" class="ui-link-btn ui-code__copy" data-copy="prompt-dark">Copy</button><span class="ui-code__status" role="status"></span></div>
+      <div class="label ui-code__head"><span>Dark prompt</span><button type="button" class="pd-text-btn ui-code__copy" data-copy="prompt-dark">Copy</button><span class="ui-code__status" role="status"></span></div>
       <pre><code id="prompt-dark">{DARK_PROMPT}</code></pre>
     </div>
     <div class="ui-code" style="margin-top:12px">
-      <div class="label ui-code__head"><span>Light rebuild prompt</span><button type="button" class="ui-link-btn ui-code__copy" data-copy="prompt-light">Copy</button><span class="ui-code__status" role="status"></span></div>
+      <div class="label ui-code__head"><span>Light rebuild prompt</span><button type="button" class="pd-text-btn ui-code__copy" data-copy="prompt-light">Copy</button><span class="ui-code__status" role="status"></span></div>
       <pre><code id="prompt-light">{LIGHT_PROMPT}</code></pre>
     </div>
 
     <h3 class="ui-h3">Sizes</h3>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Size</th><th class="label">Shape</th><th class="label">On the page</th><th class="label">Class</th></tr></thead>
-        <tbody>
+    <UiTable caption="Sizes" headers={['Size', 'Shape', 'On the page', 'Class']}>
           <tr><td>Full width</td><td>About 16:9 or wider</td><td>The full text column</td><td><code>pd-img</code></td></tr>
           <tr><td>Tall</td><td>Portrait, about 5:8</td><td>Up to 420px wide, centred</td><td><code>pd-img is-tall</code></td></tr>
           <tr><td>Spot</td><td>About square</td><td>Up to 520px wide, centred</td><td><code>pd-img is-spot</code></td></tr>
           <tr><td>Inside a graphic</td><td>Any</td><td>Up to 380px tall, in an org fold</td><td><code>pd-one</code></td></tr>
-        </tbody>
-      </table>
-    </div>
+        </UiTable>
 
     <h3 class="ui-h3">In the reference article</h3>
-    <p class="ui-p">Every illustration in <a href={`/articles/${REFERENCE.slug}`}>{REFERENCE.title}</a>, light and dark side by side.</p>
+    <p class="ui-p">Every illustration in <a class="link" href={`/articles/${REFERENCE.slug}`}>{REFERENCE.title}</a>, light and dark side by side.</p>
     <div class="ui-gallery">
       {art.map((a) => (
         <figure class="ui-gallery__item">
@@ -120,12 +116,7 @@ const CHOOSE = [
   <section class="ui-section" id="data">
     <h2 class="ui-h2">Data graphics</h2>
     <p class="ui-p">Pick the figure by what the reader needs to see.</p>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">The reader needs to see</th><th class="label">Use</th></tr></thead>
-        <tbody>{CHOOSE.map(([need, name, id]) => <tr><td>{need}</td><td><a href={`/ui/components/${id}`}>{name}</a></td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Data graphics" headers={['The reader needs to see', 'Use']}>{CHOOSE.map(([need, name, id]) => <tr><td>{need}</td><td><a class="link" href={`/ui/components/${id}`}>{name}</a></td></tr>)}</UiTable>
     <h3 class="ui-h3">Every data graphic</h3>
     <ul class="ui-list">
       <li>An eyebrow names what it shows.</li>

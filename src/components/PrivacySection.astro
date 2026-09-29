@@ -1,0 +1,19 @@
+---
+// One section of the full privacy notice: the heading with its icon, the summary, and a "More
+// detail" disclosure when the section fills the detail slot.
+import Icon from './Icon.astro';
+const { id, icon, title } = Astro.props;
+// Screen readers hear "More detail about ..." with the title's first letter lowered and the rest
+// kept as written, so "I" stays a capital.
+const about = title.charAt(0).toLowerCase() + title.slice(1);
+---
+<section class="privacy__section" id={id} aria-labelledby={`${id}-heading`}>
+  <h2 id={`${id}-heading`}><Icon name={icon} class="privacy__icon" />{title}</h2>
+  <slot />
+  {Astro.slots.has('detail') && (
+    <details>
+      <summary class="disclosure__summary">More detail<span class="sr-only"> about {about}</span></summary>
+      <slot name="detail" />
+    </details>
+  )}
+</section>

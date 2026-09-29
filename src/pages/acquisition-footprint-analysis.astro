@@ -1,22 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-const meta = {
-  "title": "Bank Acquisition and Footprint Analysis | Paul Drago",
-  "description": "Evaluate bank acquisition targets through deposits, market fit, branch overlap, retention assumptions, and local-brand risk.",
-  "path": "/acquisition-footprint-analysis",
-  "variant": "product",
-  "subline": "Acquisition and Footprint Analysis",
-  "footerNote": "Acquisition and footprint analysis for banks and credit unions.",
-  "ogType": "website",
-  "ogImage": "https://pauldrago.com/assets/evidence-table-social.jpg",
-  "ogImageAlt": "",
-  "robots": "",
-  "stylesheets": [
-    "/assets/service-detail.css"
-  ],
-  "scripts": [],
-  "lastUpdated": "2026-09-23"
-};
+import { breadcrumb } from '../data/schema';
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
@@ -55,29 +39,29 @@ const jsonld = {
       },
       "areaServed": "United States"
     },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://pauldrago.com/acquisition-footprint-analysis#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Services",
-          "item": "https://pauldrago.com/financial-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Acquisition and Footprint Analysis",
-          "item": "https://pauldrago.com/acquisition-footprint-analysis"
-        }
-      ]
-    }
+    breadcrumb('https://pauldrago.com/acquisition-footprint-analysis#breadcrumb', [
+      ['Services', 'https://pauldrago.com/financial-services'],
+      ['Acquisition and Footprint Analysis', 'https://pauldrago.com/acquisition-footprint-analysis'],
+    ])
   ]
 };
 import OtherDecisions from '../components/OtherDecisions.astro';
+import SignalGrid from '../components/SignalGrid.astro';
+import Deliverables from '../components/Deliverables.astro';
+import Offer from '../components/Offer.astro';
+import ServiceClosingBand from '../components/ServiceClosingBand.astro';
 ---
-<Base {...meta} jsonld={jsonld}>
+<Base
+  title="Bank Acquisition and Footprint Analysis | Paul Drago"
+  description="Evaluate bank acquisition targets through deposits, market fit, branch overlap, retention assumptions, and local-brand risk."
+  path="/acquisition-footprint-analysis"
+  footerNote="Acquisition and footprint analysis for banks and credit unions."
+  ogType="website"
+  ogImage="https://pauldrago.com/assets/evidence-table-social.jpg"
+  stylesheets={['/assets/services.css', '/assets/service-detail.css']}
+  lastUpdated="2026-09-23"
+  jsonld={jsonld}
+>
 <main id="main">
   <section class="hero">
     <div class="container">
@@ -88,8 +72,8 @@ import OtherDecisions from '../components/OtherDecisions.astro';
           <p class="subhead">Separate attractive deposits and market whitespace from branch overlap, customer attrition, concentration, and local-brand risk.</p>
         </div>
         <figure class="model" aria-labelledby="footprint-model-title">
-          <p class="model__label">What you receive</p>
-          <p class="model__title" id="footprint-model-title">What the deal adds, and what it duplicates</p>
+          <p class="kicker">What you receive</p>
+          <p class="display-title model__title" id="footprint-model-title">What the deal adds, and what it duplicates</p>
           <div class="model__stage" aria-hidden="true">
             <span class="model__circle model__circle--current"></span>
             <span class="model__circle model__circle--target"></span>
@@ -106,62 +90,51 @@ import OtherDecisions from '../components/OtherDecisions.astro';
   </section>
 
   <hr class="section-divider">
-  <section class="problem-band">
-    <div class="container">
-      <h2 class="section-title-plain">The footprint map is where the case starts.</h2>
-      <p class="section-intro">A target can fill geographic whitespace and still create weak economics, concentrated overlap, or avoidable customer loss. Each part of the case needs its own source and assumption.</p>
-      <div class="signal-grid">
-        <div class="signal"><h3 class="signal__title">Deposit quality</h3><p class="signal__copy">Branch-level deposits, market position, product mix, growth, and customer concentration show what sits behind the headline total.</p></div>
-        <div class="signal"><h3 class="signal__title">Footprint fit</h3><p class="signal__copy">Branch overlap, market adjacency, customer geography, and competitor presence show where the target extends the franchise and where it duplicates it.</p></div>
-        <div class="signal"><h3 class="signal__title">Retention risk</h3><p class="signal__copy">Brand changes, branch consolidation, product migration, and relationship ownership become explicit assumptions instead of a single haircut.</p></div>
-      </div>
-    </div>
-  </section>
+  <SignalGrid
+    heading="The footprint map is where the case starts."
+    intro="A target can fill geographic whitespace and still create weak economics, concentrated overlap, or avoidable customer loss. Each part of the case needs its own source and assumption."
+    signals={[
+      { title: 'Deposit quality', copy: 'Branch-level deposits, market position, product mix, growth, and customer concentration show what sits behind the headline total.' },
+      { title: 'Footprint fit', copy: 'Branch overlap, market adjacency, customer geography, and competitor presence show where the target extends the franchise and where it duplicates it.' },
+      { title: 'Retention risk', copy: 'Brand changes, branch consolidation, product migration, and relationship ownership become explicit assumptions instead of a single haircut.' },
+    ]}
+  />
 
-  <section class="build-section">
-    <div class="container">
-      <h2 class="section-title-plain">A target brief with every assumption named.</h2>
-      <div class="deliverables">
-        <div class="deliverable"><div class="deliverable__num">01</div><h3 class="deliverable__title">Deposit profile</h3><p class="deliverable__copy">Reported deposits, growth, market share, branch concentration, and the parts of the base that matter strategically.</p></div>
-        <div class="deliverable"><div class="deliverable__num">02</div><h3 class="deliverable__title">Footprint analysis</h3><p class="deliverable__copy">Overlap, whitespace, adjacency, branch density, and customer geography displayed in one market frame.</p></div>
-        <div class="deliverable"><div class="deliverable__num">03</div><h3 class="deliverable__title">Retention register</h3><p class="deliverable__copy">Documented assumptions for deposit attrition, branch consolidation, brand transition, and relationship continuity.</p></div>
-        <div class="deliverable"><div class="deliverable__num">04</div><h3 class="deliverable__title">Executive brief</h3><p class="deliverable__copy">The strategic case, the risks that can change it, and the diligence questions that need an answer before the next decision.</p></div>
-      </div>
-    </div>
-  </section>
+  <Deliverables
+    heading="A target brief with every assumption named."
+    items={[
+      { title: 'Deposit profile', copy: 'Reported deposits, growth, market share, branch concentration, and the parts of the base that matter strategically.' },
+      { title: 'Footprint analysis', copy: 'Overlap, whitespace, adjacency, branch density, and customer geography displayed in one market frame.' },
+      { title: 'Retention register', copy: 'Documented assumptions for deposit attrition, branch consolidation, brand transition, and relationship continuity.' },
+      { title: 'Executive brief', copy: 'The strategic case, the risks that can change it, and the diligence questions that need an answer before the next decision.' },
+    ]}
+  />
 
-  <section class="offer">
-    <div class="container">
-      <div class="offer__grid">
-        <div>
-          <h2 class="offer__title">Acquisition and Footprint Analysis</h2>
-          <p class="offer__copy">The scope follows the target, markets, and diligence stage. The work can begin with public information and become more specific as internal branch, customer, and product data are available.</p>
-          <div class="offer__produces"><p class="offer__produces-copy">You receive the market case, overlap analysis, and retention assumptions in one brief.</p></div>
-        </div>
-        <div>
-          <div class="offer__inputs-title">Typical inputs</div>
-          <div class="offer__inputs">
-            <div class="offer__input"><span>01</span><span>The target list and strategic thesis</span></div>
-            <div class="offer__input"><span>02</span><span>FDIC or NCUA institution, branch, and market data</span></div>
-            <div class="offer__input"><span>03</span><span>Current and target branch footprints</span></div>
-            <div class="offer__input"><span>04</span><span>Customer geography and product information when available</span></div>
-            <div class="offer__input"><span>05</span><span>Retention, consolidation, and brand assumptions</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <Offer
+    title="Acquisition and Footprint Analysis"
+    copy="The scope follows the target, markets, and diligence stage. The work can begin with public information and become more specific as internal branch, customer, and product data are available."
+    producesCopy="You receive the market case, overlap analysis, and retention assumptions in one brief."
+    inputsTitle="Typical inputs"
+    inputs={[
+      'The target list and strategic thesis',
+      'FDIC or NCUA institution, branch, and market data',
+      'Current and target branch footprints',
+      'Customer geography and product information when available',
+      'Retention, consolidation, and brand assumptions',
+    ]}
+  />
 
   <OtherDecisions current="/acquisition-footprint-analysis" />
-  <section class="closing-band">
-    <div class="container">
-      <div class="closing-band__grid">
-        <div><h2 class="display-title closing-band__title">Bring the target and the question the board needs answered.</h2><p class="closing-band__copy">We will separate public facts from institution assumptions and identify the diligence that could change the recommendation.</p></div>
-        <aside class="call-prep"><div class="call-prep__title">Bring to the call</div><ul><li>The target or target list</li><li>The current footprint view</li><li>The strategic question under review</li></ul><a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a></aside>
-      </div>
-    </div>
-  </section>
+  <ServiceClosingBand
+    title="Bring the target and the question the board needs answered."
+    copy="We will separate public facts from institution assumptions and identify the diligence that could change the recommendation."
+    prepList={[
+      'The target or target list',
+      'The current footprint view',
+      'The strategic question under review',
+    ]}
+  />
 
-  <section class="sources" aria-labelledby="sources-heading"><div class="container"><h2 class="sources__label" id="sources-heading">Primary public-data sources</h2><ol class="sources__list"><li><a href="https://banks.data.fdic.gov/bankfind-suite/SOD">FDIC Summary of Deposits</a> for branch deposits, deposit market share, and market-presence reporting.</li><li><a href="https://www.fdic.gov/resources/data-tools">FDIC Data Tools</a> for institution history, mergers, branch structure, and financial reports.</li><li><a href="https://ncua.gov/analysis/credit-union-corporate-call-report-data">NCUA Call Report data</a> for federally insured credit-union financial and institutional information.</li><li><a href="https://www.census.gov/programs-surveys/acs/data/data-via-api.html">U.S. Census Bureau American Community Survey</a> for demographic, household, housing, and economic context.</li></ol></div></section>
+  <section class="sources" aria-labelledby="sources-heading"><div class="container"><h2 class="kicker sources__label" id="sources-heading">Primary public-data sources</h2><ol class="sources__list"><li><a href="https://banks.data.fdic.gov/bankfind-suite/SOD">FDIC Summary of Deposits</a> for branch deposits, deposit market share, and market-presence reporting.</li><li><a href="https://www.fdic.gov/resources/data-tools">FDIC Data Tools</a> for institution history, mergers, branch structure, and financial reports.</li><li><a href="https://ncua.gov/analysis/credit-union-corporate-call-report-data">NCUA Call Report data</a> for federally insured credit-union financial and institutional information.</li><li><a href="https://www.census.gov/programs-surveys/acs/data/data-via-api.html">U.S. Census Bureau American Community Survey</a> for demographic, household, housing, and economic context.</li></ol></div></section>
 </main>
 </Base>

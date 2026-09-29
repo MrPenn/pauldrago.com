@@ -16,28 +16,22 @@
     flex: none;
     width: 22px;
     height: 22px;
-    fill: none;
-    stroke: var(--brass);
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    color: var(--brass);
   }
 
   /* At a glance: a two-column summary, after Juro's privacy summary pattern */
   .glance {
     margin-bottom: var(--space-20);
     border: 1px solid var(--hairline);
-    background: var(--dark-navy);
+    background: var(--well);
   }
   .glance__heading {
     padding: var(--space-10) var(--space-10) 0;
     font-family: var(--font-display);
-    font-size: var(--step-2);
+    font-size: var(--title-sub);
     line-height: var(--leading-heading);
     text-align: center;
   }
-  @media (width >= 1040px) { .glance__heading { font-size: var(--step-3); } }
-  @media (width >= 1180px) { .glance__heading { font-size: var(--step-4); } }
   .glance__intro {
     max-width: var(--measure-0);
     margin: var(--space-4) auto 0;
@@ -72,9 +66,6 @@
   .glance__item-head a {
     flex: none;
     padding: var(--space-1) 0 var(--space-1);
-    color: var(--brass);
-    font-size: var(--step--2);
-    font-weight: var(--weight-bold);
     text-decoration: none;
   }
   .glance__item-head a:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -89,7 +80,6 @@
     border: 1px solid var(--brass);
     background: transparent;
     color: var(--brass);
-    font: inherit;
     font-size: var(--step--2);
     font-weight: var(--weight-bold);
     cursor: pointer;
@@ -107,24 +97,18 @@
     align-items: center;
     width: var(--track);
     padding: 0 var(--space-1);
-    font-size: var(--step--2);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-caps);
-    line-height: var(--leading-snug);
     text-align: center;
-    text-transform: uppercase;
   }
   .timeline__icon { width: 24px; height: 24px; }
   .timeline__key--give { color: var(--brass); }
-  .timeline__key--give .timeline__icon { stroke: var(--brass); }
   .timeline__key--auto { color: var(--paper); }
-  .timeline__key--auto .timeline__icon { stroke: var(--paper); }
+  .timeline__key--auto .timeline__icon { color: var(--paper); }
   .timeline__rows { margin-top: var(--space-2) !important; padding: 0 !important; list-style: none; }
   .timeline__row {
     display: grid;
     grid-template-columns: var(--track) var(--track) 1fr;
     align-items: center;
-    min-height: 44px;
+    min-height: var(--target);
     margin: 0 !important;
   }
   .timeline__track { position: relative; align-self: stretch; }
@@ -148,7 +132,7 @@
     height: var(--ring);
     border: 2px solid currentColor;
     border-radius: 50%;
-    background: var(--dark-navy);
+    background: var(--well);
     transform: translate(-50%, -50%);
   }
   .timeline__track--give.timeline__track--on::after { color: var(--brass); }
@@ -158,15 +142,10 @@
   .glance__cta {
     display: block;
     padding: var(--space-5) var(--space-6);
-    background: var(--brass);
-    color: var(--on-brass);
     font-size: var(--step-0);
-    font-weight: var(--weight-bold);
     text-align: center;
-    text-decoration: none;
   }
   .glance__cta span { display: block; font-size: var(--step--2); font-weight: var(--weight-regular); }
-  .glance__cta:hover { background: var(--paper); color: var(--ground); }
 
 
   /* In full */
@@ -175,12 +154,6 @@
     grid-template-columns: 240px minmax(0, 1fr);
     gap: var(--space-16);
     align-items: start;
-  }
-  .privacy__toc-label {
-    color: var(--brass);
-    font-size: var(--step--2);
-    font-weight: var(--weight-bold);
-    text-transform: none;
   }
   .privacy__toc {
     position: sticky;
@@ -214,20 +187,11 @@
     line-height: var(--leading-heading);
   }
   .privacy__summary { max-width: var(--measure-0); margin-top: var(--space-3); text-wrap: pretty; }
-  .privacy__section a { color: inherit; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
-  /* The cookie settings button inside the notice: the footer's link button, underlined. */
-  .privacy__settings-button { padding: 0; border: 0; background: none; color: var(--paper); font: inherit; font-weight: var(--weight-semibold); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; cursor: pointer; }
-  .privacy__settings-button:hover { color: var(--brass); }
 
   .privacy__section details { margin-top: var(--space-4); }
   .privacy__section summary {
-    width: fit-content;
-    padding-block: var(--space-1);
-    color: var(--brass);
-    font-size: var(--step--2);
-    font-weight: var(--weight-bold);
-    letter-spacing: var(--tracking-caps);
-    cursor: pointer;
+    color: var(--paper);
+    font-size: var(--step--1);
   }
   .privacy__section details[open] summary { margin-bottom: var(--space-3); }
   .privacy__section details p,
@@ -242,15 +206,12 @@
 
   /* Commitments ledger: a table on wide screens, one block per row on phones */
   .ledger { margin-top: var(--space-5); }
-  .ledger__table { width: 100%; border-collapse: collapse; font-size: var(--step--2); line-height: var(--leading-text); }
+  .ledger__table { font-size: var(--step--2); }
   .ledger__table th, .ledger__table td { padding: var(--space-3) var(--space-3) var(--space-3) 0; border-top: 1px solid var(--hairline); text-align: left; vertical-align: top; }
   .ledger__table thead th {
     padding-top: 0;
     border-top: 0;
     color: var(--brass);
-    font-size: var(--step--2);
-    letter-spacing: var(--tracking-caps);
-    text-transform: uppercase;
   }
   .ledger__table tbody th { width: 30%; color: var(--paper); font-weight: var(--weight-semibold); }
   .ledger__table td { color: var(--secondary); }
@@ -263,7 +224,7 @@
     color: var(--secondary);
     font-size: var(--step--2);
   }
-  .privacy__credit a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .privacy__credit a { text-decoration: underline; text-underline-offset: 3px; }
 
   /* Tablets: both two-column layouts stay. Spacing and ledger type start tight at 761, so the ledger fits
      beside the contents list, and reach the desktop values by 960. */
@@ -276,7 +237,7 @@
   /* Tablets and up: on a short screen (a phone held sideways) the stuck contents list scrolls on its own,
      with room inside for focus rings, and a long word scrolls the ledger instead of the page. */
   @media (width >= 760px) {
-    .privacy__toc { max-height: calc(100vh - 48px); max-height: calc(100svh - 48px); overflow: auto; margin-inline: calc(-1 * var(--space-2)); padding: var(--space-1) var(--space-2) var(--space-2); }
+    .privacy__toc { max-height: calc(100svh - 48px); overflow: auto; margin-inline: calc(-1 * var(--space-2)); padding: var(--space-1) var(--space-2) var(--space-2); }
     .ledger { overflow-x: auto; }
   }
 
@@ -313,7 +274,7 @@
   /* Printed or saved as PDF, the notice prints in full: every section open, navigation hidden. */
   @media print {
     .privacy__section details::details-content { content-visibility: visible; display: contents; }
-    .privacy__section summary, .privacy__toc, .glance__cta, .glance__settings, .privacy__settings-button, #cc-main, .site-header, .site-footer, .trace-rail { display: none !important; }
+    .privacy__section summary, .privacy__toc, .glance__settings { display: none !important; }
     .privacy__columns { display: block; }
   }
 }

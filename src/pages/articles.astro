@@ -33,8 +33,6 @@ const jsonld = {
   title="Articles | Paul Drago"
   description="Articles by Paul Drago on marketing measurement, market decisions, and accountable growth."
   path="/articles"
-  variant="articles"
-  subline="Articles"
   robots={articles.length ? '' : 'noindex,follow'}
   footerNote="Writing on marketing measurement, markets, and accountable growth."
   stylesheets={['/assets/personal-site.css']}
@@ -52,10 +50,10 @@ const jsonld = {
   <hr class="section-divider">
   <section class="article-index" aria-labelledby="article-index-heading">
     <div class="container">
-      <h2 class="article-index__heading" id="article-index-heading">Article index</h2>
+      <h2 class="kicker" id="article-index-heading">Article index</h2>
       {articles.length === 0 ? (
         <div class="article-empty">
-          <div class="article-empty__label">In progress</div>
+          <div class="label">In progress</div>
           <p class="article-empty__copy">The first articles are being written now.</p>
         </div>
       ) : (

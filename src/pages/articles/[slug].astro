@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import { AUTHOR } from '../../data/author';
+import { breadcrumb } from '../../data/schema';
 import FrontDoorOpener from '../../components/FrontDoorOpener.astro';
 import BookingLine from '../../components/BookingLine.astro';
 import { curlHtml } from '../../integrations/smart-quotes.mjs';
@@ -70,14 +71,10 @@ const jsonld = {
       ...(imageUrl ? { image: { '@type': 'ImageObject', url: imageUrl, width: 1200, height: 630, caption: article.data.ogImageAlt } } : {}),
       ...(citations.length ? { citation: citations } : {}),
     },
-    {
-      '@type': 'BreadcrumbList',
-      '@id': `${url}#breadcrumb`,
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Articles', item: 'https://pauldrago.com/articles' },
-        { '@type': 'ListItem', position: 2, name: article.data.title, item: url },
-      ],
-    },
+    breadcrumb(`${url}#breadcrumb`, [
+      ['Articles', 'https://pauldrago.com/articles'],
+      [article.data.title, url],
+    ]),
   ],
 };
 ---
@@ -85,8 +82,6 @@ const jsonld = {
   title={`${article.data.title} | Paul Drago`}
   description={article.data.description}
   path={path}
-  variant="articles"
-  subline="Articles"
   ogType="article"
   robots={article.data.draft ? 'noindex, nofollow' : ''}
   ogImage={article.data.ogImage ? `https://pauldrago.com${article.data.ogImage}` : undefined}
@@ -94,7 +89,7 @@ const jsonld = {
   published={iso(article.data.date)}
   modified={iso(article.data.updated ?? article.data.date)}
   footerNote="Writing on marketing measurement, markets, and accountable growth."
-  stylesheets={['/assets/personal-site.css', '/assets/article.css', ...article.data.stylesheets]}
+  stylesheets={['/assets/article.css', ...article.data.stylesheets]}
   scripts={['/assets/article.js', ...article.data.scripts]}
   lastUpdated={iso(article.data.updated ?? article.data.date)}
   jsonld={jsonld}

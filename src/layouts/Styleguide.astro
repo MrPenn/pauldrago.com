@@ -1,7 +1,7 @@
 ---
 // The /ui styleguide shell: the site header and footer, a contents rail, and the page.
-// Pages here are kept out of search and the sitemap; the kit stylesheet is loaded so type
-// and figure specimens render inline with the same rules the articles use.
+// Pages here are kept out of search and the sitemap. Specimens render in frames that load
+// the article sheets themselves, so the shell loads only the styleguide's own sheet.
 import Base from './Base.astro';
 import { COMPONENTS, LEVELS } from '../styleguide/components.mjs';
 
@@ -22,12 +22,12 @@ const current = (href) => (href === path ? 'page' : undefined);
   path={path}
   robots="noindex, nofollow"
   footerNote="The styleguide for articles on pauldrago.com."
-  stylesheets={['/assets/personal-site.css', '/assets/article.css', '/assets/article-kit.css', '/assets/styleguide.css']}
+  stylesheets={['/assets/styleguide.css']}
 >
   <main id="main" class="ui">
     <div class="container ui__shell">
       <details class="ui-nav" open>
-        <summary class="ui-nav__summary">Styleguide contents</summary>
+        <summary class="disclosure__summary ui-nav__summary">Styleguide contents</summary>
         <nav class="ui-nav__body" aria-label="Styleguide">
           <p class="label ui-nav__group">Guide</p>
           <ul class="ui-nav__list">{guide.map((g) => <li><a class="ui-nav__link" href={g.href} aria-current={current(g.href)}>{g.label}</a></li>)}</ul>

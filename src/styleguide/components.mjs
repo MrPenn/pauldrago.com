@@ -11,9 +11,11 @@
 //         outside the body) | page (the story is the whole article)
 // stories[].motion: the frame's toolbar gets a Replay button; stories[].steps: step buttons.
 import { stack, cols, units, grid, record, asof } from './build.mjs';
+import { AUTHOR } from '../data/author.ts';
 
-const BOOKING = 'https://cal.com/pauldrago/20-min-intro-call';
-const CAL = 'data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config=\'{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"}\'';
+const BOOKING = AUTHOR.booking;
+// The booking attributes as HTML. A value that holds double quotes (the JSON config) goes in single quotes.
+const CAL = Object.entries(AUTHOR.calAttrs).map(([k, v]) => (v.includes('"') ? `${k}='${v}'` : `${k}="${v}"`)).join(' ');
 export const REFERENCE = { slug: 'the-digital-front-door-nobody-walks-through', title: 'The Digital Front Door Nobody Walks Through' };
 
 // One primary checking customer, one year: the front door's first pinned sequence.
@@ -63,13 +65,14 @@ export const UNITS_DEMO = { num: '95%', label: "of consumers rate their bank's o
 // The front door's own sources for its two number sequences, rendered as the site's markdown renders
 // footnotes, so the kit can move each one under the pinned graphic with its step.
 const NOTES = {
-  3: '<strong>Federal Reserve Board.</strong> 2022 Survey of Consumer Finances, Historic Tables, Table 6, family holdings of financial assets by age of reference person. Median transaction account holdings for families under 35 that hold such an account: $5,400 (mean $20,536). Transaction accounts include checking, savings, money market and call accounts, so the checking-only balance is lower and the figure here is generous to the bank. <a href="https://www.federalreserve.gov/econres/scfindex.htm">SCF index and tables</a>',
-  4: '<strong>FDIC.</strong> Quarterly Banking Profile, Second Quarter 2026, released August 25, 2026. Community bank net interest margin 3.81%; industry NIM 3.32%. Applying NIM to a noninterest-bearing checking balance understates its value, since that balance costs the bank close to nothing to fund. <a href="https://www.fdic.gov/quarterly-banking-profile/quarterly-banking-profile-second-quarter-2026.pdf">Read the QBP</a>',
-  5: '<strong>Federal Reserve Board.</strong> Regulation II, Average Debit Card Interchange Fee by Payment Card Network, 2024 data, published December 19, 2025. All-network average per transaction: $0.51 for exempt issuers, $0.23 for covered issuers. Interchange is gross revenue; network fees and processing costs come out of it. <a href="https://www.federalreserve.gov/paymentsystems/regii-average-interchange-fee.htm">Fed Regulation II data</a>',
-  6: '<strong>PULSE.</strong> 2024 Debit Issuer Study (2023 data), as reported by ABA Banking Journal, August 9, 2024. Active cardholders completed 34.6 debit transactions per month. Not age-specific. <a href="https://bankingjournal.aba.com/2024/08/survey-debit-card-use-grew-in-2023/">ABA Banking Journal summary</a>',
-  7: '<strong>Digital Onboarding, via The Financial Brand.</strong> May 28, 2021: banks and credit unions invest $350 or more to acquire a single checking account. A 2021 figure. <a href="https://thefinancialbrand.com/news/checking-accounts/how-to-maximize-checking-account-activation-rates-115242">Financial Brand article</a>',
-  9: '<strong>National Association of Realtors.</strong> 2025 Profile of Home Buyers and Sellers, November 4, 2025. Median age of first-time homebuyers: 40, up from 38 the prior year. <a href="https://www.nar.realtor/press-releases/first-time-home-buyer-share-falls-to-historic-low-of-21-median-age-rises-to-40">NAR release</a>',
-  10: '<strong>Mortgage Bankers Association.</strong> Quarterly Mortgage Bankers Performance Report, Second Quarter 2026, released August 18, 2026. Net production income of $973 per loan for independent mortgage banks and mortgage subsidiaries of chartered banks. <a href="https://www.mba.org/news-and-research/newsroom/news/2026/08/18/imbs-production-profits-increase-in-second-quarter-of-2026">MBA release</a>',
+  3: '<strong>Federal Reserve Board.</strong> 2022 Survey of Consumer Finances, Historic Tables, Table 6, family holdings of financial assets by age of reference person. Median transaction account holdings for families under 35 that hold such an account: $5,400 (mean $20,536). The 2022 survey is the most recent published as of this writing. Transaction accounts include checking, savings, money market and call accounts, so the checking-only balance is lower and the figure here is generous to the bank. <a href="https://www.federalreserve.gov/econres/scfindex.htm">SCF index and tables</a>',
+  4: '<strong>FDIC.</strong> Quarterly Banking Profile, Second Quarter 2026, released August 25, 2026. Community bank net interest margin 3.81%; average yield on earning assets 5.66%; average funding cost 1.85%; industry NIM 3.32%. Applying NIM to a noninterest-bearing checking balance understates its value, since that balance costs the bank close to nothing to fund. <a href="https://www.fdic.gov/quarterly-banking-profile/quarterly-banking-profile-second-quarter-2026.pdf">Read the QBP</a>',
+  5: '<strong>Federal Reserve Board.</strong> Regulation II, Average Debit Card Interchange Fee by Payment Card Network, 2024 data, published December 19, 2025. All-network average per transaction: $0.51 for exempt issuers (1.21% of transaction value), $0.23 for covered issuers (0.47%). Interchange is gross revenue; network fees and processing costs come out of it. <a href="https://www.federalreserve.gov/paymentsystems/regii-average-interchange-fee.htm">Fed Regulation II data</a>',
+  6: '<strong>PULSE.</strong> 2024 Debit Issuer Study (2023 data), as reported by ABA Banking Journal, August 9, 2024. Active cardholders completed 34.6 debit transactions per month, including 30.7 point-of-sale transactions. Not age-specific. <a href="https://bankingjournal.aba.com/2024/08/survey-debit-card-use-grew-in-2023/">ABA Banking Journal summary</a>',
+  7: '<strong>Digital Onboarding, via The Financial Brand.</strong> May 28, 2021: banks and credit unions invest $350 or more to acquire a single checking account. A 2021 figure. Fintel Connect\'s 2025 Cost-Per-Acquisition Benchmarking Guide, as summarized by eMarketer in March 2025, gives a range of $150 to $780 across financial products, not checking alone. <a href="https://thefinancialbrand.com/news/checking-accounts/how-to-maximize-checking-account-activation-rates-115242">Financial Brand article</a> | <a href="https://www.emarketer.com/content/how-banks-optimize-cost-per-acquisition">eMarketer summary</a>',
+  8: '<strong>Chime.</strong> Official checking-account information and Help Center account descriptions, accessed September 22, 2026. Supports the product descriptions, partner-bank disclosure and app-based account structure. Eligibility, limits, timing and fees vary by feature. Describing Chime as one product is an interpretation of its customer-facing proposition, not a claim that it has one legal account, no internal complexity or no human support. Chime announced a definitive agreement to acquire Stride Bank, N.A. for $590 million in cash on September 8, 2026, subject to OCC and Federal Reserve approval and expected to close in the first half of 2027, and stated it "will manage its balance sheet and keep its assets below $10 billion for the foreseeable future." The announcement does not mention the Durbin Amendment; the connection to the interchange exemption is analysis, shared by most coverage of the deal. The Q2 2026 figures are from Chime\'s results released August 5, 2026 and its Form 10-Q for the quarter ended June 30, 2026: payments revenue of $430.0 million of $669.8 million total revenue, with interchange on debit card transactions at 39% of revenue and on credit card transactions at 25%. <a href="https://investors.chime.com/news-releases/news-release-details/chime-announces-agreement-acquire-stride-bank">Chime announcement</a> | <a href="https://investors.chime.com/news-releases/news-release-details/chime-reports-second-quarter-2026-financial-results">Q2 2026 results</a> | <a href="https://www.sec.gov/Archives/edgar/data/1795586/000179558626000048/chym-20260630.htm">Form 10-Q</a> | <a href="https://www.bankingdive.com/news/chime-buys-stride-bank-590m-acquisition-fintech/829857/">Banking Dive coverage</a> | <a href="https://www.chime.com/online-banking/checking-account/">Checking-account information</a> | <a href="https://help.chime.com/manage-money-56350c4d/cards-89d3ae0b/what-chime-accounts-do-i-have-and-which-cards-come-with-47ec36db">Account and card descriptions</a>',
+  9: '<strong>National Association of Realtors.</strong> 2025 Profile of Home Buyers and Sellers, November 4, 2025. Median age of first-time homebuyers: 40, up from 38 the prior year; first-time buyer share 21%. <a href="https://www.nar.realtor/press-releases/first-time-home-buyer-share-falls-to-historic-low-of-21-median-age-rises-to-40">NAR release</a>',
+  10: '<strong>Mortgage Bankers Association.</strong> Quarterly Mortgage Bankers Performance Report, Second Quarter 2026, released August 18, 2026. Net production income of $973 per loan (25 basis points) for independent mortgage banks and mortgage subsidiaries of chartered banks; total production revenue 333 basis points. A bank that portfolios the loan earns spread over its life instead, which depends on its funding and credit assumptions. <a href="https://www.mba.org/news-and-research/newsroom/news/2026/08/18/imbs-production-profits-increase-in-second-quarter-of-2026">MBA release</a>',
 };
 const ref = (n) => `<sup><a href="#user-content-fn-${n}" id="user-content-fnref-${n}" data-footnote-ref aria-describedby="footnote-label">${n}</a></sup>`;
 const notesHtml = (ns) => `<section data-footnotes class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>\n<ol>\n${ns.map((n) => `<li id="user-content-fn-${n}"><p>${NOTES[n]} <a href="#user-content-fnref-${n}" data-footnote-backref class="data-footnote-backref" aria-label="Back to reference ${n}">&#8617;</a></p></li>`).join('\n')}\n</ol>\n</section>`;
@@ -81,8 +84,9 @@ const STEPS = [
   'Community banks earned a 3.81% net interest margin in the second quarter of 2026,{4} which makes that balance worth a little over $200 a year in spread before the customer does anything else.',
   'Then the debit card. Banks under $10 billion in assets are exempt from the Durbin interchange cap, and the Fed\'s Regulation II data shows exempt issuers earning an average of $0.51 per debit transaction against $0.23 for covered banks.{5} At the 34.6 transactions a month PULSE measured for an active debit card,{6} that is roughly another $200 a year.',
   'Call it a little over $400 a year from a primary checking account alone, before a single loan. That covers a typical checking acquisition cost of around $350 in the first year.{7}',
+  'So the 25-year-old with $5,400 and a paycheck is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. Lending is upside. It was never the business case.',
   // slop-ok: tacked-on-tail-clause (published text from the reference article)
-  'Chime\'s partner banks are small enough to have the exemption too, and it is most of how Chime makes money.',
+  'Chime\'s partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank\'s assets below $10 billion for the foreseeable future.{8} Every community bank has the exemption. Few build the product around it.',
 ];
 const WAIT_STEPS = [
   'Which makes the standard pitch worse than distant. The median first-time homebuyer is now 40 years old.{9}',
@@ -129,7 +133,7 @@ const foldGraphic = [
   '</div>',
 ].join('\n');
 const ORG_STEPS = [
-  'Digital can deliver a respectable app while Retail provides excellent branch service. Marketing can run an effective campaign, Deposit Product can price competitive checking and Lending can meet its production goals.',
+  'Digital can deliver a respectable app while Retail provides excellent branch service. Marketing can run an effective campaign, Deposit Product can price competitive checking and Lending can meet its production goals. Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.',
   '<p class="pd-pull">The customer experiences one bank while the organization manages twelve functions.</p>',
 ];
 const orgSequence = (markdown) => [
@@ -154,7 +158,7 @@ const OPENER = {
     { num: 4, label: 'went to community banks', kind: 'alt' },
     { num: 52, label: 'went to everyone else', kind: '' },
   ],
-  source: 'Cornerstone Advisors, <a href="https://www.crnrstone.com/hubfs/Cornerstone-Advisors-2025-Research-Recap_Beyond-the-Paycheck-Motel.pdf">Beyond the Paycheck Motel</a>, 2025 research recap, Figure 6. New checking accounts across all ages; community banks defined as institutions under $100 billion in assets.',
+  source: 'Cornerstone Advisors, <a class="link" href="https://www.crnrstone.com/hubfs/Cornerstone-Advisors-2025-Research-Recap_Beyond-the-Paycheck-Motel.pdf">Beyond the Paycheck Motel</a>, 2025 research recap, Figure 6. New checking accounts across all ages; community banks defined as institutions under $100 billion in assets.',
 };
 export const GRID_DEMO = OPENER;
 // The same 2024 shares as bars: one bar each, printed in percent.
@@ -219,7 +223,7 @@ const calcFoldHtml = calcHtml
   .replace('The five fields hold the public figures from the sequence above.', 'The three fields hold the public figures from the sequence above, and the other two sit in the fold.')
   .replace('  <div class="pd-calc__row">', [
     '  <details class="pd-calc__more">',
-    '    <summary>Change the other 2 numbers</summary>',
+    '    <summary class="disclosure__summary">Change the other 2 numbers</summary>',
     '    <div class="pd-calc__inputs pd-calc__inputs--more">',
     '      <p class="label pd-calc__group">Interchange and acquisition</p>',
     ...foldLines.map((l) => `    ${l}`),
@@ -231,9 +235,10 @@ const calcFoldHtml = calcHtml
 // The H2C fine from "Your Content Has No Parent".
 export const RECORD_DEMO = {
   num: '$250,000',
-  lead: 'FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails.',
+  ref: 'h2c-fine',
+  lead: 'FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails. It could not recover most of them.',
   quote: 'preserved at least one copy of many of the mass marketing communications, but it did not preserve a copy of each message sent to each recipient',
-  source: 'FINRA Letter of Acceptance, Waiver and Consent, H2C Securities, March 2024.',
+  source: 'FINRA Letter of Acceptance, Waiver and Consent, March 2024.',
 };
 
 // The example disclosure from "Your Content Has No Parent": invented rates, a real question.
@@ -430,6 +435,20 @@ export const COMPONENTS = [
     stories: [{ id: 'default', name: 'Over a figure', html: `<p class="pd-eyebrow">One primary checking customer, one year</p>` }],
   },
   {
+    id: 'kicker',
+    name: 'Kicker',
+    level: 'atom',
+    status: 'shared',
+    summary: 'A few words in the sans face, 14px and bold, in the accent and in sentence case, naming what follows them.',
+    use: ['Over a panel, a list or a table on a site page: "What to bring", "Weight the criteria", "Article index".'],
+    avoid: ['Small capitals. That is the label.', 'A kicker style of its own. Add the class, and let the component set only its colour, margin and position.'],
+    rules: ['`class="kicker"`, before the component\'s own class.', 'It sets no line height, so a heading keeps its own.', 'Sentence case, as written.'],
+    a11y: ['At 14px it keeps the accent at full strength, never faded.'],
+    classes: ['kicker'],
+    lint: ['type-scale'],
+    stories: [{ id: 'places', name: 'On a paragraph and on a heading', wrap: 'article', html: `<p class="kicker">What to bring</p>\n<h2 class="kicker">Article index</h2>` }],
+  },
+  {
     id: 'caption',
     name: 'Caption',
     level: 'atom',
@@ -444,18 +463,46 @@ export const COMPONENTS = [
     stories: [{ id: 'default', name: 'Under a figure', html: `<figure class="pd-figure"><figcaption>Gross figures, before servicing, fraud and network costs. Switch the interchange regime to see what the same customer is worth at a bank over $10 billion.</figcaption></figure>` }],
   },
   {
+    id: 'note',
+    name: 'Note',
+    level: 'atom',
+    status: 'shared',
+    summary: 'Small print under a table, a map or a tool on a site page: 14px in the secondary colour, on the reading line spacing.',
+    use: ['What a reader needs to read a table or a tool: the date of the data, what a measure counts, what the numbers leave out.'],
+    avoid: ['The source line under a figure in an article. That is the caption.'],
+    rules: ['`class="note"`, before the component\'s own class.', 'A component sets only its colour, margin and position, and a measure where it needs one.'],
+    a11y: ['An ordinary paragraph, read in order.'],
+    classes: ['note'],
+    lint: ['type-scale'],
+    stories: [{ id: 'default', name: 'Under a table', wrap: 'article', html: `<p class="note">Highlighted: the strongest of the three on each measure.</p>` }],
+  },
+  {
+    id: 'value',
+    name: 'Value',
+    level: 'atom',
+    status: 'shared',
+    summary: 'A figure in running sans text: bold, in ink, on even-width digits so a column of them lines up.',
+    use: ['A score, a weight or a bar\'s value set beside its name on a site page.', 'The headline figures of a report.'],
+    avoid: ['A number a figure leads with, or a ledger value. That is the number, in the display face.'],
+    rules: ['`class="value"`, before the component\'s own class.', 'A component sets its size, colour, margin and alignment.'],
+    a11y: ['Plain text, read in order.'],
+    classes: ['value'],
+    lint: [],
+    stories: [{ id: 'default', name: 'Beside a name', wrap: 'article', html: `<p>Kaufman <span class="value">82</span></p>` }],
+  },
+  {
     id: 'link',
     name: 'Link',
     level: 'atom',
     status: 'shared',
-    summary: 'Text in the reading colour, underlined in the accent.',
-    use: ['Reports, rules and sources named in the text, and the booking line.'],
+    summary: 'Text underlined in the accent, 3px under it. The strong link is bold, on a heavier line.',
+    use: ['Reports, rules and sources named in the text, and the booking line.', 'On a site page, a link in a sentence, a note or a list.', 'The strong link: the one link that ends a section or a panel.'],
     avoid: ['Links on words like "here". The link text says where it goes.'],
-    rules: ['A markdown link. The style underlines it in the accent, 3px under the text.', 'Name the destination: "FINRA Rule 2210", not "this rule".'],
+    rules: ['A markdown link. The style underlines it in the accent, 3px under the text.', 'Outside an article, `class="link"`, and `class="link link--strong"` for the strong link: bold, on a 2px line 4px under the text.', 'A component sets only its colour, weight, margin and position.', 'Name the destination: "FINRA Rule 2210", not "this rule".'],
     a11y: ['The underline, not colour alone, marks a link.'],
-    classes: [],
+    classes: ['link', 'link--strong'],
     lint: ['link-text'],
-    stories: [{ id: 'inline', name: 'In a sentence', html: `<p>FINRA's rule on communications with the public, <a href="https://www.finra.org/rules-guidance/rulebooks/finra-rules/2210">FINRA Rule 2210</a>, covers every version a customer receives.</p>`, code: `FINRA's rule on communications with the public, [FINRA Rule 2210](https://www.finra.org/rules-guidance/rulebooks/finra-rules/2210), covers every version a customer receives.`, lang: 'markdown' }],
+    stories: [{ id: 'inline', name: 'In a sentence', html: `<p>FINRA's rule on communications with the public, <a href="https://www.finra.org/rules-guidance/rulebooks/finra-rules/2210">FINRA Rule 2210</a>, covers every version a customer receives.</p>`, code: `FINRA's rule on communications with the public, [FINRA Rule 2210](https://www.finra.org/rules-guidance/rulebooks/finra-rules/2210), covers every version a customer receives.`, lang: 'markdown' }, { id: 'site', name: 'On a site page, and strong', wrap: 'article', html: `<p><a class="link" href="/ui">Styleguide</a></p>\n<p><a class="link link--strong" href="/branch-market-expansion-analysis/sample-plan">Read the sample five-year plan</a></p>` }],
   },
   {
     id: 'footnote-marker',
@@ -476,14 +523,14 @@ export const COMPONENTS = [
     name: 'Number',
     level: 'atom',
     status: 'shared',
-    summary: 'A figure in Archivo Black with even-width numerals, in four sizes: beside a label, in a row, a total, and the number a figure leads with.',
-    use: ['Every number a figure prints in the display face: a bar\'s value, ledger values and totals, legend counts, the day on an as-of slider, the number a figure leads with.'],
-    avoid: ['Numbers in running text. They stay in the body face.', 'A size of its own. Pick one of the four.'],
-    rules: ['`class="pd-num"` for a number in a row (29px). Add pd-num--s beside a label (24px), pd-num--l for a total or a count (41px), pd-num--xl for the number a figure leads with (60px).', 'In a column narrower than 560px each size takes the step below: 24, 24, 29 and 41.', 'A component sets a number\'s colour and alignment, never its size.', 'The numerals are even width, so values in a column line up and a total that changes as the reader types does not jump.', 'The decisions\' numerals are the same number, drawn by the stylesheet.'],
+    summary: 'A figure in Archivo Black with even-width numerals, in five sizes: beside a label, in a row, leading a short block, a total, and the number a figure leads with.',
+    use: ['Every number a figure prints in the display face: a bar\'s value, ledger values and totals, legend counts, the day on an as-of slider, the number a figure leads with.', 'On site pages too: the measurement reset\'s calculator and evidence ledger.'],
+    avoid: ['Numbers in running text. They stay in the body face.', 'A size of its own. Pick one of the five.'],
+    rules: ['`class="pd-num"` for a number in a row (29px). Add pd-num--s beside a label (24px), pd-num--m for a figure that leads a short block (35px), pd-num--l for a total or a count (41px), pd-num--xl for the number a figure leads with (60px).', 'In a column narrower than 560px each size takes the step below: 24, 24, 29 and 41.', 'A component sets a number\'s colour and alignment, never its size.', 'The numerals are even width, so values in a column line up and a total that changes as the reader types does not jump.', 'The decisions\' numerals are the same number, drawn by the stylesheet.'],
     a11y: ['A number that changes as the reader types carries aria-live where it is the result.'],
-    classes: ['pd-num', 'pd-num--s', 'pd-num--l', 'pd-num--xl'],
+    classes: ['pd-num', 'pd-num--s', 'pd-num--m', 'pd-num--l', 'pd-num--xl'],
     lint: ['type-scale'],
-    stories: [{ id: 'sizes', name: 'The four sizes', html: `<div class="ui-specimens">\n  <div class="ui-specimens__item"><span class="pd-num pd-num--xl">$5,400</span><p class="label ui-specimens__name">pd-num--xl: the number a figure leads with</p></div>\n  <div class="ui-specimens__item"><span class="pd-num pd-num--l">$418</span><p class="label ui-specimens__name">pd-num--l: a total or a count</p></div>\n  <div class="ui-specimens__item"><span class="pd-num">$206</span><p class="label ui-specimens__name">A number in a row</p></div>\n  <div class="ui-specimens__item"><span class="pd-num pd-num--s">$350</span><p class="label ui-specimens__name">pd-num--s: beside a label</p></div>\n</div>` }],
+    stories: [{ id: 'sizes', name: 'The four sizes', html: `<div class="ui-specimens">\n  <div class="ui-specimens__item"><span class="pd-num pd-num--xl">$5,400</span><p class="label ui-specimens__name">pd-num--xl: the number a figure leads with</p></div>\n  <div class="ui-specimens__item"><span class="pd-num pd-num--l">$418</span><p class="label ui-specimens__name">pd-num--l: a total or a count</p></div>\n  <div class="ui-specimens__item"><span class="pd-num pd-num--m">45%</span><p class="label ui-specimens__name">pd-num--m: leading a short block</p></div>\n  <div class="ui-specimens__item"><span class="pd-num">$206</span><p class="label ui-specimens__name">A number in a row</p></div>\n  <div class="ui-specimens__item"><span class="pd-num pd-num--s">$350</span><p class="label ui-specimens__name">pd-num--s: beside a label</p></div>\n</div>` }],
   },
   {
     id: 'swatch',
@@ -618,6 +665,20 @@ export const COMPONENTS = [
     stories: [{ id: 'day', name: 'Picking a day', html: `<input class="pd-slider" type="range" min="0" max="176" step="1" value="68" aria-label="Day the customer saw the disclosure">` }],
   },
   {
+    id: 'disclosure',
+    name: 'Disclosure row',
+    level: 'atom',
+    status: 'shared',
+    summary: 'The row that opens a details element: 48px tall and bold, with a plus in the accent that turns to a minus once it opens.',
+    use: ['The fold under a calculator\'s main fields, and the styleguide contents on a phone.'],
+    avoid: ['Hiding something the text discusses.'],
+    rules: ['`<summary class="disclosure__summary">`, the first thing inside its details element.', 'It sets no size, so it takes the size of the text around it. The component sets its size and colour.', 'The words say what opens: "Change the other 2 numbers".'],
+    a11y: ['A native details element, so the keyboard and screen readers treat it as a disclosure.', 'The row is 48px tall, a full tap target.'],
+    classes: ['disclosure__summary'],
+    lint: [],
+    stories: [{ id: 'states', name: 'Closed and open', wrap: 'article', html: `<details>\n  <summary class="disclosure__summary">Change the other 2 numbers</summary>\n</details>\n<details open>\n  <summary class="disclosure__summary">Styleguide contents</summary>\n</details>` }],
+  },
+  {
     id: 'data-mark',
     name: 'Data mark',
     level: 'atom',
@@ -645,7 +706,7 @@ export const COMPONENTS = [
     summary: 'A thin rail down the left edge of the screen that fills with the accent as the reader moves through the page.',
     use: ['Every page with a script; the base layout draws it.'],
     avoid: ['A percentage or a time-left counter.'],
-    rules: ['2px wide, 16px from the left edge, the accent at 12% for the empty rail and full strength for the fill.', 'Driven by a scroll timeline where the browser has one, and by a scroll listener in article.js where it does not.', 'Hidden on phones.'],
+    rules: ['2px wide, 16px from the left edge, the accent at 12% for the empty rail and full strength for the fill.', 'Driven by a scroll timeline where the browser has one, and by a scroll listener in trace-rail.js where it does not.', 'Hidden on phones.'],
     a11y: ['Decorative and aria-hidden.'],
     classes: ['trace-rail', 'trace-rail__fill'],
     lint: [],
@@ -829,10 +890,10 @@ export const COMPONENTS = [
     summary: 'A closed section under a calculator\'s main fields that opens when the reader asks: "Change the other 2 numbers".',
     use: ['A calculator with more than six fields.'],
     avoid: ['Hiding a number the text discusses.'],
-    rules: ['`<details class="pd-calc__more"><summary>Change the other 2 numbers</summary><div class="pd-calc__inputs pd-calc__inputs--more">…</div></details>`', 'Closed by default. Opening it is the one change in size the reader asks for.', 'The summary counts the fields it holds; labels across the row group them.'],
+    rules: ['`<details class="pd-calc__more"><summary class="disclosure__summary">Change the other 2 numbers</summary><div class="pd-calc__inputs pd-calc__inputs--more">…</div></details>`', 'Closed by default. Opening it is the one change in size the reader asks for.', 'The summary counts the fields it holds; labels across the row group them.'],
     a11y: ['A native details element, so the keyboard and screen readers treat it as a disclosure.'],
     classes: ['pd-calc__more'],
-    parts: ['label', 'field'],
+    parts: ['label', 'field', 'disclosure'],
     lint: [],
     stories: [{ id: 'fold', name: 'Two fields in the fold', html: `<div class="pd-calc">\n${calcFoldHtml.slice(calcFoldHtml.indexOf('  <details'), calcFoldHtml.indexOf('</details>') + 10)}\n</div>` }],
   },
@@ -852,7 +913,7 @@ export const COMPONENTS = [
     stories: [{
       id: 'exchange',
       name: 'Bank and customer',
-      html: `<div class="pd-dialogue" role="group" aria-label="The conversation">\n  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Because we're local.</p>\n  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>Okay. How does that make my life better?</p>\n  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Because we have great service.</p>\n  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>So does every bank's advertising.</p>\n</div>`,
+      html: `<div class="pd-dialogue" role="group" aria-label="The conversation">\n  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Because we're local.</p>\n  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>Okay. How does that make my life better?</p>\n  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Because we have great service.</p>\n  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>So does every bank's advertising.</p>\n  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>We can help when you're ready to buy a home.</p>\n  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>Maybe. Rocket Mortgage will be waiting too.</p>\n  <p class="pd-dialogue__us"><span class="label pd-dialogue__who">Bank</span>Someday, if you start a business, you'll appreciate having a relationship with a local lender.</p>\n  <p class="pd-dialogue__them"><span class="label pd-dialogue__who">Customer</span>I am currently trying to get $2,000 into an emergency fund.</p>\n</div>`,
     }],
   },
   {
@@ -1061,7 +1122,7 @@ export const COMPONENTS = [
     parts: ['stacked-bar', 'rising-columns', 'org-fold', 'pull-quote', 'sources', 'text-button'],
     lint: ['scrolly-steps', 'signature-spacing'],
     stories: [
-      { id: 'customer', name: 'A stacked bar built step by step, with its sources', steps: 5, notes: true, html: sequence(MATH, false), code: sequence(MATH, true), lang: 'markdown' },
+      { id: 'customer', name: 'A stacked bar built step by step, with its sources', steps: 6, notes: true, html: sequence(MATH, false), code: sequence(MATH, true), lang: 'markdown' },
       { id: 'wait', name: 'Rising columns built step by step', steps: 4, notes: true, html: sequence(WAIT, false), code: sequence(WAIT, true), lang: 'markdown' },
     ],
   },
@@ -1191,7 +1252,7 @@ export const COMPONENTS = [
       id: 'article',
       name: 'On an article',
       wrap: 'page',
-      html: `<header class="site-header" data-c="site-header">\n  <div class="container">\n    <div class="site-header__inner">\n      <a class="brand" href="/"><span class="brand__group"><span class="brand__name">Paul Drago</span><span class="brand__line">Advisor to banks and credit unions</span></span></a>\n      <nav class="site-header__nav" aria-label="Primary">\n        <a class="site-header__link" href="/financial-services">Services</a>\n        <a class="site-header__link" href="/articles" aria-current="page">Articles</a>\n        <a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n      </nav>\n    </div>\n  </div>\n</header>`,
+      html: `<header class="site-header" data-c="site-header">\n  <div class="container">\n    <div class="site-header__inner">\n      <a class="brand" href="/"><span class="brand__group"><span class="brand__name">Paul Drago</span><span class="label brand__line">Advisor to banks and credit unions</span></span></a>\n      <nav class="site-header__nav" aria-label="Primary">\n        <a class="site-header__link" href="/financial-services">Services</a>\n        <a class="site-header__link" href="/articles" aria-current="page">Articles</a>\n        <a class="btn" href="${BOOKING}" ${CAL}>Book a call</a>\n      </nav>\n    </div>\n  </div>\n</header>`,
       code: `<!-- src/layouts/Base.astro renders it on every page. -->`,
     }],
   },

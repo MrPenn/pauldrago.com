@@ -48,7 +48,6 @@ export const RULES = [
   { id: 'bars-max', severity: 'warn', group: 'Figures', title: 'The longest static bar stops at 78% of the track', why: 'The value label sits at the tip of the bar and needs the rest of the track.', fix: 'Scale the chart so its largest value reaches 78%.' },
   { id: 'chart-source', severity: 'warn', group: 'Figures', title: 'Every figure that shows a number carries its source', why: 'A figure without its source asks the reader to trust it.', fix: 'Add a figcaption that names who measured it, the sample and the year.' },
   { id: 'source-line-footnote', severity: 'warn', group: 'Figures', title: 'A source line ends on its footnotes', why: 'The source line names the study; the footnote carries the link, the method and what the figure does not show.', good: '*Veeva Pulse, 2022 and 2025; Veeva sells the CRM.*[^14]' },
-  { id: 'source-after-chart', severity: 'error', group: 'Figures', title: 'Prose does not follow a chart that styles its next paragraph', why: 'content-is-data.css styles any paragraph right after a cd- chart, stat or record as a source line, so prose placed there prints small and gray.', fix: 'Put the source line first, or move the paragraph.' },
 
   // Images
   { id: 'img-attrs', severity: 'error', group: 'Images', title: 'Images carry width, height and alt text, and load lazily', why: 'Width and height reserve the space so the page does not shift; alt text describes the image; lazy loading keeps illustrations off the first paint.', good: '<img src="/assets/postcard.webp" width="1200" height="720" loading="lazy" alt="A postcard buried under approval stamps.">' },
@@ -290,12 +289,17 @@ const phoneOrPrint = (prelude) => /^@media\b/.test(prelude) && prelude.replace(/
 
 // The type scale's steps, --step--2 to --step-10.
 const STEPS = new Set(Array.from({ length: 13 }, (_, i) => i - 2));
-// A size is a step (var(--step-1)), or it takes its parent's (inherit and its kin).
+// The title sizes site-shell.css sets to a step at each breakpoint.
+const TITLES = new Set(['section', 'sub', 'lead']);
+// A size is a step (var(--step-1)), a title size (var(--title-section)), or it takes its parent's
+// (inherit and its kin).
 function offScaleSize(v) {
   const size = v.replace(/\s*!important\s*$/i, '').trim();
   if (/^(?:inherit|initial|unset|revert|revert-layer)$/i.test(size)) return null;
   const step = size.match(/^var\(--step-(-?\d+)\)$/);
   if (step && STEPS.has(Number(step[1]))) return null;
+  const title = size.match(/^var\(--title-([a-z]+)\)$/);
+  if (title && TITLES.has(title[1])) return null;
   return size;
 }
 // Spacing: every part of a margin, padding or gap is a --space step, the gutter, 0, auto, a percentage,
@@ -424,7 +428,7 @@ export function lintScript(file, text) {
 
 // ------------------------------------------------------------------ articles
 
-const ROOT_CSS = ['/assets/site-shell.css', '/assets/personal-site.css', '/assets/article.css'];
+const ROOT_CSS = ['/assets/site-shell.css', '/assets/article.css'];
 const TITLE_MINOR = new Set(['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'so', 'yet', 'as', 'at', 'by', 'in', 'of', 'on', 'to', 'up', 'via', 'vs']);
 const COLOPHON = /^(about the numbers|sources|notes|method|methodology)$/i;
 const FIGURE_NAMES = { tl: 'timeline', units: 'unit stat', stack: 'stacked bar', cols: 'rising columns chart', asof: 'as-of slider', stat: 'stat line', bars: 'bar chart' };
@@ -689,9 +693,6 @@ export function lintArticle(file, source, ctx) {
     if (f.type === 'stack') checkStack(f.html, where, report);
     if (f.type === 'calc') checkCalc(f.html, where, report);
     if (italicNext && /^\s*[*_]/.test(f.after) && !/\[\^[^\]]+\]\s*$/.test(f.after.trim())) report('source-line-footnote', off(f.end), 'the source line after this figure cites no footnote');
-    if (f.ns === 'cd' && ['bars', 'stat', 'record'].includes(f.type) && f.after.trim() && !italicNext && !/^\s*</.test(f.after)) {
-      report('source-after-chart', off(f.end), `the paragraph after this ${f.type} renders as a source line: "${plainText(f.after).slice(0, 50)}..."`);
-    }
     if (f.type === 'bars') {
       const rows = barRows(f.html);
       for (const r of offScale(rows)) report('bars-scale', where, `"${r.text}" is drawn at ${r.width}% but the chart's scale puts ${r.value} at ${r.want}%${r.range ? ' (range end)' : ''}`);

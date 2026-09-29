@@ -2,6 +2,7 @@
 // The three-county comparison, shared by the branch-analysis page and its sample plan.
 // Figures come from src/data/dfw-markets.json (scripts/build-dfw-markets.py).
 import data from '../data/dfw-markets.json';
+import ScrollTable from './ScrollTable.astro';
 
 const markets = data.markets;
 const money = (b) => `$${b.toFixed(1)}B`;
@@ -20,7 +21,7 @@ const rows = [
 ];
 const best = (key) => Math.max(...markets.map((m) => m[key]));
 ---
-<div class="table-wrap">
+<ScrollTable label="Three Dallas-area counties compared">
   <table class="market-table">
     <caption class="sr-only">Three Dallas-area counties compared on public deposit, population, and income data</caption>
     <thead>
@@ -35,5 +36,5 @@ const best = (key) => Math.max(...markets.map((m) => m[key]));
       ))}
     </tbody>
   </table>
-  <p class="table-note">Highlighted: the strongest of the three on each measure. {data.asOf.deposits}. {data.asOf.population}. {data.asOf.households}. {data.notes.join(' ')}</p>
-</div>
+</ScrollTable>
+<p class="note table-note">Highlighted: the strongest of the three on each measure. {data.asOf.deposits}. {data.asOf.population}. {data.asOf.households}. {data.notes.join(' ')}</p>

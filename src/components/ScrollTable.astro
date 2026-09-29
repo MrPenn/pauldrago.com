@@ -1,0 +1,6 @@
+---
+// A table that may be wider than the screen. It scrolls inside a named region the keyboard can
+// reach, so a reader without a mouse can scroll it too; the table inside stays a table.
+const { label, class: className = 'table-wrap' } = Astro.props;
+---
+<div class={className} role="region" aria-label={label} tabindex="0"><slot /></div>

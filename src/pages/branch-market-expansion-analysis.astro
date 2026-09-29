@@ -1,22 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-const meta = {
-  "title": "Bank Branch and Market Expansion Analysis | Paul Drago",
-  "description": "Compare bank and credit union markets using deposit share, growth, customer geography, branch economics, CRA context, and fair-lending considerations.",
-  "path": "/branch-market-expansion-analysis",
-  "variant": "product",
-  "subline": "Branch and Market Expansion Analysis",
-  "footerNote": "Branch and market expansion analysis for banks and credit unions.",
-  "ogType": "website",
-  "ogImage": "https://pauldrago.com/assets/evidence-table-social.jpg",
-  "ogImageAlt": "",
-  "robots": "",
-  "stylesheets": [
-    "/assets/service-detail.css"
-  ],
-  "scripts": [],
-  "lastUpdated": "2026-09-23"
-};
+import { breadcrumb } from '../data/schema';
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
@@ -55,27 +39,17 @@ const jsonld = {
       },
       "areaServed": "United States"
     },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://pauldrago.com/branch-market-expansion-analysis#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Services",
-          "item": "https://pauldrago.com/financial-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Branch and Market Expansion Analysis",
-          "item": "https://pauldrago.com/branch-market-expansion-analysis"
-        }
-      ]
-    }
+    breadcrumb('https://pauldrago.com/branch-market-expansion-analysis#breadcrumb', [
+      ['Services', 'https://pauldrago.com/financial-services'],
+      ['Branch and Market Expansion Analysis', 'https://pauldrago.com/branch-market-expansion-analysis'],
+    ])
   ]
 };
 import OtherDecisions from '../components/OtherDecisions.astro';
+import SignalGrid from '../components/SignalGrid.astro';
+import Deliverables from '../components/Deliverables.astro';
+import Offer from '../components/Offer.astro';
+import ServiceClosingBand from '../components/ServiceClosingBand.astro';
 import MarketExample from '../components/MarketExample.astro';
 import marketData from '../data/dfw-markets.json';
 import { PRESETS, scoreMarkets } from '../data/market-scoring';
@@ -86,7 +60,17 @@ const heroMarkets = Object.fromEntries(marketData.markets.map((m) => [m.county, 
 const branchBars = [...marketData.markets].sort((a, b) => b.medianCommunityBranch - a.medianCommunityBranch);
 const maxBranch = branchBars[0].medianCommunityBranch;
 ---
-<Base {...meta} jsonld={jsonld}>
+<Base
+  title="Bank Branch and Market Expansion Analysis | Paul Drago"
+  description="Compare bank and credit union markets using deposit share, growth, customer geography, branch economics, CRA context, and fair-lending considerations."
+  path="/branch-market-expansion-analysis"
+  footerNote="Branch and market expansion analysis for banks and credit unions."
+  ogType="website"
+  ogImage="https://pauldrago.com/assets/evidence-table-social.jpg"
+  stylesheets={['/assets/services.css', '/assets/service-detail.css']}
+  lastUpdated="2026-09-23"
+  jsonld={jsonld}
+>
 <main id="main">
   <section class="hero">
     <div class="container">
@@ -97,17 +81,17 @@ const maxBranch = branchBars[0].medianCommunityBranch;
           <p class="subhead">The biggest deposit market is rarely the best place to grow. Test each one before the board commits.</p>
         </div>
         <figure class="model model--flip" aria-labelledby="branch-model-title">
-          <p class="model__label">A worked example on real data</p>
-          <p class="model__title" id="branch-model-title">Where should a Dallas bank grow over the next five years?</p>
+          <p class="kicker">A worked example on real data</p>
+          <p class="display-title model__title" id="branch-model-title">Where should a Dallas bank grow over the next five years?</p>
           <div class="model__answers">
             <div class="model__answer">
               <span class="model__answer-label">The deposit map says</span>
-              <span class="model__answer-county">{mapPick} County</span>
+              <span class="display-title model__answer-county">{mapPick} County</span>
               <span class="model__answer-why">${heroMarkets[mapPick].deposits.toFixed(1)}B in deposits, the biggest market</span>
             </div>
             <div class="model__answer model__answer--case">
               <span class="model__answer-label">The branch economics say</span>
-              <span class="model__answer-county">{casePick} County</span>
+              <span class="display-title model__answer-county">{casePick} County</span>
               <span class="model__answer-why">{Math.round(heroMarkets[casePick].communityShare)}% of deposits at community banks</span>
             </div>
           </div>
@@ -116,29 +100,27 @@ const maxBranch = branchBars[0].medianCommunityBranch;
             {branchBars.map((m) => (
               <div class:list={['model__bar', { 'model__bar--case': m.county === casePick }]}>
                 <dt>{m.county}</dt>
-                <dd class="model__bar-track" aria-hidden="true"><span style={`width: ${Math.round((m.medianCommunityBranch / maxBranch) * 100)}%`}></span></dd>
-                <dd class="model__bar-value">${m.medianCommunityBranch}M</dd>
+                <dd class="meter model__bar-track" aria-hidden="true"><span class="meter__fill" style={`width: ${Math.round((m.medianCommunityBranch / maxBranch) * 100)}%`}></span></dd>
+                <dd class="value model__bar-value">${m.medianCommunityBranch}M</dd>
               </div>
             ))}
           </dl>
-          <figcaption class="model__note">FDIC Summary of Deposits, June 2026. <a href="#worked-example">See how the answer flips</a>.</figcaption>
+          <figcaption class="model__note">FDIC Summary of Deposits, June 2026. <a class="link" href="#worked-example">See how the answer flips</a>.</figcaption>
         </figure>
       </div>
     </div>
   </section>
 
   <hr class="section-divider">
-  <section class="problem-band">
-    <div class="container">
-      <h2 class="section-title-plain">A branch recommendation is only as defensible as its assumptions.</h2>
-      <p class="section-intro">A clean map can hide a weak case. The analysis keeps public market facts, customer evidence, institution-specific economics, and regulatory and fair-access considerations separate long enough to test each one.</p>
-      <div class="signal-grid">
-        <div class="signal"><h3 class="signal__title">Public market data</h3><p class="signal__copy">Branch deposits, market share, household and business growth, competitor presence, and concentration establish the market context.</p></div>
-        <div class="signal"><h3 class="signal__title">Customer geography</h3><p class="signal__copy">Existing households, businesses, digital acquisition, service patterns, and access gaps show whether the institution already has a reason to be there.</p></div>
-        <div class="signal"><h3 class="signal__title">Institution economics</h3><p class="signal__copy">Target balances, ramp assumptions, staffing, cannibalization, and operating constraints turn market attractiveness into a branch decision.</p></div>
-      </div>
-    </div>
-  </section>
+  <SignalGrid
+    heading="A branch recommendation is only as defensible as its assumptions."
+    intro="A clean map can hide a weak case. The analysis keeps public market facts, customer evidence, institution-specific economics, and regulatory and fair-access considerations separate long enough to test each one."
+    signals={[
+      { title: 'Public market data', copy: 'Branch deposits, market share, household and business growth, competitor presence, and concentration establish the market context.' },
+      { title: 'Customer geography', copy: 'Existing households, businesses, digital acquisition, service patterns, and access gaps show whether the institution already has a reason to be there.' },
+      { title: 'Institution economics', copy: 'Target balances, ramp assumptions, staffing, cannibalization, and operating constraints turn market attractiveness into a branch decision.' },
+    ]}
+  />
 
   <MarketExample />
 
@@ -146,58 +128,45 @@ const maxBranch = branchBars[0].medianCommunityBranch;
     <div class="container">
       <h2 class="section-title-plain">CRA, fair banking, and fair lending belong in the market case.</h2>
       <p class="section-intro">The work identifies where branch geography, assessment areas, community credit needs, products, marketing, service levels, and access require institution compliance and legal review.</p>
-      <p class="section-intro"><a class="section-link" href="/branch-market-expansion-analysis/sample-plan#cra">See the CRA and fair-access section of the sample plan</a></p>
+      <p class="section-intro"><a class="link link--strong section-link" href="/branch-market-expansion-analysis/sample-plan#cra">See the CRA and fair-access section of the sample plan</a></p>
     </div>
   </section>
 
-  <section class="build-section">
-    <div class="container">
-      <h2 class="section-title-plain">An expansion plan with the assumptions attached.</h2>
-      <div class="deliverables">
-        <div class="deliverable"><div class="deliverable__num">01</div><h3 class="deliverable__title">Market and assessment-area definition</h3><p class="deliverable__copy">A documented view of the counties, ZIP codes, trade areas, time periods, current CRA assessment areas, and other relevant service geographies.</p></div>
-        <div class="deliverable"><div class="deliverable__num">02</div><h3 class="deliverable__title">Weighted scorecard</h3><p class="deliverable__copy">A ranking model with visible weights, thresholds, source fields, sensitivity tests, and CRA and fair-access flags that should affect diligence.</p></div>
-        <div class="deliverable"><div class="deliverable__num">03</div><h3 class="deliverable__title">Competitive and access view</h3><p class="deliverable__copy">Deposit share, branch density, competitor movement, customer proximity, service access, and market whitespace displayed in the same frame.</p></div>
-        <div class="deliverable"><div class="deliverable__num">04</div><h3 class="deliverable__title">Five-year expansion plan</h3><p class="deliverable__copy">The sequence of markets and sites, the ramp each branch is measured against, what the network carries while they ramp, and the cost of CRA commitments named up front.</p></div>
-      </div>
-    </div>
-  </section>
+  <Deliverables
+    heading="An expansion plan with the assumptions attached."
+    items={[
+      { title: 'Market and assessment-area definition', copy: 'A documented view of the counties, ZIP codes, trade areas, time periods, current CRA assessment areas, and other relevant service geographies.' },
+      { title: 'Weighted scorecard', copy: 'A ranking model with visible weights, thresholds, source fields, sensitivity tests, and CRA and fair-access flags that should affect diligence.' },
+      { title: 'Competitive and access view', copy: 'Deposit share, branch density, competitor movement, customer proximity, service access, and market whitespace displayed in the same frame.' },
+      { title: 'Five-year expansion plan', copy: 'The sequence of markets and sites, the ramp each branch is measured against, what the network carries while they ramp, and the cost of CRA commitments named up front.' },
+    ]}
+  />
 
-  <section class="offer">
-    <div class="container">
-      <div class="offer__grid">
-        <div>
-          <h2 class="offer__title">Branch and Market Expansion Analysis</h2>
-          <p class="offer__copy">The scope follows the number of markets, the branch question, and the customer data available. The finished model stays with the institution and can be reused when the market list changes.</p>
-          <div class="offer__produces"><p class="offer__produces-copy">You receive a five-year expansion plan for the board and the analysis behind it.</p></div>
-        </div>
-        <div>
-          <div class="offer__inputs-title">Typical inputs</div>
-          <div class="offer__inputs">
-            <div class="offer__input"><span>01</span><span>The current market list and branch thesis</span></div>
-            <div class="offer__input"><span>02</span><span>FDIC or NCUA institution and market data</span></div>
-            <div class="offer__input"><span>03</span><span>Census household, income, and business context</span></div>
-            <div class="offer__input"><span>04</span><span>Customer geography and existing network performance</span></div>
-            <div class="offer__input"><span>05</span><span>The latest CRA performance evaluation and current assessment areas</span></div>
-            <div class="offer__input"><span>06</span><span>Fair-lending monitoring, branch policy, and known access concerns</span></div>
-            <div class="offer__input"><span>07</span><span>Branch economics and leadership assumptions</span></div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  <Offer
+    title="Branch and Market Expansion Analysis"
+    copy="The scope follows the number of markets, the branch question, and the customer data available. The finished model stays with the institution and can be reused when the market list changes."
+    producesCopy="You receive a five-year expansion plan for the board and the analysis behind it."
+    inputsTitle="Typical inputs"
+    inputs={[
+      'The current market list and branch thesis',
+      'FDIC or NCUA institution and market data',
+      'Census household, income, and business context',
+      'Customer geography and existing network performance',
+      'The latest CRA performance evaluation and current assessment areas',
+      'Fair-lending monitoring, branch policy, and known access concerns',
+      'Branch economics and leadership assumptions',
+    ]}
+  />
 
   <OtherDecisions current="/branch-market-expansion-analysis" />
-  <section class="closing-band">
-    <div class="container">
-      <div class="closing-band__grid">
-        <div><h2 class="display-title closing-band__title">Bring the market list and the current branch case.</h2><p class="closing-band__copy">We will identify which facts support the recommendation, which assumptions need testing, and which questions belong with compliance or counsel.</p></div>
-        <aside class="call-prep"><div class="call-prep__title">Bring to the call</div><p class="call-prep__copy">The markets under consideration and the latest CRA performance evaluation are enough to start.</p><a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a></aside>
-      </div>
-    </div>
-  </section>
+  <ServiceClosingBand
+    title="Bring the market list and the current branch case."
+    copy="We will identify which facts support the recommendation, which assumptions need testing, and which questions belong with compliance or counsel."
+    prepText="The markets under consideration and the latest CRA performance evaluation are enough to start."
+  />
 
   <section class="sources" aria-labelledby="sources-heading">
-    <div class="container"><h2 class="sources__label" id="sources-heading">Primary public-data and regulatory sources</h2><ol class="sources__list"><li><a href="https://banks.data.fdic.gov/bankfind-suite/SOD">FDIC Summary of Deposits</a> for branch deposits, market share, and branch-office data.</li><li><a href="https://ncua.gov/analysis/credit-union-corporate-call-report-data">NCUA Call Report data</a> for federally insured credit-union financial and institutional information.</li><li><a href="https://www.census.gov/programs-surveys/acs/data/data-via-api.html">U.S. Census Bureau American Community Survey</a> for demographic, household, housing, and economic context.</li><li><a href="https://www.ffiec.gov/data/cra/interagency-qa">FFIEC CRA resources</a> for current interagency CRA guidance and assessment-area considerations.</li><li><a href="https://www.consumerfinance.gov/compliance/compliance-resources/other-applicable-requirements/equal-credit-opportunity-act/">CFPB Equal Credit Opportunity Act resources</a> for fair-lending requirements under ECOA and Regulation B.</li><li><a href="https://www.fdic.gov/consumer-compliance-examination-manual/iv-3-fdic-fair-lending-scope-and-conclusions-memorandum">FDIC fair-lending examination resources</a> for geographic, branch-service, product, and market-area risk considerations.</li><li><a href="https://www.fdic.gov/bank-examinations/establishing-relocating-or-closing-office">FDIC branch-office resources</a> for establishment, relocation, and closing requirements.</li></ol><p class="sources__note">This work supports business decision-making and institution review. It does not replace legal advice, a fair-lending analysis, or a CRA compliance determination.</p></div>
+    <div class="container"><h2 class="kicker sources__label" id="sources-heading">Primary public-data and regulatory sources</h2><ol class="sources__list"><li><a href="https://banks.data.fdic.gov/bankfind-suite/SOD">FDIC Summary of Deposits</a> for branch deposits, market share, and branch-office data.</li><li><a href="https://ncua.gov/analysis/credit-union-corporate-call-report-data">NCUA Call Report data</a> for federally insured credit-union financial and institutional information.</li><li><a href="https://www.census.gov/programs-surveys/acs/data/data-via-api.html">U.S. Census Bureau American Community Survey</a> for demographic, household, housing, and economic context.</li><li><a href="https://www.ffiec.gov/data/cra/interagency-qa">FFIEC CRA resources</a> for current interagency CRA guidance and assessment-area considerations.</li><li><a href="https://www.consumerfinance.gov/compliance/compliance-resources/other-applicable-requirements/equal-credit-opportunity-act/">CFPB Equal Credit Opportunity Act resources</a> for fair-lending requirements under ECOA and Regulation B.</li><li><a href="https://www.fdic.gov/consumer-compliance-examination-manual/iv-3-fdic-fair-lending-scope-and-conclusions-memorandum">FDIC fair-lending examination resources</a> for geographic, branch-service, product, and market-area risk considerations.</li><li><a href="https://www.fdic.gov/bank-examinations/establishing-relocating-or-closing-office">FDIC branch-office resources</a> for establishment, relocation, and closing requirements.</li></ol><p class="sources__note">This work supports business decision-making and institution review. It does not replace legal advice, a fair-lending analysis, or a CRA compliance determination.</p></div>
   </section>
 </main>
 </Base>

@@ -1,7 +1,6 @@
 // Design tokens, read out of the stylesheets at build time so /ui always shows what ships.
 // site-shell.css defines one set of names for both themes: :root is light, and the
-// prefers-color-scheme: dark block redefines them. This module reads both, measures contrast,
-// and writes the CSS that lets a /ui frame force either theme.
+// prefers-color-scheme: dark block redefines them. This module reads both and measures contrast.
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { parseCss } from './lint.mjs';
@@ -15,7 +14,7 @@ const ROLES = {
   '--hairline': 'Hairline rules between rows and around fields.',
   '--panel': 'A shaded panel, such as the calculator.',
   '--panel-2': 'A second panel tone, for a focused field on service pages.',
-  '--dark-navy': 'A raised surface: inputs and the calculator total. White in light mode.',
+  '--well': 'A raised surface: inputs, the calculator total and the cookie banner. White in light mode, near black in dark.',
   '--ok': 'A status dot that means "working".',
 };
 
@@ -99,6 +98,13 @@ export function gridTokens(root) {
   return Object.entries(light).filter(([k]) => /^--(?:container|gutter|rail|measure)/.test(k)).map(([name, value]) => ({ name, value }));
 }
 
+/** Motion, the focus ring's offsets and the stacking order as site-shell.css defines them; the z-index steps lowest first. */
+export function behaviorTokens(root) {
+  const { light } = rootBlocks(readFileSync(join(root, 'public/assets/site-shell.css'), 'utf8'));
+  const group = (prefix) => Object.entries(light).filter(([k]) => k.startsWith(prefix)).map(([name, value]) => ({ name, value }));
+  return { motion: group('--pd-'), focus: group('--focus-'), stack: group('--z-').sort((a, b) => Number(a.value) - Number(b.value)) };
+}
+
 /** The type scale's steps as site-shell.css defines them: [{ step, name, px }], smallest first. */
 export function typeSteps(root) {
   const { light } = rootBlocks(readFileSync(join(root, 'public/assets/site-shell.css'), 'utf8'));
@@ -107,12 +113,4 @@ export function typeSteps(root) {
     .filter((t) => t.m)
     .map((t) => ({ step: Number(t.m[1]), name: t.name, px: t.px }))
     .sort((a, b) => a.step - b.step);
-}
-
-/**
- * CSS that forces a theme on a frame. Colours are light-dark() pairs, so site-shell.css forces a theme
- * with color-scheme on :root[data-theme]; nothing more is needed.
- */
-export function themeOverrides() {
-  return '';
 }

@@ -30,7 +30,7 @@ const HINT = {
 };
 ---
 <Styleguide title={c.name} description={c.summary} path={`/ui/components/${c.id}`}>
-  <p class="ui-crumb"><a href="/ui">Styleguide</a> <span aria-hidden="true">/</span> {level.name}</p>
+  <p class="ui-crumb"><a class="link" href="/ui">Styleguide</a> <span aria-hidden="true">/</span> {level.name}</p>
   <h1 class="display-title ui-title">{c.name}</h1>
   <p class="ui-meta">
     <span class={`label ui-chip ui-chip--${c.status}`} title={status.about}>{status.name}</span>
@@ -39,8 +39,8 @@ const HINT = {
   <p class="ui-lede">{c.summary}</p>
   {(parts.length > 0 || users.length > 0) && (
     <dl class="ui-parts">
-      {parts.length > 0 && <div><dt>Built from</dt><dd>{parts.map((x) => <a href={`/ui/components/${x.id}`}>{x.name} <span>{levelName(x)}</span></a>)}</dd></div>}
-      {users.length > 0 && <div><dt>Used in</dt><dd>{users.map((x) => <a href={`/ui/components/${x.id}`}>{x.name} <span>{levelName(x)}</span></a>)}</dd></div>}
+      {parts.length > 0 && <div><dt>Built from</dt><dd>{parts.map((x) => <a class="link" href={`/ui/components/${x.id}`}>{x.name} <span>{levelName(x)}</span></a>)}</dd></div>}
+      {users.length > 0 && <div><dt>Used in</dt><dd>{users.map((x) => <a class="link" href={`/ui/components/${x.id}`}>{x.name} <span>{levelName(x)}</span></a>)}</dd></div>}
     </dl>
   )}
   {c.status === 'template' && <p class="ui-callout">{status.about}</p>}

@@ -11,7 +11,7 @@ import { join, basename, isAbsolute, resolve } from 'node:path';
 import { COMPONENTS, legacyFor, legacyForTag, SIGNATURE_DEVICES, REFERENCE } from './components.mjs';
 import { frontMatter, lintSite, cssClasses, readArticles, maskBody, RULES } from './lint.mjs';
 
-const TEMPLATE_CSS = ['/assets/site-shell.css', '/assets/personal-site.css', '/assets/article.css'];
+const TEMPLATE_CSS = ['/assets/site-shell.css', '/assets/article.css'];
 const KIT_CSS = '/assets/article-kit.css';
 const KIT_JS = '/assets/article-kit.js';
 const DAY = 86400000;

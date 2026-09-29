@@ -1,11 +1,9 @@
 ---
 // One story, alone on a page with the site's real stylesheets: the canvas /ui shows in a frame.
 // ?theme=light or ?theme=dark forces a theme; window.uiTheme() switches it without a reload.
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import Fonts from '../../../components/Fonts.astro';
+import { inlineSheets } from '../../../layouts/inline-css.mjs';
 import { COMPONENTS } from '../../../styleguide/components.mjs';
-import { themeOverrides } from '../../../styleguide/tokens.mjs';
 import { curlHtml } from '../../../integrations/smart-quotes.mjs';
 
 export function getStaticPaths() {
@@ -16,9 +14,8 @@ export function getStaticPaths() {
 }
 
 const { component, story } = Astro.props;
-const SHEETS = ['/assets/site-shell.css', '/assets/personal-site.css', '/assets/article.css', '/assets/article-kit.css', '/assets/styleguide-frame.css'];
-const root = process.cwd();
-const css = SHEETS.map((href) => readFileSync(join(root, 'public', href), 'utf8')).join('\n') + '\n' + themeOverrides(root, SHEETS);
+const SHEETS = ['/assets/site-shell.css', '/assets/article.css', '/assets/article-kit.css', '/assets/styleguide-frame.css'];
+const css = inlineSheets(SHEETS);
 // The build curls quotes in articles; the frame does the same so the example reads as published.
 const html = curlHtml(story.html);
 const wrap = story.wrap ?? 'body';
