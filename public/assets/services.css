@@ -2,9 +2,34 @@
    before its own, which keeps only that page's parts. Tokens come from site-shell.css. */
 
 @layer site {
+  /* The hero: eyebrow, title and subhead, the same on every service page. A page sets its own
+     minimum height and the layout beside the copy. */
+  .hero { position: relative; padding: var(--space-16) 0 var(--space-20); }
+  @media (width < 760px) { .hero { padding-bottom: var(--space-16); } }
+  .eyebrow { color: var(--secondary); }
+  .hero__title { max-width: 960px; font-size: var(--step-4); }
+  @media (width >= 760px) { .hero__title { font-size: var(--step-5); } }
+  @media (width >= 1040px) { .hero__title { font-size: var(--step-6); } }
+  @media (width >= 1180px) { .hero__title { font-size: var(--step-7); } }
+  .subhead { max-width: var(--measure-0); margin-top: var(--space-8); color: var(--paper); font-size: var(--step-0); line-height: var(--leading-snug); }
+  @media (width >= 1180px) { .subhead { font-size: var(--step-1); } }
+
+  /* The call panel: what to bring to the call, framed by a hairline. It fills its column. */
+  .call-panel { align-self: start; padding: var(--space-6); border: 1px solid var(--hairline); }
+
+  /* The meter: a bar on a hairline track; the markup sets the fill's width. */
+  .meter { display: block; height: 10px; background: var(--hairline); }
+  .meter__fill { display: block; height: 100%; background: var(--paper); }
+  .meter__fill--accent { background: var(--brass); }
+  @media (forced-colors: active) {
+    .meter { border: 1px solid CanvasText; }
+    .meter__fill { background: CanvasText; forced-color-adjust: none; }
+    .meter__fill--accent { background: Highlight; }
+  }
+
   /* Tables: the three-county comparison and the sample plan's tables. */
-  .table-wrap { margin-top: var(--space-10); max-width: 900px; }
-  .market-table { width: 100%; border-collapse: collapse; font-size: var(--step--1); line-height: var(--leading-text); }
+  .table-wrap { margin-top: var(--space-10); max-width: 900px; overflow-x: auto; }
+  .market-table { font-size: var(--step--1); }
   .market-table th, .market-table td { padding: var(--space-3) var(--space-3) var(--space-3) 0; border-top: 1px solid var(--hairline); text-align: right; font-variant-numeric: tabular-nums; }
   .market-table thead th { border-top: 0; color: var(--paper); font-size: var(--step--2); }
   .market-table tbody th { text-align: left; color: var(--secondary); font-weight: var(--weight-regular); }
@@ -26,6 +51,10 @@
   .other-decisions {
     padding: var(--space-16) 0;
     border-top: 1px solid var(--hairline);
+  }
+
+  @media print {
+    .other-decisions { display: none; }
   }
 
   .other-decisions__list {
@@ -79,7 +108,7 @@
     font-weight: var(--weight-bold);
     text-decoration: underline;
     text-decoration-color: var(--brass);
-    text-underline-offset: 4px;
+    text-underline-offset: 3px;
   }
 
   /* Supporting section headings on service pages: calm, sentence case. The display face is kept

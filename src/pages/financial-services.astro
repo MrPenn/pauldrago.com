@@ -109,7 +109,6 @@ const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live'
   ogImage="https://pauldrago.com/assets/evidence-table-social.jpg"
   ogImageAlt="Financial reporting table and market analysis materials"
   stylesheets={['/assets/services.css', '/assets/financial-services.css']}
-  scripts={['/assets/trace-rail.js']}
   lastUpdated="2026-09-23"
   jsonld={jsonld}
 >
@@ -133,10 +132,10 @@ const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live'
   <nav class="decision-nav" aria-label="Financial services decisions">
     <div class="container">
       <div class="decision-nav__inner">
-        <a href="#measurement">Measurement</a>
-        <a href="#branch">Market expansion</a>
-        <a href="#acquisition">Acquisition analysis</a>
-        <a href="#fractional">Fractional CMO</a>
+        <a class="label" href="#measurement">Measurement</a>
+        <a class="label" href="#branch">Market expansion</a>
+        <a class="label" href="#acquisition">Acquisition analysis</a>
+        <a class="label" href="#fractional">Fractional CMO</a>
       </div>
     </div>
   </nav>
@@ -153,7 +152,7 @@ const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live'
         <div class="router__row" id="measurement">
           <div>
             <div class="kicker router__service">{measurement.name}</div>
-            <h3 class="router__question">{measurement.question}</h3>
+            <h3 class="display-title router__question">{measurement.question}</h3>
           </div>
           <div>
             <p class="router__body">For institutions that can report account openings but cannot show which accounts stayed open, funded, or justified the spend.</p>
@@ -161,7 +160,7 @@ const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live'
             <p class="router__data">Uses digital account opening reports, core data, CRM exports, campaign spend, and funded balance views.</p>
           </div>
           <div>
-            <div class="router__visual" aria-hidden="true"><div class="kicker router__visual-label">Spend to retained accounts, illustrative</div><div class="spend-flow"><div class="spend-flow__line"><span>Spend</span><div class="spend-flow__track"><div class="spend-flow__fill" style="width:100%"></div></div><span class="spend-flow__value">100%</span></div><div class="spend-flow__line"><span>Opened</span><div class="spend-flow__track"><div class="spend-flow__fill" style="width:100%"></div></div><span class="spend-flow__value">100%</span></div><div class="spend-flow__line"><span>90 days</span><div class="spend-flow__track"><div class="spend-flow__fill" style="width:55%"></div></div><span class="spend-flow__value">55%</span></div><div class="spend-flow__line"><span>One year</span><div class="spend-flow__track"><div class="spend-flow__fill spend-flow__fill--accent" style="width:41%"></div></div><span class="spend-flow__value">41%</span></div></div></div>
+            <div class="router__visual" aria-hidden="true"><div class="kicker router__visual-label">Spend to retained accounts, illustrative</div><div class="spend-flow"><div class="spend-flow__line"><span>Spend</span><div class="meter spend-flow__track"><div class="meter__fill" style="width:100%"></div></div><span class="spend-flow__value">100%</span></div><div class="spend-flow__line"><span>Opened</span><div class="meter spend-flow__track"><div class="meter__fill" style="width:100%"></div></div><span class="spend-flow__value">100%</span></div><div class="spend-flow__line"><span>90 days</span><div class="meter spend-flow__track"><div class="meter__fill" style="width:55%"></div></div><span class="spend-flow__value">55%</span></div><div class="spend-flow__line"><span>One year</span><div class="meter spend-flow__track"><div class="meter__fill meter__fill--accent" style="width:41%"></div></div><span class="spend-flow__value">41%</span></div></div></div>
             <a class="router__link" href="/marketing-measurement-reset">View measurement service</a>
           </div>
         </div>
@@ -169,7 +168,7 @@ const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live'
         <div class="router__row" id="branch">
           <div>
             <div class="kicker router__service">{branch.name}</div>
-            <h3 class="router__question">{branch.question}</h3>
+            <h3 class="display-title router__question">{branch.question}</h3>
           </div>
           <div>
             <p class="router__body">For leadership teams comparing new markets, branch locations, or expansion priorities.</p>
@@ -185,7 +184,7 @@ const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live'
         <div class="router__row" id="acquisition">
           <div>
             <div class="kicker router__service">{acquisition.name}</div>
-            <h3 class="router__question">{acquisition.question}</h3>
+            <h3 class="display-title router__question">{acquisition.question}</h3>
           </div>
           <div>
             <p class="router__body">For teams evaluating whether a target adds attractive deposits, fills a market gap, or creates footprint and local-brand risk.</p>
@@ -202,7 +201,7 @@ const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live'
         <div class="router__row" id="fractional">
           <div>
             <div class="kicker router__service">{fractional.name}</div>
-            <h3 class="router__question">{fractional.question}</h3>
+            <h3 class="display-title router__question">{fractional.question}</h3>
           </div>
           <div>
             <p class="router__body">For banks and regulated financial-services companies that need an experienced operator to lead the function.</p>
@@ -210,7 +209,7 @@ const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live'
             <p class="router__data">Designed for work that spans marketing planning, budget management, compliance, board reporting, and coordination with outside partners.</p>
           </div>
           <div>
-            <div class="router__visual" aria-hidden="true"><div class="kicker router__visual-label">Reporting cadence, illustrative</div><div class="cadence"><div class="cadence__bar" style="height:48px"></div><div class="cadence__bar" style="height:60px"></div><div class="cadence__bar cadence__bar--live" style="height:74px"></div><div class="cadence__bar" style="height:66px"></div><div class="cadence__bar" style="height:84px"></div><div class="cadence__bar cadence__bar--live" style="height:100px"></div></div><div class="cadence-labels"><span>M1</span><span>M2</span><span>M3</span><span>M4</span><span>M5</span><span>M6</span></div></div>
+            <div class="router__visual" aria-hidden="true"><div class="kicker router__visual-label">Reporting cadence, illustrative</div><div class="cadence"><div class="cadence__bar" style="height:48px"></div><div class="cadence__bar" style="height:60px"></div><div class="cadence__bar cadence__bar--live" style="height:74px"></div><div class="cadence__bar" style="height:66px"></div><div class="cadence__bar" style="height:84px"></div><div class="cadence__bar cadence__bar--live" style="height:100px"></div></div><div class="label cadence-labels"><span>M1</span><span>M2</span><span>M3</span><span>M4</span><span>M5</span><span>M6</span></div></div>
             <a class="router__link" href="/fractional-cmo-financial-services">View fractional CMO service</a>
           </div>
         </div>
@@ -282,7 +281,7 @@ const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live'
             <BookCallLink class="btn">Book a call</BookCallLink>
           </div>
         </div>
-        <aside class="call-note" aria-label="What to bring to the call">
+        <aside class="call-panel call-note" aria-label="What to bring to the call">
           <div class="kicker call-note__label">What to bring</div>
           <p>Send the report, market, target, or operating question you want to discuss. A clean data set is not required for the first conversation.</p>
         </aside>

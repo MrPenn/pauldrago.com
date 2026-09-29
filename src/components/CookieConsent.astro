@@ -36,19 +36,20 @@
     // Theme values come from the site's own tokens (both colour schemes).
     const theme = `
   #cc-main {
-    --cc-font-family: inherit;
+    --cc-font-family: var(--font-sans);
     --cc-modal-border-radius: 0;
     --cc-btn-border-radius: 0;
-    --cc-bg: var(--dark-navy);
+    --cc-pm-toggle-border-radius: 2px;
+    --cc-bg: var(--well);
     --cc-primary-color: var(--paper);
     --cc-secondary-color: var(--secondary);
     --cc-link-color: var(--brass);
     --cc-btn-primary-bg: var(--brass);
     --cc-btn-primary-color: var(--on-brass);
     --cc-btn-primary-border-color: var(--brass);
-    --cc-btn-primary-hover-bg: var(--paper);
-    --cc-btn-primary-hover-color: var(--ground);
-    --cc-btn-primary-hover-border-color: var(--paper);
+    --cc-btn-primary-hover-bg: var(--brass-hover);
+    --cc-btn-primary-hover-color: var(--on-brass);
+    --cc-btn-primary-hover-border-color: var(--brass-hover);
     --cc-btn-secondary-bg: var(--panel);
     --cc-btn-secondary-color: var(--paper);
     --cc-btn-secondary-border-color: var(--hairline);
@@ -58,10 +59,10 @@
     --cc-separator-border-color: var(--hairline);
     --cc-toggle-on-bg: var(--brass);
     --cc-toggle-off-bg: var(--secondary);
-    --cc-toggle-on-knob-bg: var(--dark-navy);
-    --cc-toggle-off-knob-bg: var(--dark-navy);
+    --cc-toggle-on-knob-bg: var(--well);
+    --cc-toggle-off-knob-bg: var(--well);
     --cc-toggle-readonly-bg: var(--hairline);
-    --cc-toggle-readonly-knob-bg: var(--dark-navy);
+    --cc-toggle-readonly-knob-bg: var(--well);
     --cc-toggle-readonly-knob-icon-color: var(--hairline);
     --cc-cookie-category-block-bg: var(--panel);
     --cc-cookie-category-block-border: var(--hairline);
@@ -75,6 +76,14 @@
     --cc-footer-border-color: var(--hairline);
   }
   #cc-main .cm { border-top: 2px solid var(--paper); box-shadow: none; }
+  /* The preferences box is framed by a hairline instead of a soft shadow. */
+  #cc-main .pm { border: 1px solid var(--hairline); box-shadow: none; }
+  /* Sizes from the type scale: titles 20px, text 17px, buttons and links 14px. */
+  #cc-main .cm__title, #cc-main .pm__title { font-size: var(--step-0); }
+  #cc-main .cm__desc, #cc-main .pm__section-desc, #cc-main .pm__section-title { font-size: var(--step--1); }
+  #cc-main .cm__btn, #cc-main .pm__btn, #cc-main .cm__footer, #cc-main .cm__link { font-size: var(--step--2); }
+  /* The library resets buttons to the light scheme; the category rows follow the page's theme. */
+  #cc-main button { color-scheme: inherit; }
   /* The library stacks buttons on phones with !important; Accept and Decline share one row instead. */
   #cc-main .cm .cm__btn-group { flex-direction: row !important; gap: 8px; }
   #cc-main .cm .cm__btn-group .cm__btn { flex: 1 !important; min-height: 44px; margin: 0 !important; }
@@ -88,7 +97,7 @@
     // cookies without being asked. The visitor can still opt in from Cookie settings.
     const gpc = navigator.globalPrivacyControl === true;
 
-    CookieConsent.run({
+    return CookieConsent.run({
       autoShow: false,
       onConsent: reportConsent,
       onChange: reportConsent,
@@ -140,15 +149,17 @@
           },
         },
       },
+    }).then(() => {
+      // run() finishes asynchronously; a show() called before it resolves does nothing.
+      if (gpc && !CookieConsent.validConsent()) CookieConsent.acceptCategory([]);
+      // The library moves focus to the banner when it opens; give it back if the visitor
+      // was already somewhere on the page, so keyboard users don't lose their place.
+      if (!gpc && !CookieConsent.validConsent()) {
+        const previous = document.activeElement;
+        CookieConsent.show();
+        if (previous && previous !== document.body) setTimeout(() => previous.focus({ preventScroll: true }), 150);
+      }
+      ready = true;
     });
-    if (gpc && !CookieConsent.validConsent()) CookieConsent.acceptCategory([]);
-    // The library moves focus to the banner when it opens; give it back if the visitor
-    // was already somewhere on the page, so keyboard users don't lose their place.
-    if (!gpc && !CookieConsent.validConsent()) {
-      const previous = document.activeElement;
-      CookieConsent.show();
-      if (previous && previous !== document.body) setTimeout(() => previous.focus({ preventScroll: true }), 150);
-    }
-    ready = true;
   }
 </script>

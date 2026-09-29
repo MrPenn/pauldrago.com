@@ -8,6 +8,8 @@ export async function GET(context) {
     title: 'Paul Drago, articles',
     description: 'Essays on bank marketing measurement, market expansion, acquisitions, and marketing leadership.',
     site: context.site,
+    // Item links match the canonical URLs, which have no trailing slash.
+    trailingSlash: false,
     items: articles.map((a) => ({
       title: a.data.title,
       description: a.data.description,

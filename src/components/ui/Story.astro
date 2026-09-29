@@ -42,9 +42,9 @@ const H = heading;
   <div class="ui-code">
     <div class="label ui-code__head">
       <span>{LANG[lang]}</span>
-      <button type="button" class="ui-link-btn ui-code__copy" data-copy={codeId}>Copy</button>
+      <button type="button" class="pd-text-btn ui-code__copy" data-copy={codeId}>Copy</button>
       <span class="ui-code__status" role="status"></span>
     </div>
-    <pre><code id={codeId} set:html={highlight(code, lang)}></code></pre>
+    <pre tabindex="0" aria-label="Code"><code id={codeId} set:html={highlight(code, lang)}></code></pre>
   </div>
 </section>

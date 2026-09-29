@@ -466,6 +466,24 @@
     document.fonts.addEventListener('loadingdone', function () { builds.forEach(fit); document.querySelectorAll('.pd-calc .pd-bar--live').forEach(fit); asofs.forEach(function (f) { f.pdSettle(); }); });
   }
 
+  /* ---------- Print: every figure prints finished ---------- */
+  // A figure still waiting for the reader would print empty, so each one finishes first.
+  window.addEventListener('beforeprint', function () {
+    builds.forEach(function (f) { f.classList.remove('is-armed'); show(f, lastStep(f)); });
+    units.forEach(function (f) {
+      var value = parseInt(f.getAttribute('data-value'), 10) || 0;
+      f.querySelectorAll('.pd-cell').forEach(function (c, j) { c.classList.toggle('is-on', j < value); });
+    });
+    grids.forEach(function (f) {
+      var sets = cellsOf(f);
+      sets.on.forEach(function (c) { c.classList.add('is-on'); });
+      sets.alt.forEach(function (c) { c.classList.add('is-alt'); });
+      f.querySelectorAll('[data-count]').forEach(function (n) { n.textContent = (+n.getAttribute('data-count')).toLocaleString('en-US'); });
+    });
+    imgs.forEach(function (f) { f.classList.remove('is-armed'); });
+    sequences.forEach(function (s) { s.set(lastStep(s.graphic)); });
+  });
+
   /* ---------- For the styleguide: replay a figure, or hold a sequence on one step ---------- */
   // Both look the page up again, so a figure the styleguide has just rebuilt is included.
   function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }

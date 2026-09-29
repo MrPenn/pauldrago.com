@@ -403,6 +403,7 @@ Voice belongs to the branches that know the customers. The headline can be post-
 
 <figure class="pd-figure"><p class="pd-eyebrow">One savings ad, three languages</p>
 <table>
+  <caption class="sr-only">One savings ad, three languages</caption>
   <thead><tr><th scope="col">Slot</th><th scope="col">English</th><th scope="col">Spanish and Chinese (Simplified)</th></tr></thead>
   <tbody>
     <tr><th scope="row">Headline</th><td><strong>Source.</strong> Marketing</td><td><strong>Voice.</strong> Post-edited by the branch team</td></tr>

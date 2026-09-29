@@ -1,0 +1,13 @@
+---
+// A reference table on the /ui pages: a caption screen readers announce, column headers as
+// labels, and the rows from the slot, in a region the keyboard can scroll.
+import ScrollTable from '../ScrollTable.astro';
+const { caption, headers } = Astro.props;
+---
+<ScrollTable label={caption} class="ui-table-wrap">
+  <table class="ui-table">
+    <caption class="sr-only">{caption}</caption>
+    <thead><tr>{headers.map((h) => <th class="label" scope="col">{h}</th>)}</tr></thead>
+    <tbody><slot /></tbody>
+  </table>
+</ScrollTable>

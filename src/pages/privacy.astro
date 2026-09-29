@@ -118,8 +118,8 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
             <p>There are only four moments when information reaches me:</p>
             <div class="timeline">
               <div class="timeline__head" aria-hidden="true">
-                <span class="timeline__key timeline__key--give"><Icon name="user-round" class="privacy__icon timeline__icon" />Data you give</span>
-                <span class="timeline__key timeline__key--auto"><Icon name="monitor" class="privacy__icon timeline__icon" />Data collected</span>
+                <span class="label timeline__key timeline__key--give"><Icon name="user-round" class="privacy__icon timeline__icon" />Data you give</span>
+                <span class="label timeline__key timeline__key--auto"><Icon name="monitor" class="privacy__icon timeline__icon" />Data collected</span>
               </div>
               <ul class="timeline__rows">
                 {moments.map((m) => (
@@ -148,7 +148,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           <p class="glance__contact">Any concerns about your privacy? Email <a href="mailto:paul@pauldrago.com">paul@pauldrago.com</a>.</p>
         </div>
       </div>
-      <a class="glance__cta" href="#role">Read the full notice <span>(no legalese, promise)</span></a>
+      <a class="btn glance__cta" href="#role">Read the full notice <span>(no legalese, promise)</span></a>
     </section>
 
     <div class="privacy__columns">
@@ -170,9 +170,9 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
         <PrivacySection {...section.ledger}>
           <p class="privacy__summary">For anyone doing a vendor or compliance review: every kind of information, why I have it, the legal basis, how long I keep it, and who processes it.</p>
           <div class="ledger">
-            <table class="ledger__table">
+            <table class="ledger__table" aria-labelledby="ledger-heading">
               <thead>
-                <tr><th scope="col">Information</th><th scope="col">Why</th><th scope="col">Legal basis</th><th scope="col">Kept for</th><th scope="col">Processed by</th></tr>
+                <tr><th class="label" scope="col">Information</th><th class="label" scope="col">Why</th><th class="label" scope="col">Legal basis</th><th class="label" scope="col">Kept for</th><th class="label" scope="col">Processed by</th></tr>
               </thead>
               <tbody>
                 {ledger.map((row) => (
@@ -229,7 +229,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
           <p class="privacy__summary">You can change your cookie choices at any time, and you can ask me what information I hold about you, correct it, or have it deleted.</p>
           <Fragment slot="detail">
             <ul>
-              <li><strong>Cookies:</strong> use <button type="button" class="privacy__settings-button" data-cc="show-preferencesModal">Cookie settings</button> (also in the footer of every page), turn on Global Privacy Control in your browser, or block cookies in your browser.</li>
+              <li><strong>Cookies:</strong> use <button type="button" class="pd-text-btn pd-text-btn--inline" data-cc="show-preferencesModal">Cookie settings</button> (also in the footer of every page), turn on Global Privacy Control in your browser, or block cookies in your browser.</li>
               <li><strong>Access, correction, and deletion:</strong> email <a class="link" href="mailto:paul@pauldrago.com">paul@pauldrago.com</a> and I will respond within 30 days.</li>
               <li><strong>Objection and portability:</strong> depending on where you live, you may also object to processing or ask for a copy of your data in a portable format.</li>
               <li><strong>Complaints:</strong> if you are in the UK or EU and are unhappy with how I handle your data, you can complain to your local data protection authority.</li>
@@ -275,7 +275,7 @@ const section = Object.fromEntries(sections.map((s) => [s.id, s]));
         </PrivacySection>
 
         <PrivacySection {...section.cookies}>
-          <p class="privacy__summary">By default, visits are counted without cookies. Analytics cookies are used only if you accept them. <button type="button" class="privacy__settings-button" data-cc="show-preferencesModal">Change your cookie settings</button></p>
+          <p class="privacy__summary">By default, visits are counted without cookies. Analytics cookies are used only if you accept them. <button type="button" class="pd-text-btn pd-text-btn--inline" data-cc="show-preferencesModal">Change your cookie settings</button></p>
           <Fragment slot="detail">
             <p>Without your consent, PostHog sets no cookies and stores nothing in your browser beyond a record of your choice. Visits are counted with an anonymous identifier calculated on PostHog's servers that changes daily and cannot recognize you over time.</p>
             <ul>

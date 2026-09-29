@@ -9,9 +9,9 @@ const num = (i) => String(i + 1).padStart(2, '0');
     <div class="offer__grid">
       <div>
         {label && <p class="kicker">{label}</p>}
-        <h2 class="offer__title">{title}</h2>
+        <h2 class="display-title offer__title">{title}</h2>
         <p class="offer__copy">{copy}</p>
-        <div class="offer__produces"><p class="offer__produces-copy">{producesCopy}</p></div>
+        <div class="offer__produces"><p class="display-title offer__produces-copy">{producesCopy}</p></div>
       </div>
       <div>
         <div class="kicker offer__inputs-title">{inputsTitle}</div>

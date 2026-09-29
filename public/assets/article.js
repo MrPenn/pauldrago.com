@@ -35,8 +35,7 @@
     if (!wide.matches) ref.setAttribute('aria-expanded', 'false');
 
     if (!made[id]) {
-      made[id] = true;
-      var note = h('aside', 'sidenote', '<span class="sidenote__num">' + num + '</span>' + li.innerHTML);
+      var note = made[id] = h('aside', 'sidenote', '<span class="sidenote__num">' + num + '</span>' + li.innerHTML);
       note.setAttribute('data-for', id);
       body.appendChild(note);
       notes.push({ el: note, anchor: anchor });
@@ -48,10 +47,15 @@
       note.addEventListener('mouseleave', function () { ref.classList.remove('is-active'); });
     }
 
-    // Narrow screens: tap the number to open the source under its paragraph.
+    // Wide screens: the number takes focus to its note in the rail. Narrow screens: it opens the
+    // source under its paragraph.
     ref.addEventListener('click', function (e) {
-      if (wide.matches) return;
       e.preventDefault();
+      if (wide.matches) {
+        made[id].setAttribute('tabindex', '-1');
+        made[id].focus();
+        return;
+      }
       var next = anchor.nextElementSibling;
       if (next && next.classList.contains('note-inline') && next.getAttribute('data-for') === id) {
         next.remove(); ref.classList.remove('is-active'); ref.setAttribute('aria-expanded', 'false'); return;

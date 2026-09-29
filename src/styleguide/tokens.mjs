@@ -14,7 +14,7 @@ const ROLES = {
   '--hairline': 'Hairline rules between rows and around fields.',
   '--panel': 'A shaded panel, such as the calculator.',
   '--panel-2': 'A second panel tone, for a focused field on service pages.',
-  '--dark-navy': 'A raised surface: inputs and the calculator total. White in light mode.',
+  '--well': 'A raised surface: inputs, the calculator total and the cookie banner. White in light mode, near black in dark.',
   '--ok': 'A status dot that means "working".',
 };
 

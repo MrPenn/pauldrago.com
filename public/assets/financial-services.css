@@ -14,16 +14,10 @@
       font-size: var(--title-section);
     }
 
-    .eyebrow {
-      color: var(--secondary);
-    }
-
     .hero {
-      position: relative;
       min-height: 620px;
-      padding: var(--space-16) 0 var(--space-16);
     }
-  @media (width < 760px) { .hero { padding-top: var(--space-12); min-height: auto; } }
+  @media (width < 760px) { .hero { min-height: auto; } }
 
     .hero__layout {
       display: grid;
@@ -31,10 +25,7 @@
       gap: var(--space-12);
     }
 
-    @media (width >= 1040px) {.hero {
-        padding-bottom: var(--space-12);
-      }
-
+    @media (width >= 1040px) {
       .hero__layout {
         align-items: start;
       }
@@ -48,25 +39,6 @@
       max-width: 980px;
     }
 
-    .hero__title {
-      font-size: var(--step-3);
-      line-height: var(--leading-display);
-      max-width: 960px;
-    }
-  @media (480px <= width < 760px) { .hero__title { font-size: var(--step-4); } }
-  @media (width >= 760px) { .hero__title { font-size: var(--step-5); } }
-  @media (width >= 1040px) { .hero__title { font-size: var(--step-6); } }
-  @media (width >= 1180px) { .hero__title { font-size: var(--step-7); } }
-
-    .subhead {
-      color: var(--paper);
-      font-size: var(--step-0);
-      line-height: var(--leading-snug);
-      max-width: 800px;
-      margin-top: var(--space-8);
-    }
-  @media (width >= 1180px) { .subhead { font-size: var(--step-1); } }
-
     .actions {
       display: flex;
       flex-wrap: wrap;
@@ -79,10 +51,13 @@
       position: sticky;
       top: 0;
       z-index: var(--z-sticky-nav);
-      background: color-mix(in srgb, var(--ground) 96%, transparent);
+      background: var(--ground);
       border-top: 1px solid var(--hairline);
       border-bottom: 1px solid var(--hairline);
-      backdrop-filter: blur(10px);
+    }
+
+    @media print {
+      .decision-nav { display: none; }
     }
 
     .decision-nav__inner {
@@ -100,10 +75,6 @@
       text-decoration: none;
       padding: var(--space-4) var(--space-5);
       border-bottom: 1px solid var(--hairline);
-      font-size: var(--step--2);
-      font-weight: var(--weight-bold);
-      letter-spacing: var(--tracking-caps);
-      text-transform: uppercase;
     }
 
     @media (width >= 760px) {.decision-nav a {
@@ -137,8 +108,11 @@
       background: color-mix(in srgb, var(--brass) 6%, transparent);
     }
 
-    section {
-      scroll-margin-top: 80px;
+    /* From 760 the decision nav stays pinned, so a row it jumps to clears it. */
+    @media (width >= 760px) {
+      .router__row {
+        scroll-margin-top: var(--space-20);
+      }
     }
 
     .section {
@@ -146,7 +120,7 @@
     }
 
     .section-intro {
-      max-width: 900px;
+      max-width: var(--measure-1);
       margin-top: var(--space-8);
       color: var(--paper);
       font-size: var(--step-0);
@@ -192,11 +166,7 @@
   }
 
     .router__question {
-      font-family: var(--font-display);
-      color: var(--paper);
       font-size: var(--title-lead);
-      line-height: var(--leading-display);
-      text-transform: uppercase;
     }
 
     /* 1040 to 1180: the copy column keeps 330px (about 35 characters a line), and the question eases
@@ -243,7 +213,7 @@
 
     .router__visual {
       min-height: 148px;
-      border: 1px solid color-mix(in srgb, var(--brass) 45%, transparent);
+      border: 1px solid var(--tint-strong);
       background: color-mix(in srgb, var(--brass) 3.5%, transparent);
       padding: var(--space-4);
       overflow: hidden;
@@ -268,20 +238,6 @@
       font-size: var(--step--2);
     }
 
-    .spend-flow__track {
-      height: 10px;
-      background: color-mix(in srgb, var(--paper) 10%, transparent);
-    }
-
-    .spend-flow__fill {
-      height: 100%;
-      background: var(--paper);
-    }
-
-    .spend-flow__fill.spend-flow__fill--accent {
-      background: var(--brass);
-    }
-
     .spend-flow__value {
       color: var(--paper);
       font-weight: var(--weight-bold);
@@ -297,12 +253,12 @@
 
     .market-grid__cell {
       aspect-ratio: 1;
-      background: color-mix(in srgb, var(--paper) 8%, transparent);
-      border: 1px solid color-mix(in srgb, var(--paper) 8%, transparent);
+      background: var(--wash);
+      border: 1px solid var(--wash);
     }
 
     .market-grid__cell--live {
-      background: color-mix(in srgb, var(--brass) 36%, transparent);
+      background: var(--tint-strong);
       border-color: color-mix(in srgb, var(--brass) 70%, transparent);
     }
 
@@ -321,7 +277,7 @@
       width: 94px;
       height: 94px;
       border: 2px solid var(--paper);
-      background: color-mix(in srgb, var(--paper) 7%, transparent);
+      background: var(--wash);
     }
 
     .overlap-visual__circle--target {
@@ -349,7 +305,7 @@
     }
 
     .cadence__bar {
-      background: color-mix(in srgb, var(--paper) 13%, transparent);
+      background: var(--divider);
       border-top: 3px solid var(--paper);
       min-height: 34px;
     }
@@ -363,11 +319,8 @@
       display: grid;
       grid-template-columns: repeat(6, 1fr);
       gap: var(--space-2);
-      color: var(--secondary);
-      font-size: var(--step--2);
       margin-top: var(--space-2);
       text-align: center;
-      text-transform: uppercase;
     }
 
     .process {
@@ -454,15 +407,6 @@
       }
   }
 
-    .call-note {
-      align-self: start;
-      width: 100%;
-      max-width: 280px;
-      border: 1px solid var(--hairline);
-      background-color: color-mix(in srgb, var(--paper) 2.5%, transparent);
-      padding: var(--space-6);
-    }
-
     .call-note__label {
       margin-bottom: var(--space-4);
     }
@@ -492,7 +436,7 @@
   .router__visual .spend-flow__line { grid-template-columns: 1fr 44px; grid-template-rows: auto auto; row-gap: var(--space-1); }
   .router__visual .spend-flow__line > span:first-child { grid-column: 1; grid-row: 1; }
   .router__visual .spend-flow__value { grid-column: 2; grid-row: 1; }
-  .router__visual .spend-flow__track { grid-column: 1 / -1; grid-row: 2; height: 8px; }
+  .router__visual .spend-flow__track { grid-column: 1 / -1; grid-row: 2; }
   .router__visual .spend-flow { gap: var(--space-3); }
   .router__visual .overlap-visual { min-height: 128px; }
   .router__visual .overlap-visual__circle { width: 72px; height: 72px; border-radius: 50%; top: 0; }

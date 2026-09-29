@@ -11,42 +11,29 @@
   @media (width < 760px) { .section-title { font-size: var(--step-2); } }
 
     .eyebrow {
-      color: var(--secondary);
       margin-bottom: var(--space-6);
-      max-width: 800px;
+      max-width: var(--measure-0);
     }
 
     .body-copy {
       color: var(--paper);
       font-size: var(--step--1);
       line-height: var(--leading-body);
-      max-width: 780px;
+      max-width: var(--measure-0);
     }
 
     /* 01 HERO */
-    .hero {
-      padding: var(--space-10) 0 var(--space-12);
-    }
     .hero__grid {
       display: grid;
       grid-template-columns: 1fr;
       gap: var(--space-16);
     }
     @media (width >= 1040px) {.hero__grid {
-        grid-template-columns: 1.05fr 0.95fr;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
         align-items: start;
         gap: var(--space-12);
       }
   }
-
-    .subhead {
-      color: var(--paper);
-      font-size: var(--step-0);
-      line-height: var(--leading-snug);
-      max-width: 760px;
-      margin-top: var(--space-8);
-    }
-  @media (width >= 1180px) { .subhead { font-size: var(--step-1); } }
 
     .hero__proof {
       color: var(--secondary);
@@ -84,7 +71,8 @@
       border-top: 2px solid var(--brass);
     }
 
-    @media (width < 760px) {
+    /* Stacked on phones, and beside the calculator from 1040 to 1180, where one row does not fit. */
+    @media (width < 760px), (1040px <= width < 1180px) {
       .reporting-line { flex-direction: column; align-items: flex-start; gap: var(--space-4); }
       .reporting-line span + span::before { top: -15px; left: 16px; width: 0; height: 14px; border-top: 0; border-left: 2px solid var(--brass); }
     }
@@ -97,7 +85,7 @@
       margin-top: var(--space-2);
       border: 1px solid color-mix(in srgb, var(--brass) 55%, transparent);
       padding: var(--space-6) var(--space-6) var(--space-5);
-      background: color-mix(in srgb, var(--paper) 2%, transparent);
+      background: var(--panel);
     }
     .calc__eyebrow {
       font-size: var(--step--2);
@@ -105,125 +93,22 @@
       font-weight: var(--weight-semibold);
       margin-bottom: var(--space-4);
     }
+    /* From 760 the three fields share a row and their label, box and note lines, so the boxes line
+       up however long a label runs. */
     .calc__inputs {
       display: grid;
-      align-items: end;
       grid-template-columns: 1fr;
       gap: var(--space-5);
       margin-bottom: var(--space-5);
     }
-    @media (width >= 760px) {.calc__inputs {
+    @media (width >= 760px) {
+      .calc__inputs {
         grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: var(--space-4);
-        grid-template-rows: auto auto auto;
-        align-items: stretch;
-        row-gap: 0;
+        gap: 0 var(--space-4);
       }
-  }
-    .calc__field {
-      display: flex;
-      flex-direction: column;
+      .calc__inputs .pd-field { display: grid; grid-row: span 3; grid-template-rows: subgrid; }
     }
-    .calc__label {
-      font-size: var(--step--2);
-      font-weight: var(--weight-bold);
-      color: var(--paper);
-      margin-bottom: var(--space-2);
-      min-height: 2lh;
-      display: flex;
-      align-items: flex-end;
-    }
-    .calc__box {
-      display: flex;
-      align-items: center;
-      border: 2px solid var(--brass);
-      padding: var(--space-2) var(--space-3);
-      background: var(--dark-navy);
-      cursor: text;
-      transition: background .12s, box-shadow .12s;
-    }
-    .calc__input {
-      width: 100%;
-      background: transparent;
-      border: none;
-      outline: none;
-      color: var(--paper);
-      font-size: var(--step-1);
-      font-weight: var(--weight-bold);
-      padding: 0;
-      cursor: text;
-      caret-color: var(--brass);
-    }
-    .calc__input:focus {
-      outline: none;
-    }
-    .calc__input::-webkit-outer-spin-button,
-  .calc__input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-    .calc__input[type=number] {
-      -moz-appearance: textfield;
-    }
-    .calc__affix {
-      color: var(--brass);
-      font-weight: var(--weight-bold);
-      font-size: var(--step-0);
-    }
-
-    .calc__affix--leading { margin-right: var(--space-1); }
-    .calc__affix--trailing { margin-left: var(--space-1); }
-    .calc__source {
-      font-size: var(--step--2);
-      color: var(--secondary);
-      margin-top: var(--space-2);
-      line-height: var(--leading-snug);
-    }
-
-    /* LEDGER */
-    .calc-ledger {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      margin-bottom: var(--space-5);
-      background: none;
-      padding: var(--space-half) 0;
-      border-top: 1px solid var(--hairline);
-      border-bottom: 1px solid var(--hairline);
-    }
-    .calc-ledger__row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: var(--space-3) 0;
-      border-top: 1px solid color-mix(in srgb, var(--paper) 15%, transparent);
-      gap: var(--space-4);
-    }
-    .calc-ledger__label {
-      font-size: var(--step--2);
-      color: var(--paper);
-      line-height: var(--leading-snug);
-    }
-
-    .calc-ledger__stack {
-      display: flex;
-      flex-direction: column;
-      gap: var(--space-half);
-    }
-
-    .calc-ledger__source {
-      color: var(--secondary);
-      font-size: var(--step--2);
-    }
-    .calc-ledger__value {
-      font-family: var(--font-display);
-      font-size: var(--step-1);
-      line-height: var(--leading-display);
-      font-variant-numeric: tabular-nums;
-      text-align: right;
-      white-space: nowrap;
-      flex-shrink: 0;
-    }
+    .calc .pd-ledger { margin: 0 0 var(--space-5); }
 
     /* SUMMARY & CTA */
     .calc__cta {
@@ -240,7 +125,7 @@
       color: var(--paper);
       margin-top: var(--space-8);
       margin-bottom: var(--space-16);
-      max-width: 900px;
+      max-width: var(--measure-1);
       line-height: var(--leading-text);
     }
 
@@ -251,7 +136,7 @@
     .budget__statement {
       font-size: var(--step-1);
       color: var(--paper);
-      max-width: 900px;
+      max-width: var(--measure-1);
       line-height: var(--leading-text);
       margin-top: var(--space-10);
       margin-bottom: var(--space-5);
@@ -330,11 +215,7 @@
       margin-bottom: var(--space-4);
     }
     .offer-card__title {
-      font-family: var(--font-display);
       font-size: var(--title-sub);
-      line-height: var(--leading-display);
-      text-transform: uppercase;
-      color: var(--paper);
       margin-bottom: var(--space-5);
     }
     .offer-card__body {
@@ -382,7 +263,7 @@
       border-bottom: 1px solid var(--hairline);
     }
     @media (width < 480px) { .artifact__row { grid-template-columns: 1fr; gap: var(--space-1); } }
-    .artifact__row:last-of-type {
+    .artifact__row:nth-last-child(1 of .artifact__row) {
       border-bottom: 0;
     }
     .artifact__label {
@@ -434,7 +315,7 @@
       align-items: start;
     }
 
-    .closing-band__title { margin-bottom: var(--space-8); }
+    .closing-band__title { margin-bottom: var(--space-8); font-size: var(--title-section); }
 
     .closing-band__copy {
       margin-bottom: var(--space-12);
@@ -464,16 +345,6 @@
         order: 1;
       }
   }
-    .call-prep {
-      width: 100%;
-      max-width: 280px;
-      border: 1px solid color-mix(in srgb, var(--brass) 70%, transparent);
-      background: color-mix(in srgb, var(--brass) 5%, transparent);
-      padding: var(--space-6);
-    }
-    /* On phones the panel spans the column; after the base rule so it wins. */
-    @media (width < 760px) {.call-prep { max-width: none; }
-  }
     .call-prep__title {
       margin-bottom: var(--space-5);
     }
@@ -498,7 +369,7 @@
     .sources {
       padding: var(--space-12) 0;
       border-top: 1px solid var(--hairline);
-      background-color: color-mix(in srgb, var(--dark-navy) 35%, transparent);
+      background-color: color-mix(in srgb, var(--well) 35%, transparent);
     }
     .sources__list {
       list-style: none;
@@ -516,6 +387,7 @@
     }
     .sources__list a {
       color: var(--paper);
+      text-decoration-color: var(--brass);
       text-underline-offset: 3px;
     }
     .sources__num {
@@ -524,17 +396,9 @@
       flex-shrink: 0;
     }
 
-    /* Hero fit */
-    .hero .hero__title { font-size: var(--step-4); }
-  @media (width >= 1040px) { .hero .hero__title { font-size: var(--step-6); } }
-  @media (width < 760px) { .hero .hero__title { font-size: var(--step-3); } }
-    /* Calculator as an interactive element */
-    .calc__box:hover { background: var(--panel); }
-    .calc__box:focus-within { background: var(--panel-2); outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
     .calc-compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); padding: var(--space-2) 0 0; margin-bottom: var(--space-5); }
     .calc-compare__label { font-size: var(--step--2); color: var(--secondary); line-height: var(--leading-snug); min-height: 2lh; }
-    .calc-compare__value { font-family: var(--font-display); font-size: var(--step-3); line-height: var(--leading-display); color: var(--paper); margin-top: var(--space-2); font-variant-numeric: tabular-nums; }
-  @media (width >= 1180px) { .calc-compare__value { font-size: var(--step-5); } }
+    .calc-compare__value { display: block; margin-top: var(--space-2); }
     .calc__assumption { color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); padding: 0 0 var(--space-4); }
     @media (width < 760px) {.calc-compare { grid-template-columns: 1fr; gap: var(--space-3); }
   }
@@ -543,8 +407,7 @@
       .reporting-line { font-size: var(--step--2); }
       .calc { max-width: 100%; padding: var(--space-5) var(--space-4) var(--space-4); }
       .calc__cta { max-width: calc(100% - 6px); padding: var(--space-3) var(--space-4); }
-      .calc__source,
-  .calc__assumption,
+      .calc__assumption,
   .artifact__note,
   .budget__source,
   .sources__list li {
@@ -565,32 +428,14 @@
     border-top: 1px solid var(--hairline);
   }
   .evidence__row:last-child { border-bottom: 1px solid var(--hairline); }
-  .evidence__figure {
-    color: var(--paper);
-    font-family: var(--font-display);
-    font-size: var(--step-3);
-    line-height: var(--leading-display);
-  }
+
   .evidence__vs { color: var(--secondary); font-family: var(--font-sans); font-size: var(--step--1); font-weight: var(--weight-bold); }
   .evidence__text { margin: 0; max-width: var(--measure-0); color: var(--paper); font-size: var(--step--1); line-height: var(--leading-body); }
   .evidence__cite { display: block; margin-top: var(--space-2); color: var(--secondary); font-size: var(--step--2); }
   @media (width < 760px) {
     .evidence__row { grid-template-columns: 1fr; }
-    .evidence__figure { font-size: var(--step-2); }
   }
 
   /* The illustrative report sits under both offers, so neither column is left empty beside it. */
   .offers .artifact { max-width: 760px; margin-top: var(--space-10); }
-  @media (width >= 760px) { .closing-band .closing-band__title { font-size: var(--step-4); } }
-  @media (width >= 1040px) { .closing-band .closing-band__title { font-size: var(--step-5); } }
-  @media (width >= 1180px) { .closing-band .closing-band__title { font-size: var(--step-6); } }
-  @media (width < 760px) { .closing-band .closing-band__title { font-size: var(--step-2); } }
-
-  /* Calculator alignment: the three fields share rows (label, box, note), so the boxes line up
-     whatever the label or note length; everything below runs off the same left edge. */
-  @media (width >= 760px) {
-    .calc__field { display: grid; grid-row: span 3; grid-template-rows: subgrid; }
-    .calc__label { min-height: 0; align-self: end; }
-    .calc__source { align-self: start; }
-  }
 }

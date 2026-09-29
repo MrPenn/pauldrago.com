@@ -47,7 +47,7 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
               <label class="scorecard__weight">
                 <span class="scorecard__weight-name">{c.label}</span>
                 <input type="range" min="0" max="5" step="1" value={PRESETS.full.weights[c.key]} data-weight={c.key} disabled />
-                <output data-weight-out={c.key}>{PRESETS.full.weights[c.key]}</output>
+                <output class="value" data-weight-out={c.key}>{PRESETS.full.weights[c.key]}</output>
               </label>
             ))}
           </fieldset>
@@ -59,8 +59,8 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
           {fullCase.map((r) => (
             <li class="scorecard__rank" data-county={r.county}>
               <span class="scorecard__rank-name">{r.county} County</span>
-              <span class="scorecard__rank-bar" aria-hidden="true"><span style={`width: ${r.score}%`}></span></span>
-              <span class="scorecard__rank-score">{r.score}</span>
+              <span class="meter scorecard__rank-bar" aria-hidden="true"><span class="meter__fill" style={`width: ${r.score}%`}></span></span>
+              <span class="value scorecard__rank-score">{r.score}</span>
             </li>
           ))}
         </ol>

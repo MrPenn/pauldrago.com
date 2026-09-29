@@ -8,7 +8,7 @@ const { title, copy, prepTitle = 'Bring to the call', prepText, prepList } = Ast
   <div class="container">
     <div class="closing-band__grid">
       <div><h2 class="display-title closing-band__title">{title}</h2><p class="closing-band__copy">{copy}</p></div>
-      <aside class="call-prep"><div class="kicker">{prepTitle}</div>{prepText ? <p class="call-prep__copy">{prepText}</p> : <ul>{prepList.map((item) => <li>{item}</li>)}</ul>}<BookCallLink class="btn">Book a call</BookCallLink></aside>
+      <aside class="call-panel call-prep"><div class="kicker">{prepTitle}</div>{prepText ? <p class="call-prep__copy">{prepText}</p> : <ul>{prepList.map((item) => <li>{item}</li>)}</ul>}<BookCallLink class="btn">Book a call</BookCallLink></aside>
     </div>
   </div>
 </section>

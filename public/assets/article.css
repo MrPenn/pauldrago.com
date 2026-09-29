@@ -8,12 +8,12 @@
   .article .container { max-width: var(--container-article); }
   .article__header { max-width: 920px; margin-bottom: var(--space-10); padding: var(--space-6) 0; }
   .article__kicker { margin: 0 0 var(--space-4); }
-  .article__kicker a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--hairline); opacity: 0.85; }
-  .article__kicker a:hover { text-decoration-color: var(--brass); opacity: 1; }
+  .article__kicker a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--hairline); }
+  .article__kicker a:hover { text-decoration-color: var(--brass); }
   .article__sep { opacity: 0.5; }
   .article__title { font-size: var(--title-section); line-height: var(--leading-display); margin: 0 0 var(--space-4); }
   .article__intro { font-family: var(--font-serif); font-size: var(--step-1); line-height: var(--leading-body); margin: 0 0 var(--space-3); max-width: var(--measure-0); }
-  .article__date { font-size: var(--step--2); opacity: 0.7; margin: 0; }
+  .article__date { font-size: var(--step--2); color: var(--secondary); margin: 0; }
   .article__byline { margin: var(--space-3) 0 0; font-size: var(--step--2); color: var(--secondary); }
   .article__byline a { color: var(--paper); font-weight: var(--weight-semibold); text-decoration: none; border-bottom: 1px solid var(--brass); }
   .article__byline a:hover { color: var(--brass); }
@@ -29,8 +29,10 @@
   @media (width < 760px) { .btn.btn--small { min-height: 0; padding: var(--space-3) var(--space-4); } }
 
   /* The body: the reading column, in the serif. Section heads open on a hairline, and a blockquote
-     is a pull quote over an accent rule. The kit adds the section numerals and the opening mark. */
+     is a pull quote over an accent rule. The kit adds the section numerals and the opening mark.
+     The column is the container that headings, pull quotes and the kit's figures answer to. */
   .article__body {
+    container: column / inline-size;
     position: relative;
     max-width: var(--measure-0);
     font-family: var(--font-serif);
@@ -61,7 +63,6 @@
     margin: var(--space-12) 0;
     padding: 0 0 var(--space-6);
     border-bottom: 2px solid var(--brass);
-    opacity: 0.9;
   }
   .article__body blockquote p {
     margin: 0;
@@ -81,19 +82,23 @@
     color: var(--secondary);
   }
   .article__body img { max-width: 100%; height: auto; }
-  @media (width >= 1040px) { .article__body h2, .article__body blockquote p { font-size: var(--step-2); } }
-  /* On phones every reading size takes the step below: intro 20, body 17, subheads 20, pull quotes 20. */
+  /* Headings and pull quotes follow the column: a step larger once it is at its full width. */
+  @container column (width >= 560px) { .article__body h2, .article__body blockquote p { font-size: var(--step-2); } }
+  @container column (width < 560px) {
+    .article__body h3, .article__body blockquote p { font-size: var(--step-0); }
+  }
+  /* On phones the intro and body take the step below: intro 20, body 17. */
   @media (width < 760px) {
     .article__intro { font-size: var(--step-0); }
     .article__body { font-size: var(--step--1); }
     .article__body h2 { margin-top: var(--space-12); }
-    .article__body h3 { font-size: var(--step-0); }
     .article__body blockquote { padding: var(--space-8) 0 var(--space-5); margin: var(--space-8) 0; }
-    .article__body blockquote p { font-size: var(--step-0); }
   }
 
   /* Tables */
-  .article__body table { display: block; overflow-x: auto; width: 100%; margin: var(--space-8) 0 var(--space-8); border-collapse: collapse; font-family: var(--font-sans); font-size: var(--step--2); line-height: var(--leading-text); }
+  /* A table sits in a region the keyboard can reach and scroll (src/integrations/table-a11y.mjs). */
+  .article__table { margin: var(--space-8) 0; overflow-x: auto; }
+  .article__body table { font-family: var(--font-sans); font-size: var(--step--2); }
   .article__body th { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-top: 2px solid var(--paper); border-bottom: 1px solid var(--hairline); text-align: left; vertical-align: bottom; }
   .article__body td { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--hairline); vertical-align: top; min-width: 9ch; }
   .article__body td:first-child { font-weight: var(--weight-semibold); color: var(--paper); }
@@ -180,15 +185,18 @@
     margin: calc(-1 * var(--space-2)) 0 var(--space-6);
     padding: var(--space-3) var(--space-4);
     border-left: 2px solid var(--brass);
-    background: color-mix(in srgb, var(--paper) 4%, transparent);
+    background: var(--wash);
     font-size: var(--step--2);
   }
   .article__body[data-notes="rail"] section[data-footnotes] { margin-top: var(--space-12); }
   @media (scripting: enabled) {
     .article__body[data-notes="rail"] section[data-footnotes] { display: none; }
   }
+  /* Wide screens: the notes take the rail, and the column gives up width when a larger text size
+     would push the rail off the screen. */
   @media (width >= 1180px) {
     .sidenote { display: block; }
+    .article__body[data-notes="rail"] { max-width: min(var(--measure-0), 100% - var(--rail) - var(--rail-gap)); }
   }
   @media print {
     .article__body[data-notes="rail"] section[data-footnotes] { display: block; }

@@ -7,7 +7,7 @@ const { heading, intro, signals } = Astro.props;
     <h2 class="section-title-plain">{heading}</h2>
     <p class="section-intro">{intro}</p>
     <div class="signal-grid">
-      {signals.map((s) => <div class="signal"><h3 class="signal__title">{s.title}</h3><p class="signal__copy">{s.copy}</p></div>)}
+      {signals.map((s) => <div class="signal"><h3 class="display-title signal__title">{s.title}</h3><p class="signal__copy">{s.copy}</p></div>)}
     </div>
   </div>
 </section>

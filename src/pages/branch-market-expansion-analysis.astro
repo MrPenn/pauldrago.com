@@ -82,16 +82,16 @@ const maxBranch = branchBars[0].medianCommunityBranch;
         </div>
         <figure class="model model--flip" aria-labelledby="branch-model-title">
           <p class="kicker">A worked example on real data</p>
-          <p class="model__title" id="branch-model-title">Where should a Dallas bank grow over the next five years?</p>
+          <p class="display-title model__title" id="branch-model-title">Where should a Dallas bank grow over the next five years?</p>
           <div class="model__answers">
             <div class="model__answer">
               <span class="model__answer-label">The deposit map says</span>
-              <span class="model__answer-county">{mapPick} County</span>
+              <span class="display-title model__answer-county">{mapPick} County</span>
               <span class="model__answer-why">${heroMarkets[mapPick].deposits.toFixed(1)}B in deposits, the biggest market</span>
             </div>
             <div class="model__answer model__answer--case">
               <span class="model__answer-label">The branch economics say</span>
-              <span class="model__answer-county">{casePick} County</span>
+              <span class="display-title model__answer-county">{casePick} County</span>
               <span class="model__answer-why">{Math.round(heroMarkets[casePick].communityShare)}% of deposits at community banks</span>
             </div>
           </div>
@@ -100,8 +100,8 @@ const maxBranch = branchBars[0].medianCommunityBranch;
             {branchBars.map((m) => (
               <div class:list={['model__bar', { 'model__bar--case': m.county === casePick }]}>
                 <dt>{m.county}</dt>
-                <dd class="model__bar-track" aria-hidden="true"><span style={`width: ${Math.round((m.medianCommunityBranch / maxBranch) * 100)}%`}></span></dd>
-                <dd class="model__bar-value">${m.medianCommunityBranch}M</dd>
+                <dd class="meter model__bar-track" aria-hidden="true"><span class="meter__fill" style={`width: ${Math.round((m.medianCommunityBranch / maxBranch) * 100)}%`}></span></dd>
+                <dd class="value model__bar-value">${m.medianCommunityBranch}M</dd>
               </div>
             ))}
           </dl>

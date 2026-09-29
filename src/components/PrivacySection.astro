@@ -12,7 +12,7 @@ const about = title.charAt(0).toLowerCase() + title.slice(1);
   <slot />
   {Astro.slots.has('detail') && (
     <details>
-      <summary>More detail<span class="sr-only"> about {about}</span></summary>
+      <summary class="disclosure__summary">More detail<span class="sr-only"> about {about}</span></summary>
       <slot name="detail" />
     </details>
   )}

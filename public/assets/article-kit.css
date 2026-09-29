@@ -12,8 +12,8 @@
      labels, captions, inputs and notes. Every size is a step of the type scale in
      site-shell.css; body text is step 0.
      ============================================================ */
-  /* The article column is the container the kit's components answer to (see @container column). */
-  .article__body { container: column / inline-size; counter-reset: sec; }
+  /* The article column (article.css) is the container the kit's components answer to. */
+  .article__body { counter-reset: sec; }
   .pd-figure, .pd-scrolly__graphic, .pd-calc, .pd-units, .pd-field, .pd-ledger, .pd-stack, .pd-cols, .pd-record, .pd-asof,
   .pd-scrolly__notes, .pd-toggle, .pd-key, .pd-text-btn {
     font-family: var(--font-sans);
@@ -93,21 +93,7 @@
     line-height: var(--leading-text);
   }
 
-  /* ---------- Number: every figure set in the display face, in four sizes ---------- */
-  /* The default is a value in a row; is-s a value beside a label; is-l a total or a count; is-xl the
-     number a figure leads with. In a narrow column each size takes the step below. The decisions'
-     numerals are the same number, drawn by the stylesheet. */
-  .pd-num, .pd-decisions li::before {
-    font-family: var(--font-display);
-    font-weight: var(--weight-regular);
-    line-height: var(--leading-display);
-    font-variant-numeric: lining-nums tabular-nums;
-    color: var(--paper);
-  }
-  .pd-num { font-size: var(--step-2); white-space: nowrap; }
-  .pd-num--s { font-size: var(--step-1); }
-  .pd-num--l { font-size: var(--step-4); }
-  .pd-num--xl { font-size: var(--step-6); }
+  /* ---------- Number (site-shell.css): in a narrow column each size takes the step below ---------- */
   @container column (width < 560px) {
     .pd-num { font-size: var(--step-1); }
     .pd-num--l { font-size: var(--step-2); }
@@ -136,27 +122,6 @@
   .pd-swatch--ink { background: var(--paper); border-color: var(--paper); }
   .pd-swatch--accent { background: var(--brass); border-color: var(--brass); }
 
-  /* ---------- Text button: an action written as a link ---------- */
-  .pd-text-btn {
-    position: relative;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: var(--brass);
-    font-size: var(--step--2);
-    font-weight: var(--weight-semibold);
-    line-height: inherit;
-    text-decoration: underline;
-    text-underline-offset: 3px;
-    white-space: nowrap;
-    cursor: pointer;
-  }
-  /* A 44px target without making the line taller. */
-  .pd-text-btn::after { content: ""; position: absolute; inset: -12px -4px; }
-  .pd-text-btn:hover { color: var(--paper); }
-  .pd-text-btn:focus-visible { outline: 3px solid var(--brass); outline-offset: var(--focus-offset-tight); }
-  /* A button that appears later holds its line, so nothing moves when it does. */
-  .pd-text-btn[hidden] { display: inline-block; visibility: hidden; }
 
   /* ---------- Unit stat: the number, its sentence, and a row of units that fills ---------- */
   figure.pd-units {
@@ -257,7 +222,7 @@
     color: var(--paper);
     text-wrap: balance;
   }
-  @media (width >= 1040px) { .pd-pull { font-size: var(--step-2); } }
+  @container column (width >= 560px) { .pd-pull { font-size: var(--step-2); } }
 
   /* ---------- Stacked bar: parts that build a total, a line to beat, and the ledger ---------- */
   /* Under the eyebrow, a figure with no number to lead with says what its bars count. */
@@ -273,7 +238,7 @@
   .pd-bar__value { max-width: 50%; text-align: right; white-space: normal; text-wrap: balance; }
   /* What a bar counts, under its name. */
   .pd-bar__what { display: block; max-width: var(--measure--2); margin-top: var(--space-1); font-size: var(--step--2); font-weight: var(--weight-regular); line-height: var(--leading-snug); letter-spacing: 0; text-transform: none; }
-  .pd-bar__track { position: relative; height: 34px; background: color-mix(in srgb, var(--paper) 6%, transparent); }
+  .pd-bar__track { position: relative; height: 34px; background: var(--wash); }
   .pd-seg { position: absolute; top: 0; bottom: 0; background: var(--paper); transition: width var(--pd-slow) var(--pd-ease), left var(--pd-slow) var(--pd-ease); }
   .pd-seg--accent { background: var(--brass); }
   .pd-seg__label {
@@ -411,13 +376,11 @@
       margin: 0 calc(-1 * var(--gutter));
       padding: var(--space-2) var(--gutter) var(--space-3);
       background: var(--ground);
-      /* style-ok: css-shadow (the pinned card floats over the steps that scroll under it) */
-      box-shadow: 0 14px 22px -14px var(--shadow);
     }
     .pd-scrolly__graphic { padding: var(--space-4) 0 var(--space-3); border-top: 0; }
     /* A card taller than two thirds of the screen (a phone held sideways) would hide the steps under it,
        so article-kit.js lets it scroll with the page, finished, above them. */
-    .pd-scrolly.is-unpinned .pd-scrolly__sticky { position: static; box-shadow: none; }
+    .pd-scrolly.is-unpinned .pd-scrolly__sticky { position: static; }
     .pd-scrolly__notes { display: none; }
     .pd-scrolly__step { min-height: 0; padding: var(--space-5) 0; justify-content: flex-start; }
     .pd-scrolly__step:first-child { padding-top: var(--space-6); min-height: 0; }
@@ -432,60 +395,18 @@
   .pd-calc__head { margin-bottom: var(--space-6); }
   .pd-calc__title {
     margin: 0 0 var(--space-2);
-    font-family: var(--font-display);
     font-size: var(--step-1);
-    line-height: var(--leading-heading);
-    text-transform: uppercase;
-    color: var(--paper);
   }
-  .pd-calc__lede { margin: 0; max-width: var(--measure-0); font-size: var(--step--1); line-height: var(--leading-body); color: var(--paper); opacity: 0.8; }
+  .pd-calc__lede { margin: 0; max-width: var(--measure-0); font-size: var(--step--1); line-height: var(--leading-body); color: var(--secondary); }
   .pd-calc__inputs { display: grid; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); gap: var(--space-5) var(--space-4); margin-bottom: var(--space-6); }
-  .pd-field { display: flex; flex-direction: column; }
   /* In a calculator, fields in a row share their label, box and note lines, so the boxes line up
      however long a label runs. */
   .pd-calc__inputs .pd-field { display: grid; grid-template-rows: subgrid; grid-row: span 3; row-gap: 0; }
-  /* A field's name is a label. Two lines are held for it, so the boxes in a row line up. */
-  .pd-field__label, .pd-calc__label {
-    display: flex;
-    align-items: flex-end;
-    min-height: 2lh;
-    margin: 0 0 var(--space-2);
-  }
-  .pd-input {
-    display: flex;
-    align-items: center;
-    padding: var(--space-3) var(--space-4);
-    border: 1.5px solid var(--hairline);
-    background: var(--dark-navy);
-    cursor: text;
-    transition: border-color var(--pd-fast) var(--pd-ease);
-  }
-  .pd-input:hover { border-color: var(--secondary); }
-  .pd-input:focus-within { border-color: var(--brass); outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
-  .pd-input__field {
-    width: 100%;
-    min-width: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    font-family: var(--font-sans);
-    font-size: var(--step-1);
-    font-weight: var(--weight-semibold);
-    line-height: var(--leading-heading);
-    font-variant-numeric: tabular-nums;
-  }
-  .pd-input__field::-webkit-outer-spin-button, .pd-input__field::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .pd-input__field[type=number] { -moz-appearance: textfield; appearance: textfield; }
-  .pd-input__affix { color: var(--brass); font-weight: var(--weight-bold); font-size: var(--step--1); opacity: 0.9; }
-  .pd-input__affix:first-child { margin-right: var(--space-1); }
-  .pd-input__affix:last-child { margin-left: var(--space-1); }
-  .pd-field__src { margin-top: var(--space-2); color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-snug); }
   .pd-calc__row { display: flex; justify-content: space-between; align-items: flex-end; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-6); }
   .pd-toggle { display: flex; flex-wrap: wrap; gap: var(--space-2); }
   /* The button's text is a label, in ink. */
   .pd-toggle-btn {
-    min-height: 44px;
+    min-height: var(--target);
     padding: var(--space-3) var(--space-4);
     border: 1px solid var(--secondary);
     background: transparent;
@@ -496,7 +417,7 @@
   .pd-toggle-btn.is-on { border-color: var(--brass); background: var(--brass); color: var(--on-brass); }
   .pd-toggle-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
   .pd-bar--live { margin: 0 0 var(--space-2); }
-  .pd-bar--live .pd-bar__track { background: color-mix(in srgb, var(--paper) 8%, transparent); }
+  .pd-bar--live .pd-bar__track { background: var(--wash); }
   .pd-bar--live .pd-seg { transition-duration: 320ms; transition-timing-function: ease; }
   .pd-bar--live .pd-mark { top: -8px; bottom: -8px; transition-duration: 320ms; }
   .pd-bar--live .pd-mark__label { right: auto; left: 50%; transform: translateX(-50%); margin-top: var(--space-1); }
@@ -507,17 +428,6 @@
   .pd-key__item { display: inline-flex; align-items: center; gap: var(--space-2); }
   .pd-calc__row .pd-key { margin: 0; }
 
-  /* ---------- Ledger: named amounts, the arithmetic under each name, and the total ---------- */
-  /* Under a stacked bar and in a calculator alike. Values are numbers; the total is is-l. */
-  .pd-ledger { margin-top: var(--space-6); }
-  .pd-ledger__row { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-4) 0; border-top: 1px solid color-mix(in srgb, var(--paper) 16%, transparent); transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-base) var(--pd-ease); }
-  .pd-ledger__label { font-size: var(--step--1); line-height: var(--leading-snug); }
-  .pd-ledger__src { display: block; margin-top: var(--space-half); color: var(--secondary); font-size: var(--step--2); }
-  .pd-ledger__value { text-align: right; transition: color var(--pd-base) var(--pd-ease); }
-  .pd-ledger__value.is-hot { color: var(--brass); }
-  .pd-ledger__row--total { margin-top: var(--space-1); padding: var(--space-5) var(--space-5); border-top: 0; background: var(--dark-navy); box-shadow: inset 0 0 0 1px var(--hairline); }
-  .pd-ledger__row--total .pd-ledger__label { font-weight: var(--weight-semibold); }
-  .pd-ledger__row--total .pd-ledger__value { color: var(--brass); }
   .pd-calc figcaption { margin-top: var(--space-5); }
   /* The fields answer to the calculator's own width: two across when it is narrow, three when it has
      room, one row once it is 900px wide. The calculator widens past the column on a desktop page. */
@@ -542,7 +452,7 @@
   .pd-decisions li { counter-increment: pdd; position: relative; margin: 0; padding: var(--space-6) 0 var(--space-6) var(--space-20); border-top: 1px solid var(--hairline); font-size: var(--step--1); }
   .pd-decisions li:last-child { border-bottom: 1px solid var(--hairline); }
   .pd-decisions li::before { content: counter(pdd, decimal-leading-zero); position: absolute; left: 0; top: 24px; font-size: var(--step-2); color: var(--brass); }
-  .pd-decisions strong { display: block; margin-bottom: var(--space-2); font-family: var(--font-display); font-weight: var(--weight-regular); font-size: var(--step-0); line-height: var(--leading-heading); text-transform: uppercase; }
+  .pd-decisions strong { display: block; margin-bottom: var(--space-2); font-weight: var(--weight-regular); font-size: var(--step-0); }
 
   /* ---------- Illustrations: they rise into place as they arrive ---------- */
   .pd-img { margin: var(--space-10) 0 var(--space-12); padding: 0; border: 0; }
@@ -565,9 +475,7 @@
     .pd-grid--opener .pd-grid__cells { grid-template-columns: repeat(20, 1fr); gap: var(--space-half); }
     .pd-org__owns { display: none; }
     .pd-fold__one-cap { margin-top: var(--space-2); }
-    /* On phones the kit's reading sizes take the step below, as the body's do in article.css: lede 20,
-       pull quotes 20. */
-    .pd-pull { font-size: var(--step-0); line-height: var(--leading-snug); }
+    /* On phones the lede takes the step below, as the body does in article.css: 20. */
     .article__lede { font-size: var(--step-0); }
     .pd-deck { font-size: var(--step--1); }
     .pd-figure { margin: var(--space-8) 0; padding-top: var(--space-6); }
@@ -578,6 +486,7 @@
   /* Components answer to the column they sit in, not the screen: the same figure reads the same in
      an article, a /ui frame or a narrow sidebar. */
   @container column (width < 560px) {
+    .pd-pull { font-size: var(--step-0); }
     .pd-units__cells[data-cols="50"] { grid-template-columns: repeat(25, 1fr); }
     .pd-seg__label { left: 8px; }
     .pd-seg__word { display: none; }
@@ -637,7 +546,7 @@
   .pd-slider[hidden] { display: block; visibility: hidden; }
   .pd-slider:focus-visible { outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
   .pd-asof__bands { display: flex; height: 10px; }
-  .pd-asof__band { flex: none; box-sizing: border-box; border-right: 2px solid var(--ground); background: color-mix(in srgb, var(--paper) 22%, transparent); transition: background-color var(--pd-fast) var(--pd-ease); }
+  .pd-asof__band { flex: none; box-sizing: border-box; border-right: 2px solid var(--ground); background: var(--divider); transition: background-color var(--pd-fast) var(--pd-ease); }
   .pd-asof__band:last-child { border-right: 0; }
   .pd-asof__band.is-live { background: var(--brass); }
   /* Each version's value printed on its band, so the strip reads as a history. */
@@ -650,8 +559,8 @@
   .pd-asof__answers { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); margin-top: var(--space-5); }
   .pd-asof__answers--single { grid-template-columns: minmax(0, 1fr); max-width: var(--measure-0); }
   /* The accent marks an answer that shows what the customer saw, like the live band; a wrong one gets a faint rule. */
-  .pd-asof__answer { padding: var(--space-4) var(--space-4) var(--space-4); border-top: 3px solid var(--brass); background: color-mix(in srgb, var(--paper) 4%, transparent); }
-  .pd-asof__answer.is-wrong { border-top-color: color-mix(in srgb, var(--paper) 25%, transparent); }
+  .pd-asof__answer { padding: var(--space-4) var(--space-4) var(--space-4); border-top: 3px solid var(--brass); background: var(--wash); }
+  .pd-asof__answer.is-wrong { border-top-color: var(--divider); }
   /* Each answer is named by a label. */
   .pd-asof__label { margin: 0 0 var(--space-2); }
   .pd-asof .pd-asof__copy { margin: 0 0 var(--space-2); font-family: var(--font-serif); font-size: var(--step--1); line-height: var(--leading-text); font-variant-numeric: lining-nums; color: var(--paper); }
@@ -684,7 +593,7 @@
     .pd-cols__callout, .pd-cols__marker, .pd-img img, .pd-range, .pd-asof__band { transition: none !important; }
   }
   @media (forced-colors: active) {
-    .pd-seg, .pd-cols__fill, .pd-cell.is-on, .pd-swatch--accent { background: CanvasText; forced-color-adjust: none; }
+    .pd-seg, .pd-cols__fill, .pd-cell.is-on, .pd-swatch--accent, .pd-mark { background: CanvasText; forced-color-adjust: none; }
     /* The second fill needs its own system colour, or it reads as an empty square. */
     .pd-cell.is-alt, .pd-swatch--ink { background: Highlight; border-color: Highlight; forced-color-adjust: none; }
     .pd-range, .pd-seg--outline { background: none; box-shadow: inset 0 0 0 2px CanvasText; forced-color-adjust: none; }

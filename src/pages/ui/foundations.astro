@@ -1,5 +1,6 @@
 ---
 import Styleguide from '../../layouts/Styleguide.astro';
+import UiTable from '../../components/ui/UiTable.astro';
 import { colorTokens, typeSteps, typeTokens, spaceTokens, gridTokens, behaviorTokens } from '../../styleguide/tokens.mjs';
 import { BREAKPOINTS, COLUMN_BREAKPOINTS, TYPE_SCALE } from '../../styleguide/components.mjs';
 
@@ -128,34 +129,14 @@ const ARTICLE = [
     <p class="ui-p">Archivo Black for display, Source Serif 4 for reading, IBM Plex Sans for figures, labels and controls. All three are self-hosted, and each has a fallback sized to its metrics so nothing shifts when the font arrives.</p>
     <h3 class="ui-h3">One root</h3>
     <p class="ui-p">The stylesheets sit in five cascade layers, declared once at the top of <code>site-shell.css</code>. A later layer wins over an earlier one whatever its selectors, so a component never needs <code>!important</code> to beat the base, and the order the sheets load in stops mattering. The linter keeps every rule in one of them (<code>css-layer</code>).</p>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Layer</th><th class="label">What sits in it</th></tr></thead>
-        <tbody>{LAYER_ROWS.map(([l, what]) => <tr><td><code>{l}</code></td><td>{what}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Cascade layers" headers={['Layer', 'What sits in it']}>{LAYER_ROWS.map(([l, what]) => <tr><td><code>{l}</code></td><td>{what}</td></tr>)}</UiTable>
     <p class="ui-p"><code>site-shell.css</code> loads first on every page and holds the basics: the colours, the three typefaces, the type scale, three weights, five kinds of line spacing and the tracking for small capitals. It also sets the defaults every element inherits, so an element nobody styled still lands on the scale. Every other sheet uses these tokens and sets only what differs from what it inherits. The linter rejects a size, face, weight, line spacing or tracking that is not a token (<code>type-scale</code>, <code>type-tokens</code>).</p>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
-        <tbody>{[...base.fonts, ...base.weights, ...base.leading, ...base.tracking].map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.name.startsWith('--font-') ? t.value.split(',')[0].replace(/'/g, '') : t.value}</td><td>{USE[t.name] ?? ''}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Base type tokens" headers={['Token', 'Value', 'Used for']}>{[...base.fonts, ...base.weights, ...base.leading, ...base.tracking].map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.name.startsWith('--font-') ? t.value.split(',')[0].replace(/'/g, '') : t.value}</td><td>{USE[t.name] ?? ''}</td></tr>)}</UiTable>
     <h3 class="ui-h3">The scale</h3>
     <p class="ui-p">Every font size on the site is one of these thirteen steps, read here from <code>site-shell.css</code>. Body text is step 0, each step is 1.2 times the one below it, and 14px is the smallest text anywhere. The linter rejects any other size (<code>type-scale</code>). See it set on the <a class="link" href="/ui/components/type-scale">type scale</a> page.</p>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Step</th><th class="label">Token</th><th class="label">Size</th><th class="label">Used for</th></tr></thead>
-        <tbody>{steps.map((t) => <tr><td class="ui-num">{minus(t.step)}</td><td><code>var({t.name})</code></td><td class="ui-num">{t.px}px</td><td>{t.roles}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="The scale" headers={['Step', 'Token', 'Size', 'Used for']}>{steps.map((t) => <tr><td class="ui-num">{minus(t.step)}</td><td><code>var({t.name})</code></td><td class="ui-num">{t.px}px</td><td>{t.roles}</td></tr>)}</UiTable>
     <h3 class="ui-h3">Reading sizes at each width</h3>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Role</th><th class="label">Face</th><th class="label">Phone</th><th class="label">760 to 1040</th><th class="label">From 1040</th></tr></thead>
-        <tbody>{ROLES.map(([role, face, a, b, c]) => <tr><td>{role}</td><td>{face}</td><td class="ui-num">{a}</td><td class="ui-num">{b}</td><td class="ui-num">{c}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Reading sizes at each width" headers={['Role', 'Face', 'Phone', '760 to 1040', 'From 1040']}>{ROLES.map(([role, face, a, b, c]) => <tr><td>{role}</td><td>{face}</td><td class="ui-num">{a}</td><td class="ui-num">{b}</td><td class="ui-num">{c}</td></tr>)}</UiTable>
     <ul class="ui-list">
       <li>A size changes only at a breakpoint, so every size is a step at every width.</li>
       <li>Two things the reader has to tell apart sit at least a step apart, or differ in face or weight.</li>
@@ -195,39 +176,19 @@ const ARTICLE = [
     <h2 class="ui-h2">Layout grid</h2>
     <p class="ui-p">Every page changes layout at four widths and nowhere else, and the linter holds every stylesheet to them (<code>css-breakpoint</code>). Components do not measure the screen: they answer to the column they sit in, so a figure reads the same in an article, a /ui frame or a sidebar. See it move on the <a class="link" href="/ui/components/layout-grid">layout grid</a> page.</p>
     <h3 class="ui-h3">The page</h3>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Width</th><th class="label">Name</th><th class="label">What changes</th></tr></thead>
-        <tbody>{BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Page breakpoints" headers={['Width', 'Name', 'What changes']}>{BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</UiTable>
     <h3 class="ui-h3">The column</h3>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Width</th><th class="label">Name</th><th class="label">What changes</th></tr></thead>
-        <tbody>{COLUMN_BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Column breakpoints" headers={['Width', 'Name', 'What changes']}>{COLUMN_BREAKPOINTS.map((b) => <tr><td class="ui-num">{b.px}px</td><td>{b.name}</td><td>{b.changes}</td></tr>)}</UiTable>
     <h3 class="ui-h3">Grid tokens</h3>
     <p class="ui-p">Read from <code>site-shell.css</code>. Media queries cannot read custom properties, so the breakpoints above stay numbers and the linter holds them; everything else about the grid is a token. Measures step by 1.2 from the reading measure, like the type scale.</p>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
-        <tbody>{grid.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value.startsWith('var(') ? t.value.replace(/var\((--[\w-]+)\)/, (m, n) => (space.find((x) => x.name === n)?.value ?? m)) : t.value}</td><td>{GRID_USE[t.name] ?? ''}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Grid tokens" headers={['Token', 'Value', 'Used for']}>{grid.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value.startsWith('var(') ? t.value.replace(/var\((--[\w-]+)\)/, (m, n) => (space.find((x) => x.name === n)?.value ?? m)) : t.value}</td><td>{GRID_USE[t.name] ?? ''}</td></tr>)}</UiTable>
     <ul class="ui-list">
       <li>The gutter is a step narrower below 760: 20px. Everything that reads it follows, including the pinned card and the opener that run to the page edge.</li>
       <li>A calculator, 1040 and up, and a pinned sequence, 1180 and up, widen to the article container, less its gutters.</li>
     </ul>
     <h3 class="ui-h3">Stacking</h3>
     <p class="ui-p">Everything that sits over the page takes a z-index step from <code>site-shell.css</code>, lowest first.</p>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
-        <tbody>{stack.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value}</td><td>{STACK_USE[t.name] ?? ''}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Stacking" headers={['Token', 'Value', 'Used for']}>{stack.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value}</td><td>{STACK_USE[t.name] ?? ''}</td></tr>)}</UiTable>
     <h3 class="ui-h3">Choosing the step</h3>
     <ul class="ui-list">
       <li>Pick the lowest step where every column still reads. Two columns sit side by side from 760, and so do three or four short items. Three columns led by a big headline stack until 1040.</li>
@@ -254,23 +215,13 @@ const ARTICLE = [
 const tablet = matchMedia('(width >= 760px)');
 tablet.addEventListener('change', update);`}</code></pre>
     <h3 class="ui-h3">What an article does at each width</h3>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Width</th><th class="label">What changes</th></tr></thead>
-        <tbody>{ARTICLE.map(([w, t]) => <tr><td class="ui-num">{w}</td><td>{t}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="What an article does at each width" headers={['Width', 'What changes']}>{ARTICLE.map(([w, t]) => <tr><td class="ui-num">{w}</td><td>{t}</td></tr>)}</UiTable>
   </section>
 
   <section class="ui-section" id="naming">
     <h2 class="ui-h2">Class names</h2>
     <p class="ui-p">Every class says what it belongs to. A block stands on its own, a part of it adds <code>__part</code> to the block's name, and a variant adds <code>--variant</code>. The markup reads as the parts a page is made of, and a change to one block's rules stays inside that block. The linter checks every stylesheet (<code>css-bem</code>).</p>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Kind</th><th class="label">Written</th><th class="label">Examples</th></tr></thead>
-        <tbody>{NAMING.map(([kind, written, eg]) => <tr><td>{kind}</td><td><code>{written}</code></td><td>{eg}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Class names" headers={['Kind', 'Written', 'Examples']}>{NAMING.map(([kind, written, eg]) => <tr><td>{kind}</td><td><code>{written}</code></td><td>{eg}</td></tr>)}</UiTable>
     <ul class="ui-list">
       <li>An element sits inside its block. A wrapper outside the block is a block of its own, or the block moves up to the wrapper.</li>
       <li>No element of an element: <code>pd-cols__callout-value</code>, not <code>pd-cols__callout__value</code>.</li>
@@ -292,23 +243,13 @@ tablet.addEventListener('change', update);`}</code></pre>
       <li>Reduced motion turns every transition off site-wide.</li>
     </ul>
     <p class="ui-p">The ring's gap from what it outlines, from <code>site-shell.css</code>.</p>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
-        <tbody>{focus.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value}</td><td>{FOCUS_USE[t.name] ?? ''}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Accessibility" headers={['Token', 'Value', 'Used for']}>{focus.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value}</td><td>{FOCUS_USE[t.name] ?? ''}</td></tr>)}</UiTable>
   </section>
 
   <section class="ui-section" id="motion">
     <h2 class="ui-h2">Motion</h2>
     <p class="ui-p">One easing and three durations, read from <code>site-shell.css</code> and used everywhere. Each figure has one moment: it builds once as it arrives, with a beat before the part the reader is meant to notice, and nothing loops.</p>
-    <div class="ui-table-wrap">
-      <table class="ui-table">
-        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
-        <tbody>{motion.map((t) => <tr><td><code>{t.name}</code></td>{/^[\d.]+m?s$/.test(t.value) ? <td class="ui-num">{t.value}</td> : <td><code>{t.value}</code></td>}<td>{MOTION_USE[t.name] ?? ''}</td></tr>)}</tbody>
-      </table>
-    </div>
+    <UiTable caption="Motion" headers={['Token', 'Value', 'Used for']}>{motion.map((t) => <tr><td><code>{t.name}</code></td>{/^[\d.]+m?s$/.test(t.value) ? <td class="ui-num">{t.value}</td> : <td><code>{t.value}</code></td>}<td>{MOTION_USE[t.name] ?? ''}</td></tr>)}</UiTable>
     <ul class="ui-list">
       <li>Figures below the fold wait for the reader; figures already on screen at load show finished.</li>
       <li>A built figure shows its parts about 0.7 seconds apart. Columns rise left to right, 55ms apart, and the event lands 0.4 seconds after.</li>
