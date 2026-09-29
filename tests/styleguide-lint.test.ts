@@ -4,22 +4,23 @@ import assert from 'node:assert/strict';
 import { readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { RULES, lintArticle, lintCss, lintScript, lintSite, cssClasses, imageSize, registryIds, frontMatter } from '../src/styleguide/lint.mjs';
-import * as BUILD from '../src/styleguide/build.mjs';
-import { stack, cols, units, offScale, readNumber, highlight } from '../src/styleguide/build.mjs';
-import { COMPONENTS, SIGNATURE_DEVICES, STACK_DEMO, COLS_DEMO, UNITS_DEMO, RECORD_DEMO, ASOF_DEMO, TYPE_SCALE, stepName } from '../src/styleguide/components.mjs';
-import { typeSteps, typeTokens } from '../src/styleguide/tokens.mjs';
+import { RULES, lintArticle, lintCss, lintScript, lintSite, cssClasses, imageSize, registryIds, frontMatter } from '../src/styleguide/lint.ts';
+import type { Finding, LintContext } from '../src/styleguide/lint.ts';
+import * as BUILD from '../src/styleguide/build.ts';
+import { stack, cols, units, offScale, readNumber, highlight } from '../src/styleguide/build.ts';
+import { COMPONENTS, SIGNATURE_DEVICES, STACK_DEMO, COLS_DEMO, UNITS_DEMO, RECORD_DEMO, ASOF_DEMO, TYPE_SCALE, stepName } from '../src/styleguide/components.ts';
+import { typeSteps, typeTokens } from '../src/styleguide/tokens.ts';
 
 const root = fileURLToPath(new URL('..', import.meta.url));
-const css = (href) => readFileSync(join(root, 'public', href), 'utf8');
+const css = (href: string) => readFileSync(join(root, 'public', href), 'utf8');
 const SHELL = ['/assets/site-shell.css', '/assets/personal-site.css', '/assets/article.css', '/assets/article-kit.css'];
-const classesFor = (hrefs) => new Set(hrefs.flatMap((h) => [...cssClasses(css(h))]));
-const ctx = { root, registryIds: registryIds(root), classesFor, articles: [] };
-const ids = (findings) => [...new Set(findings.map((f) => f.rule))].sort();
-const errors = (findings) => findings.filter((f) => f.severity === 'error');
-const lint = (body) => lintArticle(join(root, 'x.md'), article(body), ctx);
+const classesFor = (hrefs: string[]) => new Set(hrefs.flatMap((h) => [...cssClasses(css(h))]));
+const ctx: LintContext = { root, registryIds: registryIds(root), classesFor, articles: [] };
+const ids = (findings: Finding[]) => [...new Set(findings.map((f) => f.rule))].sort();
+const errors = (findings: Finding[]) => findings.filter((f) => f.severity === 'error');
+const lint = (body: string) => lintArticle(join(root, 'x.md'), article(body), ctx);
 
-const article = (body, fm = '') => `---
+const article = (body: string, fm = '') => `---
 title: "A Test Article"
 description: "A description long enough to pass the length check, which wants seventy characters or more."
 date: 2026-10-01
@@ -86,7 +87,7 @@ test('offScale uses the median, so one bad bar cannot move the scale', () => {
 });
 
 test('older static bar charts are still checked against one scale', () => {
-  const row = (v, w) => `<div class="cd-bars-row"><p class="cd-bars-label">A<span></span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:${w}%" aria-hidden="true"></span><span class="cd-bars-val" style="left:${w}%">${v}</span></div></div>`;
+  const row = (v: number, w: number | string) => `<div class="cd-bars-row"><p class="cd-bars-label">A<span></span></p><div class="cd-bars-track"><span class="cd-bars-bar" style="width:${w}%" aria-hidden="true"></span><span class="cd-bars-val" style="left:${w}%">${v}</span></div></div>`;
   const html = `<figure class="cd-bars"><p class="cd-widget-title">T</p>${row(10, '19.5')}${row(20, '30.0')}${row(40, '78.0')}<figcaption>Source.</figcaption></figure>`;
   assert.ok(lint(html).some((f) => f.rule === 'bars-scale' && /"20"/.test(f.message)));
 });
@@ -152,7 +153,7 @@ test('stylesheet rules find literal colours, fonts, radii, gradients and soft sh
 });
 
 test('every rule sits in a named cascade layer, and the shell declares the order', () => {
-  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'css-layer').map((f) => f.message);
+  const rule = (css: string) => lintCss('x.css', css).filter((f) => f.rule === 'css-layer').map((f) => f.message);
   assert.deepEqual(rule('@layer page {\n  .a { margin: 0; }\n  @media (width < 760px) { .b { margin: 0; } }\n}\n@media print { @page { margin: 1in; } }'), []);
   assert.equal(rule('.a { margin: 0; }').length, 1);
   assert.match(rule('@layer components { .a { margin: 0; } }')[0], /components/);
@@ -160,7 +161,7 @@ test('every rule sits in a named cascade layer, and the shell declares the order
 });
 
 test('class names are block, element or modifier, and is- names are states', () => {
-  const rule = (css, file = 'x.css') => lintCss(file, css).filter((f) => f.rule === 'css-bem').map((f) => f.message);
+  const rule = (css: string, file = 'x.css') => lintCss(file, css).filter((f) => f.rule === 'css-bem').map((f) => f.message);
   assert.deepEqual(rule('@layer page {\n  .booking-line__button, .btn--small, .pd-bar:not(.pd-bar--live) + .pd-ledger, .pd-calc.is-open .label, html.is-embedded body.ui-frame--page, [data-x="a.b"] { margin: 0; }\n}'), []);
   assert.match(rule('@layer page { .market-row.is-plan { margin: 0; } }')[0], /is-plan is not a state/);
   assert.match(rule('@layer page { .card__head__title { margin: 0; } }')[0], /not block, block__element/);
@@ -174,7 +175,7 @@ test('every stylesheet follows the naming convention', () => {
 });
 
 test('spacing and the grid come from the base tokens', () => {
-  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'space-tokens').map((f) => f.message);
+  const rule = (css: string) => lintCss('x.css', css).filter((f) => f.rule === 'space-tokens').map((f) => f.message);
   assert.deepEqual(rule(`.a { margin: 0 auto var(--space-6); padding: var(--space-half) var(--gutter); gap: var(--space-3) 0; }
 .b { margin: calc(-1 * var(--gutter)) 0 0 calc(50% - 50vw); padding: 4vh 0; margin-top: -1px; max-width: var(--measure-0); }
 .c { margin: 0 10%; padding: inherit; width: calc(min(var(--container-article), 100vw) - 2 * var(--gutter)); }
@@ -190,7 +191,7 @@ test('spacing and the grid come from the base tokens', () => {
 });
 
 test('faces, weights, line spacing and tracking come from the base tokens', () => {
-  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'type-tokens').map((f) => f.message);
+  const rule = (css: string) => lintCss('x.css', css).filter((f) => f.rule === 'type-tokens').map((f) => f.message);
   assert.deepEqual(rule(`.a { font-family: var(--font-serif); font-weight: var(--weight-bold); line-height: var(--leading-body); letter-spacing: var(--tracking-caps); }
 .b { font: var(--weight-semibold) var(--step--2)/var(--leading-snug) var(--font-sans); }
 .c { font: inherit; line-height: 0; letter-spacing: 0; font-weight: inherit; }
@@ -214,6 +215,7 @@ test('front matter reader handles lists, arrays and quoted strings', () => {
   const { data } = frontMatter(article('Body.', 'ogImage: "/assets/x.png"\n'));
   assert.equal(data.title, 'A Test Article');
   assert.deepEqual(data.stylesheets, ['/assets/article-kit.css']);
+  assert.ok(Array.isArray(data.brief));
   assert.equal(data.brief.length, 3);
   assert.equal(data.ogImage, '/assets/x.png');
 });
@@ -288,7 +290,7 @@ test('lintSite runs over the whole repository and the kit is clean', () => {
 
 test('the new figures carry their titles and sources, and the slider needs the kit script', () => {
   const { record, asof } = BUILD;
-  const withJs = (body) => lintArticle(join(root, 'x.md'), article(body, 'scripts: ["/assets/article-kit.js"]\n'), ctx);
+  const withJs = (body: string) => lintArticle(join(root, 'x.md'), article(body, 'scripts: ["/assets/article-kit.js"]\n'), ctx);
   for (const html of [record(RECORD_DEMO), asof(ASOF_DEMO)]) {
     const bad = withJs(html).filter((f) => ['chart-source', 'figure-title', 'kit-assets', 'inline-style', 'class-defined'].includes(f.rule));
     assert.deepEqual(bad, [], html.slice(0, 60));
@@ -306,13 +308,13 @@ test('a range segment sits on the chart scale, and a range drawn off it is caugh
 });
 
 test('the calculator fold keeps its fields in the formulas', () => {
-  const fold = COMPONENTS.find((c) => c.id === 'calculator').stories.find((s) => s.id === 'fold').html;
+  const fold = COMPONENTS.find((c) => c.id === 'calculator')?.stories.find((s) => s.id === 'fold')?.html ?? '';
   assert.match(fold, /<details class="pd-calc__more">[\s\S]*data-var="fee"[\s\S]*data-var="cac"[\s\S]*<\/details>/);
   assert.deepEqual(lint(fold).filter((f) => f.rule === 'calc-names'), []);
 });
 
 test('font sizes are steps of the type scale', () => {
-  const rule = (css, file = 'x.css') => lintCss(file, css).filter((f) => f.rule === 'type-scale');
+  const rule = (css: string, file = 'x.css') => lintCss(file, css).filter((f) => f.rule === 'type-scale');
   assert.deepEqual(rule('.a { font-size: var(--step--2); }\n.b { font-size: var(--step-10) !important; }\n.c { font: inherit; }\n.d { font: 600 var(--step-0)/1.4 \'IBM Plex Sans\', sans-serif; }\n.e { font-size: inherit; }'), []);
   assert.match(rule('.a { font-size: 13px; }')[0].message, /13px/);
   assert.equal(rule('.a { font-size: clamp(24px, 2.4vw, 29px); }').length, 1);
@@ -336,7 +338,7 @@ test('the type scale in the registry is the one site-shell.css defines', () => {
   const steps = typeSteps(root);
   assert.deepEqual(steps.map((t) => [t.step, t.px]), TYPE_SCALE.map((t) => [t.step, t.px]));
   assert.equal(steps[0].px, 14);
-  assert.equal(steps.find((t) => t.step === 0).px, 20);
+  assert.equal(steps.find((t) => t.step === 0)?.px, 20);
   // Each step is 1.2 times the one below, rounded to the pixel.
   for (const t of steps) assert.equal(t.px, Math.round(20 * 1.2 ** t.step), stepName(t.step));
 });
@@ -346,7 +348,7 @@ test('the base defines every type token the linter accepts', () => {
   const names = new Set([...t.fonts, ...t.weights, ...t.leading, ...t.tracking].map((x) => x.name));
   for (const n of ['--font-display', '--font-serif', '--font-sans', '--font-mono', '--weight-regular', '--weight-semibold', '--weight-bold', '--leading-display', '--leading-heading', '--leading-snug', '--leading-text', '--leading-body', '--leading-cap', '--tracking-caps']) assert.ok(names.has(n), n);
   // Line spacing runs from tight to open.
-  const lead = ['display', 'heading', 'snug', 'text', 'body'].map((k) => Number(t.leading.find((x) => x.name === `--leading-${k}`).value));
+  const lead = ['display', 'heading', 'snug', 'text', 'body'].map((k) => Number(t.leading.find((x) => x.name === `--leading-${k}`)?.value));
   assert.deepEqual([...lead].sort((a, b) => a - b), lead);
 });
 
@@ -368,7 +370,7 @@ test('every part a component names exists, is smaller or the same size, and each
 });
 
 test('media queries stay on the breakpoint scale, in range syntax', () => {
-  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'css-breakpoint');
+  const rule = (css: string) => lintCss('x.css', css).filter((f) => f.rule === 'css-breakpoint');
   assert.deepEqual(rule('@media (width < 760px) { .a { margin: 0; } }\n@media (760px <= width < 1180px) { .b { margin: 0; } }\n@media (width >= 1040px) and (prefers-reduced-motion: reduce) { .c { margin: 0; } }'), []);
   const off = rule('@media (max-width: 900px) { .a { margin: 0; } }');
   assert.equal(off.length, 2);
@@ -381,7 +383,7 @@ test('media queries stay on the breakpoint scale, in range syntax', () => {
 });
 
 test('matchMedia width queries in scripts use the same scale and range syntax', () => {
-  const rule = (js) => lintScript('x.js', js).filter((f) => f.rule === 'css-breakpoint');
+  const rule = (js: string) => lintScript('x.js', js).filter((f) => f.rule === 'css-breakpoint');
   assert.deepEqual(rule("var wide = window.matchMedia('(width >= 1180px)');\nvar tab = matchMedia(\"(760px <= width < 1040px)\");\nvar calm = window.matchMedia('(prefers-reduced-motion: reduce)');"), []);
   const legacy = rule("var wide = window.matchMedia('(min-width: 1180px)');\nvar stacked = window.matchMedia('(max-width: 1179px)');");
   assert.deepEqual(legacy.map((f) => f.line), [1, 2, 2]);
@@ -393,7 +395,7 @@ test('matchMedia width queries in scripts use the same scale and range syntax', 
 });
 
 test('container queries use the column scale, in range syntax', () => {
-  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'css-breakpoint');
+  const rule = (css: string) => lintCss('x.css', css).filter((f) => f.rule === 'css-breakpoint');
   assert.deepEqual(rule('@container column (width < 560px) { .a { margin: 0; } }\n@container calc (560px <= width < 900px) { .b { margin: 0; } }\n@container (width >= 900px) { .c { margin: 0; } }'), []);
   assert.match(rule('@container column (width < 600px) { .a { margin: 0; } }')[0].message, /600px, which is not on the column scale/);
   assert.match(rule('@container calc (width >= 1040px) { .a { margin: 0; } }')[0].message, /1040px/);
@@ -404,7 +406,7 @@ test('container queries use the column scale, in range syntax', () => {
 });
 
 test('table rows turn into cards only below 760 or in print', () => {
-  const rule = (css) => lintCss('x.css', css).filter((f) => f.rule === 'css-breakpoint');
+  const rule = (css: string) => lintCss('x.css', css).filter((f) => f.rule === 'css-breakpoint');
   assert.deepEqual(rule(`@media (width < 760px) { .t, .t tbody, .t tr, .t th, .t td { display: block; } .t td.crit { display: inline-block; } }
 @media (width < 480px) { .t tr { display: grid; } }
 @media print { .t td { display: block; } }

@@ -1,13 +1,14 @@
 ---
 // The numbered deliverables on a service-detail page.
+import { twoDigit } from '../data/format';
+interface Props { heading: string; items: { title: string; copy: string }[] }
 const { heading, items } = Astro.props;
-const num = (i) => String(i + 1).padStart(2, '0');
 ---
 <section class="build-section">
   <div class="container">
     <h2 class="section-title-plain">{heading}</h2>
     <div class="deliverables">
-      {items.map((d, i) => <div class="deliverable"><div class="deliverable__num">{num(i)}</div><h3 class="display-title deliverable__title">{d.title}</h3><p class="deliverable__copy">{d.copy}</p></div>)}
+      {items.map((d, i) => <div class="deliverable"><div class="deliverable__num">{twoDigit(i)}</div><h3 class="display-title deliverable__title">{d.title}</h3><p class="deliverable__copy">{d.copy}</p></div>)}
     </div>
   </div>
 </section>

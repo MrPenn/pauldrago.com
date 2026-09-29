@@ -1,5 +1,10 @@
 {
-  "extends": "astro/tsconfigs/base",
+  "extends": "astro/tsconfigs/strict",
+  "compilerOptions": {
+    // Node runs the build tooling's .ts files directly by stripping the types, so only syntax it can
+    // strip is allowed: no enums, namespaces or parameter properties.
+    "erasableSyntaxOnly": true
+  },
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "preview"]
+  "exclude": ["dist", "preview", "tests/fixtures"]
 }

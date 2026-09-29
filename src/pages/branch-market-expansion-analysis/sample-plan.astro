@@ -12,7 +12,10 @@ import signals from '../../data/dfw-signals.json';
 import mapData from '../../data/dfw-map.json';
 import { INSTITUTION, PRESETS, scoreMarkets } from '../../data/market-scoring';
 import { TAGS, PLAN, REVIEW_SITES, PICKING_TAGS, YEARS, HORIZON, LAUNCH_MARKETING, BANK, tagsFor, planModel, paceScenarios, runSites, returns } from '../../data/branch-plan';
+import type { Town } from '../../data/branch-plan';
 import { breadcrumb } from '../../data/schema';
+import { must } from '../../data/must';
+import { pct, num, money, mUSD, shortName } from '../../data/format';
 
 const SITE = 'https://pauldrago.com';
 const path = '/branch-market-expansion-analysis/sample-plan';
@@ -47,69 +50,63 @@ const fullCase = scoreMarkets(markets, PRESETS.full.weights);
 const mapView = scoreMarkets(markets, PRESETS.map.weights);
 // Kaufman first, as the plan runs.
 const towns = [...data.towns].sort((a, b) => (a.county === b.county ? 0 : a.county === 'Kaufman' ? -1 : 1));
-const town = (name) => towns.find((t) => t.town === name);
+const town = (name: string) => must(towns.find((t) => t.town === name), `town ${name}`);
 const ramp = data.ramp;
 const model = planModel(ramp);
-const planTowns = PLAN.map((b) => ({ ...b, ...town(b.site), tags: tagsFor(town(b.site)) }));
-const tagLabel = Object.fromEntries(TAGS.map((t) => [t.key, t.label]));
 // One column per criterion; an X where the town meets it.
-const critLabel = (t) => (PICKING_TAGS.includes(t.key) ? t.label : `${t.label} check`);
-const marks = (town) => TAGS.map((t) => tagsFor(town).includes(t.key));
+const critLabel = (t: (typeof TAGS)[number]) => (PICKING_TAGS.includes(t.key) ? t.label : `${t.label} check`);
+const marks = (town: Town) => TAGS.map((t) => tagsFor(town).includes(t.key));
 const incumbent = Kaufman.leaders[0];
-const shortName = (name) => name.replace(/, National Association$/, '').replace(/ Bank$/, '');
 const collinLeaders = Collin.leaders.map((l) => shortName(l.bank));
 const collinLeaderShare = Collin.leaders.reduce((s, l) => s + l.share, 0);
 
-const pct = (n) => `${Math.round(n)}%`;
-const num = (n) => Math.round(n).toLocaleString('en-US');
-const money = (b) => `$${b.toFixed(1)}B`;
-const depUSD = (m) => (m >= 1000 ? `$${(m / 1000).toFixed(1)}B` : `$${m}M`);
-const mUSD = (n) => `$${(Math.abs(n) / 1000).toFixed(1)}M`;
+const depUSD = (m: number) => (m >= 1000 ? `$${(m / 1000).toFixed(1)}B` : `$${m}M`);
 // Negatives in parentheses, the accounting convention.
-const tUSD = (n) => { const v = `$${(Math.abs(n) / 1000).toFixed(Math.abs(n) < 1000 ? 2 : 1)}M`; return n < 0 ? `(${v})` : v; };
-const costUSD = (n) => (n >= 1000 ? `$${n / 1000}M` : `$${n}K`);
-const age = (n) => ramp.byAge.find((a) => a.age === n);
-const failing = (a) => a.belowBreakevenShare + (100 - a.stillOpenShare);
+const tUSD = (n: number) => { const v = `$${(Math.abs(n) / 1000).toFixed(Math.abs(n) < 1000 ? 2 : 1)}M`; return n < 0 ? `(${v})` : v; };
+const costUSD = (n: number) => (n >= 1000 ? `$${n / 1000}M` : `$${n}K`);
+const age = (n: number) => must(ramp.byAge.find((a) => a.age === n), `ramp year ${n}`);
+const failing = (a: ReturnType<typeof age>) => a.belowBreakevenShare + (100 - a.stillOpenShare);
 const gate = model.path('median')[2];
 const industryBreakeven = Math.round(ramp.branchCost[1] / ramp.nimIndustry / 10);
 const industryPayback = Math.round((ramp.buildOut * 1000 + ramp.paybackYears * ramp.branchCost[1]) / ramp.paybackYears / ramp.nimIndustry / 10);
 const firstTwoBuild = PLAN.filter((b) => b.opens <= 2).length * ramp.buildOut;
 const paces = paceScenarios(ramp);
 const [planPace, fasterPace] = paces;
-const bottomQuarter10 = (sites) => runSites(ramp, sites, HORIZON, 'p25').cumulative[HORIZON.length - 1];
+const bottomQuarter10 = (sites: Parameters<typeof runSites>[1]) => runSites(ramp, sites, HORIZON, 'p25').cumulative[HORIZON.length - 1];
 const launchTotal = LAUNCH_MARKETING.reduce((a, b) => a + b, 0);
 const planReturn = returns(planPace.run);
 const earningsEffect = model.operating.map((o, i) => o + model.marketing[i]);
 const worstEarnings = Math.min(...earningsEffect);
 const worstEarningsYear = YEARS[earningsEffect.indexOf(worstEarnings)];
-const share = (v, base) => `${((Math.abs(v) / base) * 100).toFixed(1)}%`;
+const share = (v: number, base: number) => `${((Math.abs(v) / base) * 100).toFixed(1)}%`;
 const exitAge = 4;
 const [first, second, third] = PLAN.map((b) => town(b.site));
 // Distance between the first and third sites, from the map's projected town points.
-const kaufmanMap = mapData.counties.find((c) => c.county === 'Kaufman');
-const pt = (name) => kaufmanMap.towns.find((t) => t.town === name);
+const kaufmanMap = must(mapData.counties.find((c) => c.county === 'Kaufman'), 'Kaufman map');
+const pt = (name: string) => must(kaufmanMap.towns.find((t) => t.town === name), `map point for ${name}`);
 const siteGap = Math.round(Math.hypot(pt(first.town).x - pt(third.town).x, pt(first.town).y - pt(third.town).y) / kaufmanMap.milePx);
 
-const fairRows = [
+type Fair = (typeof Kaufman)['fairAccess'];
+const fairRows: { label: string; show: (f: Fair) => string }[] = [
   { label: 'People living in low- or moderate-income tracts', show: (f) => pct(f.lmiPopulationShare) },
   { label: 'People living in majority-minority tracts', show: (f) => pct(f.minorityPopulationShare) },
   { label: 'Low- or moderate-income tracts with no bank branch', show: (f) => `${f.lmiTractsWithoutBranch} of ${f.lmiTracts}` },
   { label: 'Home-purchase loans in those tracts', show: (f) => pct(f.purchaseLoansInLmiShare) },
   { label: "Those tracts' share of owner-occupied homes", show: (f) => pct(f.ownerHomesInLmiShare) },
 ];
-const planCounties = ['Kaufman', 'Ellis'];
+const planCounties = ['Kaufman', 'Ellis'] as const;
 
 // Ramp chart: ages 0-5 across, $0-120M up. L fits "$120M" at its largest size (22px, phones) plus the 8 gap.
 const W = 640, H = 260, L = 100, R = 48, T = 24, B = 40, YMAX = 120;
 // The chart's words are HTML over the drawing, placed in percentages of it, so they stay at the
 // type scale's sizes however wide the drawing is.
-const at = (n, of) => `${Math.round((n / of) * 10000) / 100}%`;
-const x = (a) => L + (a / 5) * (W - L - R);
-const y = (v) => T + (1 - v / YMAX) * (H - T - B);
-const line = (key) => model.path(key).map((v, a) => `${a ? 'L' : 'M'}${x(a).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+const at = (n: number, of: number) => `${Math.round((n / of) * 10000) / 100}%`;
+const x = (a: number) => L + (a / 5) * (W - L - R);
+const y = (v: number) => T + (1 - v / YMAX) * (H - T - B);
+const line = (key: Parameters<typeof model.path>[0]) => model.path(key).map((v, a) => `${a ? 'L' : 'M'}${x(a).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
 const band = `${line('p75')} ${model.path('p25').map((v, a) => [a, v]).reverse().map(([a, v]) => `L${x(a).toFixed(1)},${y(v).toFixed(1)}`).join(' ')} Z`;
 
-const link = (href, text) => ({ href, text });
+const link = (href: string, text: string) => ({ href, text });
 const SOURCES = {
   fed: link('https://www.federalreserve.gov/econres/notes/feds-notes/size-and-survival-of-entrants-to-retail-banking-20230901.html', 'Federal Reserve, 2023'),
   ab: link('https://www.americanbanker.com/news/the-more-things-change-bank-ceos-on-why-theyre-adding-branches', 'American Banker, April 2026'),
@@ -385,7 +382,7 @@ const SOURCES = {
         </ScrollTable>
         <p class="note table-note">Pre-tax. Median Dallas-Fort Worth ramp at a {ramp.nim}% margin, up to {costUSD(ramp.branchCost[1])} a year to run each branch, deposits held at year-5 levels after that; fee income and overhead left out. If every branch ramps like the bottom quarter, neither pace pays back ({mUSD(-bottomQuarter10(planPace.sites))} lost by year 10 on the plan, {mUSD(-bottomQuarter10(fasterPace.sites))} on the faster one); the {third.town} gate and the year 5 review limit that exposure.</p>
 
-      <h3 class="report-section__subhead">A branch turns positive in its third year and earns about {mUSD(model.expected[0].byYear[4].contribution)} a year by its fifth</h3>
+      <h3 class="report-section__subhead">A branch turns positive in its third year and earns about {mUSD(must(model.expected[0].byYear[4], "the first branch's fifth year").contribution)} a year by its fifth</h3>
       <ScrollTable label="Operating contribution by branch and year under the plan">
         <table class="market-table market-table--network">
           <caption class="sr-only">Operating contribution by branch and year under the plan</caption>

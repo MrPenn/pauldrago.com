@@ -2,7 +2,8 @@
 // A Lucide icon from src/data/icons.ts, inline so a page needs no icon script. The .icon rule in
 // site-shell.css strokes it in the colour of the text around it; the class passed in sets its size
 // and colour.
-import { ICONS } from '../data/icons';
+import { ICONS, type IconName } from '../data/icons';
+interface Props { name: IconName; class?: string }
 const { name, class: className } = Astro.props;
 if (!ICONS[name]) throw new Error(`Icon.astro: no icon named "${name}" in src/data/icons.ts`);
 ---

@@ -3,7 +3,7 @@
 // Pages here are kept out of search and the sitemap. Specimens render in frames that load
 // the article sheets themselves, so the shell loads only the styleguide's own sheet.
 import Base from './Base.astro';
-import { COMPONENTS, LEVELS } from '../styleguide/components.mjs';
+import { COMPONENTS, LEVELS } from '../styleguide/components.ts';
 
 const { title, description, path } = Astro.props;
 const guide = [
@@ -14,7 +14,7 @@ const guide = [
   { href: '/ui/lint', label: 'Linter' },
 ];
 const groups = LEVELS.map((l) => ({ ...l, items: COMPONENTS.filter((c) => c.level === l.id) }));
-const current = (href) => (href === path ? 'page' : undefined);
+const current = (href: string) => (href === path ? 'page' : undefined);
 ---
 <Base
   title={`${title} | Styleguide | Paul Drago`}
@@ -56,7 +56,7 @@ const current = (href) => (href === path ? 'page' : undefined);
       </div>
     </div>
     <script>
-      import '../styleguide/client.mjs';
+      import '../styleguide/client.ts';
     </script>
   </main>
 </Base>

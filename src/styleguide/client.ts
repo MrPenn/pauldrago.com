@@ -1,29 +1,36 @@
 // /ui in the browser: copy buttons, the width and theme toolbar, frames that fit their content,
 // and the controls that rebuild a chart and its snippet as someone types.
-import { stack, cols, units, highlight } from './build.mjs';
+import { stack, cols, units, highlight } from './build.ts';
+import type { StackOptions, ColsOptions, UnitsOptions } from './build.ts';
+
+// A frame remembers the observer that fits it to its content; a status line, its clearing timer.
+type Frame = HTMLIFrameElement & { observer?: ResizeObserver | null };
+type Status = HTMLElement & { t?: ReturnType<typeof setTimeout> };
+const target = (e: Event) => (e.target instanceof Element ? e.target : null);
 
 // ---------------------------------------------------------------- copy
 document.addEventListener('click', async (e) => {
-  const btn = e.target.closest('[data-copy]');
+  const btn = target(e)?.closest<HTMLElement>('[data-copy]');
   if (!btn) return;
-  const code = document.getElementById(btn.dataset.copy);
-  const msg = btn.parentElement.querySelector('.ui-code__status');
-  const say = (t) => { if (msg) { msg.textContent = t; clearTimeout(msg.t); msg.t = setTimeout(() => { msg.textContent = ''; }, 2400); } };
+  const code = document.getElementById(btn.dataset.copy ?? '');
+  if (!code) return;
+  const msg = btn.parentElement?.querySelector<Status>('.ui-code__status');
+  const say = (t: string) => { if (msg) { msg.textContent = t; clearTimeout(msg.t); msg.t = setTimeout(() => { msg.textContent = ''; }, 2400); } };
   try {
-    await navigator.clipboard.writeText(code.textContent);
+    await navigator.clipboard.writeText(code.textContent ?? '');
     say('Copied');
   } catch {
     const range = document.createRange();
     range.selectNodeContents(code);
     const sel = getSelection();
-    sel.removeAllRanges();
-    sel.addRange(range);
+    sel?.removeAllRanges();
+    sel?.addRange(range);
     say('Selected; press Ctrl or Cmd and C');
   }
 });
 
 // ---------------------------------------------------------------- frames
-function fit(frame) {
+function fit(frame: Frame) {
   const doc = frame.contentDocument;
   if (!doc || !doc.body) return;
   doc.documentElement.classList.add('is-embedded');
@@ -32,23 +39,25 @@ function fit(frame) {
     frame.style.height = `${h}px`;
     // A frame wider than the canvas is scaled down; the canvas takes the scaled height.
     const k = Number(frame.dataset.scale) || 1;
-    frame.parentElement.style.height = k < 1 ? `${Math.ceil(h * k)}px` : '';
+    if (frame.parentElement) frame.parentElement.style.height = k < 1 ? `${Math.ceil(h * k)}px` : '';
   };
   set();
-  if (!frame.observer && frame.contentWindow.ResizeObserver) {
-    frame.observer = new frame.contentWindow.ResizeObserver(set);
+  const win = frame.contentWindow as (Window & typeof globalThis) | null;
+  if (!frame.observer && win?.ResizeObserver) {
+    frame.observer = new win.ResizeObserver(set);
     frame.observer.observe(doc.body);
   }
   if (doc.fonts) doc.fonts.ready.then(set);
 }
-function whenLoaded(frame, fn) {
+function whenLoaded(frame: Frame, fn: (frame: Frame) => void) {
   frame.addEventListener('load', () => { frame.observer = null; fn(frame); });
   const doc = frame.contentDocument;
   if (doc && doc.readyState === 'complete' && doc.body && doc.body.childElementCount) fn(frame);
 }
 // Renders the frame at a given width; wider than the canvas, it is scaled to fit.
-function sizeFrame(frame, width) {
+function sizeFrame(frame: Frame, width: number) {
   const canvas = frame.parentElement;
+  if (!canvas) return;
   const avail = canvas.clientWidth;
   if (width && width > avail) {
     const k = avail / width;
@@ -67,37 +76,45 @@ function sizeFrame(frame, width) {
   }
   if (frame.contentDocument && frame.contentDocument.body) fit(frame);
 }
-document.querySelectorAll('.ui-canvas iframe').forEach((frame) => {
+document.querySelectorAll<Frame>('.ui-canvas iframe').forEach((frame) => {
   if (frame.dataset.initialWidth) sizeFrame(frame, Number(frame.dataset.initialWidth));
   whenLoaded(frame, fit);
 });
 
 // ---------------------------------------------------------------- toolbar
 document.addEventListener('click', (e) => {
-  const btn = e.target.closest('.ui-story__toolbar button');
-  if (!btn) return;
-  const story = btn.closest('.ui-story');
-  const frame = story.querySelector('iframe');
-  if (!('replay' in btn.dataset)) btn.parentElement.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+  const btn = target(e)?.closest<HTMLElement>('.ui-story__toolbar button');
+  const frame = btn?.closest('.ui-story')?.querySelector<Frame>('iframe');
+  if (!btn || !frame) return;
+  const kit = frame.contentWindow?.pdKit;
+  if (!('replay' in btn.dataset)) btn.parentElement?.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
   if ('width' in btn.dataset) sizeFrame(frame, Number(btn.dataset.width) || 0);
   if ('replay' in btn.dataset) {
-    if (frame.contentWindow.pdKit) frame.contentWindow.pdKit.replay();
+    kit?.replay();
     return;
   }
-  if ('step' in btn.dataset) {
-    if (frame.contentWindow.pdKit) frame.contentWindow.pdKit.step(Number(btn.dataset.step));
-  }
-  if ('theme' in btn.dataset) {
-    const apply = () => frame.contentWindow.uiTheme && frame.contentWindow.uiTheme(btn.dataset.theme);
-    frame.dataset.theme = btn.dataset.theme;
-    apply();
+  if ('step' in btn.dataset) kit?.step(Number(btn.dataset.step));
+  const theme = btn.dataset.theme;
+  if (theme !== undefined) {
+    frame.dataset.theme = theme;
+    frame.contentWindow?.uiTheme?.(theme);
   }
 });
 
 // ---------------------------------------------------------------- controls
 // Each schema edits a flat state; `build` turns it into the builder's input.
-const SCHEMA = {
-  stack: {
+type FieldValue = string | number | boolean | undefined;
+type FieldDef = { key: string; label: string; type: 'text' | 'number' | 'checkbox'; size?: 'short'; wide?: boolean };
+type Row = { word?: string; value?: number; to?: number; label?: string; sub?: string; accent?: boolean; outline?: boolean };
+type StackState = { eyebrow?: string; num?: string; sub?: string; prefix?: string; suffix?: string; decimals?: number; caption?: string; headroom?: number; max?: number; name: string; mark?: number | string; markLabel?: string; ledger: boolean; totalLabel?: string; rows: Row[] };
+type ColsState = { eyebrow?: string; values: string; start?: number; labelEvery?: number; prefix?: string; suffix?: string; max?: number; ticks: string; eventValue?: number | string; eventLabel?: string; eventSub?: string; marker?: string; totalLabel?: string; totalSub?: string; label?: string };
+type Schema<S> = { build: (s: S) => string; start: (demo: never) => S; top: FieldDef[]; row?: FieldDef[]; blank?: Row };
+// A state edited field by field, by key.
+type Editable = { [key: string]: unknown };
+const edit = (o: object, key: string, v: FieldValue) => { (o as Editable)[key] = v; };
+const read = (o: object, key: string) => (o as Editable)[key] as FieldValue;
+
+const stackSchema: Schema<StackState> = {
     build: (s) => stack({
       eyebrow: s.eyebrow, num: s.num, sub: s.sub, headroom: s.headroom || 1.12, max: s.max, prefix: s.prefix ?? '$', suffix: s.suffix ?? '', decimals: s.decimals, caption: s.caption,
       bars: [{ name: s.name, at: 1, segs: s.rows.map((r, i) => ({ word: r.word, value: r.value, to: r.to, accent: r.accent, outline: r.outline, at: i + 1 })), mark: s.mark === undefined || s.mark === '' ? undefined : { value: s.mark, label: s.markLabel, at: s.rows.length + 1 } }],
@@ -128,8 +145,13 @@ const SCHEMA = {
       { key: 'outline', label: 'Outline', type: 'checkbox' },
     ],
     blank: { word: 'part', value: 100, label: '', sub: '' },
-  },
-  cols: {
+    start: (d: StackOptions): StackState => {
+      const bar = d.bars?.[0];
+      const ledger = d.ledger ?? [];
+      return { eyebrow: d.eyebrow, num: d.num, sub: d.sub, prefix: d.prefix ?? '$', suffix: d.suffix ?? '', decimals: Number(d.decimals ?? 0), caption: d.caption ?? '', name: bar?.name ?? '', mark: bar?.mark?.value, markLabel: bar?.mark?.label, ledger: true, totalLabel: ledger.find((r) => r.total)?.label ?? 'Total', rows: (bar?.segs ?? []).map((sg, i) => ({ word: sg.word, value: Number(sg.value), accent: sg.accent, label: ledger[i]?.label, sub: ledger[i]?.sub })) };
+    },
+};
+const colsSchema: Schema<ColsState> = {
     build: (s) => cols({
       eyebrow: s.eyebrow, prefix: s.prefix, suffix: s.suffix, start: s.start, labelEvery: s.labelEvery || 5, max: s.max,
       values: String(s.values ?? '').split(',').map((v) => Number(v.trim())).filter((v) => Number.isFinite(v) && v >= 0),
@@ -155,9 +177,11 @@ const SCHEMA = {
       { key: 'totalSub', label: 'Under the total', type: 'text' },
       { key: 'label', label: 'The figure in one sentence, for screen readers', type: 'text', wide: true },
     ],
-  },
-  units: {
+    start: (d: ColsOptions): ColsState => ({ eyebrow: d.eyebrow, values: (d.values ?? []).join(', '), start: d.start, labelEvery: d.labelEvery, prefix: d.prefix, suffix: d.suffix ?? '', max: d.max === undefined ? undefined : Number(d.max), ticks: (d.ticks ?? []).join(', '), eventValue: d.event?.value, eventLabel: d.event?.label, eventSub: d.event?.sub, marker: d.event?.marker, totalLabel: d.total?.label, totalSub: d.total?.sub, label: d.label ?? '' }),
+};
+const unitsSchema: Schema<UnitsOptions> = {
     build: units,
+    start: (d: UnitsOptions) => ({ ...d }),
     top: [
       { key: 'num', label: 'Number', type: 'text', size: 'short' },
       { key: 'value', label: 'Units filled', type: 'number' },
@@ -165,17 +189,10 @@ const SCHEMA = {
       { key: 'label', label: 'The sentence after the number', type: 'text', wide: true },
       { key: 'source', label: 'Caption', type: 'text', wide: true },
     ],
-  },
-};
-// The demo data each schema starts from, flattened to the fields above.
-export const START = {
-  stack: (d) => ({ eyebrow: d.eyebrow, num: d.num, sub: d.sub, prefix: d.prefix ?? '$', suffix: d.suffix ?? '', decimals: d.decimals ?? 0, caption: d.caption ?? '', name: d.bars[0].name, mark: d.bars[0].mark?.value, markLabel: d.bars[0].mark?.label, ledger: true, totalLabel: d.ledger.find((r) => r.total)?.label ?? 'Total', rows: d.bars[0].segs.map((sg, i) => ({ word: sg.word, value: sg.value, accent: sg.accent, label: d.ledger[i]?.label, sub: d.ledger[i]?.sub })) }),
-  cols: (d) => ({ eyebrow: d.eyebrow, values: d.values.join(', '), start: d.start, labelEvery: d.labelEvery, prefix: d.prefix, suffix: d.suffix ?? '', max: d.max, ticks: d.ticks.join(', '), eventValue: d.event?.value, eventLabel: d.event?.label, eventSub: d.event?.sub, marker: d.event?.marker, totalLabel: d.total?.label, totalSub: d.total?.sub, label: d.label ?? '' }),
-  units: (d) => ({ ...d }),
 };
 
 let uid = 0;
-function field(f, value, onChange, prefix) {
+function field(f: FieldDef, value: FieldValue, onChange: (v: FieldValue) => void, prefix: string) {
   const id = `${prefix}-${f.key}-${(uid += 1)}`;
   const wrap = document.createElement('label');
   const short = f.size === 'short' || f.type === 'number';
@@ -186,9 +203,10 @@ function field(f, value, onChange, prefix) {
   input.type = f.type === 'number' ? 'text' : f.type;
   if (f.type === 'number') input.inputMode = 'decimal';
   if (f.type === 'checkbox') input.checked = Boolean(value);
-  else input.value = value ?? '';
+  else input.value = String(value ?? '');
   input.addEventListener(f.type === 'checkbox' ? 'change' : 'input', () => {
-    const v = f.type === 'checkbox' ? input.checked : input.value;
+    if (f.type === 'checkbox') { onChange(input.checked); return; }
+    const v = input.value;
     onChange(f.type === 'number' ? (v.trim() === '' ? undefined : Number(v.replace(/,/g, ''))) : v);
   });
   const text = document.createElement('span');
@@ -198,13 +216,16 @@ function field(f, value, onChange, prefix) {
   return wrap;
 }
 
-document.querySelectorAll('[data-controls]').forEach((box) => {
-  const schema = SCHEMA[box.dataset.controls];
-  const start = START[box.dataset.controls](JSON.parse(box.querySelector('script[type="application/json"]').textContent));
+// Builds the controls for one figure: its fields, one set per row, and the buttons, and rebuilds the
+// figure and its snippet on every edit.
+function mount<S extends object>(box: HTMLElement, schema: Schema<S>, demo: unknown) {
+  const start = (schema.start as (d: unknown) => S)(demo);
   let state = structuredClone(start);
-  const story = box.parentElement.querySelector('.ui-story');
-  const frame = story.querySelector('iframe');
-  const code = story.querySelector('code');
+  const story = box.parentElement?.querySelector('.ui-story');
+  const frame = story?.querySelector<Frame>('iframe');
+  const code = story?.querySelector('code');
+  if (!frame || !code) return;
+  const rowsOf = () => ((state as Editable).rows ?? []) as Row[];
 
   const render = () => {
     const html = schema.build(state);
@@ -212,8 +233,8 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
     const slot = frame.contentDocument && frame.contentDocument.querySelector('.ui-frame__slot');
     if (slot) {
       slot.innerHTML = html;
-      if (frame.dataset.theme) frame.contentWindow.uiTheme(frame.dataset.theme);
-      if (frame.contentWindow.uiRefresh) frame.contentWindow.uiRefresh();
+      if (frame.dataset.theme) frame.contentWindow?.uiTheme?.(frame.dataset.theme);
+      frame.contentWindow?.uiRefresh?.();
     }
   };
   whenLoaded(frame, () => render());
@@ -223,23 +244,24 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
     const top = document.createElement('fieldset');
     top.className = 'ui-controls__top';
     top.innerHTML = '<legend class="label">Figure</legend>';
-    schema.top.forEach((f) => top.append(field(f, state[f.key], (v) => { state[f.key] = v; render(); }, 'top')));
+    schema.top.forEach((f) => top.append(field(f, read(state, f.key), (v) => { edit(state, f.key, v); render(); }, 'top')));
     const rows = document.createElement('div');
     rows.className = 'ui-controls__rows';
-    if (!schema.row) { box.append(top); return; }
-    state.rows.forEach((row, i) => {
+    const rowFields = schema.row;
+    if (!rowFields) { box.append(top); return; }
+    rowsOf().forEach((row, i) => {
       const set = document.createElement('fieldset');
       set.className = 'ui-controls__row';
       const legend = document.createElement('legend');
       legend.className = 'label';
       legend.textContent = `Row ${i + 1}`;
       set.append(legend);
-      schema.row.forEach((f) => set.append(field(f, row[f.key], (v) => { row[f.key] = v; render(); }, `r${i}`)));
+      rowFields.forEach((f) => set.append(field(f, read(row, f.key), (v) => { edit(row, f.key, v); render(); }, `r${i}`)));
       const remove = document.createElement('button');
       remove.type = 'button';
       remove.className = 'pd-text-btn ui-controls__remove';
       remove.textContent = `Remove row ${i + 1}`;
-      remove.addEventListener('click', () => { state.rows.splice(i, 1); draw(); render(); });
+      remove.addEventListener('click', () => { rowsOf().splice(i, 1); draw(); render(); });
       set.append(remove);
       rows.append(set);
     });
@@ -249,7 +271,7 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
     add.type = 'button';
     add.className = 'ui-btn';
     add.textContent = 'Add a row';
-    add.addEventListener('click', () => { state.rows.push({ ...schema.blank }); draw(); render(); });
+    add.addEventListener('click', () => { rowsOf().push({ ...schema.blank }); draw(); render(); });
     const reset = document.createElement('button');
     reset.type = 'button';
     reset.className = 'pd-text-btn';
@@ -259,4 +281,11 @@ document.querySelectorAll('[data-controls]').forEach((box) => {
     box.append(top, rows, actions);
   };
   draw();
+}
+
+const SCHEMAS: Record<string, Schema<StackState> | Schema<ColsState> | Schema<UnitsOptions>> = { stack: stackSchema, cols: colsSchema, units: unitsSchema };
+document.querySelectorAll<HTMLElement>('[data-controls]').forEach((box) => {
+  const schema = SCHEMAS[box.dataset.controls ?? ''];
+  const demo = box.querySelector('script[type="application/json"]')?.textContent;
+  if (schema && demo) mount(box, schema as Schema<object>, JSON.parse(demo));
 });

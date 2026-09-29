@@ -1,8 +1,8 @@
 ---
 import Styleguide from '../../layouts/Styleguide.astro';
 import UiTable from '../../components/ui/UiTable.astro';
-import { colorTokens, typeSteps, typeTokens, spaceTokens, gridTokens, behaviorTokens } from '../../styleguide/tokens.mjs';
-import { BREAKPOINTS, COLUMN_BREAKPOINTS, TYPE_SCALE } from '../../styleguide/components.mjs';
+import { colorTokens, typeSteps, typeTokens, spaceTokens, gridTokens, behaviorTokens } from '../../styleguide/tokens.ts';
+import { BREAKPOINTS, COLUMN_BREAKPOINTS, TYPE_SCALE } from '../../styleguide/components.ts';
 
 const tokens = colorTokens(process.cwd());
 // The scale's sizes come from site-shell.css; what each step is for comes from the registry.
@@ -25,7 +25,7 @@ const base = typeTokens(process.cwd());
 const space = spaceTokens(process.cwd());
 const grid = gridTokens(process.cwd());
 const { motion, focus, stack } = behaviorTokens(process.cwd());
-const GRID_USE = {
+const GRID_USE: Record<string, string> = {
   '--container-page': 'The page: header, footer, service pages',
   '--container-article': 'An article, and the width a calculator or pinned sequence widens to',
   '--gutter': 'Inside each container; 20px below 760',
@@ -39,17 +39,17 @@ const GRID_USE = {
   '--measure-1': 'Wide text: tables of notes, the styleguide',
 };
 // What each motion, focus and stacking token is for; the values come from site-shell.css.
-const MOTION_USE = {
+const MOTION_USE: Record<string, string> = {
   '--pd-ease': 'Every transition: fast out, slow settle.',
   '--pd-fast': 'A unit filling, a label appearing.',
   '--pd-base': 'A bar or a ledger row arriving, a line dropping in, a column rising.',
   '--pd-slow': 'A segment growing, an illustration rising into place.',
 };
-const FOCUS_USE = {
+const FOCUS_USE: Record<string, string> = {
   '--focus-offset': 'The default ring: links, buttons, fields and summaries',
   '--focus-offset-tight': 'The smaller controls in figures and calculators, and the /ui buttons',
 };
-const STACK_USE = {
+const STACK_USE: Record<string, string> = {
   '--z-table-head': 'A wide table\'s first column, pinned while the table scrolls sideways on phones',
   '--z-scrolly-steps': 'The steps of a pinned sequence',
   '--z-scrolly-pin': 'The pinned card below 1180, over the steps that scroll under it',
@@ -58,7 +58,7 @@ const STACK_USE = {
   '--z-skip': 'The skip link, over everything',
 };
 // What each base token is for; the values come from site-shell.css.
-const USE = {
+const USE: Record<string, string> = {
   '--font-display': 'Archivo Black: titles, section headings, big numbers',
   '--font-serif': 'Source Serif 4: reading text, decks, pull quotes',
   '--font-sans': 'IBM Plex Sans: everything else, and the body default',
@@ -74,7 +74,7 @@ const USE = {
   '--leading-cap': 'The drop cap\'s box, so it sits on the lines beside it',
   '--tracking-caps': 'Small capitals; everything else is 0',
 };
-const minus = (n) => (n < 0 ? `\u2212${Math.abs(n)}` : String(n));
+const minus = (n: number) => (n < 0 ? `\u2212${Math.abs(n)}` : String(n));
 // Where the reading sizes sit at each width.
 const ROLES = [
   ['Body text', 'Source Serif 4, old-style numerals', '17', '20', '20'],

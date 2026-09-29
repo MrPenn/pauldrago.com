@@ -9,10 +9,30 @@
 //   /* style-ok: rule-id (reason) */      in CSS and scripts
 import { readFileSync, existsSync, statSync, readdirSync } from 'node:fs';
 import { join, basename } from 'node:path';
-import { BAR_MAX, readNumber, offScale, num } from './build.mjs';
-import { SIGNATURE_DEVICES, BREAKPOINTS, COLUMN_BREAKPOINTS } from './components.mjs';
+import { BAR_MAX, readNumber, offScale, num } from './build.ts';
+import { SIGNATURE_DEVICES, BREAKPOINTS, COLUMN_BREAKPOINTS } from './components.ts';
 
-export const RULES = [
+export type Severity = 'error' | 'warn' | 'info';
+export type Rule = { id: string; severity: Severity; group: string; title: string; why: string; fix?: string; bad?: string; good?: string };
+export type Finding = { file: string; line: number; col: number; rule: string; severity: Severity; message: string; fix: string };
+// Where a finding sits: an offset into the file, or a line and column already worked out.
+type Where = number | { line: number; col: number };
+type Extra = { severity?: Severity; fix?: string };
+export type Report = (id: string, index: Where, message: string, extra?: Extra) => void;
+// A style rule as parseCss reads it, with offsets into the original text.
+export type Declaration = { prop: string; value: string; index: number };
+export type CssRule = { selector: string; declarations: Declaration[]; print: boolean; keyframes: boolean; index: number; context: string[] };
+// Front matter as frontMatter reads it: a scalar, a quoted string, or a list of strings.
+export type FrontValue = string | boolean | string[];
+export type FrontData = Record<string, FrontValue | undefined>;
+// The site an article is linted against.
+export type ArticleInfo = { path: string; source: string; data: FrontData; slug: string; date: Date; draft: boolean; devices: string[] };
+export type LintContext = { root: string; registryIds?: Set<string>; classesFor?: (hrefs: string[]) => Set<string>; articles?: Pick<ArticleInfo, 'slug' | 'date' | 'draft' | 'devices'>[] };
+
+// A front matter value that should be a list of strings, whatever was written.
+const list = (v: FrontValue | undefined): string[] => (Array.isArray(v) ? v : []);
+
+export const RULES: Rule[] = [
   // Front matter
   { id: 'fm-brief', severity: 'error', group: 'Front matter', title: 'The short version has three to six points', why: 'Every article opens with the same numbered summary; fewer than three is not the argument, more than six is the article again.', fix: 'Add or merge points in the brief list.', good: "brief:\n  - 'A finding with its number.'\n  - 'A second finding.'\n  - 'What changes: the changes.'" },
   { id: 'fm-description', severity: 'warn', group: 'Front matter', title: 'The dek runs 70 to 200 characters', why: 'The description is the dek under the title and the search snippet; search engines cut it near 160 characters.', fix: 'State the argument in two sentences.' },
@@ -81,40 +101,41 @@ const RULE = Object.fromEntries(RULES.map((r) => [r.id, r]));
 
 // ------------------------------------------------------------------ helpers
 
-const lineOf = (text, index) => {
+const lineOf = (text: string, index: number) => {
   let line = 1;
   let last = -1;
   for (let i = 0; i < index && i < text.length; i++) if (text[i] === '\n') { line += 1; last = i; }
   return { line, col: index - last };
 };
 
-const plainText = (html) => String(html)
+const plainText = (html: unknown) => String(html)
   .replace(/<[^>]+>/g, ' ')
   .replace(/&[a-z]+;|&#\d+;/gi, ' ')
   .replace(/\s+/g, ' ')
   .trim();
-const words = (s) => plainText(s).split(' ').filter(Boolean).length;
+const words = (s: string) => plainText(s).split(' ').filter(Boolean).length;
 
 // Suppressions: line number -> set of rule ids ('*' when the comment names none we know).
-function suppressions(text) {
-  const map = new Map();
+function suppressions(text: string) {
+  const map = new Map<number, Set<string>>();
   const re = /(?:<!--|\/\*)\s*style-ok:\s*([^*]*?)(?:-->|\*\/)/g;
   for (const m of text.matchAll(re)) {
     const { line } = lineOf(text, m.index);
-    const ids = m[1].replace(/\(.*$/s, '').split(/[\s,]+/).filter((t) => RULE[t]);
-    const set = map.get(line) ?? new Set();
+    const ids = (m[1] ?? '').replace(/\(.*$/s, '').split(/[\s,]+/).filter((t) => RULE[t]);
+    const set = map.get(line) ?? new Set<string>();
     (ids.length ? ids : ['*']).forEach((id) => set.add(id));
     map.set(line, set);
   }
   return map;
 }
-const suppressed = (map, line, id) => [line, line - 1].some((l) => map.get(l)?.has(id) || map.get(l)?.has('*'));
+const suppressed = (map: Map<number, Set<string>>, line: number, id: string) => [line, line - 1].some((l) => map.get(l)?.has(id) || map.get(l)?.has('*'));
 
-function makeReporter(file, text) {
+function makeReporter(file: string, text: string) {
   const sup = suppressions(text);
-  const findings = [];
-  const report = (id, index, message, extra = {}) => {
+  const findings: Finding[] = [];
+  const report: Report = (id, index, message, extra = {}) => {
     const rule = RULE[id];
+    if (!rule) throw new Error(`lint: no rule named ${id}`);
     const { line, col } = typeof index === 'object' ? index : lineOf(text, index);
     if (suppressed(sup, line, id)) return;
     findings.push({ file, line, col, rule: id, severity: extra.severity ?? rule.severity, message, fix: extra.fix ?? rule.fix ?? '' });
@@ -124,13 +145,15 @@ function makeReporter(file, text) {
 
 // A small reader for the front matter these articles use: scalars, quoted strings, inline
 // arrays, and lists of quoted strings.
-export function frontMatter(source) {
+export function frontMatter(source: string): { data: FrontData; bodyStart: number; lines: Record<string, number>; items: Record<string, number[]> } {
   const m = source.match(/^---\n([\s\S]*?)\n---\n?/);
-  if (!m) return { data: {}, bodyStart: 0, lines: {} };
-  const data = {};
-  const lines = {};
-  let listKey = null;
-  const unquote = (v) => {
+  if (!m) return { data: {}, bodyStart: 0, lines: {}, items: {} };
+  const data: FrontData = {};
+  // The line each key sits on, and the lines of each item in a list.
+  const lines: Record<string, number> = {};
+  const items: Record<string, number[]> = {};
+  let listKey: string | null = null;
+  const unquote = (v: string) => {
     v = v.trim();
     if (v.startsWith("'") && v.endsWith("'")) return v.slice(1, -1).replace(/''/g, "'");
     if (v.startsWith('"') && v.endsWith('"')) return v.slice(1, -1).replace(/\\"/g, '"');
@@ -138,40 +161,40 @@ export function frontMatter(source) {
     if (v === 'false') return false;
     return v;
   };
-  m[1].split('\n').forEach((raw, i) => {
+  (m[1] ?? '').split('\n').forEach((raw, i) => {
     const item = raw.match(/^\s+-\s+(.*)$/);
     if (item && listKey) {
-      data[listKey].push(unquote(item[1]));
-      (lines[listKey + '[]'] ??= []).push(i + 2);
+      list(data[listKey]).push(String(unquote(item[1] ?? '')));
+      (items[listKey] ??= []).push(i + 2);
       return;
     }
     const kv = raw.match(/^([A-Za-z_][\w-]*):\s*(.*)$/);
     if (!kv) return;
-    const [, key, value] = kv;
+    const [, key = '', value = ''] = kv;
     lines[key] = i + 2;
     if (value === '') { data[key] = []; listKey = key; return; }
     listKey = null;
     if (value.startsWith('[')) {
-      data[key] = [...value.matchAll(/"([^"]*)"|'([^']*)'/g)].map((x) => x[1] ?? x[2]);
+      data[key] = [...value.matchAll(/"([^"]*)"|'([^']*)'/g)].map((x) => x[1] ?? x[2] ?? '');
     } else data[key] = unquote(value);
   });
-  return { data, bodyStart: m[0].length, lines };
+  return { data, bodyStart: m[0].length, lines, items };
 }
 
 // Blanks out code fences and HTML comments, keeping every newline so offsets still map to lines.
-const blank = (s) => s.replace(/[^\n]/g, ' ');
-export const maskBody = (body) => body.replace(/^```[\s\S]*?^```/gm, blank).replace(/<!--[\s\S]*?-->/g, blank);
+const blank = (s: string) => s.replace(/[^\n]/g, ' ');
+export const maskBody = (body: string) => body.replace(/^```[\s\S]*?^```/gm, blank).replace(/<!--[\s\S]*?-->/g, blank);
 
 // ------------------------------------------------------------------ images
 
-export function imageSize(path) {
+export function imageSize(path: string) {
   const b = readFileSync(path);
   if (b.length > 24 && b.readUInt32BE(0) === 0x89504e47) return { w: b.readUInt32BE(16), h: b.readUInt32BE(20) };
   if (b.length > 4 && b[0] === 0xff && b[1] === 0xd8) {
     let i = 2;
     while (i < b.length) {
       if (b[i] !== 0xff) { i += 1; continue; }
-      const marker = b[i + 1];
+      const marker = b[i + 1] ?? 0;
       if (marker >= 0xc0 && marker <= 0xcf && ![0xc4, 0xc8, 0xcc].includes(marker)) return { w: b.readUInt16BE(i + 7), h: b.readUInt16BE(i + 5) };
       i += 2 + b.readUInt16BE(i + 2);
     }
@@ -194,16 +217,17 @@ export function imageSize(path) {
 // Walks a stylesheet into style rules: { selector, declarations: [{ prop, value, index }], index,
 // print, context } with offsets into the original text; context lists the enclosing at-rules.
 // Comments are blanked first.
-export function parseCss(text) {
+type Frame = { kind: 'group' | 'at' | 'rule'; prelude: string; print: boolean; bodyStart: number; keyframes: boolean };
+export function parseCss(text: string): CssRule[] {
   const src = text.replace(/\/\*[\s\S]*?\*\//g, blank);
-  const rules = [];
-  const stack = [];
+  const rules: CssRule[] = [];
+  const stack: Frame[] = [];
   let start = 0;
   for (let i = 0; i < src.length; i++) {
     const ch = src[i];
     if (ch === '{') {
       const prelude = src.slice(start, i).trim();
-      const kind = prelude.startsWith('@') ? (/^@(media|supports|container|layer|keyframes|document)/.test(prelude) ? 'group' : 'at') : 'rule';
+      const kind: Frame['kind'] = prelude.startsWith('@') ? (/^@(media|supports|container|layer|keyframes|document)/.test(prelude) ? 'group' : 'at') : 'rule';
       const print = stack.some((s) => s.print) || (kind === 'group' && /^@media\s+print/.test(prelude));
       const frame = { kind, prelude, print, bodyStart: i + 1, keyframes: /^@keyframes/.test(prelude) || stack.some((s) => s.keyframes) };
       stack.push(frame);
@@ -212,30 +236,30 @@ export function parseCss(text) {
       const frame = stack.pop();
       if (frame && (frame.kind === 'rule' || frame.kind === 'at')) {
         const body = src.slice(frame.bodyStart, i);
-        const declarations = [];
+        const declarations: Declaration[] = [];
         let off = frame.bodyStart;
         for (const part of body.split(';')) {
           const m = part.match(/^(\s*)([-\w]+)\s*:\s*([\s\S]*?)\s*$/);
-          if (m) declarations.push({ prop: m[2].toLowerCase(), value: m[3], index: off + m[1].length });
+          if (m) declarations.push({ prop: (m[2] ?? '').toLowerCase(), value: m[3] ?? '', index: off + (m[1] ?? '').length });
           off += part.length + 1;
         }
         rules.push({ selector: frame.prelude, declarations, print: frame.print, keyframes: frame.keyframes, index: frame.bodyStart, context: stack.map((f) => f.prelude) });
       }
       start = i + 1;
-    } else if (ch === ';' && (!stack.length || stack[stack.length - 1].kind === 'group')) {
+    } else if (ch === ';' && (!stack.length || stack.at(-1)?.kind === 'group')) {
       start = i + 1;
     }
   }
   return rules;
 }
 
-export const cssClasses = (text) => new Set(
-  parseCss(text).flatMap((r) => [...r.selector.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)].map((m) => m[1])),
+export const cssClasses = (text: string) => new Set(
+  parseCss(text).flatMap((r) => [...r.selector.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)].map((m) => m[1] ?? '')),
 );
 
 // The base tokens site-shell.css defines for faces, weights, line spacing and tracking.
 const CSS_KEYWORD = /^(?:inherit|initial|unset|revert|revert-layer)$/i;
-const TYPE_TOKENS = {
+const TYPE_TOKENS: Record<string, [RegExp, string]> = {
   'font-family': [/^var\(--font-(?:display|serif|sans|mono)\)$/, 'var(--font-display), var(--font-serif), var(--font-sans) or var(--font-mono)'],
   'font-weight': [/^var\(--weight-(?:regular|semibold|bold)\)$/, 'var(--weight-regular), var(--weight-semibold) or var(--weight-bold)'],
   'line-height': [/^(?:0|normal|var\(--leading-(?:display|heading|snug|text|body|cap)\))$/, 'a --leading token, or 0'],
@@ -243,20 +267,21 @@ const TYPE_TOKENS = {
 };
 // A declaration's type values that are not base tokens, as [property, value] pairs. The font
 // shorthand is read as weight, size/line-height and family.
-function offTokens(prop, value) {
+const token = (prop: string) => TYPE_TOKENS[prop]?.[0] ?? /(?:)/;
+function offTokens(prop: string, value: string): [string, string][] {
   const v = value.replace(/\s*!important\s*$/i, '').trim();
   if (CSS_KEYWORD.test(v)) return [];
-  if (TYPE_TOKENS[prop]) return TYPE_TOKENS[prop][0].test(v) ? [] : [[prop, v]];
+  if (TYPE_TOKENS[prop]) return token(prop).test(v) ? [] : [[prop, v]];
   if (prop !== 'font') return [];
-  const out = [];
+  const out: [string, string][] = [];
   const words = v.match(/(?:[^\s(,]+|\([^)]*\))+|,/g) ?? [];
   const at = words.findIndex((w) => shorthandSize(w) !== null);
   if (at < 0) return [];
-  for (const w of words.slice(0, at)) if (/^(?:\d+|bold|bolder|lighter|var\(--weight-[\w-]+\))$/.test(w) && !TYPE_TOKENS['font-weight'][0].test(w)) out.push(['font-weight', w]);
-  const lh = words[at].split('/')[1];
-  if (lh && !TYPE_TOKENS['line-height'][0].test(lh)) out.push(['line-height', lh]);
+  for (const w of words.slice(0, at)) if (/^(?:\d+|bold|bolder|lighter|var\(--weight-[\w-]+\))$/.test(w) && !token('font-weight').test(w)) out.push(['font-weight', w]);
+  const lh = (words[at] ?? '').split('/')[1];
+  if (lh && !token('line-height').test(lh)) out.push(['line-height', lh]);
   const family = words.slice(at + 1).join(' ').replace(/\s+,/g, ',');
-  if (family && !TYPE_TOKENS['font-family'][0].test(family)) out.push(['font-family', family]);
+  if (family && !token('font-family').test(family)) out.push(['font-family', family]);
   return out;
 }
 
@@ -265,7 +290,7 @@ const COLUMN_SCALE = COLUMN_BREAKPOINTS.map((b) => b.px);
 
 // One width query, from @media, @container or matchMedia: every width it names must be on `scale`,
 // and it must be written in range syntax. The lookahead reads both ends of (760px <= width < 1040px).
-function checkQuery(report, index, name, shown, q, scale, scaleName, extra = {}) {
+function checkQuery(report: Report, index: number, name: string, shown: string, q: string, scale: number[], scaleName: string, extra: Extra = {}) {
   const widths = [...q.matchAll(/\((?:min|max)-(?:width|inline-size)\s*:\s*([\d.]+)px\)|(?:width|inline-size)\s*[<>]=?\s*([\d.]+)px|([\d.]+)px\s*[<>]=?\s*(?=width|inline-size)/g)];
   for (const w of widths.map((r) => Number(r[1] ?? r[2] ?? r[3]))) {
     if (!scale.includes(w)) report('css-breakpoint', index, `${name} uses ${w}px, which is not on the ${scaleName} (${scale.join(', ')})`, extra);
@@ -278,7 +303,7 @@ function checkQuery(report, index, name, shown, q, scale, scaleName, extra = {})
 const TABLE_PART = /^(?:thead|tbody|tfoot|tr|th|td)(?![-\w])/i;
 const TABLE_DISPLAY = /^(?:none|table(?:-[\w-]+)?|inherit|initial|unset|revert|revert-layer|var\(.*)$/i;
 // True when every query in an @media list holds only below 760px, or only in print.
-const phoneOrPrint = (prelude) => /^@media\b/.test(prelude) && prelude.replace(/^@media\s+/, '').split(',').every((q) => {
+const phoneOrPrint = (prelude: string) => /^@media\b/.test(prelude) && prelude.replace(/^@media\s+/, '').split(',').every((q) => {
   if (/^\s*not\b/.test(q)) return false;
   if (/\bprint\b/.test(q)) return true;
   return [...q.matchAll(/width\s*(<=?)\s*([\d.]+)px|([\d.]+)px\s*(>=?)\s*width|max-width\s*:\s*([\d.]+)px/g)].some((m) => {
@@ -293,22 +318,22 @@ const STEPS = new Set(Array.from({ length: 13 }, (_, i) => i - 2));
 const TITLES = new Set(['section', 'sub', 'lead']);
 // A size is a step (var(--step-1)), a title size (var(--title-section)), or it takes its parent's
 // (inherit and its kin).
-function offScaleSize(v) {
+function offScaleSize(v: string) {
   const size = v.replace(/\s*!important\s*$/i, '').trim();
   if (/^(?:inherit|initial|unset|revert|revert-layer)$/i.test(size)) return null;
   const step = size.match(/^var\(--step-(-?\d+)\)$/);
   if (step && STEPS.has(Number(step[1]))) return null;
   const title = size.match(/^var\(--title-([a-z]+)\)$/);
-  if (title && TITLES.has(title[1])) return null;
+  if (title && TITLES.has(title[1] ?? '')) return null;
   return size;
 }
 // Spacing: every part of a margin, padding or gap is a --space step, the gutter, 0, auto, a percentage,
 // a viewport unit or a 1px hairline; a calc() may combine those. Text measures and containers are grid tokens.
 const SPACE_PROP = /^(?:margin|padding)(?:-(?:top|right|bottom|left|block|inline|block-start|block-end|inline-start|inline-end))?$|^(?:gap|row-gap|column-gap)$/;
-function offSpace(value) {
+function offSpace(value: string) {
   const v = value.replace(/\s*!important\s*$/i, '').trim();
   if (CSS_KEYWORD.test(v)) return [];
-  const bad = [];
+  const bad: string[] = [];
   for (const w of v.match(/(?:[^\s(]+\([^()]*(?:\([^()]*\)[^()]*)*\)[^\s]*|[^\s]+)/g) ?? []) {
     if (/^(?:0|auto|-?1px|-?[\d.]+(?:%|vh|vw|svh|dvh|lvh))$/.test(w)) continue;
     if (/^var\(--(?:space-(?:half|\d+)|gutter|rail-gap)\)$/.test(w)) continue;
@@ -317,18 +342,18 @@ function offSpace(value) {
   }
   return bad;
 }
-const offGrid = (prop, value) => {
-  const bad = [];
+const offGrid = (prop: string, value: string) => {
+  const bad: string[] = [];
   if (/^(?:max-width|width|min-width)$/.test(prop)) for (const m of value.matchAll(/(\d+(?:\.\d+)?)ch\b/g)) if (Number(m[1]) >= 26) bad.push(`${m[0]} (a text measure: use a --measure token)`);
   for (const m of value.matchAll(/\b(1240|1060)px\b/g)) bad.push(`${m[0]} (a container: use var(--container-page) or var(--container-article))`);
   return bad;
 };
 
 // The size inside a font shorthand: the first word that is a length or a step, before any /line-height.
-function shorthandSize(v) {
+function shorthandSize(v: string) {
   if (/^\s*(?:inherit|initial|unset|revert|revert-layer)\s*$/i.test(v)) return null;
   for (const word of v.match(/(?:[^\s(]+|\([^)]*\))+/g) ?? []) {
-    const size = word.split('/')[0];
+    const size = word.split('/')[0] ?? '';
     if (/^(?:var\(--(?!weight-|font-|leading-|tracking-)[\w-]+\)|-?[\d.]+(?:px|rem|em|%|pt)|clamp\(|calc\()/.test(size)) return size;
   }
   return null;
@@ -341,7 +366,7 @@ export const LAYERS = ['base', 'site', 'kit', 'page', 'utilities'];
 const BEM_NAME = /^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:__[a-z0-9]+(?:-[a-z0-9]+)*)?(?:--[a-z0-9]+(?:-[a-z0-9]+)*)?$/;
 export const STATES = ['is-active', 'is-alt', 'is-armed', 'is-current', 'is-embedded', 'is-hot', 'is-landing', 'is-live', 'is-narrow', 'is-on', 'is-open', 'is-scaled', 'is-shown', 'is-tight', 'is-unpinned', 'is-wrong'];
 
-function checkBem(report, rule) {
+function checkBem(report: Report, rule: CssRule) {
   const selector = rule.selector.replace(/\[[^\]]*\]/g, '');
   for (const [, n] of selector.matchAll(/\.(-?[_a-zA-Z][\w-]*)/g)) {
     if (n.startsWith('is-')) {
@@ -357,14 +382,14 @@ function checkBem(report, rule) {
   }
 }
 
-export function lintCss(file, text) {
+export function lintCss(file: string, text: string) {
   const { findings, report } = makeReporter(file, text);
   const src = text.replace(/\/\*[\s\S]*?\*\//g, blank);
   // Media queries: widths from the scale only, written in range syntax.
-  for (const m of src.matchAll(/@media\s+([^{]+)\{/g)) checkQuery(report, m.index, '@media', `@media ${m[1].trim()}`, m[1], SCALE, 'scale');
+  for (const m of src.matchAll(/@media\s+([^{]+)\{/g)) checkQuery(report, m.index, '@media', `@media ${(m[1] ?? '').trim()}`, m[1] ?? '', SCALE, 'scale');
   // Container queries: widths from the column scale, in range syntax.
   const columnFix = { fix: `Use a width from the column scale (${COLUMN_SCALE.join(', ')}), in range syntax: @container column (width < 560px).` };
-  for (const m of src.matchAll(/@container\s+([^{]+)\{/g)) checkQuery(report, m.index, '@container', `@container ${m[1].trim()}`, m[1], COLUMN_SCALE, 'column scale', columnFix);
+  for (const m of src.matchAll(/@container\s+([^{]+)\{/g)) checkQuery(report, m.index, '@container', `@container ${(m[1] ?? '').trim()}`, m[1] ?? '', COLUMN_SCALE, 'column scale', columnFix);
   for (const rule of parseCss(text)) {
     // A style rule sits in a layer; @page and @font-face describe the paper and the fonts, not the document.
     if (!/^@(?:page|font-face)\b/.test(rule.selector) && !rule.context.some((c) => /^@page\b/.test(c))) {
@@ -374,7 +399,7 @@ export function lintCss(file, text) {
     }
     if (!rule.selector.startsWith('@')) checkBem(report, rule);
     const parts = rule.selector.split(',').map((s) => s.trim()).filter((s) => {
-      const subject = s.split(/\s*[>+~]\s*|\s+/).pop();
+      const subject = s.split(/\s*[>+~]\s*|\s+/).pop() ?? '';
       return TABLE_PART.test(subject) && !/::?(?:before|after|marker)/i.test(subject);
     });
     if (parts.length && !rule.print && !rule.context.some(phoneOrPrint)) {
@@ -397,7 +422,7 @@ export function lintCss(file, text) {
       if (!rule.print && SPACE_PROP.test(d.prop)) for (const off of offSpace(v)) report('space-tokens', d.index, `${d.prop}: ${off} is not a step of the spacing scale`, { fix: 'Use var(--space-half) to var(--space-32), or var(--gutter); /ui/foundations lists the scale.' });
       if (!rule.print) for (const off of offGrid(d.prop, v)) report('space-tokens', d.index, `${d.prop}: ${off}`);
       for (const [prop, off] of offTokens(d.prop, v)) {
-        report('type-tokens', d.index, `${prop}: ${off} is not a base token`, { fix: `Use ${TYPE_TOKENS[prop][1]}, from site-shell.css.` });
+        report('type-tokens', d.index, `${prop}: ${off} is not a base token`, { fix: `Use ${TYPE_TOKENS[prop]?.[1]}, from site-shell.css.` });
       }
       if (d.prop.includes('radius')) {
         // 50% draws a circle (a dot or a marker), which is a shape rather than a rounded card.
@@ -420,9 +445,9 @@ export function lintCss(file, text) {
 
 // A script that asks matchMedia for a width asks the stylesheet's question, so it uses the same scale
 // and range syntax. Queries without a width (prefers-reduced-motion) pass untouched.
-export function lintScript(file, text) {
+export function lintScript(file: string, text: string) {
   const { findings, report } = makeReporter(file, text);
-  for (const m of text.matchAll(/matchMedia\s*\(\s*(['"`])([^'"`]*)\1/g)) checkQuery(report, m.index, 'matchMedia', `matchMedia('${m[2]}')`, m[2], SCALE, 'scale');
+  for (const m of text.matchAll(/matchMedia\s*\(\s*(['"`])([^'"`]*)\1/g)) checkQuery(report, m.index, 'matchMedia', `matchMedia('${m[2]}')`, m[2] ?? '', SCALE, 'scale');
   return findings;
 }
 
@@ -431,36 +456,38 @@ export function lintScript(file, text) {
 const ROOT_CSS = ['/assets/site-shell.css', '/assets/article.css'];
 const TITLE_MINOR = new Set(['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'so', 'yet', 'as', 'at', 'by', 'in', 'of', 'on', 'to', 'up', 'via', 'vs']);
 const COLOPHON = /^(about the numbers|sources|notes|method|methodology)$/i;
-const FIGURE_NAMES = { tl: 'timeline', units: 'unit stat', stack: 'stacked bar', cols: 'rising columns chart', asof: 'as-of slider', stat: 'stat line', bars: 'bar chart' };
+const FIGURE_NAMES: Record<string, string> = { tl: 'timeline', units: 'unit stat', stack: 'stacked bar', cols: 'rising columns chart', asof: 'as-of slider', stat: 'stat line', bars: 'bar chart' };
 const FIGURE_TYPES = /\b(?:pd|cd)-(bars|tl|markets|widget|stat|record|units|stack|cols|calc|asof)\b/;
 
-export function isTitleCase(title) {
+export function isTitleCase(title: string) {
   const ws = title.replace(/[^\w\s'-]/g, ' ').split(/\s+/).filter(Boolean);
   return ws.every((w, i) => i === 0 || i === ws.length - 1 || TITLE_MINOR.has(w.toLowerCase()) || /^[A-Z0-9]/.test(w));
 }
 // Title case: three or more words, and every word past the first that is not a minor word is capitalized.
-export function looksTitleCased(heading) {
+export function looksTitleCased(heading: string) {
   const ws = heading.replace(/[^\w\s'-]/g, ' ').split(/\s+/).filter(Boolean).slice(1).filter((w) => !TITLE_MINOR.has(w.toLowerCase()) && /^[a-z]/i.test(w));
   return ws.length >= 2 && ws.every((w) => /^[A-Z]/.test(w));
 }
 
 // Registry ids from src/data/components/*.ts, read as text so this module needs no TypeScript.
-export function registryIds(root) {
+export function registryIds(root: string) {
   const dir = join(root, 'src/data/components');
-  const ids = new Set();
+  const ids = new Set<string>();
   if (!existsSync(dir)) return ids;
   for (const f of readdirSync(dir).filter((x) => x.endsWith('.ts'))) {
-    for (const m of readFileSync(join(dir, f), 'utf8').matchAll(/\bid:\s*'([^']+)'/g)) ids.add(m[1]);
+    for (const m of readFileSync(join(dir, f), 'utf8').matchAll(/\bid:\s*'([^']+)'/g)) ids.add(m[1] ?? '');
   }
   return ids;
 }
 
 // The figures in a body: { type, open, html, start, end, after } where `after` is the next block.
-function figures(body) {
-  const out = [];
+type Figure = { type: string; ns: string; cls: string; html: string; start: number; end: number; after: string };
+function figures(body: string) {
+  const out: Figure[] = [];
   const re = /<(figure|p)\b[^>]*class="([^"]*)"[^>]*>/g;
   for (const m of body.matchAll(re)) {
-    const type = m[2].match(FIGURE_TYPES)?.[1];
+    const cls = m[2] ?? '';
+    const type = cls.match(FIGURE_TYPES)?.[1];
     if (!type) continue;
     if (m[1] === 'p' && type !== 'stat') continue;
     const close = m[1] === 'figure' ? body.indexOf('</figure>', m.index) : body.indexOf('</p>', m.index);
@@ -468,30 +495,30 @@ function figures(body) {
     const end = close + (m[1] === 'figure' ? 9 : 4);
     const rest = body.slice(end);
     const nextBlock = rest.match(/^\s*\n\s*\n?([^\n]*)/)?.[1] ?? '';
-    out.push({ type, ns: m[2].match(/\b(pd|cd)-(?:bars|tl|markets|widget|stat|record|units|stack|cols|calc|asof)\b/)[1], cls: m[2], html: body.slice(m.index, end), start: m.index, end, after: nextBlock });
+    out.push({ type, ns: cls.match(/\b(pd|cd)-(?:bars|tl|markets|widget|stat|record|units|stack|cols|calc|asof)\b/)?.[1] ?? '', cls, html: body.slice(m.index, end), start: m.index, end, after: nextBlock });
   }
   return out;
 }
 
-function barRows(html) {
+function barRows(html: string) {
   const parts = html.split(/<div class="(?:pd|cd)-bars-row\b/).slice(1);
   return parts.map((part) => {
-    const width = (cls) => {
+    const width = (cls: string) => {
       const m = part.match(new RegExp(`class="[^"]*-bars-${cls}"[^>]*style="([^"]*)"`));
       if (!m) return null;
-      const left = Number(m[1].match(/left:\s*([\d.]+)%/)?.[1] ?? 0);
-      const w = Number(m[1].match(/width:\s*([\d.]+)%/)?.[1] ?? NaN);
+      const left = Number(m[1]?.match(/left:\s*([\d.]+)%/)?.[1] ?? 0);
+      const w = Number(m[1]?.match(/width:\s*([\d.]+)%/)?.[1] ?? NaN);
       return { left, width: w };
     };
     const bar = width('bar');
     const range = width('range');
     const val = part.match(/class="[^"]*-bars-val"[^>]*style="left:\s*([\d.]+)%"[^>]*>([\s\S]*?)<\/span>\s*<\/div>/);
-    const text = val ? val[2].replace(/<[^>]+>/g, '') : '';
+    const text = val ? (val[2] ?? '').replace(/<[^>]+>/g, '') : '';
     const nums = [...text.replace(/,/g, '').matchAll(/\d+(?:\.\d+)?/g)].map((x) => Number(x[0]));
     return {
       text,
       value: readNumber(text),
-      to: range && nums.length > 1 ? nums[1] : null,
+      to: range && nums.length > 1 ? nums[1] ?? null : null,
       width: bar?.width ?? null,
       rangeEnd: range ? range.left + range.width : null,
       rangeStart: range ? range.left : null,
@@ -500,11 +527,11 @@ function barRows(html) {
   });
 }
 
-const money = (t) => { const m = String(t).replace(/<[^>]+>/g, '').match(/-?\$?\s*([\d,]+(?:\.\d+)?)/); return m ? Number(m[1].replace(/,/g, '')) : null; };
-const geom = (style, prop) => { const m = String(style ?? '').match(new RegExp(`(?:^|;)\\s*${prop}:\\s*(-?[\\d.]+)%`)); return m ? Number(m[1]) : null; };
+const money = (t: unknown) => { const m = String(t).replace(/<[^>]+>/g, '').match(/-?\$?\s*([\d,]+(?:\.\d+)?)/); return m ? Number((m[1] ?? '').replace(/,/g, '')) : null; };
+const geom = (style: string | undefined, prop: string) => { const m = String(style ?? '').match(new RegExp(`(?:^|;)\\s*${prop}:\\s*(-?[\\d.]+)%`)); return m ? Number(m[1]) : null; };
 
 // Unit stats: data-value of data-of, the printed percent, and (in the kit) the cells in the HTML.
-function checkUnits(html, where, report) {
+function checkUnits(html: string, where: number, report: Report) {
   const value = Number(html.match(/data-value="(\d+)"/)?.[1]);
   const of = Number(html.match(/data-of="(\d+)"/)?.[1]);
   if (!Number.isFinite(value) || !Number.isFinite(of) || !of) { report('units-count', where, 'the unit stat has no data-value and data-of'); return; }
@@ -519,8 +546,8 @@ function checkUnits(html, where, report) {
 }
 
 // Stacked bars: one scale for every segment and line, segments end to end, totals that add up.
-function checkStack(html, where, report) {
-  const scale = [];
+function checkStack(html: string, where: number, report: Report) {
+  const scale: { value: number; width: number; text: string }[] = [];
   for (const bar of html.split(/<div class="pd-bar"/).slice(1)) {
     // A lone segment has no label; its number is in data-value.
     const segs = [...bar.matchAll(/<div class="pd-seg(?=[\s"])[^"]*"[^>]*style="([^"]*)"[^>]*>(?:<span class="pd-seg__label">([\s\S]*?)<\/span>)?<\/div>/g)].map((m) => {
@@ -537,7 +564,7 @@ function checkStack(html, where, report) {
     // A range runs on from the end of the last segment to its data-to value, on the same scale.
     const range = bar.match(/<div class="pd-range\b[^"]*"[^>]*data-to="([\d.]+)"[^>]*style="([^"]*)"/);
     if (range && segs.length) {
-      const last = segs[segs.length - 1];
+      const last = segs[segs.length - 1]!;
       const left = geom(range[2], 'left');
       const width = geom(range[2], 'width') ?? 0;
       if (left !== null && Math.abs(left - edge) > 0.3) report('stack-scale', where, `a range starts at ${left}% but its segment ends at ${Math.round(edge * 10) / 10}%`);
@@ -546,7 +573,9 @@ function checkStack(html, where, report) {
       else report('stack-scale', where, `a range ends at ${to}, which is not above its segment's ${last.value}`);
     }
     const mark = bar.match(/<div class="pd-mark\b[^"]*"[^>]*style="([^"]*)"[^>]*><span[^>]*>([^<]*)<\/span>/);
-    if (mark && money(mark[2])) scale.push({ value: money(mark[2]), width: geom(mark[1], 'left'), text: mark[2] });
+    const markValue = mark ? money(mark[2]) : null;
+    const markLeft = mark ? geom(mark[1], 'left') : null;
+    if (mark && markValue && markLeft !== null) scale.push({ value: markValue, width: markLeft, text: mark[2] ?? '' });
     const shownTotal = (bar.match(/class="pd-num pd-num--s(?: pd-bar__value)?"[^>]*>([\s\S]*?)<\/span><\/div>/)?.[1] ?? '').replace(/<[^>]+>/g, '').trim();
     const total = money(shownTotal);
     const sum = segs.reduce((t, sg) => t + (sg.value ?? 0), 0);
@@ -558,7 +587,7 @@ function checkStack(html, where, report) {
 }
 
 // Pinned sequences: steps 1..n in order, and no part waiting for a step past n.
-function checkScrolly(html, where, report) {
+function checkScrolly(html: string, where: number, report: Report) {
   const steps = [...html.matchAll(/class="(?:pd-scrolly__step|fd-step)"[^>]*data-step="(\d+)"/g)].map((m) => Number(m[1]));
   steps.forEach((n, i) => { if (n !== i + 1) report('scrolly-steps', where, `step ${i + 1} is numbered ${n}`); });
   const graphic = html.slice(html.search(/class="(?:pd-scrolly__sticky|fd-sticky)"/));
@@ -570,9 +599,9 @@ function checkScrolly(html, where, report) {
 
 // Calculators: every name a formula, output, bar or toggle uses is an input or an earlier definition.
 const CALC_FN = new Set(['round', 'ceil', 'floor', 'min', 'max', 'abs']);
-function checkCalc(html, where, report) {
-  const known = new Set([...html.matchAll(/data-var="([\w]+)"/g)].map((m) => m[1]));
-  const names = (expr) => [...String(expr).matchAll(/[A-Za-z_]\w*/g)].map((m) => m[0]).filter((n) => !CALC_FN.has(n));
+function checkCalc(html: string, where: number, report: Report) {
+  const known = new Set([...html.matchAll(/data-var="([\w]+)"/g)].map((m) => m[1] ?? ''));
+  const names = (expr: string) => [...String(expr).matchAll(/[A-Za-z_]\w*/g)].map((m) => m[0]).filter((n) => !CALC_FN.has(n));
   const define = html.match(/data-define="([^"]*)"/)?.[1] ?? '';
   for (const part of define.split(';').map((d) => d.trim()).filter(Boolean)) {
     const [name, expr] = part.split('=').map((x) => x.trim());
@@ -580,8 +609,8 @@ function checkCalc(html, where, report) {
     for (const n of names(expr)) if (!known.has(n)) report('calc-names', where, `${name} uses "${n}", which no input or earlier formula defines`);
     known.add(name);
   }
-  const uses = [...html.matchAll(/data-(out|w|x|scale)="([^"]*)"/g)].flatMap((m) => names(m[2]).map((n) => [m[1], n]));
-  uses.push(...[...html.matchAll(/data-set="(\w+)=/g)].map((m) => ['set', m[1]]));
+  const uses = [...html.matchAll(/data-(out|w|x|scale)="([^"]*)"/g)].flatMap((m) => names(m[2] ?? '').map((n): [string, string] => [m[1] ?? '', n]));
+  uses.push(...[...html.matchAll(/data-set="(\w+)=/g)].map((m): [string, string] => ['set', m[1] ?? '']));
   for (const [attr, n] of uses) if (!known.has(n)) report('calc-names', where, `data-${attr} uses "${n}", which the calculator never defines`);
 }
 
@@ -589,13 +618,13 @@ function checkCalc(html, where, report) {
  * Lints one article. `ctx` gives the site root, the registry ids and, for the spacing rule, every
  * article as { slug, date, draft, devices }.
  */
-export function lintArticle(file, source, ctx) {
+export function lintArticle(file: string, source: string, ctx: LintContext) {
   const { findings, report } = makeReporter(file, source);
-  const { data, bodyStart, lines } = frontMatter(source);
-  const at = (key) => ({ line: lines[key] ?? 1, col: 1 });
+  const { data, bodyStart, lines, items } = frontMatter(source);
+  const at = (key: string) => ({ line: lines[key] ?? 1, col: 1 });
   const body = maskBody(source.slice(bodyStart));
-  const off = (i) => bodyStart + i;
-  const brief = Array.isArray(data.brief) ? data.brief : [];
+  const off = (i: number) => bodyStart + i;
+  const brief = list(data.brief);
 
   // Front matter
   if (brief.length < 3 || brief.length > 6) report('fm-brief', at('brief'), brief.length ? `the brief has ${brief.length} points` : 'there is no brief');
@@ -606,7 +635,7 @@ export function lintArticle(file, source, ctx) {
   if (data.ogImage && !data.ogImageAlt) report('fm-social', at('ogImage'), 'ogImage has no ogImageAlt');
   if (!data.ogImage) report('fm-social', at('title'), 'no ogImage; the page shares the site default image', { severity: 'info' });
   brief.forEach((item, i) => {
-    const where = { line: lines['brief[]']?.[i] ?? at('brief').line, col: 1 };
+    const where = { line: items.brief?.[i] ?? at('brief').line, col: 1 };
     if (/\*\*[^*]+\*\*|\[[^\]]+\]\([^)]+\)/.test(item)) report('markdown-in-html', where, 'brief items render as HTML; markdown prints literally');
   });
 
@@ -615,21 +644,21 @@ export function lintArticle(file, source, ctx) {
   const blockLines = body.split('\n');
   let pos = 0;
   let inHtml = false;
-  let quote = null;
+  let quote: { index: number; text: string } | null = null;
   const flushQuote = () => {
     if (quote && words(quote.text) > 40) report('pullquote-length', off(quote.index), `the pull quote runs ${words(quote.text)} words`);
     quote = null;
   };
   for (let i = 0; i < blockLines.length; i++) {
-    const line = blockLines[i];
+    const line = blockLines[i] ?? '';
     const idx = pos;
     pos += line.length + 1;
     if (!line.trim()) { inHtml = false; flushQuote(); continue; }
     if (/^\s{0,3}</.test(line) && !inHtml) inHtml = true;
     const h = line.match(/^(#{1,6})\s+(.*?)\s*#*\s*$/);
     if (h && !inHtml) {
-      const level = h[1].length;
-      const text = h[2];
+      const level = (h[1] ?? '').length;
+      const text = h[2] ?? '';
       if (level === 1) report('heading-h1', off(idx), 'the template renders the only h1');
       if (level === 2) seenH2 = true;
       if ((level === 3 && !seenH2) || level >= 4) report('heading-order', off(idx), level >= 4 ? `h${level} goes deeper than a section and its parts` : 'a ### comes before any ## section');
@@ -646,7 +675,7 @@ export function lintArticle(file, source, ctx) {
       quote.text += ` ${line.replace(/^>\s?/, '')}`;
     }
     const deck = line.match(/class="[^"]*\b(?:pd|cd|fd)-deck\b[^"]*"[^>]*>([\s\S]*?)<\/p>/);
-    if (deck && words(deck[1]) > 40) report('deck-length', off(idx), `the deck runs ${words(deck[1])} words`);
+    if (deck && words(deck[1] ?? '') > 40) report('deck-length', off(idx), `the deck runs ${words(deck[1] ?? '')} words`);
     if (inHtml) {
       if (/\*\*[^*\s][^*]*\*\*/.test(line.replace(/<[^>]+>/g, ' ')) || /(?<!\])\[[^\]^]+\]\((?:https?:|\/)[^)]*\)/.test(line)) report('markdown-in-html', off(idx), 'markdown inside a raw HTML block prints literally');
       continue;
@@ -662,10 +691,10 @@ export function lintArticle(file, source, ctx) {
   }
 
   // Footnotes
-  const defs = new Map();
-  for (const m of body.matchAll(/^\[\^([^\]]+)\]:\s*(.*)$/gm)) defs.set(m[1], { index: m.index, text: m[2] });
-  const refs = new Map();
-  for (const m of body.matchAll(/\[\^([^\]]+)\](?!:)/g)) if (!refs.has(m[1])) refs.set(m[1], m.index);
+  const defs = new Map<string, { index: number; text: string }>();
+  for (const m of body.matchAll(/^\[\^([^\]]+)\]:\s*(.*)$/gm)) defs.set(m[1] ?? '', { index: m.index, text: m[2] ?? '' });
+  const refs = new Map<string, number>();
+  for (const m of body.matchAll(/\[\^([^\]]+)\](?!:)/g)) if (!refs.has(m[1] ?? '')) refs.set(m[1] ?? '', m.index);
   for (const [id, index] of refs) if (!defs.has(id)) report('footnote-refs', off(index), `[^${id}] has no footnote`);
   for (const [id, d] of defs) {
     if (!refs.has(id)) report('footnote-refs', off(d.index), `footnote [^${id}] is never cited, so the page drops it`, { severity: 'warn' });
@@ -676,9 +705,9 @@ export function lintArticle(file, source, ctx) {
   // Data marks, in the body and the brief
   const ids = ctx.registryIds;
   if (ids) {
-    for (const m of body.matchAll(/<data value="c:([^"]+)">/g)) if (!ids.has(m[1])) report('data-mark', off(m.index), `"${m[1]}" has no record in src/data/components`);
+    for (const m of body.matchAll(/<data value="c:([^"]+)">/g)) if (!ids.has(m[1] ?? '')) report('data-mark', off(m.index), `"${m[1]}" has no record in src/data/components`);
     brief.forEach((item, i) => {
-      for (const m of item.matchAll(/<data value="c:([^"]+)">/g)) if (!ids.has(m[1])) report('data-mark', { line: lines['brief[]']?.[i] ?? 1, col: 1 }, `"${m[1]}" has no record in src/data/components`);
+      for (const m of item.matchAll(/<data value="c:([^"]+)">/g)) if (!ids.has(m[1] ?? '')) report('data-mark', { line: items.brief?.[i] ?? 1, col: 1 }, `"${m[1]}" has no record in src/data/components`);
     });
   }
 
@@ -713,7 +742,7 @@ export function lintArticle(file, source, ctx) {
   for (const m of body.matchAll(/<picture\b[\s\S]*?<\/picture>|<img\b[^>]*>/g)) {
     if (m[0].startsWith('<img') && body.slice(Math.max(0, m.index - 400), m.index).match(/<picture\b(?![\s\S]*<\/picture>)/)) continue;
     const img = m[0].match(/<img\b[^>]*>/)?.[0] ?? '';
-    const attr = (name) => img.match(new RegExp(`\\s${name}="([^"]*)"`))?.[1];
+    const attr = (name: string) => img.match(new RegExp(`\\s${name}="([^"]*)"`))?.[1];
     const where = off(m.index);
     const missing = ['width', 'height'].filter((a) => !attr(a));
     if (attr('alt') === undefined || (attr('alt') === '' && !/aria-hidden="true"/.test(m[0]))) missing.push('alt');
@@ -721,8 +750,8 @@ export function lintArticle(file, source, ctx) {
     if (attr('loading') !== 'lazy') report('img-attrs', where, 'the image does not load lazily', { severity: 'warn' });
     const dark = m[0].match(/<source\b[^>]*media="\(prefers-color-scheme:\s*dark\)"[^>]*>/)?.[0];
     if (!dark) report('img-dark', where, 'no dark version');
-    const files = [attr('src'), dark?.match(/srcset="([^"\s]+)/)?.[1]].filter((s) => s && s.startsWith('/'));
-    const sizes = [];
+    const files = [attr('src'), dark?.match(/srcset="([^"\s]+)/)?.[1]].filter((s): s is string => !!s && s.startsWith('/'));
+    const sizes: { src: string; w: number; h: number }[] = [];
     for (const src of files) {
       const path = join(ctx.root, 'public', src);
       if (!existsSync(path)) { report('img-files', where, `${src} does not exist`); continue; }
@@ -740,25 +769,26 @@ export function lintArticle(file, source, ctx) {
 
   // Classes and inline styles, in the body and the brief
   const html = [body, ...brief].join('\n');
-  const known = ctx.classesFor ? ctx.classesFor([...ROOT_CSS, ...(data.stylesheets ?? [])]) : null;
-  const seenClass = new Set();
+  const stylesheets = list(data.stylesheets);
+  const known = ctx.classesFor ? ctx.classesFor([...ROOT_CSS, ...stylesheets]) : null;
+  const seenClass = new Set<string>();
   for (const m of html.matchAll(/\sclass="([^"]*)"/g)) {
-    for (const c of m[1].split(/\s+/).filter(Boolean)) {
+    for (const c of (m[1] ?? '').split(/\s+/).filter(Boolean)) {
       if (!known || known.has(c) || c.startsWith('js-') || seenClass.has(c)) continue;
       seenClass.add(c);
-      report('class-defined', m.index < body.length ? off(m.index) : at('brief'), `"${c}" is not defined in ${[...ROOT_CSS, ...(data.stylesheets ?? [])].map((s) => basename(s)).join(', ')}`);
+      report('class-defined', m.index < body.length ? off(m.index) : at('brief'), `"${c}" is not defined in ${[...ROOT_CSS, ...stylesheets].map((s) => basename(s)).join(', ')}`);
     }
   }
   // Kit figures need the kit's stylesheet and script.
-  const sheets = data.stylesheets ?? [];
-  const scripts = Array.isArray(data.scripts) ? data.scripts : [];
+  const sheets = stylesheets;
+  const scripts = list(data.scripts);
   if (/\sclass="[^"]*\bpd-/.test(html) && !sheets.includes('/assets/article-kit.css')) report('kit-assets', at('title'), 'uses kit classes but does not load /assets/article-kit.css');
   const needsJs = html.match(/data-pd="(build|units|grid|scrolly|calc|asof)"/);
   if (needsJs && !scripts.includes('/assets/article-kit.js')) report('kit-assets', at('title'), `a data-pd="${needsJs[1]}" figure needs /assets/article-kit.js, which the article does not load, so it never builds${needsJs[1] === 'calc' ? ' and the calculator never computes' : ''}`);
 
   for (const m of body.matchAll(/\sstyle="([^"]*)"/g)) {
-    for (const decl of m[1].split(';').map((s) => s.trim()).filter(Boolean)) {
-      const [prop, value = ''] = decl.split(':').map((s) => s.trim());
+    for (const decl of (m[1] ?? '').split(';').map((s) => s.trim()).filter(Boolean)) {
+      const [prop = '', value = ''] = decl.split(':').map((s) => s.trim());
       if (prop.startsWith('--')) continue;
       if (!['width', 'left', 'height', 'bottom'].includes(prop) || !/^-?[\d.]+%$/.test(value)) report('inline-style', off(m.index), `style="${decl}"`);
     }
@@ -768,14 +798,14 @@ export function lintArticle(file, source, ctx) {
   if (ctx.articles && data.date) {
     const slug = basename(file).replace(/\.md$/, '');
     const mine = ctx.articles.find((a) => a.slug === slug);
-    const others = ctx.articles.filter((a) => a.slug !== slug && !a.draft).sort((a, b) => a.date - b.date);
-    const date = new Date(data.date);
+    const others = ctx.articles.filter((a) => a.slug !== slug && !a.draft).sort((a, b) => a.date.getTime() - b.date.getTime());
+    const date = new Date(String(data.date));
     const prev = others.filter((a) => a.date <= date).pop();
     const next = others.find((a) => a.date > date);
     for (const d of mine?.devices ?? []) {
       for (const other of others) {
         if (!other.devices.includes(d)) continue;
-        const days = Math.abs(other.date - date) / 86400000;
+        const days = Math.abs(other.date.getTime() - date.getTime()) / 86400000;
         if (other === prev || other === next || days < 30) {
           const device = SIGNATURE_DEVICES.find((x) => x.id === d);
           report('signature-spacing', at('title'), `${device?.name ?? d} also runs in "${other.slug}", ${Math.round(days)} days away`);
@@ -787,16 +817,14 @@ export function lintArticle(file, source, ctx) {
   return findings;
 }
 
-export function devicesIn(source) {
+export function devicesIn(source: string) {
   return SIGNATURE_DEVICES.filter((d) => d.classes.some((c) => new RegExp(`class="[^"]*\\b${c}\\b`).test(source)) || (d.selector && source.includes(d.selector))).map((d) => d.id);
 }
 
 // ------------------------------------------------------------------ the whole site
 
-const KIT_CSS = '/assets/article-kit.css';
-
 /** Every article with its date and signature devices, plus any draft outside the folder in `extra`. */
-export function readArticles(root, extra = []) {
+export function readArticles(root: string, extra: string[] = []): ArticleInfo[] {
   const dir = join(root, 'src/content/articles');
   const articleFiles = readdirSync(dir).filter((f) => f.endsWith('.md')).map((f) => join(dir, f));
   // A draft kept outside the articles folder is still read against the published ones.
@@ -804,29 +832,29 @@ export function readArticles(root, extra = []) {
   return [...articleFiles, ...outside].map((path) => {
     const source = readFileSync(path, 'utf8');
     const { data } = frontMatter(source);
-    return { path, source, data, slug: basename(path).replace(/\.md$/, ''), date: new Date(data.date), draft: data.draft === true, devices: devicesIn(source) };
+    return { path, source, data, slug: basename(path).replace(/\.md$/, ''), date: new Date(String(data.date)), draft: data.draft === true, devices: devicesIn(source) };
   });
 }
 
 // Every file under `dir` whose name ends in one of `exts`.
-const walk = (dir, exts) => (existsSync(dir) ? readdirSync(dir, { withFileTypes: true }).flatMap((e) => (
+const walk = (dir: string, exts: string[]): string[] => (existsSync(dir) ? readdirSync(dir, { withFileTypes: true }).flatMap((e) => (
   e.isDirectory() ? walk(join(dir, e.name), exts) : exts.some((x) => e.name.endsWith(x)) ? [join(dir, e.name)] : []
 )) : []);
 
 /** Lints every article (or the given files), the stylesheets they load and the scripts' media queries. */
-export function lintSite(root, only = null) {
+export function lintSite(root: string, only: string[] | null = null) {
   const dir = join(root, 'src/content/articles');
   const articleFiles = readdirSync(dir).filter((f) => f.endsWith('.md')).map((f) => join(dir, f));
-  const cssCache = new Map();
-  const readCss = (href) => {
+  const cssCache = new Map<string, string>();
+  const readCss = (href: string) => {
     if (!cssCache.has(href)) {
       const path = join(root, 'public', href);
       cssCache.set(href, existsSync(path) ? readFileSync(path, 'utf8') : '');
     }
-    return cssCache.get(href);
+    return cssCache.get(href) ?? '';
   };
-  const classesFor = (hrefs) => {
-    const set = new Set();
+  const classesFor = (hrefs: string[]) => {
+    const set = new Set<string>();
     for (const h of hrefs) for (const c of cssClasses(readCss(h))) set.add(c);
     return set;
   };
@@ -841,7 +869,7 @@ export function lintSite(root, only = null) {
     ...walk(join(root, 'src'), ['.astro', '.mjs', '.js', '.ts']),
   ];
   const targets = only ?? [...articleFiles, ...sheets, ...scripts];
-  const findings = [];
+  const findings: Finding[] = [];
   for (const path of targets) {
     if (!existsSync(path)) { findings.push({ file: path, line: 1, col: 1, rule: 'usage', severity: 'error', message: 'file not found', fix: '' }); continue; }
     const text = readFileSync(path, 'utf8');

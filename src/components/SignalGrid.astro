@@ -1,5 +1,6 @@
 ---
 // The problem band on a service-detail page: a heading, an intro and three signal cards.
+interface Props { heading: string; intro: string; signals: { title: string; copy: string }[] }
 const { heading, intro, signals } = Astro.props;
 ---
 <section class="problem-band">

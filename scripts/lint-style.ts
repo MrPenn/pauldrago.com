@@ -16,12 +16,13 @@ import { existsSync, readdirSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
-import { RULES, lintSite } from '../src/styleguide/lint.mjs';
+import { RULES, lintSite } from '../src/styleguide/lint.ts';
+import type { Severity } from '../src/styleguide/lint.ts';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
 const args = process.argv.slice(2);
-const flag = (name) => args.find((a) => a === `--${name}` || a.startsWith(`--${name}=`));
-const value = (name) => flag(name)?.split('=')[1];
+const flag = (name: string) => args.find((a) => a === `--${name}` || a.startsWith(`--${name}=`));
+const value = (name: string) => flag(name)?.split('=')[1];
 const files = args.filter((a) => !a.startsWith('--'));
 const known = ['format', 'strict', 'only', 'prose', 'list-rules', 'help'];
 const unknown = args.filter((a) => a.startsWith('--') && !known.includes(a.slice(2).split('=')[0]));
@@ -45,10 +46,10 @@ if (only?.some((id) => !RULES.find((r) => r.id === id))) {
 const targets = files.length ? files.map((f) => resolve(f)) : null;
 let findings = lintSite(root, targets);
 if (only) findings = findings.filter((f) => only.includes(f.rule));
-const order = { error: 0, warn: 1, info: 2 };
+const order: Record<Severity, number> = { error: 0, warn: 1, info: 2 };
 findings.sort((a, b) => a.file.localeCompare(b.file) || a.line - b.line || order[a.severity] - order[b.severity]);
 
-const count = (s) => findings.filter((f) => f.severity === s).length;
+const count = (s: Severity) => findings.filter((f) => f.severity === s).length;
 if (value('format') === 'json') {
   console.log(JSON.stringify(findings.map((f) => ({ ...f, file: relative(root, f.file) })), null, 2));
 } else {

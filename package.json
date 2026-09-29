@@ -7,9 +7,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "build:drafts": "SHOW_DRAFTS=1 astro build",
-    "lint:style": "node scripts/lint-style.mjs",
-    "test": "node --test tests/*.test.mjs",
-    "audit:article": "node scripts/audit-article.mjs"
+    "check": "astro check",
+    "lint:style": "node scripts/lint-style.ts",
+    "test": "node --test tests/*.test.ts",
+    "audit:article": "node scripts/audit-article.ts"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
@@ -17,5 +18,9 @@
     "astro": "^7.3.4",
     "posthog-js": "^1.434.9",
     "vanilla-cookieconsent": "^3.1.0"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "typescript": "^6.0.3"
   }
 }

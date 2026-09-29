@@ -2,11 +2,12 @@
 import Base from '../layouts/Base.astro';
 import BookCallLink from '../components/BookCallLink.astro';
 import Icon from '../components/Icon.astro';
+import type { IconName } from '../data/icons';
 import { getCollection } from 'astro:content';
-const latest = (await getCollection('articles', ({ data }) => !data.draft)).sort((a, b) => b.data.date - a.data.date)[0];
+const latest = (await getCollection('articles', ({ data }) => !data.draft)).sort((a, b) => b.data.date.getTime() - a.data.date.getTime())[0];
 // The links under the introduction, in three groups. The booking link has no href; BookCallLink
 // supplies the scheduler's address.
-const linkGroups = [
+const linkGroups: { id: string; title: string; links: { href?: string; icon: IconName; title: string; description?: string }[] }[] = [
   { id: 'work-links', title: 'Work', links: [
     { href: '/financial-services', icon: 'landmark', title: 'Services', description: 'Marketing measurement and operations, market analysis, acquisition footprints, and fractional leadership.' },
     { href: '/marketing-measurement-reset', icon: 'chart-no-axes-combined', title: 'Measurement reset', description: 'Connect acquisition spend to retained accounts, funded balances, and board reporting.' },

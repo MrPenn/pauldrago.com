@@ -5,12 +5,13 @@
 import { readdir, readFile, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
+import type { AstroIntegration } from 'astro';
 
 const OPEN = /[\s([{\u2014\u2013-]/;
 const SKIP = new Set(['code', 'pre', 'script', 'style', 'kbd', 'samp', 'textarea']);
 
 // Convert straight quotes in one run of text. `prev` is the character before the run.
-export function curl(text, prev = ' ') {
+export function curl(text: string, prev = ' ') {
   let out = '';
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
@@ -29,10 +30,10 @@ export function curl(text, prev = ' ') {
 }
 
 // For HTML strings: convert text between tags only, never inside tags, attributes, scripts or code.
-export function curlHtml(html) {
+export function curlHtml(html: string) {
   let prev = ' ';
-  let skip = null;
-  return html.replace(/(<[^>]*>)|([^<]+)/g, (m, tag, text) => {
+  let skip: string | null = null;
+  return html.replace(/(<[^>]*>)|([^<]+)/g, (_m: string, tag: string | undefined, text: string) => {
     if (tag) {
       const name = (tag.match(/^<\/?\s*([a-zA-Z0-9-]+)/) || [])[1];
       const lower = name ? name.toLowerCase() : '';
@@ -50,7 +51,7 @@ export function curlHtml(html) {
 
 // Astro integration: after the build, curl the quotes inside each article's body. Articles mix
 // markdown (already curled) with raw HTML figures, which the markdown step never sees.
-export function smartQuotes() {
+export function smartQuotes(): AstroIntegration {
   return {
     name: 'smart-quotes',
     hooks: {

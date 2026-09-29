@@ -9,17 +9,17 @@ import { PLAN, REVIEW_SITES } from '../data/branch-plan';
 // One color scale for both counties: quintiles of every tract's value.
 const values = mapData.counties.flatMap((c) => c.tracts.map((t) => t.purchasesPer1000)).filter((v) => v != null).sort((a, b) => a - b);
 const cuts = [0.2, 0.4, 0.6, 0.8].map((q) => values[Math.floor(q * (values.length - 1))]);
-const band = (v) => (v == null ? -1 : cuts.filter((c) => v >= c).length);
-const round = (v) => Math.round(v);
+const band = (v: number | null) => (v == null ? -1 : cuts.filter((c) => v >= c).length);
+const round = (v: number) => Math.round(v);
 const bands = [0, 1, 2, 3, 4].map((i) => ({
   i,
   label: i === 0 ? `Under ${round(cuts[0])}` : i === 4 ? `${round(cuts[3])} or more` : `${round(cuts[i - 1])} to ${round(cuts[i])}`,
 }));
 
 // Larger banks' branches are diamonds, community banks' are dots: shape, not just fill, tells them apart.
-const diamond = (x, y, r) => `M${x},${y - r}L${x + r},${y}L${x},${y + r}L${x - r},${y}Z`;
+const diamond = (x: number, y: number, r: number) => `M${x},${y - r}L${x + r},${y}L${x},${y + r}L${x - r},${y}Z`;
 // Labels near the frame edge anchor inward so they aren't clipped.
-const anchor = (x, width) => (x < 70 ? 'start' : x > width - 70 ? 'end' : 'middle');
+const anchor = (x: number, width: number) => (x < 70 ? 'start' : x > width - 70 ? 'end' : 'middle');
 const REVIEW = Object.fromEntries(REVIEW_SITES.map((site) => [site, true]));
 const planned = Object.fromEntries(PLAN.map((b, n) => [b.site, n + 1]));
 const maps = mapData.counties.map((c) => {

@@ -2,9 +2,9 @@
 // One story, alone on a page with the site's real stylesheets: the canvas /ui shows in a frame.
 // ?theme=light or ?theme=dark forces a theme; window.uiTheme() switches it without a reload.
 import Fonts from '../../../components/Fonts.astro';
-import { inlineSheets } from '../../../layouts/inline-css.mjs';
-import { COMPONENTS } from '../../../styleguide/components.mjs';
-import { curlHtml } from '../../../integrations/smart-quotes.mjs';
+import { inlineSheets } from '../../../layouts/inline-css.ts';
+import { COMPONENTS } from '../../../styleguide/components.ts';
+import { curlHtml } from '../../../integrations/smart-quotes.ts';
 
 export function getStaticPaths() {
   return COMPONENTS.flatMap((component) => component.stories.map((story) => ({

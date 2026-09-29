@@ -1,36 +1,40 @@
 // HTML builders for the kit's data-driven figures, and the snippet highlighter.
 // One copy, used two ways: the component registry builds its example snippets with them, and
-// the /ui controls rebuild a snippet as someone types. Plain ES module with no imports, so the
-// browser can load it too. readNumber and offScale serve the linter's bar-chart checks.
+// the /ui controls rebuild a snippet as someone types. A module with no imports, so the browser
+// can load it too. readNumber and offScale serve the linter's bar-chart checks.
+
+// A value from the registry or from a /ui control, which hands numbers over as text.
+type Num = number | string;
+type Line = string | null | undefined | false;
 
 // The static bar charts in older articles stop their longest bar at this share of the track.
 export const BAR_MAX = 78;
 
-export const esc = (s) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+export const esc = (s: unknown) => String(s ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 // Registry prose: escaped, with `backticks` set as code.
-export const inline = (s) => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
+export const inline = (s: unknown) => esc(s).replace(/`([^`]+)`/g, '<code>$1</code>');
 
 // Numbers as the article prints them: thousands separators, at most the decimals the value has.
-export function num(n) {
+export function num(n: number) {
   if (!Number.isFinite(n)) return '';
   const [whole, frac] = String(Math.abs(n)).split('.');
   return (n < 0 ? '-' : '') + whole.replace(/\B(?=(\d{3})+(?!\d))/g, ',') + (frac ? `.${frac}` : '');
 }
 
-const pct = (n) => `${(Math.round(n * 10) / 10).toFixed(1)}%`;
-const lines = (rows, pad = '') => rows.filter((r) => r !== null && r !== undefined && r !== '').map((r) => pad + r).join('\n');
+const pct = (n: number) => `${(Math.round(n * 10) / 10).toFixed(1)}%`;
+const lines = (rows: Line[], pad = '') => rows.filter((r) => r !== null && r !== undefined && r !== '').map((r) => pad + r).join('\n');
 // Wraps the shown value in a lineage mark when the row names a registry id.
-const marked = (text, id) => (id ? `<data value="c:${esc(id)}">${text}</data>` : text);
+const marked = (text: string, id?: string) => (id ? `<data value="c:${esc(id)}">${text}</data>` : text);
 
-const money = (n) => `$${num(Math.round(Number(n) || 0))}`;
-const at = (n) => (n ? ` data-at="${Number(n)}"` : '');
+const at = (n?: Num | null) => (n ? ` data-at="${Number(n)}"` : '');
 
 /**
  * A unit stat: the number, its sentence, and a row of units with the share filled.
  * { num: '95%', label, value: 19, of: 20, cols, source }. cols defaults to `of` (at most 50).
  */
-export function units({ num: shown = '', label = '', value = 0, of = 20, cols, source = '' } = {}) {
+export type UnitsOptions = { num?: string; label?: string; value?: Num; of?: Num; cols?: Num; source?: string };
+export function units({ num: shown = '', label = '', value = 0, of = 20, cols, source = '' }: UnitsOptions = {}) {
   const n = Math.max(1, Math.min(200, Number(of) || 1));
   const v = Math.max(0, Math.min(n, Number(value) || 0));
   const c = cols || (n === 100 ? 50 : Math.min(n, 50));
@@ -52,14 +56,17 @@ export function units({ num: shown = '', label = '', value = 0, of = 20, cols, s
  * the on squares). legend kinds are 'on', 'alt' or '' (an empty swatch). The finished grid ships in
  * the HTML; the kit script replays it.
  */
-export function grid({ variant = 'opener', total = 100, on = 0, alt = 0, altFrom, legend = [], source = '', caption = '', label = '' } = {}) {
+export type LegendRow = { num: Num; label: string; kind?: 'on' | 'alt' | '' };
+export type GridOptions = { variant?: 'opener' | 'callback'; total?: Num; on?: Num; alt?: Num; altFrom?: Num; legend?: LegendRow[]; source?: string; caption?: string; label?: string };
+export function grid({ variant = 'opener', total = 100, on = 0, alt = 0, altFrom, legend = [], source = '', caption = '', label = '' }: GridOptions = {}) {
   const n = Math.max(1, Math.min(400, Number(total) || 100));
-  const a0 = altFrom === undefined || altFrom === '' ? Number(on) || 0 : Number(altFrom);
-  const kind = (i) => (i < on ? ' is-on' : i >= a0 && i < a0 + (Number(alt) || 0) ? ' is-alt' : '');
+  const onN = Number(on) || 0;
+  const a0 = altFrom === undefined || altFrom === '' ? onN : Number(altFrom);
+  const kind = (i: number) => (i < onN ? ' is-on' : i >= a0 && i < a0 + (Number(alt) || 0) ? ' is-alt' : '');
   const cells = Array.from({ length: n }, (_, i) => `<i class="pd-cell${kind(i)}"></i>`).join('');
   // Each legend row keys its squares: accent for the `on` squares, ink for the `alt` ones, empty for the rest.
-  const sw = { on: ' pd-swatch--accent', alt: ' pd-swatch--ink' };
-  const rows = legend.map((l) => `      <div class="pd-legend"><span class="pd-swatch pd-legend__swatch${sw[l.kind] ?? ''}"></span><span class="pd-num pd-num--l pd-legend__num"${l.kind ? ` data-count="${Number(String(l.num).replace(/,/g, ''))}"` : ''}>${esc(l.num)}</span><span class="pd-legend__label">${esc(l.label)}</span></div>`);
+  const sw: Record<string, string> = { on: ' pd-swatch--accent', alt: ' pd-swatch--ink' };
+  const rows = legend.map((l) => `      <div class="pd-legend"><span class="pd-swatch pd-legend__swatch${sw[l.kind ?? ''] ?? ''}"></span><span class="pd-num pd-num--l pd-legend__num"${l.kind ? ` data-count="${Number(String(l.num).replace(/,/g, ''))}"` : ''}>${esc(l.num)}</span><span class="pd-legend__label">${esc(l.label)}</span></div>`);
   if (variant === 'callback') {
     return lines([
       `<figure class="pd-figure pd-grid pd-grid--callback" data-pd="grid" data-pace="0" data-alt-pace="300" data-delay="400"${label ? ` aria-label="${esc(label)}"` : ''}>`,
@@ -99,23 +106,27 @@ export function grid({ variant = 'opener', total = 100, on = 0, alt = 0, altFrom
  * { prefix: '', suffix: ' weeks' }, { prefix: '', suffix: ' million', decimals: 1 }.
  * `graphic: true` returns the inside of a pinned sequence's graphic instead of a figure.
  */
-export function stack({ eyebrow = '', num: lead = '', sub = '', bars = [], ledger = [], note = '', noteAt, headroom = 1.12, max, prefix = '$', suffix = '', decimals = 0, caption = '', label = '', graphic = false } = {}) {
+export type StackSeg = { word?: string; value?: Num; to?: Num; accent?: boolean; outline?: boolean; at?: Num; text?: string; html?: string; ref?: string };
+export type StackBar = { name: string; sub?: string; at?: Num; text?: string; html?: string; ref?: string; segs?: StackSeg[]; mark?: { value?: Num; label?: string; at?: Num } };
+export type LedgerRow = { label?: string; sub?: string; value?: Num; total?: boolean; at?: Num; ref?: string; text?: string };
+export type StackOptions = { eyebrow?: string; num?: string; sub?: string; bars?: StackBar[]; ledger?: LedgerRow[]; note?: string; noteAt?: Num; headroom?: Num; max?: Num; prefix?: string; suffix?: string; decimals?: Num; caption?: string; label?: string; graphic?: boolean };
+export function stack({ eyebrow = '', num: lead = '', sub = '', bars = [], ledger = [], note = '', noteAt, headroom = 1.12, max, prefix = '$', suffix = '', decimals = 0, caption = '', label = '', graphic = false }: StackOptions = {}) {
   const d = Math.max(0, Math.min(3, Number(decimals) || 0));
-  const round = (n) => num(Math.round((Number(n) || 0) * 10 ** d) / 10 ** d);
-  const unit = (n) => `${esc(prefix)}${round(n)}${esc(suffix)}`;
-  const span = (a, b) => `${esc(prefix)}${round(a)} to ${round(b)}${esc(suffix)}`;
+  const round = (n: Num | undefined) => num(Math.round((Number(n) || 0) * 10 ** d) / 10 ** d);
+  const unit = (n: Num | undefined) => `${esc(prefix)}${round(n)}${esc(suffix)}`;
+  const span = (a: Num | undefined, b: Num | undefined) => `${esc(prefix)}${round(a)} to ${round(b)}${esc(suffix)}`;
   const totals = bars.map((b) => (b.segs ?? []).reduce((t, s) => t + (Number(s.value) || 0), 0));
   // Only the last segment of a bar can carry a range, so the hatching never sits under another part.
   const extra = bars.map((b) => { const last = (b.segs ?? []).at(-1); return last && Number(last.to) > Number(last.value) ? Number(last.to) - Number(last.value) : 0; });
   const marks = bars.map((b) => Number(b.mark?.value) || 0);
   const scale = Number(max) > 0 ? Number(max) : (Math.max(...totals.map((t, i) => t + extra[i]), ...marks) || 1) * (Number(headroom) || 1);
-  const w = (v) => (Number(v) / scale) * 100;
+  const w = (v: Num | undefined) => (Number(v) / scale) * 100;
   const pad = graphic ? '' : '  ';
   const barHtml = bars.map((b, bi) => {
     let left = 0;
     const segs = (b.segs ?? []).flatMap((sg, si, all) => {
       const width = w(sg.value);
-      const range = si === all.length - 1 && extra[bi] ? extra[bi] : 0;
+      const range = si === all.length - 1 ? extra[bi] ?? 0 : 0;
       const shown = sg.html ?? (sg.text ? esc(sg.text) : range ? span(sg.value, sg.to) : unit(sg.value));
       // A lone segment's label would repeat the value printed at the end of the bar.
       const solo = all.length === 1;
@@ -161,13 +172,14 @@ export function stack({ eyebrow = '', num: lead = '', sub = '', bars = [], ledge
  *   event: { value, label, sub, marker }, total: { label, sub }, caption }
  * Parts build in four steps: the marker, the columns, the event, the total.
  */
-export function cols({ eyebrow = '', values = [], start = 0, step = 1, labelEvery = 5, prefix = '', suffix = '', ticks = [], max, event, total, caption = '', label = '', graphic = false } = {}) {
+export type ColsOptions = { eyebrow?: string; values?: Num[]; start?: number; step?: number; labelEvery?: number; prefix?: string; suffix?: string; ticks?: Num[]; max?: Num; event?: { value: Num; label?: string; sub?: string; marker?: string }; total?: { label: string; sub?: string }; caption?: string; label?: string; graphic?: boolean };
+export function cols({ eyebrow = '', values = [], start = 0, step = 1, labelEvery = 5, prefix = '', suffix = '', ticks = [], max, event, total, caption = '', label = '', graphic = false }: ColsOptions = {}) {
   const vals = values.map(Number).filter((v) => Number.isFinite(v));
   const top = Number(max) || Math.max(1, ...vals, Number(event?.value) || 0, ...ticks.map(Number));
-  const h = (v) => (Number(v) / top) * 100;
+  const h = (v: Num) => (Number(v) / top) * 100;
   const pad = graphic ? '' : '  ';
   const n = vals.length + (event ? 1 : 0);
-  const period = (i) => start + i * step;
+  const period = (i: number) => start + i * step;
   const colHtml = vals.map((v, i) => `${pad}    <span class="pd-cols__col"><i class="pd-cols__fill" style="height:${pct(h(v))};--i:${i}"></i></span>`);
   if (event) colHtml.push(`${pad}    <span class="pd-cols__col pd-cols__col--event" data-at="1"><i class="pd-cols__fill" data-at="3" style="height:${pct(h(event.value))}"></i></span>`);
   const xs = Array.from({ length: n }, (_, i) => {
@@ -180,7 +192,7 @@ export function cols({ eyebrow = '', values = [], start = 0, step = 1, labelEver
     eyebrow ? `${pad}<p class="pd-eyebrow">${esc(eyebrow)}</p>` : null,
     `${pad}<div class="pd-cols__callouts">`,
     total ? `${pad}  <p class="pd-cols__callout" data-at="4"><b class="pd-cols__callout-value">${esc(total.label)}</b><span class="pd-cols__callout-note">${esc(total.sub)}</span></p>` : `${pad}  <span></span>`,
-    event ? `${pad}  <p class="pd-cols__callout pd-cols__callout--accent" data-at="3"><b class="pd-cols__callout-value">${esc(event.label ?? prefix + num(event.value) + suffix)}</b><span class="pd-cols__callout-note">${esc(event.sub)}</span></p>` : null,
+    event ? `${pad}  <p class="pd-cols__callout pd-cols__callout--accent" data-at="3"><b class="pd-cols__callout-value">${esc(event.label ?? prefix + num(Number(event.value)) + suffix)}</b><span class="pd-cols__callout-note">${esc(event.sub)}</span></p>` : null,
     `${pad}</div>`,
     `${pad}<div class="pd-cols__plot">`,
     ticks.length ? `${pad}  <div class="pd-cols__gridlines" aria-hidden="true">${ticks.map((t) => `<span class="pd-cols__gridline" style="bottom:${pct(h(t))}"><b class="pd-cols__gridline-value">${esc(prefix + num(Number(t)) + suffix)}</b></span>`).join('')}</div>` : null,
@@ -201,7 +213,8 @@ export function cols({ eyebrow = '', values = [], start = 0, step = 1, labelEver
  * what it was for, a line quoted from the record, and the record in the caption.
  * { num, lead, quote, source, ref, label }. The quote takes its quotation marks from the stylesheet.
  */
-export function record({ num: shown = '', lead = '', quote = '', source = '', ref, label = '' } = {}) {
+export type RecordOptions = { num?: string; lead?: string; quote?: string; source?: string; ref?: string; label?: string };
+export function record({ num: shown = '', lead = '', quote = '', source = '', ref, label = '' }: RecordOptions = {}) {
   return lines([
     `<figure class="pd-figure pd-record"${label ? ` aria-label="${esc(label)}"` : ''}>`,
     '  <div class="pd-head pd-record__head">',
@@ -217,9 +230,9 @@ export function record({ num: shown = '', lead = '', quote = '', source = '', re
 }
 
 // Dates for the as-of slider: 'YYYY-MM-DD' in UTC, printed "March 14".
-const utc = (s) => { const [y, m, dd] = String(s).split('-').map(Number); return Date.UTC(y, m - 1, dd); };
+const utc = (s: string | undefined) => { const [y = NaN, m = NaN, dd = NaN] = String(s).split('-').map(Number); return Date.UTC(y, m - 1, dd); };
 const DAY = 86400000;
-export const dayName = (t) => new Date(t).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' });
+export const dayName = (t: number) => new Date(t).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' });
 
 /**
  * An as-of slider: pick a day and see the version of a piece that was live that day.
@@ -231,7 +244,9 @@ export const dayName = (t) => new Date(t).toLocaleDateString('en-US', { month: '
  * figure ships in the HTML at `day`, with every version listed; the kit script adds the slider.
  * `latest`, when given, adds a second answer: what a system that keeps only the newest version shows.
  */
-export function asof({ eyebrow = '', question = '', slider = 'Pick a day', start, end, day, versions = [], live = {}, latest = null, caption = '', label = '' } = {}) {
+export type AsofVersion = { from: string; to?: string; copy: string; meta?: string; band?: string };
+export type AsofOptions = { eyebrow?: string; question?: string; slider?: string; start?: string; end?: string; day?: string; versions?: AsofVersion[]; live?: { label?: string; verdict?: string }; latest?: { label: string; meta?: string; right: string; wrong: string } | null; caption?: string; label?: string };
+export function asof({ eyebrow = '', question = '', slider = 'Pick a day', start, end, day, versions = [], live = {}, latest = null, caption = '', label = '' }: AsofOptions = {}) {
   const t0 = utc(start);
   const t1 = utc(end);
   const days = Math.max(1, Math.round((t1 - t0) / DAY));
@@ -242,11 +257,12 @@ export function asof({ eyebrow = '', question = '', slider = 'Pick a day', start
     const t = v.to ? utc(v.to) : t1;
     return { ...v, n: i + 1, f, t, meta: v.meta ?? `Version ${i + 1}, live ${dayName(f)} to ${v.to ? dayName(t) : 'today'}.` };
   });
-  const now = vs.find((v) => at0 >= v.f && at0 <= v.t) ?? vs.at(-1);
   const last = vs.at(-1);
+  const now = vs.find((v) => at0 >= v.f && at0 <= v.t) ?? last;
+  if (!now || !last) return '';
   const labeled = vs.some((v) => v.band);
   const bands = vs.map((v) => `<span class="pd-asof__band${v === now ? ' is-live' : ''}" style="width:${pct(((v.t - v.f) / DAY + 1) / (days + 1) * 100)}">${v.band ? `<span class="pd-asof__band-label">${esc(v.band)}</span>` : ''}</span>`).join('');
-  const months = [];
+  const months: string[] = [];
   for (let d = new Date(t0); d.getTime() <= t1; d = new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth() + 1, 1))) {
     months.push(`<span class="pd-asof__month" style="left:${pct(Math.max(0, (d.getTime() - t0) / DAY / days * 100))}">${d.toLocaleDateString('en-US', { month: 'short', timeZone: 'UTC' })}</span>`);
   }
@@ -271,7 +287,7 @@ export function asof({ eyebrow = '', question = '', slider = 'Pick a day', start
 }
 
 // Reads the first number out of a printed value: "1,099", "nearly 80%", "60 to 70%", "$5.4 million".
-export function readNumber(text) {
+export function readNumber(text: unknown) {
   const m = String(text).replace(/<[^>]+>/g, '').match(/-?\d[\d,]*(?:\.\d+)?/);
   return m ? Number(m[0].replace(/,/g, '')) : null;
 }
@@ -282,16 +298,18 @@ export function readNumber(text) {
  * width each should have. The scale is the median ratio of width to value, so one bad bar
  * cannot move it.
  */
-export function offScale(rows, tolerance = 0.6) {
-  const usable = rows.filter((r) => r.value > 0 && r.width > 0);
+export type ScaleRow = { value: number | null; width: number | null; to?: number | null; rangeEnd?: number | null; [key: string]: unknown };
+export function offScale<R extends ScaleRow>(rows: R[], tolerance = 0.6) {
+  type Drawn = R & { value: number; width: number };
+  const usable = rows.filter((r): r is Drawn => (r.value ?? 0) > 0 && (r.width ?? 0) > 0);
   if (usable.length < 2) return [];
   const byRatio = usable.map((r) => ({ r, k: r.width / r.value })).sort((a, b) => a.k - b.k);
-  const mid = byRatio[Math.floor(byRatio.length / 2)];
+  const mid = byRatio[Math.floor(byRatio.length / 2)]!;
   const k = mid.k;
   // Widths print to 0.1%, so a scale read off a small bar carries that rounding, magnified for
   // every larger bar. Each row may be off by that much on top of the tolerance.
-  const slack = (v) => tolerance + (v * 0.05) / mid.r.value;
-  const off = [];
+  const slack = (v: number) => tolerance + (v * 0.05) / mid.r.value;
+  const off: (Drawn & { want: number; range?: boolean })[] = [];
   for (const r of usable) {
     const want = r.value * k;
     if (Math.abs(r.width - want) > slack(r.value)) off.push({ ...r, want: Math.round(want * 10) / 10 });
@@ -304,7 +322,7 @@ export function offScale(rows, tolerance = 0.6) {
 }
 
 // Syntax colouring for snippets: tags, attribute names, attribute values and comments get a class.
-export function highlight(src, lang = 'html') {
+export function highlight(src: unknown, lang = 'html'): string {
   if (lang === 'yaml') {
     return String(src).split('\n').map((l) => {
       const m = l.match(/^(\s*-?\s*)([\w-]+)(:)(.*)$/);
@@ -319,14 +337,14 @@ export function highlight(src, lang = 'html') {
       if (/^---\s*$/.test(l)) return `<span class="ui-syntax__comment">${esc(l)}</span>`;
       if (/^#{1,6} /.test(l)) return `<span class="ui-syntax__tag">${esc(l)}</span>`;
       if (/^\s*</.test(l)) return highlight(l, 'html');
-      if (/^\[\^\d+\]:/.test(l)) return l.replace(/^(\[\^\d+\]:)(.*)$/, (_, a, b) => `<span class="ui-syntax__attr">${esc(a)}</span>${esc(b)}`);
+      if (/^\[\^\d+\]:/.test(l)) return l.replace(/^(\[\^\d+\]:)(.*)$/, (_: string, a: string, b: string) => `<span class="ui-syntax__attr">${esc(a)}</span>${esc(b)}`);
       return esc(l).replace(/(\[\^\d+\])/g, '<span class="ui-syntax__attr">$1</span>');
     }).join('\n');
   }
-  return String(src).replace(/(<!--[\s\S]*?-->)|(<\/?)([a-zA-Z][\w-]*)([^>]*?)(\/?>)|([^<]+)/g, (m, com, open, name, attrs, close, text) => {
+  return String(src).replace(/(<!--[\s\S]*?-->)|(<\/?)([a-zA-Z][\w-]*)([^>]*?)(\/?>)|([^<]+)/g, (_m: string, com: string | undefined, open: string, name: string, attrs: string, close: string, text: string | undefined) => {
     if (com) return `<span class="ui-syntax__comment">${esc(com)}</span>`;
     if (text !== undefined) return esc(text);
-    const a = attrs.replace(/([^\s=]+)(?:(=)("[^"]*"|'[^']*'|[^\s"']+))?|(\s+)/g, (mm, an, eq, av, ws) => {
+    const a = attrs.replace(/([^\s=]+)(?:(=)("[^"]*"|'[^']*'|[^\s"']+))?|(\s+)/g, (_mm: string, an: string, eq: string | undefined, av: string, ws: string | undefined) => {
       if (ws) return ws;
       return `<span class="ui-syntax__attr">${esc(an)}</span>${eq ? `=<span class="ui-syntax__value">${esc(av)}</span>` : ''}`;
     });

@@ -6,12 +6,31 @@ import Fonts from '../components/Fonts.astro';
 import BookCallLink from '../components/BookCallLink.astro';
 import BrandGroup from '../components/BrandGroup.astro';
 import { SERVICES } from '../data/services';
-import { inlineSheets } from './inline-css.mjs';
+import { inlineSheets } from './inline-css.ts';
 
 const SITE = 'https://pauldrago.com';
 // Cache-buster: changes every build so browsers and the CDN fetch fresh scripts after a deploy.
 const ASSET_V = Date.now().toString(36);
-const v = (href) => `${href}?v=${ASSET_V}`;
+const v = (href: string) => `${href}?v=${ASSET_V}`;
+// Structured data as pages write it: one node, or a graph of them.
+type Node = { '@type'?: string; '@id'?: string; [key: string]: unknown };
+interface Props {
+  title: string;
+  description: string;
+  path?: string;
+  home?: boolean;
+  footerNote?: string;
+  ogType?: string;
+  ogImage?: string;
+  ogImageAlt?: string;
+  robots?: string;
+  stylesheets?: string[];
+  scripts?: string[];
+  lastUpdated?: string;
+  jsonld?: (Node & { '@graph'?: Node[] }) | null;
+  published?: string | null;
+  modified?: string | null;
+}
 const {
   title,
   description,
@@ -40,10 +59,10 @@ const section = path.startsWith('/articles') ? 'articles' : ['/financial-service
 const sharedIds = new Set(SHARED_NODES.map((n) => n['@id']));
 const pageNodes = (jsonld ? (jsonld['@graph'] ?? [jsonld]) : robots.includes('noindex') ? [] : [{
   '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: title, description,
-}])
-  .filter((n) => !sharedIds.has(n['@id']))
+} as Node])
+  .filter((n) => !n['@id'] || !sharedIds.has(n['@id']))
   .map(({ '@context': _context, ...n }) => {
-    if (PAGE_TYPES.has(n['@type'])) {
+    if (n['@type'] && PAGE_TYPES.has(n['@type'])) {
       n.isPartOf = { '@id': WEBSITE_ID };
       n.inLanguage = 'en-US';
       n.dateModified = lastUpdated;

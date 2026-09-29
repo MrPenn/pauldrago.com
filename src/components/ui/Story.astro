@@ -1,7 +1,15 @@
 ---
 // One example of a component: a toolbar for width and theme, the example in an isolated frame
 // that loads the site's real stylesheets, and the snippet to paste with a copy button.
-import { highlight } from '../../styleguide/build.mjs';
+import { highlight } from '../../styleguide/build.ts';
+import type { Component, Story } from '../../styleguide/components.ts';
+
+interface Props {
+  component: Component;
+  story: Story;
+  heading?: 'h2' | 'h3';
+  live?: boolean;
+}
 
 const { component, story, heading = 'h3', live = false } = Astro.props;
 const frameId = `${component.id}--${story.id}`;

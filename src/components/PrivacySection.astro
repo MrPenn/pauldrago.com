@@ -2,6 +2,8 @@
 // One section of the full privacy notice: the heading with its icon, the summary, and a "More
 // detail" disclosure when the section fills the detail slot.
 import Icon from './Icon.astro';
+import type { IconName } from '../data/icons';
+interface Props { id: string; icon: IconName; title: string }
 const { id, icon, title } = Astro.props;
 // Screen readers hear "More detail about ..." with the title's first letter lowered and the rest
 // kept as written, so "I" stays a capital.
