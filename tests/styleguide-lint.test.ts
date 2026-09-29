@@ -207,8 +207,8 @@ test('faces, weights, line spacing and tracking come from the base tokens', () =
 
 test('image sizes are read from WebP and PNG headers', () => {
   assert.deepEqual(imageSize(join(root, 'public/assets/postcard.webp')), { w: 1200, h: 720 });
-  const png = imageSize(join(root, 'public/assets/front-door.png'));
-  assert.deepEqual(png, { w: 1200, h: 681 });
+  const png = imageSize(join(root, 'public/assets/front-door-social.png'));
+  assert.deepEqual(png, { w: 1200, h: 630 });
 });
 
 test('front matter reader handles lists, arrays and quoted strings', () => {

@@ -3,6 +3,7 @@
 // ?theme=light or ?theme=dark forces a theme; window.uiTheme() switches it without a reload.
 import Fonts from '../../../components/Fonts.astro';
 import { inlineSheets } from '../../../layouts/inline-css.ts';
+import { scriptUrl } from '../../../layouts/script-url.ts';
 import { COMPONENTS } from '../../../styleguide/components.ts';
 import { curlHtml } from '../../../integrations/smart-quotes.ts';
 
@@ -57,7 +58,7 @@ const wrap = story.wrap ?? 'body';
 {wrap === 'page' && <div class="ui-frame__slot" set:html={html}></div>}
 {wrap === 'article' && <div class="article"><div class="ui-frame__slot" set:html={html}></div></div>}
 {wrap === 'body' && <div class="article"><div class="article__body ui-frame__slot" data-notes={story.notes ? 'rail' : 'custom'} set:html={html}></div></div>}
-{story.notes && <script is:inline defer src="/assets/article.js"></script>}
-<script is:inline defer src="/assets/article-kit.js"></script>
+{story.notes && <script is:inline defer src={scriptUrl('/assets/article.js')}></script>}
+<script is:inline defer src={scriptUrl('/assets/article-kit.js')}></script>
 </body>
 </html>

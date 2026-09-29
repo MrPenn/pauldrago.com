@@ -7,11 +7,10 @@ import BookCallLink from '../components/BookCallLink.astro';
 import BrandGroup from '../components/BrandGroup.astro';
 import { SERVICES } from '../data/services';
 import { inlineSheets } from './inline-css.ts';
+import { scriptUrl } from './script-url.ts';
+import { lastCommitDate, pageFile } from '../data/page-modified.ts';
 
 const SITE = 'https://pauldrago.com';
-// Cache-buster: changes every build so browsers and the CDN fetch fresh scripts after a deploy.
-const ASSET_V = Date.now().toString(36);
-const v = (href: string) => `${href}?v=${ASSET_V}`;
 // Structured data as pages write it: one node, or a graph of them.
 type Node = { '@type'?: string; '@id'?: string; [key: string]: unknown };
 interface Props {
@@ -43,7 +42,8 @@ const {
   robots = '',
   stylesheets = [],
   scripts = [],
-  lastUpdated = '2026-09-22',
+  // Pages that don't say are dated by the last commit to their file in src/pages.
+  lastUpdated = lastCommitDate(pageFile(Astro.routePattern)),
   jsonld = null,
   published = null,
   modified = null,
@@ -65,7 +65,7 @@ const pageNodes = (jsonld ? (jsonld['@graph'] ?? [jsonld]) : robots.includes('no
     if (n['@type'] && PAGE_TYPES.has(n['@type'])) {
       n.isPartOf = { '@id': WEBSITE_ID };
       n.inLanguage = 'en-US';
-      n.dateModified = lastUpdated;
+      if (lastUpdated) n.dateModified = lastUpdated;
     }
     if (n['@type'] === 'Service') n.provider = { '@id': ORG_ID };
     return n;
@@ -143,9 +143,9 @@ const structuredData = pageNodes.length ? { '@context': 'https://schema.org', '@
     </div>
   </div>
 </footer>
-<script is:inline defer src={v('/assets/trace-rail.js')}></script>
-{scripts.map((src) => <script is:inline defer src={v(src)}></script>)}
-<script is:inline defer src={v('/assets/cal-booking.js')}></script>
+<script is:inline defer src={scriptUrl('/assets/trace-rail.js')}></script>
+{scripts.map((src) => <script is:inline defer src={scriptUrl(src)}></script>)}
+<script is:inline defer src={scriptUrl('/assets/cal-booking.js')}></script>
 <CookieConsent />
 <Fragment set:html="<!--/email_off-->" />
 </body>
