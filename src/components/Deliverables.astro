@@ -1,0 +1,13 @@
+---
+// The numbered deliverables on a service-detail page.
+const { heading, items } = Astro.props;
+const num = (i) => String(i + 1).padStart(2, '0');
+---
+<section class="build-section">
+  <div class="container">
+    <h2 class="section-title-plain">{heading}</h2>
+    <div class="deliverables">
+      {items.map((d, i) => <div class="deliverable"><div class="deliverable__num">{num(i)}</div><h3 class="deliverable__title">{d.title}</h3><p class="deliverable__copy">{d.copy}</p></div>)}
+    </div>
+  </div>
+</section>

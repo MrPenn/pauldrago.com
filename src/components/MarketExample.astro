@@ -35,8 +35,8 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
 
     <MarketTable />
     <div class="scorecard" data-market-scorecard>
-      <div class="scorecard__weights">
-        <p class="scorecard__title">Weight the criteria</p>
+      <div>
+        <p class="kicker">Weight the criteria</p>
         <div class="scorecard__presets" role="group" aria-label="Weighting presets" hidden data-presets>
           {Object.entries(PRESETS).map(([key, p]) => <button type="button" class="scorecard__preset" data-preset={key} aria-pressed={key === 'full' ? 'true' : 'false'}>{p.label}</button>)}
         </div>
@@ -54,7 +54,7 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
         ))}
       </div>
       <div class="scorecard__ranking">
-        <p class="scorecard__title" id="market-ranking-title">Ranking</p>
+        <p class="kicker" id="market-ranking-title">Ranking</p>
         <ol class="scorecard__ranking-list" aria-labelledby="market-ranking-title" data-ranking>
           {fullCase.map((r) => (
             <li class="scorecard__rank" data-county={r.county}>
@@ -65,7 +65,7 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
           ))}
         </ol>
         <p class="sr-only" aria-live="polite" data-ranking-status></p>
-        <p class="scorecard__note">Each measure scores a county against the best of the three (best = 100); the ranking is the weighted average. Try the deposit-map weights: {mapView[0].county} leads with {mapView[0].score}. The full case puts {fullCase[0].county} first with {fullCase[0].score}.{holdsOnPublicData && ' Set "Your customers nearby" to zero and it still leads: the case rests on public data.'}</p>
+        <p class="note scorecard__note">Each measure scores a county against the best of the three (best = 100); the ranking is the weighted average. Try the deposit-map weights: {mapView[0].county} leads with {mapView[0].score}. The full case puts {fullCase[0].county} first with {fullCase[0].score}.{holdsOnPublicData && ' Set "Your customers nearby" to zero and it still leads: the case rests on public data.'}</p>
       </div>
     </div>
     <script type="application/json" id="market-data" set:html={JSON.stringify(markets)}></script>
@@ -82,9 +82,9 @@ const mUSD = (n) => `$${(n / 1000).toFixed(1)}M`;
     </div>
 
     <div class="recommendation">
-      <p class="band-label">The full analysis</p>
+      <p class="kicker band-label">The full analysis</p>
       <p>The comparison is step one. The sample plan takes it to the board: three branches over five years ({sites.slice(0, -1).join(', ')}, and {sites.at(-1)}), placed where deposits and business are growing, with CRA and fair lending tested before the sites were final. It covers how new branches in Dallas-Fort Worth ramp, and what the network carries: {mUSD(model.totalBuildOut * 1000)} of build-out, with {mUSD(-model.cumulative[4])} still to earn back at the end of year 5.</p>
-      <p class="recommendation__link"><a href="/branch-market-expansion-analysis/sample-plan">Read the sample five-year plan</a></p>
+      <p class="recommendation__link"><a class="link link--strong" href="/branch-market-expansion-analysis/sample-plan">Read the sample five-year plan</a></p>
     </div>
   </div>
 </section>

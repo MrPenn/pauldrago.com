@@ -11,11 +11,8 @@
 
 
     .section-title {
-      font-size: var(--step-3);
+      font-size: var(--title-section);
     }
-  @media (width >= 760px) { .section-title { font-size: var(--step-4); } }
-  @media (width >= 1040px) { .section-title { font-size: var(--step-5); } }
-  @media (width >= 1180px) { .section-title { font-size: var(--step-6); } }
 
     .eyebrow {
       color: var(--secondary);
@@ -23,11 +20,10 @@
 
     .hero {
       position: relative;
-      isolation: isolate;
       min-height: 620px;
       padding: var(--space-16) 0 var(--space-16);
-      overflow: hidden;
     }
+  @media (width < 760px) { .hero { padding-top: var(--space-12); min-height: auto; } }
 
     .hero__layout {
       display: grid;
@@ -36,13 +32,10 @@
     }
 
     @media (width >= 1040px) {.hero {
-        min-height: 620px;
-        padding-top: var(--space-16);
         padding-bottom: var(--space-12);
       }
 
       .hero__layout {
-        grid-template-columns: minmax(0, 1fr);
         align-items: start;
       }
   }
@@ -56,10 +49,11 @@
     }
 
     .hero__title {
-      font-size: var(--step-4);
+      font-size: var(--step-3);
       line-height: var(--leading-display);
       max-width: 960px;
     }
+  @media (480px <= width < 760px) { .hero__title { font-size: var(--step-4); } }
   @media (width >= 760px) { .hero__title { font-size: var(--step-5); } }
   @media (width >= 1040px) { .hero__title { font-size: var(--step-6); } }
   @media (width >= 1180px) { .hero__title { font-size: var(--step-7); } }
@@ -84,7 +78,7 @@
     .decision-nav {
       position: sticky;
       top: 0;
-      z-index: 5;
+      z-index: var(--z-sticky-nav);
       background: color-mix(in srgb, var(--ground) 96%, transparent);
       border-top: 1px solid var(--hairline);
       border-bottom: 1px solid var(--hairline);
@@ -93,7 +87,6 @@
 
     .decision-nav__inner {
       display: grid;
-      grid-template-columns: 1fr;
       gap: 0;
     }
 
@@ -174,7 +167,6 @@
       color: var(--secondary);
       font-size: var(--step--2);
       font-weight: var(--weight-bold);
-      text-transform: none;
       padding: var(--space-5) 0 var(--space-3);
       border-bottom: 1px solid var(--hairline);
     }
@@ -202,12 +194,10 @@
     .router__question {
       font-family: var(--font-display);
       color: var(--paper);
-      font-size: var(--step-1);
+      font-size: var(--title-lead);
       line-height: var(--leading-display);
       text-transform: uppercase;
     }
-  @media (width >= 1040px) { .router__question { font-size: var(--step-2); } }
-  @media (width >= 1180px) { .router__question { font-size: var(--step-3); } }
 
     /* 1040 to 1180: the copy column keeps 330px (about 35 characters a line), and the question eases
        from 26px to 32px so it keeps four lines beside it */
@@ -217,10 +207,6 @@
   }
 
     .router__service {
-      color: var(--brass);
-      font-size: var(--step--2);
-      font-weight: var(--weight-bold);
-      text-transform: none;
       margin-bottom: var(--space-3);
     }
 
@@ -264,10 +250,6 @@
     }
 
     .router__visual-label {
-      color: var(--brass);
-      font-size: var(--step--2);
-      font-weight: var(--weight-bold);
-      text-transform: none;
       margin-bottom: var(--space-4);
     }
 
@@ -403,6 +385,7 @@
       padding: var(--space-6) 0;
       border-bottom: 1px solid var(--hairline);
     }
+  @media (width < 760px) { .process__step { grid-template-columns: 1fr; gap: var(--space-2); } }
 
     .process__title {
       color: var(--paper);
@@ -419,7 +402,6 @@
     }
 
     .process-note {
-      max-width: 820px;
       margin-top: var(--space-8);
       color: var(--secondary);
       font-size: var(--step--2);
@@ -472,12 +454,6 @@
       }
   }
 
-    /* Tablet: the note column keeps its 280px; the gap eases so 761 reads and is back to 64px by about 960 */
-    @media (760px <= width < 1040px) {.closing-band__grid {
-        gap: var(--space-16);
-      }
-  }
-
     .call-note {
       align-self: start;
       width: 100%;
@@ -488,10 +464,6 @@
     }
 
     .call-note__label {
-      color: var(--brass);
-      font-size: var(--step--2);
-      font-weight: var(--weight-bold);
-      text-transform: none;
       margin-bottom: var(--space-4);
     }
 
@@ -501,22 +473,7 @@
       line-height: var(--leading-body);
     }
 
-    @media (width < 760px) {.hero__title {
-        font-size: var(--step-3);
-      }
-  @media (width >= 480px) { .hero__title { font-size: var(--step-4); } }
-
-      .process__step {
-        grid-template-columns: 1fr;
-        gap: var(--space-2);
-      }
-
-      .hero {
-        padding-top: var(--space-12);
-        min-height: auto;
-      }
-
-      .decision-nav {
+    @media (width < 760px) {.decision-nav {
         position: static;
       }
 

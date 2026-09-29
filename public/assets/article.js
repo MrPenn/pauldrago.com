@@ -2,18 +2,6 @@
    Runs on articles whose body is marked data-notes="rail"; an article with its own
    sidenote system (data-notes="custom") keeps it. */
 (function () {
-  /* Reading progress for browsers without scroll timelines (site-shell.css draws the rail). */
-  if (!(window.CSS && CSS.supports && CSS.supports('animation-timeline: scroll()'))) {
-    var root = document.documentElement, tick = null;
-    var trace = function () {
-      tick = null;
-      var max = root.scrollHeight - window.innerHeight;
-      root.style.setProperty('--trace-depth', (max > 0 ? Math.min(1, window.scrollY / max) * 100 : 0) + '%');
-    };
-    window.addEventListener('scroll', function () { if (tick === null) tick = requestAnimationFrame(trace); }, { passive: true });
-    trace();
-  }
-
   var body = document.querySelector('.article__body[data-notes="rail"]');
   if (!body) return;
 

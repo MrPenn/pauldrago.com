@@ -1,6 +1,6 @@
 ---
 import Styleguide from '../../layouts/Styleguide.astro';
-import { colorTokens, typeSteps, typeTokens, spaceTokens, gridTokens } from '../../styleguide/tokens.mjs';
+import { colorTokens, typeSteps, typeTokens, spaceTokens, gridTokens, behaviorTokens } from '../../styleguide/tokens.mjs';
 import { BREAKPOINTS, COLUMN_BREAKPOINTS, TYPE_SCALE } from '../../styleguide/components.mjs';
 
 const tokens = colorTokens(process.cwd());
@@ -23,6 +23,7 @@ const NAMING = [
 const base = typeTokens(process.cwd());
 const space = spaceTokens(process.cwd());
 const grid = gridTokens(process.cwd());
+const { motion, focus, stack } = behaviorTokens(process.cwd());
 const GRID_USE = {
   '--container-page': 'The page: header, footer, service pages',
   '--container-article': 'An article, and the width a calculator or pinned sequence widens to',
@@ -35,6 +36,25 @@ const GRID_USE = {
   '--measure--1': 'Decks, pinned steps, record text',
   '--measure-0': 'The reading column',
   '--measure-1': 'Wide text: tables of notes, the styleguide',
+};
+// What each motion, focus and stacking token is for; the values come from site-shell.css.
+const MOTION_USE = {
+  '--pd-ease': 'Every transition: fast out, slow settle.',
+  '--pd-fast': 'A unit filling, a label appearing.',
+  '--pd-base': 'A bar or a ledger row arriving, a line dropping in, a column rising.',
+  '--pd-slow': 'A segment growing, an illustration rising into place.',
+};
+const FOCUS_USE = {
+  '--focus-offset': 'The default ring: links, buttons, fields and summaries',
+  '--focus-offset-tight': 'The smaller controls in figures and calculators, and the /ui buttons',
+};
+const STACK_USE = {
+  '--z-table-head': 'A wide table\'s first column, pinned while the table scrolls sideways on phones',
+  '--z-scrolly-steps': 'The steps of a pinned sequence',
+  '--z-scrolly-pin': 'The pinned card below 1180, over the steps that scroll under it',
+  '--z-sticky-nav': 'The sticky nav on the financial services page',
+  '--z-rail': 'The reading progress rail',
+  '--z-skip': 'The skip link, over everything',
 };
 // What each base token is for; the values come from site-shell.css.
 const USE = {
@@ -122,7 +142,7 @@ const ARTICLE = [
       </table>
     </div>
     <h3 class="ui-h3">The scale</h3>
-    <p class="ui-p">Every font size on the site is one of these thirteen steps, read here from <code>site-shell.css</code>. Body text is step 0, each step is 1.2 times the one below it, and 14px is the smallest text anywhere. The linter rejects any other size (<code>type-scale</code>). See it set on the <a href="/ui/components/type-scale">type scale</a> page.</p>
+    <p class="ui-p">Every font size on the site is one of these thirteen steps, read here from <code>site-shell.css</code>. Body text is step 0, each step is 1.2 times the one below it, and 14px is the smallest text anywhere. The linter rejects any other size (<code>type-scale</code>). See it set on the <a class="link" href="/ui/components/type-scale">type scale</a> page.</p>
     <div class="ui-table-wrap">
       <table class="ui-table">
         <thead><tr><th class="label">Step</th><th class="label">Token</th><th class="label">Size</th><th class="label">Used for</th></tr></thead>
@@ -139,7 +159,7 @@ const ARTICLE = [
     <ul class="ui-list">
       <li>A size changes only at a breakpoint, so every size is a step at every width.</li>
       <li>Two things the reader has to tell apart sit at least a step apart, or differ in face or weight.</li>
-      <li>Small capitals are the <a href="/ui/components/label">label</a>, and numbers in the display face are the <a href="/ui/components/number">number</a>, in four sizes. Neither is restyled by the components that use them.</li>
+      <li>Small capitals are the <a class="link" href="/ui/components/label">label</a>, and numbers in the display face are the <a class="link" href="/ui/components/number">number</a>, in four sizes. Neither is restyled by the components that use them.</li>
     </ul>
   </section>
 
@@ -173,7 +193,7 @@ const ARTICLE = [
 
   <section class="ui-section" id="layout">
     <h2 class="ui-h2">Layout grid</h2>
-    <p class="ui-p">Every page changes layout at four widths and nowhere else, and the linter holds every stylesheet to them (<code>css-breakpoint</code>). Components do not measure the screen: they answer to the column they sit in, so a figure reads the same in an article, a /ui frame or a sidebar. See it move on the <a href="/ui/components/layout-grid">layout grid</a> page.</p>
+    <p class="ui-p">Every page changes layout at four widths and nowhere else, and the linter holds every stylesheet to them (<code>css-breakpoint</code>). Components do not measure the screen: they answer to the column they sit in, so a figure reads the same in an article, a /ui frame or a sidebar. See it move on the <a class="link" href="/ui/components/layout-grid">layout grid</a> page.</p>
     <h3 class="ui-h3">The page</h3>
     <div class="ui-table-wrap">
       <table class="ui-table">
@@ -200,6 +220,14 @@ const ARTICLE = [
       <li>The gutter is a step narrower below 760: 20px. Everything that reads it follows, including the pinned card and the opener that run to the page edge.</li>
       <li>A calculator, 1040 and up, and a pinned sequence, 1180 and up, widen to the article container, less its gutters.</li>
     </ul>
+    <h3 class="ui-h3">Stacking</h3>
+    <p class="ui-p">Everything that sits over the page takes a z-index step from <code>site-shell.css</code>, lowest first.</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
+        <tbody>{stack.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value}</td><td>{STACK_USE[t.name] ?? ''}</td></tr>)}</tbody>
+      </table>
+    </div>
     <h3 class="ui-h3">Choosing the step</h3>
     <ul class="ui-list">
       <li>Pick the lowest step where every column still reads. Two columns sit side by side from 760, and so do three or four short items. Three columns led by a big headline stack until 1040.</li>
@@ -263,20 +291,22 @@ tablet.addEventListener('change', update);`}</code></pre>
       <li>Interactive figures use native buttons, radios and details, so the keyboard works without extra code.</li>
       <li>Reduced motion turns every transition off site-wide.</li>
     </ul>
+    <p class="ui-p">The ring's gap from what it outlines, from <code>site-shell.css</code>.</p>
+    <div class="ui-table-wrap">
+      <table class="ui-table">
+        <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
+        <tbody>{focus.map((t) => <tr><td><code>var({t.name})</code></td><td class="ui-num">{t.value}</td><td>{FOCUS_USE[t.name] ?? ''}</td></tr>)}</tbody>
+      </table>
+    </div>
   </section>
 
   <section class="ui-section" id="motion">
     <h2 class="ui-h2">Motion</h2>
-    <p class="ui-p">One easing and three durations, used everywhere. Each figure has one moment: it builds once as it arrives, with a beat before the part the reader is meant to notice, and nothing loops.</p>
+    <p class="ui-p">One easing and three durations, read from <code>site-shell.css</code> and used everywhere. Each figure has one moment: it builds once as it arrives, with a beat before the part the reader is meant to notice, and nothing loops.</p>
     <div class="ui-table-wrap">
       <table class="ui-table">
         <thead><tr><th class="label">Token</th><th class="label">Value</th><th class="label">Used for</th></tr></thead>
-        <tbody>
-          <tr><td><code>--pd-ease</code></td><td><code>cubic-bezier(0.22, 1, 0.36, 1)</code></td><td>Every transition: fast out, slow settle.</td></tr>
-          <tr><td><code>--pd-fast</code></td><td class="ui-num">260ms</td><td>A unit filling, a label appearing.</td></tr>
-          <tr><td><code>--pd-base</code></td><td class="ui-num">620ms</td><td>A bar or a ledger row arriving, a line dropping in, a column rising.</td></tr>
-          <tr><td><code>--pd-slow</code></td><td class="ui-num">900ms</td><td>A segment growing, an illustration rising into place.</td></tr>
-        </tbody>
+        <tbody>{motion.map((t) => <tr><td><code>{t.name}</code></td>{/^[\d.]+m?s$/.test(t.value) ? <td class="ui-num">{t.value}</td> : <td><code>{t.value}</code></td>}<td>{MOTION_USE[t.name] ?? ''}</td></tr>)}</tbody>
       </table>
     </div>
     <ul class="ui-list">

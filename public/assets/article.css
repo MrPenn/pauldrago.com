@@ -2,18 +2,17 @@
    Tokens come from site-shell.css (--paper, --brass, --hairline, the type scale). */
 
 @layer site {
-  /* The page: header, byline and author box. The title climbs one step of the type scale at each
-     breakpoint. */
+  /* The page: header, byline and author box. The title is the section title size from
+     site-shell.css, which climbs one step of the type scale at each breakpoint. */
   .article { padding: var(--space-16) 0 var(--space-24); }
-  .article__header { max-width: 760px; margin-bottom: var(--space-10); padding: var(--space-6) 0; }
+  .article .container { max-width: var(--container-article); }
+  .article__header { max-width: 920px; margin-bottom: var(--space-10); padding: var(--space-6) 0; }
   .article__kicker { margin: 0 0 var(--space-4); }
-  .article__kicker a { color: inherit; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--hairline); opacity: 0.85; }
+  .article__kicker a { text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--hairline); opacity: 0.85; }
   .article__kicker a:hover { text-decoration-color: var(--brass); opacity: 1; }
-  .article__title { font-size: var(--step-3); line-height: var(--leading-display); margin: 0 0 var(--space-4); }
-  @media (width >= 760px) { .article__title { font-size: var(--step-4); } }
-  @media (width >= 1040px) { .article__title { font-size: var(--step-5); } }
-  @media (width >= 1180px) { .article__title { font-size: var(--step-6); } }
-  .article__intro { font-size: var(--step-1); line-height: var(--leading-body); margin: 0 0 var(--space-3); max-width: var(--measure-0); }
+  .article__sep { opacity: 0.5; }
+  .article__title { font-size: var(--title-section); line-height: var(--leading-display); margin: 0 0 var(--space-4); }
+  .article__intro { font-family: var(--font-serif); font-size: var(--step-1); line-height: var(--leading-body); margin: 0 0 var(--space-3); max-width: var(--measure-0); }
   .article__date { font-size: var(--step--2); opacity: 0.7; margin: 0; }
   .article__byline { margin: var(--space-3) 0 0; font-size: var(--step--2); color: var(--secondary); }
   .article__byline a { color: var(--paper); font-weight: var(--weight-semibold); text-decoration: none; border-bottom: 1px solid var(--brass); }
@@ -29,19 +28,77 @@
   .btn--small { padding: var(--space-3) var(--space-5); font-size: var(--step--2); }
   @media (width < 760px) { .btn.btn--small { min-height: 0; padding: var(--space-3) var(--space-4); } }
 
-  /* The body's defaults. The kit and an article's own stylesheet set the reading styles on top. */
-  .article__body { max-width: var(--measure-1); font-size: var(--step-0); line-height: var(--leading-body); }
-  .article__body h2 { font-family: var(--font-display); font-size: var(--step-1); line-height: var(--leading-heading); margin: var(--space-12) 0 var(--space-4); }
-  .article__body h3 { font-size: var(--step-0); margin: var(--space-8) 0 var(--space-3); }
+  /* The body: the reading column, in the serif. Section heads open on a hairline, and a blockquote
+     is a pull quote over an accent rule. The kit adds the section numerals and the opening mark. */
+  .article__body {
+    position: relative;
+    max-width: var(--measure-0);
+    font-family: var(--font-serif);
+    font-size: var(--step-0);
+    line-height: var(--leading-body);
+  }
+  .article__body p { font-variant-numeric: oldstyle-nums proportional-nums; }
+  .article__body h2 {
+    position: relative;
+    margin: var(--space-20) 0 var(--space-4);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--hairline);
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    line-height: var(--leading-heading);
+  }
+  .article__body h3 {
+    margin: var(--space-12) 0 var(--space-4);
+    font-style: italic;
+    font-weight: var(--weight-regular);
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+    color: var(--paper);
+  }
   .article__body p, .article__body ul, .article__body ol { margin: 0 0 var(--space-5); }
-  .article__body a { color: inherit; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
-  .article__body blockquote { margin: var(--space-8) 0; padding-left: var(--space-5); border-left: 3px solid currentColor; opacity: 0.9; }
+  .article__body blockquote {
+    position: relative;
+    margin: var(--space-12) 0;
+    padding: 0 0 var(--space-6);
+    border-bottom: 2px solid var(--brass);
+    opacity: 0.9;
+  }
+  .article__body blockquote p {
+    margin: 0;
+    max-width: var(--measure--4);
+    font-style: italic;
+    font-size: var(--step-1);
+    line-height: var(--leading-snug);
+    color: var(--paper);
+    text-wrap: balance;
+  }
+  .article__body figcaption {
+    margin-top: var(--space-5);
+    max-width: var(--measure-0);
+    font-family: var(--font-sans);
+    font-size: var(--step--2);
+    line-height: var(--leading-text);
+    color: var(--secondary);
+  }
   .article__body img { max-width: 100%; height: auto; }
-  @media (width >= 1040px) { .article__body h2 { font-size: var(--step-2); } }
+  @media (width >= 1040px) { .article__body h2, .article__body blockquote p { font-size: var(--step-2); } }
+  /* On phones every reading size takes the step below: intro 20, body 17, subheads 20, pull quotes 20. */
   @media (width < 760px) {
     .article__intro { font-size: var(--step-0); }
     .article__body { font-size: var(--step--1); }
+    .article__body h2 { margin-top: var(--space-12); }
+    .article__body h3 { font-size: var(--step-0); }
+    .article__body blockquote { padding: var(--space-8) 0 var(--space-5); margin: var(--space-8) 0; }
+    .article__body blockquote p { font-size: var(--step-0); }
   }
+
+  /* Tables */
+  .article__body table { display: block; overflow-x: auto; width: 100%; margin: var(--space-8) 0 var(--space-8); border-collapse: collapse; font-family: var(--font-sans); font-size: var(--step--2); line-height: var(--leading-text); }
+  .article__body th { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-top: 2px solid var(--paper); border-bottom: 1px solid var(--hairline); text-align: left; vertical-align: bottom; }
+  .article__body td { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--hairline); vertical-align: top; min-width: 9ch; }
+  .article__body td:first-child { font-weight: var(--weight-semibold); color: var(--paper); }
+  /* A row header in the body drops the heading rule and reads like the first column. */
+  .article__body tbody th { border-top: 0; vertical-align: top; font-weight: var(--weight-semibold); color: var(--paper); }
 
   /* The short version */
   .brief {
@@ -77,24 +134,24 @@
     margin: var(--space-10) 0 0;
     padding: var(--space-6) 0 0;
     border-top: 1px solid var(--hairline);
-    font-family: var(--font-serif);
     font-size: var(--step-0);
     line-height: var(--leading-body);
     max-width: var(--measure-0);
-    color: var(--paper);
   }
   .article__body .booking-line a { color: var(--brass); text-decoration: none; border-bottom: 2px solid var(--brass); font-weight: var(--weight-semibold); }
   .article__body .booking-line a:hover { color: var(--paper); }
 
   /* Sources beside the text (article.js, data-notes="rail"). The list stays in the page for print
      and for readers without scripts; with scripts it moves into the rail or opens inline. */
-  .article__body[data-notes="rail"] { position: relative; }
   .article__body [data-footnote-ref] {
     color: var(--brass);
     font-family: var(--font-sans);
     font-weight: var(--weight-bold);
     text-decoration: none;
     padding: 0 1px;
+  }
+  @media (width < 760px) {
+    .article__body [data-footnote-ref] { padding: var(--space-2) var(--space-1); margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-half)); }
   }
   .article__body [data-footnote-ref]:hover,
   .article__body [data-footnote-ref].is-active { text-decoration: underline; text-underline-offset: 2px; }
@@ -116,7 +173,7 @@
   .sidenote__num { color: var(--brass); font-weight: var(--weight-bold); margin-right: var(--space-2); }
   .sidenote p, .note-inline p { display: inline; margin: 0; }
   .sidenote strong, .note-inline strong { font-weight: var(--weight-semibold); color: var(--paper); }
-  .sidenote a, .note-inline a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .sidenote a, .note-inline a { text-decoration: underline; text-underline-offset: 3px; }
   .sidenote .data-footnote-backref, .note-inline .data-footnote-backref { display: none; }
   .sidenote.is-active, .sidenote:hover { color: var(--paper); border-top-color: var(--brass); }
   .note-inline {
@@ -127,15 +184,11 @@
     font-size: var(--step--2);
   }
   .article__body[data-notes="rail"] section[data-footnotes] { margin-top: var(--space-12); }
-  .article__body[data-notes="rail"] section[data-footnotes] h2 { font-size: var(--step--1); }
   @media (scripting: enabled) {
     .article__body[data-notes="rail"] section[data-footnotes] { display: none; }
   }
   @media (width >= 1180px) {
     .sidenote { display: block; }
-  }
-  @media (width < 760px) {
-    .article__body [data-footnote-ref] { padding: var(--space-2) var(--space-1); margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-half)); }
   }
   @media print {
     .article__body[data-notes="rail"] section[data-footnotes] { display: block; }

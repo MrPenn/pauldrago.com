@@ -197,7 +197,7 @@ Fully loaded cost per asset, with agency fees, internal hours, translation, revi
     <label class="pd-field"><span class="label pd-field__label">How many review rounds does a new piece take?</span><span class="pd-input"><input class="pd-input__field" data-var="rounds" type="number" inputmode="decimal" value="4" min="0" step="0.5"></span><span class="pd-field__src">Filestage measured an average of 4 versions before approval.</span></label>
   </div>
   <details class="pd-calc__more">
-    <summary>Change the other 12 numbers</summary>
+    <summary class="disclosure__summary">Change the other 12 numbers</summary>
     <div class="pd-calc__inputs pd-calc__inputs--more">
       <p class="label pd-calc__group">Creation</p>
       <label class="pd-field"><span class="label pd-field__label">How many hours to make a variant?</span><span class="pd-input"><input class="pd-input__field" data-var="createVar" type="number" inputmode="decimal" value="1.5" min="0" step="0.5"></span><span class="pd-field__src">Example. An approved asset with a new image and one line changed.</span></label>

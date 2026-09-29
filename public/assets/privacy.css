@@ -16,11 +16,7 @@
     flex: none;
     width: 22px;
     height: 22px;
-    fill: none;
-    stroke: var(--brass);
-    stroke-width: 1.8;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    color: var(--brass);
   }
 
   /* At a glance: a two-column summary, after Juro's privacy summary pattern */
@@ -32,12 +28,10 @@
   .glance__heading {
     padding: var(--space-10) var(--space-10) 0;
     font-family: var(--font-display);
-    font-size: var(--step-2);
+    font-size: var(--title-sub);
     line-height: var(--leading-heading);
     text-align: center;
   }
-  @media (width >= 1040px) { .glance__heading { font-size: var(--step-3); } }
-  @media (width >= 1180px) { .glance__heading { font-size: var(--step-4); } }
   .glance__intro {
     max-width: var(--measure-0);
     margin: var(--space-4) auto 0;
@@ -72,9 +66,6 @@
   .glance__item-head a {
     flex: none;
     padding: var(--space-1) 0 var(--space-1);
-    color: var(--brass);
-    font-size: var(--step--2);
-    font-weight: var(--weight-bold);
     text-decoration: none;
   }
   .glance__item-head a:hover { text-decoration: underline; text-underline-offset: 3px; }
@@ -89,7 +80,6 @@
     border: 1px solid var(--brass);
     background: transparent;
     color: var(--brass);
-    font: inherit;
     font-size: var(--step--2);
     font-weight: var(--weight-bold);
     cursor: pointer;
@@ -116,9 +106,8 @@
   }
   .timeline__icon { width: 24px; height: 24px; }
   .timeline__key--give { color: var(--brass); }
-  .timeline__key--give .timeline__icon { stroke: var(--brass); }
   .timeline__key--auto { color: var(--paper); }
-  .timeline__key--auto .timeline__icon { stroke: var(--paper); }
+  .timeline__key--auto .timeline__icon { color: var(--paper); }
   .timeline__rows { margin-top: var(--space-2) !important; padding: 0 !important; list-style: none; }
   .timeline__row {
     display: grid;
@@ -176,12 +165,6 @@
     gap: var(--space-16);
     align-items: start;
   }
-  .privacy__toc-label {
-    color: var(--brass);
-    font-size: var(--step--2);
-    font-weight: var(--weight-bold);
-    text-transform: none;
-  }
   .privacy__toc {
     position: sticky;
     top: 24px;
@@ -214,9 +197,8 @@
     line-height: var(--leading-heading);
   }
   .privacy__summary { max-width: var(--measure-0); margin-top: var(--space-3); text-wrap: pretty; }
-  .privacy__section a { color: inherit; text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; }
   /* The cookie settings button inside the notice: the footer's link button, underlined. */
-  .privacy__settings-button { padding: 0; border: 0; background: none; color: var(--paper); font: inherit; font-weight: var(--weight-semibold); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; cursor: pointer; }
+  .privacy__settings-button { padding: 0; border: 0; background: none; color: var(--paper); font-weight: var(--weight-semibold); text-decoration: underline; text-decoration-color: var(--brass); text-underline-offset: 3px; cursor: pointer; }
   .privacy__settings-button:hover { color: var(--brass); }
 
   .privacy__section details { margin-top: var(--space-4); }
@@ -263,7 +245,7 @@
     color: var(--secondary);
     font-size: var(--step--2);
   }
-  .privacy__credit a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
+  .privacy__credit a { text-decoration: underline; text-underline-offset: 3px; }
 
   /* Tablets: both two-column layouts stay. Spacing and ledger type start tight at 761, so the ledger fits
      beside the contents list, and reach the desktop values by 960. */
@@ -276,7 +258,7 @@
   /* Tablets and up: on a short screen (a phone held sideways) the stuck contents list scrolls on its own,
      with room inside for focus rings, and a long word scrolls the ledger instead of the page. */
   @media (width >= 760px) {
-    .privacy__toc { max-height: calc(100vh - 48px); max-height: calc(100svh - 48px); overflow: auto; margin-inline: calc(-1 * var(--space-2)); padding: var(--space-1) var(--space-2) var(--space-2); }
+    .privacy__toc { max-height: calc(100svh - 48px); overflow: auto; margin-inline: calc(-1 * var(--space-2)); padding: var(--space-1) var(--space-2) var(--space-2); }
     .ledger { overflow-x: auto; }
   }
 

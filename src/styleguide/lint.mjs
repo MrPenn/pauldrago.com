@@ -290,12 +290,17 @@ const phoneOrPrint = (prelude) => /^@media\b/.test(prelude) && prelude.replace(/
 
 // The type scale's steps, --step--2 to --step-10.
 const STEPS = new Set(Array.from({ length: 13 }, (_, i) => i - 2));
-// A size is a step (var(--step-1)), or it takes its parent's (inherit and its kin).
+// The title sizes site-shell.css sets to a step at each breakpoint.
+const TITLES = new Set(['section', 'sub', 'lead']);
+// A size is a step (var(--step-1)), a title size (var(--title-section)), or it takes its parent's
+// (inherit and its kin).
 function offScaleSize(v) {
   const size = v.replace(/\s*!important\s*$/i, '').trim();
   if (/^(?:inherit|initial|unset|revert|revert-layer)$/i.test(size)) return null;
   const step = size.match(/^var\(--step-(-?\d+)\)$/);
   if (step && STEPS.has(Number(step[1]))) return null;
+  const title = size.match(/^var\(--title-([a-z]+)\)$/);
+  if (title && TITLES.has(title[1])) return null;
   return size;
 }
 // Spacing: every part of a margin, padding or gap is a --space step, the gutter, 0, auto, a percentage,
@@ -424,7 +429,7 @@ export function lintScript(file, text) {
 
 // ------------------------------------------------------------------ articles
 
-const ROOT_CSS = ['/assets/site-shell.css', '/assets/personal-site.css', '/assets/article.css'];
+const ROOT_CSS = ['/assets/site-shell.css', '/assets/article.css'];
 const TITLE_MINOR = new Set(['a', 'an', 'the', 'and', 'but', 'or', 'nor', 'for', 'so', 'yet', 'as', 'at', 'by', 'in', 'of', 'on', 'to', 'up', 'via', 'vs']);
 const COLOPHON = /^(about the numbers|sources|notes|method|methodology)$/i;
 const FIGURE_NAMES = { tl: 'timeline', units: 'unit stat', stack: 'stacked bar', cols: 'rising columns chart', asof: 'as-of slider', stat: 'stat line', bars: 'bar chart' };

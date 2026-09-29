@@ -7,40 +7,15 @@
 
 @layer kit {
   /* ============================================================
-     Motion: one easing, three durations, used everywhere.
-     ============================================================ */
-  :root {
-    --pd-ease: cubic-bezier(0.22, 1, 0.36, 1);
-    --pd-fast: 260ms;
-    --pd-base: 620ms;
-    --pd-slow: 900ms;
-  }
-
-  /* ---------- The page ---------- */
-  .article .container { max-width: var(--container-article); }
-  .article__header { max-width: 920px; border-bottom: 0; }
-  .article__sep, .article__sep { opacity: 0.5; }
-  .article__intro { font-family: var(--font-serif); }
-
-  /* ============================================================
      Three voices. Archivo Black for the headline, section heads and big numbers;
      Source Serif 4 for reading, decks and pull quotes; IBM Plex Sans for figures,
      labels, captions, inputs and notes. Every size is a step of the type scale in
      site-shell.css; body text is step 0.
      ============================================================ */
   /* The article column is the container the kit's components answer to (see @container column). */
-  .article__body {
-    container: column / inline-size;
-    position: relative;
-    max-width: var(--measure-0);
-    font-family: var(--font-serif);
-    font-size: var(--step-0);
-    line-height: var(--leading-body);
-    counter-reset: sec;
-  }
-  .article__body p { font-variant-numeric: oldstyle-nums proportional-nums; }
+  .article__body { container: column / inline-size; counter-reset: sec; }
   .pd-figure, .pd-scrolly__graphic, .pd-calc, .pd-units, .pd-field, .pd-ledger, .pd-stack, .pd-cols, .pd-record, .pd-asof,
-  .pd-scrolly__notes, .article__body figcaption, .pd-toggle, .pd-key, .pd-text-btn {
+  .pd-scrolly__notes, .pd-toggle, .pd-key, .pd-text-btn {
     font-family: var(--font-sans);
   }
 
@@ -54,19 +29,10 @@
     line-height: var(--leading-cap);
     color: var(--brass);
   }
+  @media (width < 760px) { .article__lede::first-letter { font-size: var(--step-6); } }
 
-  /* Sections: a hairline, a roman numeral, the claim. "About the numbers" is not numbered. */
-  .article__body h2 {
-    position: relative;
-    margin: var(--space-20) 0 var(--space-4);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--hairline);
-    font-family: var(--font-display);
-    font-size: var(--step-1);
-    line-height: var(--leading-heading);
-    counter-increment: sec;
-  }
-  @media (width >= 1040px) { .article__body h2 { font-size: var(--step-2); } }
+  /* Sections: a roman numeral over the claim. "About the numbers" is not numbered. */
+  .article__body h2 { counter-increment: sec; }
   .article__body h2::before {
     content: counter(sec, upper-roman) ".";
     display: block;
@@ -79,16 +45,6 @@
   }
   .article__body h2.article__colophon, .article__body section[data-footnotes] h2 { counter-increment: none; }
   .article__body h2.article__colophon::before, .article__body section[data-footnotes] h2::before { content: none; }
-  /* Subheads take the decks' voice. */
-  .article__body h3 {
-    margin: var(--space-12) 0 var(--space-4);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-weight: var(--weight-regular);
-    font-size: var(--step-1);
-    line-height: var(--leading-snug);
-    color: var(--paper);
-  }
 
   /* The deck: one italic line under a section heading. */
   .pd-deck {
@@ -101,25 +57,8 @@
     color: var(--secondary);
   }
 
-  /* Pull quotes: an accent rule under the quote, the opening mark hung into the margin.
-     A markdown blockquote takes this style; so does <blockquote class="pd-pq">. */
-  .article__body blockquote {
-    position: relative;
-    margin: var(--space-12) 0;
-    padding: 0 0 var(--space-6);
-    border: 0;
-    border-bottom: 2px solid var(--brass);
-  }
-  .article__body blockquote p {
-    margin: 0;
-    max-width: var(--measure--4);
-    font-family: var(--font-serif);
-    font-style: italic;
-    font-size: var(--step-1);
-    line-height: var(--leading-snug);
-    color: var(--paper);
-    text-wrap: balance;
-  }
+  /* Pull quotes: the opening mark hung into the margin. The quote and the accent rule under it are
+     in article.css. A markdown blockquote takes this style; so does <blockquote class="pd-pq">. */
   .article__body blockquote::before {
     content: "\201C";
     position: absolute;
@@ -131,8 +70,8 @@
     line-height: var(--leading-display);
     color: var(--brass);
   }
-
-  /* Footnote markers */
+  /* On phones the mark sits above the quote, and the quote keeps the column. */
+  @media (width < 760px) { .article__body blockquote::before { font-size: var(--step-6); left: -3px; top: -0.02em; } }
 
   /* ---------- Figure parts ---------- */
   /* The eyebrow is the label (site-shell.css) in the accent, naming the figure under it. */
@@ -146,7 +85,7 @@
     border-top: 1px solid var(--hairline);
     border-bottom: 1px solid var(--hairline);
   }
-  .article__body figcaption, .pd-figure figcaption {
+  .pd-figure figcaption {
     margin-top: var(--space-5);
     max-width: var(--measure-0);
     color: var(--secondary);
@@ -215,7 +154,7 @@
   /* A 44px target without making the line taller. */
   .pd-text-btn::after { content: ""; position: absolute; inset: -12px -4px; }
   .pd-text-btn:hover { color: var(--paper); }
-  .pd-text-btn:focus-visible { outline: 3px solid var(--brass); outline-offset: 2px; }
+  .pd-text-btn:focus-visible { outline: 3px solid var(--brass); outline-offset: var(--focus-offset-tight); }
   /* A button that appears later holds its line, so nothing moves when it does. */
   .pd-text-btn[hidden] { display: inline-block; visibility: hidden; }
 
@@ -249,13 +188,16 @@
   .pd-grid__cells { display: grid; grid-template-columns: repeat(25, 1fr); gap: var(--space-1); }
   .pd-cell.is-landing { transform: scale(1.35); }
   .pd-grid__legend { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--hairline); }
+  @media (width < 760px) { .pd-grid__legend { grid-template-columns: 1fr; gap: var(--space-3); } }
   .pd-legend { display: grid; grid-template-columns: 12px auto minmax(0, 1fr); gap: var(--space-3); align-items: baseline; }
   .pd-legend__swatch { margin-top: var(--space-1); align-self: start; }
   .pd-legend__num { min-width: 2ch; }
   .pd-legend__label { max-width: var(--measure--4); font-size: var(--step--1); line-height: var(--leading-text); color: var(--secondary); }
+  @media (width < 760px) { .pd-legend__label { max-width: none; } }
   .pd-grid__source { margin: var(--space-3) 0 0; max-width: var(--measure-1); font-size: var(--step--2); line-height: var(--leading-text); color: var(--secondary); }
-  .pd-grid__source a { color: var(--brass); text-decoration: underline; text-underline-offset: 3px; }
+  .pd-grid__source a { color: var(--brass); }
   .pd-grid--opener { width: 100vw; margin: 0 0 var(--space-16) calc(50% - 50vw); padding: var(--space-2) var(--gutter) 0; }
+  @media (width < 760px) { .pd-grid--opener { margin-bottom: var(--space-8); padding: var(--space-1) var(--gutter) 0; } }
   .pd-grid--opener .pd-grid__inner { max-width: 996px; margin: 0 auto; container: column / inline-size; }
   .pd-grid--callback { border-bottom: 0; padding-bottom: 0; }
   .pd-grid--callback .pd-grid__cells { grid-template-columns: repeat(10, 1fr); gap: var(--space-1); max-width: 200px; margin: 0 auto; aspect-ratio: 1 / 1; }
@@ -265,6 +207,7 @@
   /* ---------- Org fold: every function on target, folding into the one bank the customer sees ---------- */
   .pd-fold { position: relative; min-height: 540px; }
   .pd-org { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-2); }
+  @media (width < 760px) { .pd-org { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); } }
   .pd-org__box {
     display: flex;
     flex-direction: column;
@@ -276,6 +219,7 @@
     transition: transform var(--pd-slow) var(--pd-ease), opacity var(--pd-base) var(--pd-ease);
     transition-delay: var(--d, 0ms);
   }
+  @media (width < 760px) { .pd-org__box { min-height: 70px; padding: var(--space-2); } }
   .pd-org__name { font-size: var(--step--2); font-weight: var(--weight-bold); line-height: var(--leading-snug); color: var(--paper); }
   .pd-org__owns { font-size: var(--step--2); line-height: var(--leading-snug); color: var(--secondary); }
   .pd-org__status { margin-top: auto; white-space: nowrap; }
@@ -292,6 +236,7 @@
     transition: opacity var(--pd-base) var(--pd-ease), transform var(--pd-slow) var(--pd-ease);
   }
   .pd-fold__one img { display: block; width: auto; max-width: 100%; max-height: 380px; height: auto; margin: 0 auto; }
+  @media (width < 760px) { .pd-fold__one img { max-height: 200px; } }
   .pd-fold__one-cap { margin: var(--space-4) 0 0; max-width: var(--measure--3); font-family: var(--font-serif); font-style: italic; font-size: var(--step--1); line-height: var(--leading-text); text-align: center; color: var(--secondary); }
   /* The fold is the part with data-at: when its step comes, the boxes head for the centre, the outer
      ones first, and the one bank arrives a beat later. */
@@ -312,7 +257,7 @@
     color: var(--paper);
     text-wrap: balance;
   }
-  @media (width >= 1040px) { .article__body blockquote p, .pd-pull { font-size: var(--step-2); } }
+  @media (width >= 1040px) { .pd-pull { font-size: var(--step-2); } }
 
   /* ---------- Stacked bar: parts that build a total, a line to beat, and the ledger ---------- */
   /* Under the eyebrow, a figure with no number to lead with says what its bars count. */
@@ -430,7 +375,7 @@
 
   /* ---------- Pinned sequence: steps scroll past a graphic that holds still ---------- */
   .pd-scrolly { position: relative; margin: var(--space-10) 0 var(--space-12); }
-  .pd-scrolly__steps { position: relative; z-index: 2; }
+  .pd-scrolly__steps { position: relative; z-index: var(--z-scrolly-steps); }
   .pd-scrolly__step { min-height: 40svh; display: flex; flex-direction: column; justify-content: center; padding: 4svh 0; color: var(--paper); }
   .pd-scrolly__step > p { margin: 0; max-width: var(--measure--1); }
   .pd-scrolly__step > p + p { margin-top: var(--space-5); }
@@ -441,7 +386,7 @@
   /* Sources cited inside the steps sit under the graphic and change with the step: the publisher and
      the first sentence, with the full note a click away. */
   .pd-scrolly__notes { margin-top: var(--space-4); }
-  .pd-scrolly__notes .sidenote { position: static !important; width: auto; margin-top: var(--space-3); display: none; color: var(--secondary); opacity: 1; }
+  .pd-scrolly__notes .sidenote { position: static; width: auto; margin-top: var(--space-3); display: none; color: var(--secondary); opacity: 1; }
   .pd-scrolly__note-full { display: none; }
   .sidenote.is-open .pd-scrolly__note-full { display: inline; }
   .sidenote.is-open .pd-scrolly__note-brief { display: none; }
@@ -462,7 +407,7 @@
     .pd-scrolly__sticky {
       order: -1;
       top: 0;
-      z-index: 3;
+      z-index: var(--z-scrolly-pin);
       margin: 0 calc(-1 * var(--gutter));
       padding: var(--space-2) var(--gutter) var(--space-3);
       background: var(--ground);
@@ -516,7 +461,7 @@
     transition: border-color var(--pd-fast) var(--pd-ease);
   }
   .pd-input:hover { border-color: var(--secondary); }
-  .pd-input:focus-within { border-color: var(--brass); outline: 3px solid var(--paper); outline-offset: 2px; }
+  .pd-input:focus-within { border-color: var(--brass); outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
   .pd-input__field {
     width: 100%;
     min-width: 0;
@@ -524,7 +469,6 @@
     border: 0;
     outline: 0;
     background: transparent;
-    color: var(--paper);
     font-family: var(--font-sans);
     font-size: var(--step-1);
     font-weight: var(--weight-semibold);
@@ -550,7 +494,7 @@
   }
   .pd-toggle-btn:hover { border-color: var(--paper); }
   .pd-toggle-btn.is-on { border-color: var(--brass); background: var(--brass); color: var(--on-brass); }
-  .pd-toggle-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+  .pd-toggle-btn:focus-visible { outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
   .pd-bar--live { margin: 0 0 var(--space-2); }
   .pd-bar--live .pd-bar__track { background: color-mix(in srgb, var(--paper) 8%, transparent); }
   .pd-bar--live .pd-seg { transition-duration: 320ms; transition-timing-function: ease; }
@@ -611,14 +555,6 @@
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pd-img--blend img { mix-blend-mode: normal; } }
   :root[data-theme="dark"] .pd-img--blend img { mix-blend-mode: normal; }
 
-  /* ---------- Tables ---------- */
-  .article__body table { display: block; overflow-x: auto; width: 100%; margin: var(--space-8) 0 var(--space-8); border-collapse: collapse; font-family: var(--font-sans); font-size: var(--step--2); line-height: var(--leading-text); }
-  .article__body th { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-top: 2px solid var(--paper); border-bottom: 1px solid var(--hairline); text-align: left; vertical-align: bottom; }
-  .article__body td { padding: var(--space-3) var(--space-4) var(--space-3) 0; border-bottom: 1px solid var(--hairline); vertical-align: top; min-width: 9ch; }
-  .article__body td:first-child { font-weight: var(--weight-semibold); color: var(--paper); }
-  /* A row header in the body reads like the first column, not like the column headings. */
-  .article__body tbody th { border-top: 0; vertical-align: top; font-weight: var(--weight-semibold); color: var(--paper); }
-
   /* ---------- Narrow screens ---------- */
   @media (width < 1180px) {
     .pd-fold { min-height: 330px; }
@@ -626,33 +562,18 @@
     .pd-fold__one-cap { font-size: var(--step--2); }
   }
   @media (width < 760px) {
-    .pd-grid--opener { margin-bottom: var(--space-8); padding: var(--space-1) var(--gutter) 0; }
     .pd-grid--opener .pd-grid__cells { grid-template-columns: repeat(20, 1fr); gap: var(--space-half); }
-    .pd-grid__legend { grid-template-columns: 1fr; gap: var(--space-3); }
-    .pd-legend__label { max-width: none; }
-    .pd-org { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-2); }
-    .pd-org__box { min-height: 70px; padding: var(--space-2); }
     .pd-org__owns { display: none; }
-    .pd-fold__one img { max-height: 200px; }
     .pd-fold__one-cap { margin-top: var(--space-2); }
-    /* On phones every reading size takes the step below: body 17, lede and subheads 20, pull quotes 20. */
+    /* On phones the kit's reading sizes take the step below, as the body's do in article.css: lede 20,
+       pull quotes 20. */
     .pd-pull { font-size: var(--step-0); line-height: var(--leading-snug); }
-    .article__body { font-size: var(--step--1); }
-    .article__title { line-height: var(--leading-display); }
     .article__lede { font-size: var(--step-0); }
-    .article__lede::first-letter { font-size: var(--step-6); }
-    .article__body h2 { margin-top: var(--space-12); }
-    .article__body h3 { font-size: var(--step-0); }
     .pd-deck { font-size: var(--step--1); }
     .pd-figure { margin: var(--space-8) 0; padding-top: var(--space-6); }
-    /* Pull quotes: the mark sits above the quote, and the quote keeps the column. */
-    .article__body blockquote { padding: var(--space-8) 0 var(--space-5); margin: var(--space-8) 0; }
-    .article__body blockquote::before { font-size: var(--step-6); left: -3px; top: -0.02em; }
-    .article__body blockquote p { font-size: var(--step-0); line-height: var(--leading-snug); }
     .pd-scrolly__graphic .pd-ledger { display: none; }
     /* With the ledger hidden, the payback line clears the label under the line to beat. */
     .pd-scrolly__graphic .pd-stack__note { margin-top: var(--space-10); font-size: var(--step--2); }
-    .article__body [data-footnote-ref] { padding: var(--space-2) var(--space-1); margin: calc(-1 * var(--space-2)) calc(-1 * var(--space-half)); }
   }
   /* Components answer to the column they sit in, not the screen: the same figure reads the same in
      an article, a /ui frame or a narrow sidebar. */
@@ -714,7 +635,7 @@
   .pd-slider { display: block; width: 100%; height: 44px; margin: var(--space-1) 0 var(--space-half); accent-color: var(--paper); cursor: pointer; }
   /* Before the script adds the slider, its line is already held, so nothing moves when it appears. */
   .pd-slider[hidden] { display: block; visibility: hidden; }
-  .pd-slider:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+  .pd-slider:focus-visible { outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
   .pd-asof__bands { display: flex; height: 10px; }
   .pd-asof__band { flex: none; box-sizing: border-box; border-right: 2px solid var(--ground); background: color-mix(in srgb, var(--paper) 22%, transparent); transition: background-color var(--pd-fast) var(--pd-ease); }
   .pd-asof__band:last-child { border-right: 0; }
@@ -748,11 +669,8 @@
 
   /* ---------- Calculator fold: the main fields stay in view, the rest open on request ---------- */
   .pd-calc__more { margin: 0 0 var(--space-6); border-top: 1px solid var(--hairline); border-bottom: 1px solid var(--hairline); }
-  .pd-calc__more > summary { display: flex; align-items: center; min-height: 48px; font-size: var(--step--1); font-weight: var(--weight-bold); color: var(--paper); cursor: pointer; list-style: none; }
-  .pd-calc__more > summary::-webkit-details-marker { display: none; }
-  .pd-calc__more > summary::before { content: "+"; display: inline-block; width: 1.4em; color: var(--brass); font-weight: var(--weight-bold); }
-  .pd-calc__more[open] > summary::before { content: "\2212"; }
-  .pd-calc__more > summary:focus-visible { outline: 3px solid var(--paper); outline-offset: 2px; }
+  .pd-calc__more > summary { font-size: var(--step--1); color: var(--paper); }
+  .pd-calc__more > summary:focus-visible { outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
   .pd-calc .pd-calc__inputs--more { margin: var(--space-1) 0 0; padding-bottom: var(--space-6); }
   /* Wider than a phone, the fold's fields wrap at a readable width instead of sharing one row. */
   @container calc (width >= 560px) { .pd-calc .pd-calc__inputs--more { grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); } }

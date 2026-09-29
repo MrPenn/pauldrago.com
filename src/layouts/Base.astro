@@ -1,29 +1,22 @@
 ---
-import { readFileSync } from 'node:fs';
-import { join, posix } from 'node:path';
 import PostHog from '../components/posthog.astro';
 import { SHARED_NODES, PAGE_TYPES, WEBSITE_ID, ORG_ID } from '../data/schema';
 import CookieConsent from '../components/CookieConsent.astro';
 import Fonts from '../components/Fonts.astro';
+import BookCallLink from '../components/BookCallLink.astro';
+import BrandGroup from '../components/BrandGroup.astro';
+import { SERVICES } from '../data/services';
+import { inlineSheets } from './inline-css.mjs';
 
 const SITE = 'https://pauldrago.com';
 // Cache-buster: changes every build so browsers and the CDN fetch fresh scripts after a deploy.
 const ASSET_V = Date.now().toString(36);
 const v = (href) => `${href}?v=${ASSET_V}`;
-// One line under the name on every page; the page title already says where you are.
-const SUBLINE = 'Advisor to banks and credit unions';
-const BOOKING = 'https://cal.com/pauldrago/20-min-intro-call';
-const CAL_ATTRS = {
-  'data-cal-link': 'pauldrago/20-min-intro-call',
-  'data-cal-namespace': '20-min-intro-call',
-  'data-cal-config': '{"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"}',
-};
 const {
   title,
   description,
   path = '/',
-  variant = 'product',
-  subline = '',
+  home = false,
   footerNote = 'Financial services marketing, market analysis, and executive leadership.',
   ogType = 'website',
   ogImage = `${SITE}/assets/evidence-table-social.jpg`,
@@ -37,13 +30,10 @@ const {
   modified = null,
 } = Astro.props;
 // Stylesheets are small, so they are inlined to keep them off the critical path.
-// Relative url() references are rewritten to absolute paths so they still resolve from any page.
-const inlineCss = (href) => readFileSync(join(process.cwd(), 'public', href), 'utf8')
-  .replace(/url\((['"]?)(?![a-z]+:|\/)/gi, `url($1${posix.dirname(href)}/`);
-const css = ['/assets/site-shell.css', ...stylesheets].map(inlineCss).join('\n');
+const css = inlineSheets(['/assets/site-shell.css', ...stylesheets]);
 const canonical = SITE + (path === '/' ? '/' : path);
 // Which top-level section a page belongs to, for the header's current-page mark.
-const section = path.startsWith('/articles') ? 'articles' : ['/financial-services', '/marketing-measurement-reset', '/branch-market-expansion-analysis', '/acquisition-footprint-analysis', '/fractional-cmo-financial-services'].some((p) => path.startsWith(p)) ? 'services' : '';
+const section = path.startsWith('/articles') ? 'articles' : ['/financial-services', ...SERVICES.map((s) => s.href)].some((p) => path.startsWith(p)) ? 'services' : '';
 // Structured data: the shared person, company, and website entities, plus this page's own nodes.
 // Page nodes are linked to the website, dated from lastUpdated, and services credited to the company.
 // Pages that define nothing get a basic WebPage node; noindex pages get none.
@@ -78,7 +68,7 @@ const structuredData = pageNodes.length ? { '@context': 'https://schema.org', '@
 <meta property="og:description" content={description}>
 <meta property="og:url" content={canonical}>
 <meta property="og:image" content={ogImage}>
-<meta property="og:image:alt" content={ogImageAlt}>
+{ogImageAlt && <meta property="og:image:alt" content={ogImageAlt} />}
 {ogType === 'article' && published && <meta property="article:published_time" content={published} />}
 {ogType === 'article' && modified && <meta property="article:modified_time" content={modified} />}
 {ogType === 'article' && <meta property="article:author" content="https://pauldrago.com/" />}
@@ -103,23 +93,11 @@ const structuredData = pageNodes.length ? { '@context': 'https://schema.org', '@
 <header class="site-header" data-c="site-header">
   <div class="container">
     <div class="site-header__inner">
-      {variant === 'home' ? (
-        <span class="brand__group">
-          <span class="brand__name">Paul Drago</span>
-          <span class="label brand__line">{SUBLINE}</span>
-        </span>
-      ) : (
-        <a class="brand" href="/">
-          <span class="brand__group">
-            <span class="brand__name">Paul Drago</span>
-            <span class="label brand__line">{SUBLINE}</span>
-          </span>
-        </a>
-      )}
+      {home ? <BrandGroup /> : <a class="brand" href="/"><BrandGroup /></a>}
       <nav class="site-header__nav" aria-label="Primary">
         <a class="site-header__link" href="/financial-services" aria-current={section === 'services' ? 'page' : undefined}>Services</a>
         <a class="site-header__link" href="/articles" aria-current={section === 'articles' ? 'page' : undefined}>Articles</a>
-        <a class="btn" href={BOOKING} {...CAL_ATTRS}>Book a call</a>
+        <BookCallLink class="btn">Book a call</BookCallLink>
       </nav>
     </div>
   </div>

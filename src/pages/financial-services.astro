@@ -1,24 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-const meta = {
-  "title": "Financial Services Marketing and Market Analysis | Paul Drago",
-  "description": "Marketing measurement, branch and market analysis, acquisition footprint analysis, and fractional CMO leadership for banks and credit unions.",
-  "path": "/financial-services",
-  "variant": "services",
-  "subline": "Financial Services Advisory",
-  "footerNote": "Financial services marketing, market analysis, and executive leadership.",
-  "ogType": "website",
-  "ogImage": "https://pauldrago.com/assets/evidence-table-social.jpg",
-  "ogImageAlt": "Financial reporting table and market analysis materials",
-  "robots": "",
-  "stylesheets": [
-    "/assets/financial-services.css"
-  ],
-  "scripts": [
-    "/assets/financial-services.js"
-  ],
-  "lastUpdated": "2026-09-23"
-};
+import BookCallLink from '../components/BookCallLink.astro';
+import { SERVICES } from '../data/services';
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
@@ -112,8 +95,24 @@ const jsonld = {
     }
   ]
 };
+// The router shows each service's full name and its question from the shared service list.
+const [measurement, branch, acquisition, fractional] = SERVICES.map((s) => ({ name: s.routerName ?? s.name, question: s.question }));
+// The illustrative market scorecard, cell by cell: blank, a live market, or the branch.
+const marketGrid = ['', 'live', '', '', 'live', '', '', '', '', 'branch', 'live', '', 'live', '', 'live', '', 'live', '', '', '', 'live'];
 ---
-<Base {...meta} jsonld={jsonld}>
+<Base
+  title="Financial Services Marketing and Market Analysis | Paul Drago"
+  description="Marketing measurement, branch and market analysis, acquisition footprint analysis, and fractional CMO leadership for banks and credit unions."
+  path="/financial-services"
+  footerNote="Financial services marketing, market analysis, and executive leadership."
+  ogType="website"
+  ogImage="https://pauldrago.com/assets/evidence-table-social.jpg"
+  ogImageAlt="Financial reporting table and market analysis materials"
+  stylesheets={['/assets/services.css', '/assets/financial-services.css']}
+  scripts={['/assets/trace-rail.js']}
+  lastUpdated="2026-09-23"
+  jsonld={jsonld}
+>
 <main id="main">
   <section class="hero">
     <div class="container">
@@ -123,7 +122,7 @@ const jsonld = {
           <h1 class="display-title hero__title">Marketing measurement and market analysis.</h1>
           <p class="subhead">Measure marketing, compare branch markets, test acquisition footprints, or add senior marketing leadership.</p>
           <div class="actions">
-            <a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
+            <BookCallLink class="btn">Book a call</BookCallLink>
             <a class="text-link" href="#decisions">Compare the services</a>
           </div>
         </div>
@@ -153,8 +152,8 @@ const jsonld = {
         <div class="router__group-label">Decision projects</div>
         <div class="router__row" id="measurement">
           <div>
-            <div class="router__service">Marketing Measurement Reset</div>
-            <h3 class="router__question">Show what acquisition spend produced after account opening.</h3>
+            <div class="kicker router__service">{measurement.name}</div>
+            <h3 class="router__question">{measurement.question}</h3>
           </div>
           <div>
             <p class="router__body">For institutions that can report account openings but cannot show which accounts stayed open, funded, or justified the spend.</p>
@@ -162,15 +161,15 @@ const jsonld = {
             <p class="router__data">Uses digital account opening reports, core data, CRM exports, campaign spend, and funded balance views.</p>
           </div>
           <div>
-            <div class="router__visual" aria-hidden="true"><div class="router__visual-label">Spend to retained accounts, illustrative</div><div class="spend-flow"><div class="spend-flow__line"><span>Spend</span><div class="spend-flow__track"><div class="spend-flow__fill" style="width:100%"></div></div><span class="spend-flow__value">100%</span></div><div class="spend-flow__line"><span>Opened</span><div class="spend-flow__track"><div class="spend-flow__fill" style="width:100%"></div></div><span class="spend-flow__value">100%</span></div><div class="spend-flow__line"><span>90 days</span><div class="spend-flow__track"><div class="spend-flow__fill" style="width:55%"></div></div><span class="spend-flow__value">55%</span></div><div class="spend-flow__line"><span>One year</span><div class="spend-flow__track"><div class="spend-flow__fill spend-flow__fill--accent" style="width:41%"></div></div><span class="spend-flow__value">41%</span></div></div></div>
+            <div class="router__visual" aria-hidden="true"><div class="kicker router__visual-label">Spend to retained accounts, illustrative</div><div class="spend-flow"><div class="spend-flow__line"><span>Spend</span><div class="spend-flow__track"><div class="spend-flow__fill" style="width:100%"></div></div><span class="spend-flow__value">100%</span></div><div class="spend-flow__line"><span>Opened</span><div class="spend-flow__track"><div class="spend-flow__fill" style="width:100%"></div></div><span class="spend-flow__value">100%</span></div><div class="spend-flow__line"><span>90 days</span><div class="spend-flow__track"><div class="spend-flow__fill" style="width:55%"></div></div><span class="spend-flow__value">55%</span></div><div class="spend-flow__line"><span>One year</span><div class="spend-flow__track"><div class="spend-flow__fill spend-flow__fill--accent" style="width:41%"></div></div><span class="spend-flow__value">41%</span></div></div></div>
             <a class="router__link" href="/marketing-measurement-reset">View measurement service</a>
           </div>
         </div>
 
         <div class="router__row" id="branch">
           <div>
-            <div class="router__service">Branch and Market Expansion Analysis</div>
-            <h3 class="router__question">Compare markets before committing to a branch plan.</h3>
+            <div class="kicker router__service">{branch.name}</div>
+            <h3 class="router__question">{branch.question}</h3>
           </div>
           <div>
             <p class="router__body">For leadership teams comparing new markets, branch locations, or expansion priorities.</p>
@@ -178,15 +177,15 @@ const jsonld = {
             <p class="router__data">Uses FDIC, NCUA, Census, competitor footprint, customer geography, the latest CRA performance evaluation, current assessment areas, and institution fair-lending and branch-policy inputs.</p>
           </div>
           <div>
-            <div class="router__visual" aria-hidden="true"><div class="router__visual-label">Market scorecard, illustrative</div><div class="market-grid"><div class="market-grid__cell"></div><div class="market-grid__cell market-grid__cell--live"></div><div class="market-grid__cell"></div><div class="market-grid__cell"></div><div class="market-grid__cell market-grid__cell--live"></div><div class="market-grid__cell"></div><div class="market-grid__cell"></div><div class="market-grid__cell"></div><div class="market-grid__cell"></div><div class="market-grid__cell market-grid__cell--branch"></div><div class="market-grid__cell market-grid__cell--live"></div><div class="market-grid__cell"></div><div class="market-grid__cell market-grid__cell--live"></div><div class="market-grid__cell"></div><div class="market-grid__cell market-grid__cell--live"></div><div class="market-grid__cell"></div><div class="market-grid__cell market-grid__cell--live"></div><div class="market-grid__cell"></div><div class="market-grid__cell"></div><div class="market-grid__cell"></div><div class="market-grid__cell market-grid__cell--live"></div></div></div>
+            <div class="router__visual" aria-hidden="true"><div class="kicker router__visual-label">Market scorecard, illustrative</div><div class="market-grid">{marketGrid.map((mark) => <div class:list={['market-grid__cell', mark && `market-grid__cell--${mark}`]}></div>)}</div></div>
             <a class="router__link" href="/branch-market-expansion-analysis">View branch analysis service</a>
           </div>
         </div>
 
         <div class="router__row" id="acquisition">
           <div>
-            <div class="router__service">Acquisition and Footprint Analysis</div>
-            <h3 class="router__question">Test the market case for an acquisition target.</h3>
+            <div class="kicker router__service">{acquisition.name}</div>
+            <h3 class="router__question">{acquisition.question}</h3>
           </div>
           <div>
             <p class="router__body">For teams evaluating whether a target adds attractive deposits, fills a market gap, or creates footprint and local-brand risk.</p>
@@ -194,7 +193,7 @@ const jsonld = {
             <p class="router__data">Uses branch-level deposits, market overlap, local growth, customer geography, product mix, and retention assumptions.</p>
           </div>
           <div>
-            <div class="router__visual" aria-hidden="true"><div class="router__visual-label">Footprint overlap, illustrative</div><div class="overlap-visual"><div class="overlap-visual__circle"></div><div class="overlap-visual__circle overlap-visual__circle--target"></div><div class="overlap-visual__note">Overlap is duplicated branches</div></div></div>
+            <div class="router__visual" aria-hidden="true"><div class="kicker router__visual-label">Footprint overlap, illustrative</div><div class="overlap-visual"><div class="overlap-visual__circle"></div><div class="overlap-visual__circle overlap-visual__circle--target"></div><div class="overlap-visual__note">Overlap is duplicated branches</div></div></div>
             <a class="router__link" href="/acquisition-footprint-analysis">View acquisition analysis service</a>
           </div>
         </div>
@@ -202,8 +201,8 @@ const jsonld = {
         <div class="router__group-label router__group-label--embedded">Embedded leadership</div>
         <div class="router__row" id="fractional">
           <div>
-            <div class="router__service">Fractional CMO, Regulated Financial Services</div>
-            <h3 class="router__question">Add senior marketing leadership without a full-time hire.</h3>
+            <div class="kicker router__service">{fractional.name}</div>
+            <h3 class="router__question">{fractional.question}</h3>
           </div>
           <div>
             <p class="router__body">For banks and regulated financial-services companies that need an experienced operator to lead the function.</p>
@@ -211,7 +210,7 @@ const jsonld = {
             <p class="router__data">Designed for work that spans marketing planning, budget management, compliance, board reporting, and coordination with outside partners.</p>
           </div>
           <div>
-            <div class="router__visual" aria-hidden="true"><div class="router__visual-label">Reporting cadence, illustrative</div><div class="cadence"><div class="cadence__bar" style="height:48px"></div><div class="cadence__bar" style="height:60px"></div><div class="cadence__bar cadence__bar--live" style="height:74px"></div><div class="cadence__bar" style="height:66px"></div><div class="cadence__bar" style="height:84px"></div><div class="cadence__bar cadence__bar--live" style="height:100px"></div></div><div class="cadence-labels"><span>M1</span><span>M2</span><span>M3</span><span>M4</span><span>M5</span><span>M6</span></div></div>
+            <div class="router__visual" aria-hidden="true"><div class="kicker router__visual-label">Reporting cadence, illustrative</div><div class="cadence"><div class="cadence__bar" style="height:48px"></div><div class="cadence__bar" style="height:60px"></div><div class="cadence__bar cadence__bar--live" style="height:74px"></div><div class="cadence__bar" style="height:66px"></div><div class="cadence__bar" style="height:84px"></div><div class="cadence__bar cadence__bar--live" style="height:100px"></div></div><div class="cadence-labels"><span>M1</span><span>M2</span><span>M3</span><span>M4</span><span>M5</span><span>M6</span></div></div>
             <a class="router__link" href="/fractional-cmo-financial-services">View fractional CMO service</a>
           </div>
         </div>
@@ -280,11 +279,11 @@ const jsonld = {
           <h2 class="display-title section-title">Tell me what the institution is trying to decide.</h2>
           <p class="subhead">In 20 minutes, we will define the question, identify the reports already available, and determine whether there is enough information for useful work.</p>
           <div class="actions">
-            <a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
+            <BookCallLink class="btn">Book a call</BookCallLink>
           </div>
         </div>
         <aside class="call-note" aria-label="What to bring to the call">
-          <div class="call-note__label">What to bring</div>
+          <div class="kicker call-note__label">What to bring</div>
           <p>Send the report, market, target, or operating question you want to discuss. A clean data set is not required for the first conversation.</p>
         </aside>
       </div>

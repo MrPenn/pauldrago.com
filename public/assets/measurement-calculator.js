@@ -74,13 +74,3 @@ function updateCohortCalc() {
     });
     window.addEventListener('DOMContentLoaded', updateCohortCalc);
     updateCohortCalc();
-
-    const pageRoot = document.documentElement;
-    function updateTrace() {
-      const scrollable = pageRoot.scrollHeight - window.innerHeight;
-      const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
-      pageRoot.style.setProperty('--trace-depth', `${Math.max(0, Math.min(1, progress)) * 100}%`);
-    }
-    window.addEventListener('scroll', updateTrace, { passive: true });
-    window.addEventListener('resize', updateTrace);
-    updateTrace();

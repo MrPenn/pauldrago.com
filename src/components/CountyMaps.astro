@@ -62,7 +62,7 @@ const maps = mapData.counties.map((c) => {
             <line x1="0" x2="0" y1="-6" y2="6" /><line x1={mapData.radiusMiles * m.milePx} x2={mapData.radiusMiles * m.milePx} y1="-6" y2="6" />
             <text x={mapData.radiusMiles * m.milePx / 2} y="-10">{mapData.radiusMiles} miles</text>
           </g>
-          <g class="county-maps__branches">
+          <g>
             {m.branches.map((b) => b.community
               ? <circle cx={b.x} cy={b.y} r="4.5" class="county-maps__branch" />
               : <path d={diamond(b.x, b.y, 7)} class="county-maps__branch county-maps__branch--large" />)}
@@ -84,7 +84,7 @@ const maps = mapData.counties.map((c) => {
     ))}
   </div>
   <div class="county-maps__legend">
-    <div class="county-maps__legend-group">
+    <div>
       <p class="county-maps__legend-title">Home purchases per 1,000 residents, 2025</p>
       <ul class="county-maps__legend-scale">
         {bands.map((b) => <li><span class={`county-maps__swatch county-maps__band county-maps__band--${b.i}`}></span>{b.label}</li>)}
@@ -99,5 +99,5 @@ const maps = mapData.counties.map((c) => {
       <li class="county-maps__scale-print"><svg viewBox="0 0 40 10" aria-hidden="true"><path d="M1,2V8M1,5H39M39,2V8" class="county-maps__scale-bar" /></svg>{mapData.radiusMiles} miles, both maps</li>
     </ul>
   </div>
-  <p class="county-maps__note">{mapData.asOf}. Tract boundaries generalized to about 100 meters.</p>
+  <p class="note county-maps__note">{mapData.asOf}. Tract boundaries generalized to about 100 meters.</p>
 </figure>

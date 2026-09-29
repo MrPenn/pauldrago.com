@@ -318,6 +318,9 @@ test('font sizes are steps of the type scale', () => {
   assert.equal(rule('.a { font-size: clamp(24px, 2.4vw, 29px); }').length, 1);
   assert.equal(rule('.a { font-size: 0.88em; }').length, 1);
   assert.equal(rule('.a { font-size: var(--step-11); }').length, 1);
+  // The three title sizes pass, and any other title name fails.
+  assert.deepEqual(rule('.a { font-size: var(--title-section); }\n.b { font-size: var(--title-lead); }'), []);
+  assert.equal(rule('.a { font-size: var(--title-huge); }').length, 1);
   assert.equal(rule('.a { font: 600 13px/1.2 \'IBM Plex Sans\', sans-serif; }').length, 1);
   // Print is exempt, and custom properties are the scale itself.
   assert.deepEqual(rule('@media print { .a { font-size: 10pt; } }\n:root { --step-0: 20px; }'), []);

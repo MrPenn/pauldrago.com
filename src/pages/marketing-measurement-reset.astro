@@ -1,24 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-const meta = {
-  "title": "Bank Marketing Measurement Reset | Paul Drago",
-  "description": "Connect bank marketing spend to retained accounts, funded balances, and board reporting through a documented four-to-six-week measurement reset.",
-  "path": "/marketing-measurement-reset",
-  "variant": "product",
-  "subline": "Marketing Measurement Reset",
-  "footerNote": "Marketing Measurement Reset for banks and credit unions. Written and maintained by Paul Drago.",
-  "ogType": "website",
-  "ogImage": "https://pauldrago.com/assets/evidence-table-social.jpg",
-  "ogImageAlt": "Financial reporting table used to connect marketing spend with funded balances",
-  "robots": "",
-  "stylesheets": [
-    "/assets/marketing-measurement-reset.css"
-  ],
-  "scripts": [
-    "/assets/measurement-calculator.js"
-  ],
-  "lastUpdated": "2026-09-23"
-};
+import BookCallLink from '../components/BookCallLink.astro';
+import { breadcrumb } from '../data/schema';
 const jsonld = {
   "@context": "https://schema.org",
   "@graph": [
@@ -59,29 +42,27 @@ const jsonld = {
       },
       "areaServed": "United States"
     },
-    {
-      "@type": "BreadcrumbList",
-      "@id": "https://pauldrago.com/marketing-measurement-reset#breadcrumb",
-      "itemListElement": [
-        {
-          "@type": "ListItem",
-          "position": 1,
-          "name": "Services",
-          "item": "https://pauldrago.com/financial-services"
-        },
-        {
-          "@type": "ListItem",
-          "position": 2,
-          "name": "Marketing Measurement Reset",
-          "item": "https://pauldrago.com/marketing-measurement-reset"
-        }
-      ]
-    }
+    breadcrumb('https://pauldrago.com/marketing-measurement-reset#breadcrumb', [
+      ['Services', 'https://pauldrago.com/financial-services'],
+      ['Marketing Measurement Reset', 'https://pauldrago.com/marketing-measurement-reset'],
+    ])
   ]
 };
 import OtherDecisions from '../components/OtherDecisions.astro';
 ---
-<Base {...meta} jsonld={jsonld}>
+<Base
+  title="Bank Marketing Measurement Reset | Paul Drago"
+  description="Connect bank marketing spend to retained accounts, funded balances, and board reporting through a documented four-to-six-week measurement reset."
+  path="/marketing-measurement-reset"
+  footerNote="Marketing Measurement Reset for banks and credit unions. Written and maintained by Paul Drago."
+  ogType="website"
+  ogImage="https://pauldrago.com/assets/evidence-table-social.jpg"
+  ogImageAlt="Financial reporting table used to connect marketing spend with funded balances"
+  stylesheets={['/assets/services.css', '/assets/marketing-measurement-reset.css']}
+  scripts={['/assets/trace-rail.js', '/assets/measurement-calculator.js']}
+  lastUpdated="2026-09-23"
+  jsonld={jsonld}
+>
 <main id="main">
 <!-- 01 HERO -->
 <section class="hero">
@@ -164,7 +145,7 @@ import OtherDecisions from '../components/OtherDecisions.astro';
           </div>
 <p class="calc__assumption">Illustration only. The one-year estimate preserves the relationship between Curinos' published 90-day and one-year retention benchmarks. Client reporting uses the institution's actual cohort data and agreed definitions.</p>
 <div>
-<a class="calc__cta" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
+<BookCallLink class="btn calc__cta">Book a call</BookCallLink>
 </div>
 </div>
 </div>
@@ -231,29 +212,29 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <h2 class="display-title section-title">Four to six weeks, then optional monthly support.</h2>
 <div class="offers__grid">
 <!-- Left Offer -->
-<div class="offer">
-<div class="offer__badge">Fixed fee, four to six weeks</div>
-<h3 class="offer__title">Marketing Measurement Reset</h3>
-<p class="offer__body">
+<div class="offer-card">
+<div class="offer-card__badge">Fixed fee, four to six weeks</div>
+<h3 class="offer-card__title">Marketing Measurement Reset</h3>
+<p class="offer-card__body">
             A focused build for banks that need the marketing number to stand up in a budget conversation. It connects spend, digital account opening, retained accounts, funded balances, and board reporting without asking the bank to replace its core, CRM, or reporting stack.
           </p>
-<div class="offer__produces">You receive a board report with the definitions and source logic attached.</div>
+<div class="offer-card__produces">You receive a board report with the definitions and source logic attached.</div>
 
 </div>
 <!-- Right Offer -->
-<div class="offer">
-<div class="offer__badge">Optional operating support</div>
-<h3 class="offer__title">Monthly Measurement Support</h3>
-<p class="offer__body">
+<div class="offer-card">
+<div class="offer-card__badge">Optional operating support</div>
+<h3 class="offer-card__title">Monthly Measurement Support</h3>
+<p class="offer-card__body">
             After the reset, the same reporting line can be run monthly: definitions maintained, exceptions explained, budget questions prepared, and the board deck kept aligned with the numbers finance is using.
           </p>
-<div class="offer__produces">Monthly support keeps the definitions, exceptions, and board report current.</div>
+<div class="offer-card__produces">Monthly support keeps the definitions, exceptions, and board report current.</div>
 </div>
 </div>
 <div class="artifact" role="group" aria-label="Illustrative marketing measurement report">
 <div class="artifact__head">
 <div>
-<div class="artifact__kicker">Illustrative output</div>
+<div class="kicker">Illustrative output</div>
 <div class="artifact__title">Acquisition cohort reporting line</div>
 </div>
 <div class="artifact__status">Definitions agreed</div>
@@ -266,7 +247,7 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <div class="artifact__note">This is the reporting structure, not client data. The delivered model includes source fields, exclusions, attribution rules, and finance-approved definitions.</div>
 </div>
 <div class="offers__cta">
-<a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
+<BookCallLink class="btn">Book a call</BookCallLink>
 </div>
 <div class="offers__not-sold">
         Outside this project: brand creative, campaign production, events, hands-on paid media, branch-site modeling, and acquisition analysis. Those services are listed on the <a href="/financial-services">services page</a>.
@@ -283,11 +264,11 @@ import OtherDecisions from '../components/OtherDecisions.astro';
 <p class="body-copy closing-band__copy">
           I will trace where the reporting line stops and what it would take to connect spend to retained, funded value. If the fix is small, I will say so.
         </p>
-<a class="btn" href="https://cal.com/pauldrago/20-min-intro-call" data-cal-link="pauldrago/20-min-intro-call" data-cal-namespace="20-min-intro-call" data-cal-config='&#123;"layout":"month_view","useSlotsViewOnSmallScreen":"true","theme":"auto"&#125;'>Book a call</a>
+<BookCallLink class="btn">Book a call</BookCallLink>
 </div>
 <div class="closing-band__aside">
 <aside class="call-prep" aria-label="What to bring to the call">
-<div class="call-prep__title">Bring one working question</div>
+<div class="kicker call-prep__title">Bring one working question</div>
 <ul class="call-prep__list">
 <li>The current marketing or board report</li>
 <li>An account-opening or campaign-spend export</li>

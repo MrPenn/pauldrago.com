@@ -225,7 +225,6 @@
     seq.set = function (n) {
       if (n === seq.active) return;
       seq.active = n;
-      steps.forEach(function (s) { s.classList.toggle('is-active', +s.getAttribute('data-step') === n); });
       show(graphic, n);
       if (notes) notes.querySelectorAll('.sidenote').forEach(function (a) { a.classList.toggle('is-current', a.getAttribute('data-step') === String(n)); });
     };

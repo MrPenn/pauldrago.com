@@ -1,18 +1,4 @@
 @layer page {
-  :where(a,
-  button,
-  input):focus-visible {
-      outline: 3px solid var(--paper);
-      outline-offset: 4px;
-    }
-
-    .calc__cta:active {
-      background-color: var(--brass-active);
-    }
-
-    /* SECTION RULE: 4px brass rule across full width */
-  
-
     /* TYPOGRAPHY */
   
 
@@ -21,6 +7,8 @@
       font-size: var(--step-3);
     }
   @media (width >= 1040px) { .section-title { font-size: var(--step-5); } }
+    /* Same heading ladder as the other service pages: the title outranks the section headings. */
+  @media (width < 760px) { .section-title { font-size: var(--step-2); } }
 
     .eyebrow {
       color: var(--secondary);
@@ -34,9 +22,6 @@
       line-height: var(--leading-body);
       max-width: 780px;
     }
-
-    /* HEADER */
-  
 
     /* 01 HERO */
     .hero {
@@ -116,7 +101,6 @@
     }
     .calc__eyebrow {
       font-size: var(--step--2);
-      text-transform: none;
       color: var(--brass);
       font-weight: var(--weight-semibold);
       margin-bottom: var(--space-4);
@@ -143,7 +127,6 @@
     .calc__label {
       font-size: var(--step--2);
       font-weight: var(--weight-bold);
-      text-transform: none;
       color: var(--paper);
       margin-bottom: var(--space-2);
       min-height: 2lh;
@@ -244,18 +227,8 @@
 
     /* SUMMARY & CTA */
     .calc__cta {
-      display: inline-block;
       padding: var(--space-4) var(--space-6);
-      background-color: var(--brass);
-      color: var(--on-brass);
-      font-weight: var(--weight-bold);
       font-size: var(--step--2);
-      text-transform: none;
-      text-decoration: none;
-      transition: background-color 120ms ease;
-    }
-    .calc__cta:hover {
-      background-color: var(--brass-hover);
     }
 
     /* SECTION A */
@@ -306,7 +279,6 @@
     }
     @media (width >= 760px) {.outputs__grid {
         grid-template-columns: 1fr 1fr;
-        gap: var(--space-16);
         align-items: start;
       }
   }
@@ -346,33 +318,30 @@
         gap: var(--space-20);
       }
   }
-    .offer {
+    .offer-card {
       display: flex;
       flex-direction: column;
       align-items: flex-start;
     }
-    .offer__badge {
+    .offer-card__badge {
       color: var(--secondary);
       font-size: var(--step--2);
       font-weight: var(--weight-semibold);
-      text-transform: none;
       margin-bottom: var(--space-4);
     }
-    .offer__title {
+    .offer-card__title {
       font-family: var(--font-display);
-      font-size: var(--step-2);
+      font-size: var(--title-sub);
       line-height: var(--leading-display);
       text-transform: uppercase;
       color: var(--paper);
       margin-bottom: var(--space-5);
     }
-  @media (width >= 1040px) { .offer__title { font-size: var(--step-3); } }
-  @media (width >= 1180px) { .offer__title { font-size: var(--step-4); } }
-    .offer__body {
+    .offer-card__body {
       color: var(--paper);
       margin-bottom: var(--space-8);
     }
-    .offer__produces {
+    .offer-card__produces {
       color: var(--paper);
       font-size: var(--step--1);
       font-weight: var(--weight-semibold);
@@ -393,12 +362,6 @@
       padding: var(--space-5) var(--space-5);
       border-bottom: 1px solid var(--hairline);
     }
-    .artifact__kicker {
-      color: var(--brass);
-      font-size: var(--step--2);
-      font-weight: var(--weight-bold);
-      text-transform: none;
-    }
     .artifact__title {
       color: var(--paper);
       font-size: var(--step--2);
@@ -418,6 +381,7 @@
       padding: var(--space-3) var(--space-5);
       border-bottom: 1px solid var(--hairline);
     }
+    @media (width < 480px) { .artifact__row { grid-template-columns: 1fr; gap: var(--space-1); } }
     .artifact__row:last-of-type {
       border-bottom: 0;
     }
@@ -480,7 +444,6 @@
     @media (width >= 760px) {.closing-band__grid {
         grid-template-columns: 1fr 280px;
         gap: var(--space-16);
-        align-items: start;
       }
       .closing-band__aside {
         order: 2;
@@ -489,6 +452,10 @@
         order: 1;
       }
   }
+    /* Tablet: the closing band's photo column eases down toward 760 and reaches full size by 960. */
+    @media (760px <= width < 1040px) {
+      .closing-band__grid { grid-template-columns: 1fr clamp(240px, 30vw, 280px); }
+    }
     /* On phones the heading comes first, then what to bring. */
     @media (width < 760px) {.closing-band__aside {
         order: 2;
@@ -508,10 +475,6 @@
     @media (width < 760px) {.call-prep { max-width: none; }
   }
     .call-prep__title {
-      color: var(--brass);
-      font-size: var(--step--2);
-      font-weight: var(--weight-bold);
-      text-transform: none;
       margin-bottom: var(--space-5);
     }
     .call-prep__list {
@@ -561,27 +524,22 @@
       flex-shrink: 0;
     }
 
-    /* FOOTER */
-  
     /* Hero fit */
     .hero .hero__title { font-size: var(--step-4); }
   @media (width >= 1040px) { .hero .hero__title { font-size: var(--step-6); } }
+  @media (width < 760px) { .hero .hero__title { font-size: var(--step-3); } }
     /* Calculator as an interactive element */
     .calc__box:hover { background: var(--panel); }
-    .calc__box:focus-within { background: var(--panel-2); outline: 3px solid var(--paper); outline-offset: 2px; }
+    .calc__box:focus-within { background: var(--panel-2); outline: 3px solid var(--paper); outline-offset: var(--focus-offset-tight); }
     .calc-compare { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-5); padding: var(--space-2) 0 0; margin-bottom: var(--space-5); }
     .calc-compare__label { font-size: var(--step--2); color: var(--secondary); line-height: var(--leading-snug); min-height: 2lh; }
     .calc-compare__value { font-family: var(--font-display); font-size: var(--step-3); line-height: var(--leading-display); color: var(--paper); margin-top: var(--space-2); font-variant-numeric: tabular-nums; }
   @media (width >= 1180px) { .calc-compare__value { font-size: var(--step-5); } }
     .calc__assumption { color: var(--secondary); font-size: var(--step--2); line-height: var(--leading-text); padding: 0 0 var(--space-4); }
-    .calc__assumption a { color: var(--paper); text-underline-offset: 3px; }
     @media (width < 760px) {.calc-compare { grid-template-columns: 1fr; gap: var(--space-3); }
   }
     @media (width < 480px) {.hero__grid,
   .hero__grid > * { min-width: 0; max-width: 100%; }
-      .hero .hero__title,
-  .closing-band .closing-band__title { font-size: var(--step-3); }
-      .section-title { font-size: var(--step-2); }
       .reporting-line { font-size: var(--step--2); }
       .calc { max-width: 100%; padding: var(--space-5) var(--space-4) var(--space-4); }
       .calc__cta { max-width: calc(100% - 6px); padding: var(--space-3) var(--space-4); }
@@ -593,7 +551,6 @@
         font-size: var(--step--2);
         line-height: var(--leading-text);
       }
-      .artifact__row { grid-template-columns: 1fr; gap: var(--space-1); }
       .artifact__value { text-align: left; }
   }
 
@@ -620,15 +577,10 @@
   @media (width < 760px) {
     .evidence__row { grid-template-columns: 1fr; }
     .evidence__figure { font-size: var(--step-2); }
-
-    /* Same heading ladder as the other service pages: the title outranks the section headings. */
-    .section-title { font-size: var(--step-2); }
-    .hero .hero__title { font-size: var(--step-3); }
   }
 
   /* The illustrative report sits under both offers, so neither column is left empty beside it. */
   .offers .artifact { max-width: 760px; margin-top: var(--space-10); }
-  .closing-band .closing-band__title { font-size: var(--step-3); }
   @media (width >= 760px) { .closing-band .closing-band__title { font-size: var(--step-4); } }
   @media (width >= 1040px) { .closing-band .closing-band__title { font-size: var(--step-5); } }
   @media (width >= 1180px) { .closing-band .closing-band__title { font-size: var(--step-6); } }
@@ -640,12 +592,5 @@
     .calc__field { display: grid; grid-row: span 3; grid-template-rows: subgrid; }
     .calc__label { min-height: 0; align-self: end; }
     .calc__source { align-self: start; }
-  }
-
-  /* Tablet: section C, the offers and the closing band go to two columns at 760. Gaps, the
-     section C statement and the photo column ease down toward 760 and reach full size by 960. */
-  @media (760px <= width < 1040px) {
-    .outputs__grid { gap: var(--space-16); }
-    .closing-band__grid { grid-template-columns: 1fr clamp(240px, 30vw, 280px); gap: var(--space-16); }
   }
 }

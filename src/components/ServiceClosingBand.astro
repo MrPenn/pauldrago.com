@@ -1,0 +1,14 @@
+---
+// The closing band on a service-detail page: the title and copy, then what to bring to the call
+// as a sentence (prepText) or a list (prepList), and the booking button.
+import BookCallLink from './BookCallLink.astro';
+const { title, copy, prepTitle = 'Bring to the call', prepText, prepList } = Astro.props;
+---
+<section class="closing-band">
+  <div class="container">
+    <div class="closing-band__grid">
+      <div><h2 class="display-title closing-band__title">{title}</h2><p class="closing-band__copy">{copy}</p></div>
+      <aside class="call-prep"><div class="kicker">{prepTitle}</div>{prepText ? <p class="call-prep__copy">{prepText}</p> : <ul>{prepList.map((item) => <li>{item}</li>)}</ul>}<BookCallLink class="btn">Book a call</BookCallLink></aside>
+    </div>
+  </div>
+</section>
