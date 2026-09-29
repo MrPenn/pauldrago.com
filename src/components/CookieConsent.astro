@@ -32,7 +32,7 @@
     startConsent().then(() => import('vanilla-cookieconsent')).then((CookieConsent) => CookieConsent.showPreferences());
   });
 
-  function runConsent(CookieConsent: typeof import('vanilla-cookieconsent'), baseCss: string) {
+  async function runConsent(CookieConsent: typeof import('vanilla-cookieconsent'), baseCss: string) {
     // Theme values come from the site's own tokens (both colour schemes).
     const theme = `
   #cc-main {
@@ -97,7 +97,7 @@
     // cookies without being asked. The visitor can still opt in from Cookie settings.
     const gpc = navigator.globalPrivacyControl === true;
 
-    return CookieConsent.run({
+    await CookieConsent.run({
       autoShow: false,
       onConsent: reportConsent,
       onChange: reportConsent,
@@ -149,17 +149,16 @@
           },
         },
       },
-    }).then(() => {
-      // run() finishes asynchronously; a show() called before it resolves does nothing.
-      if (gpc && !CookieConsent.validConsent()) CookieConsent.acceptCategory([]);
-      // The library moves focus to the banner when it opens; give it back if the visitor
-      // was already somewhere on the page, so keyboard users don't lose their place.
-      if (!gpc && !CookieConsent.validConsent()) {
-        const previous = document.activeElement as HTMLElement | null;
-        CookieConsent.show();
-        if (previous && previous !== document.body) setTimeout(() => previous.focus({ preventScroll: true }), 150);
-      }
-      ready = true;
     });
+    // run() finishes asynchronously; a show() called before it resolves does nothing.
+    if (gpc && !CookieConsent.validConsent()) CookieConsent.acceptCategory([]);
+    // The library moves focus to the banner when it opens; give it back if the visitor
+    // was already somewhere on the page, so keyboard users don't lose their place.
+    if (!gpc && !CookieConsent.validConsent()) {
+      const previous = document.activeElement as HTMLElement | null;
+      CookieConsent.show();
+      if (previous && previous !== document.body) setTimeout(() => previous.focus({ preventScroll: true }), 150);
+    }
+    ready = true;
   }
 </script>

@@ -863,11 +863,9 @@ export function lintSite(root: string, only: string[] | null = null) {
   // Every stylesheet the site ships, whoever loads it: articles through front matter, pages through
   // their .astro props, and the shell on every page.
   const sheets = readdirSync(join(root, 'public/assets')).filter((f) => f.endsWith('.css')).map((f) => join(root, 'public/assets', f));
-  // Scripts, for their matchMedia calls: the shipped ones and every component, page and module.
-  const scripts = [
-    ...readdirSync(join(root, 'public/assets')).filter((f) => f.endsWith('.js')).map((f) => join(root, 'public/assets', f)),
-    ...walk(join(root, 'src'), ['.astro', '.mjs', '.js', '.ts']),
-  ];
+  // Scripts, for their matchMedia calls: every component, page and module, and the browser
+  // scripts in src/scripts.
+  const scripts = walk(join(root, 'src'), ['.astro', '.mjs', '.js', '.ts']);
   const targets = only ?? [...articleFiles, ...sheets, ...scripts];
   const findings: Finding[] = [];
   for (const path of targets) {
