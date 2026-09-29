@@ -4,6 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import lineage from './src/integrations/lineage.ts';
 import { smartQuotes } from './src/integrations/smart-quotes.ts';
 import { tableA11y } from './src/integrations/table-a11y.ts';
+import { browserScripts } from './src/integrations/browser-scripts.ts';
 
 // Drafts are only built by `npm run build:drafts`; keep them out of the sitemap even then.
 const drafts = readdirSync('src/content/articles')
@@ -15,5 +16,5 @@ export default defineConfig({
   trailingSlash: 'never',
   build: { format: 'file' },
   // The /ui styleguide is a working tool: noindex, and left out of the sitemap too.
-  integrations: [sitemap({ filter: (page) => !drafts.some((d) => page.includes(d)) && !/\/ui(\/|$)/.test(new URL(page).pathname) }), smartQuotes(), tableA11y(), lineage()],
+  integrations: [sitemap({ filter: (page) => !drafts.some((d) => page.includes(d)) && !/\/ui(\/|$)/.test(new URL(page).pathname) }), smartQuotes(), tableA11y(), lineage(), browserScripts()],
 });
