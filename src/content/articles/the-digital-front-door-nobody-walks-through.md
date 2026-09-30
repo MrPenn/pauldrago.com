@@ -41,7 +41,7 @@ Removing that friction leaves a different question. Why would I open this accoun
 <figure class="pd-img">
   <picture>
   <source srcset="/assets/front-door-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/front-door.png" width="1200" height="681" loading="lazy" alt="A grand bank entrance with its doors standing open and velvet ropes slack. Footprints on the sidewalk walk past the steps.">
+  <img src="/assets/front-door.webp" width="1200" height="681" loading="lazy" alt="A grand bank entrance with its doors standing open and velvet ropes slack. Footprints on the sidewalk walk past the steps.">
   </picture>
 </figure>
 
@@ -73,7 +73,7 @@ The benchmarking problem runs deeper than the rating. Inside the bank, the compa
 <figure class="pd-img pd-img--tall">
   <picture>
   <source srcset="/assets/app-grid-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/app-grid.png" width="623" height="997" loading="lazy" alt="A phone home screen of navy app icons. One pale tile in the middle carries a bank column and four and a half stars.">
+  <img src="/assets/app-grid.webp" width="623" height="997" loading="lazy" alt="A phone home screen of navy app icons. One pale tile in the middle carries a bank column and four and a half stars.">
   </picture>
 </figure>
 
@@ -104,7 +104,7 @@ I have written every one of the bank's lines above into a campaign brief. None o
 <figure class="pd-img">
   <picture>
   <source srcset="/assets/jar-and-key-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/jar-and-key.png" width="1158" height="372" loading="lazy" alt="A long desk. At one end a small jar of coins labeled $2,000; at the other, a house key as long as the desk.">
+  <img src="/assets/jar-and-key.webp" width="1158" height="372" loading="lazy" alt="A long desk. At one end a small jar of coins labeled $2,000; at the other, a house key as long as the desk.">
   </picture>
 </figure>
 
@@ -353,7 +353,7 @@ Digital can deliver a respectable app while Retail provides excellent branch ser
   <div class="pd-fold__one">
     <picture>
       <source srcset="/assets/one-coat-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-      <img src="/assets/one-coat.png" width="883" height="1020" loading="lazy" alt="One long overcoat with a bank crest, many arms doing different things, and twelve pairs of legs in twelve kinds of shoes beneath the hem.">
+      <img src="/assets/one-coat.webp" width="883" height="1020" loading="lazy" alt="One long overcoat with a bank crest, many arms doing different things, and twelve pairs of legs in twelve kinds of shoes beneath the hem.">
     </picture>
     <p class="pd-fold__one-cap">One bank on the outside. Twelve departments inside, each walking its own way.</p>
   </div>
@@ -388,7 +388,7 @@ Marketing meets its application target and Digital meets its adoption target whi
 <figure class="pd-img pd-img--tall">
   <picture>
   <source srcset="/assets/gauges-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/gauges.png" width="619" height="963" loading="lazy" alt="Twelve gauges on a wall, every needle in the green. Below them, an exit door standing open.">
+  <img src="/assets/gauges.webp" width="619" height="963" loading="lazy" alt="Twelve gauges on a wall, every needle in the green. Below them, an exit door standing open.">
   </picture>
 </figure>
 
@@ -418,7 +418,7 @@ The photography gets younger. The palette gets brighter. Someone wants TikTok. T
 <figure class="pd-img pd-img--spot">
   <picture>
   <source srcset="/assets/bank-hoodie-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/bank-hoodie.png" width="861" height="865" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">
+  <img src="/assets/bank-hoodie.webp" width="861" height="865" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">
   </picture>
 </figure>
 
@@ -468,7 +468,7 @@ Community banks have built digital front doors. The question is no longer simply
 <figure class="pd-img">
   <picture>
   <source srcset="/assets/corridor-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">
-  <img src="/assets/corridor.png" width="1107" height="925" loading="lazy" alt="Looking down a long corridor from the open front door: twelve closed office doors with nameplates, and at the far end an empty chair under a spotlight.">
+  <img src="/assets/corridor.webp" width="1107" height="925" loading="lazy" alt="Looking down a long corridor from the open front door: twelve closed office doors with nameplates, and at the far end an empty chair under a spotlight.">
   </picture>
 </figure>
 

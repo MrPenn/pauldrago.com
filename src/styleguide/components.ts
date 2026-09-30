@@ -127,7 +127,7 @@ const foldGraphic = [
   '  <div class="pd-fold__one">',
   '    <picture>',
   '      <source srcset="/assets/one-coat-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">',
-  '      <img src="/assets/one-coat.png" width="883" height="1020" loading="lazy" alt="One long overcoat with a bank crest, many arms doing different things, and twelve pairs of legs in twelve kinds of shoes beneath the hem.">',
+  '      <img src="/assets/one-coat.webp" width="883" height="1020" loading="lazy" alt="One long overcoat with a bank crest, many arms doing different things, and twelve pairs of legs in twelve kinds of shoes beneath the hem.">',
   '    </picture>',
   '    <p class="pd-fold__one-cap">One bank on the outside. Twelve departments inside, each walking its own way.</p>',
   '  </div>',
@@ -1023,8 +1023,8 @@ export const COMPONENTS: Component[] = [
     classes: ['pd-img', 'pd-img--tall', 'pd-img--spot', 'pd-img--blend'],
     lint: ['img-attrs', 'img-dark', 'img-files', 'img-aspect', 'img-weight'],
     stories: [
-      { id: 'wide', name: 'Full width', motion: true, html: `<figure class="pd-img">\n  <picture>\n    <source srcset="/assets/front-door-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">\n    <img src="/assets/front-door.png" width="1200" height="681" loading="lazy" alt="A grand bank entrance with its doors standing open and velvet ropes slack. Footprints on the sidewalk walk past the steps.">\n  </picture>\n</figure>` },
-      { id: 'spot', name: 'A spot illustration', motion: true, html: `<figure class="pd-img pd-img--spot">\n  <picture>\n    <source srcset="/assets/bank-hoodie-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">\n    <img src="/assets/bank-hoodie.png" width="861" height="865" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">\n  </picture>\n</figure>` },
+      { id: 'wide', name: 'Full width', motion: true, html: `<figure class="pd-img">\n  <picture>\n    <source srcset="/assets/front-door-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">\n    <img src="/assets/front-door.webp" width="1200" height="681" loading="lazy" alt="A grand bank entrance with its doors standing open and velvet ropes slack. Footprints on the sidewalk walk past the steps.">\n  </picture>\n</figure>` },
+      { id: 'spot', name: 'A spot illustration', motion: true, html: `<figure class="pd-img pd-img--spot">\n  <picture>\n    <source srcset="/assets/bank-hoodie-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)">\n    <img src="/assets/bank-hoodie.webp" width="861" height="865" loading="lazy" alt="A century-old neoclassical bank, EST. 1907 on the pediment, wearing a hoodie with the hood pulled over the roof and the drawstrings hanging past the columns. A skateboard leans against the steps.">\n  </picture>\n</figure>` },
     ],
   },
   {

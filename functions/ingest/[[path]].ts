@@ -3,7 +3,7 @@
 const API_HOST = 'us.i.posthog.com';
 const ASSET_HOST = 'us-assets.i.posthog.com';
 
-export async function onRequest({ request }) {
+export async function onRequest({ request }: { request: Request }): Promise<Response> {
   const url = new URL(request.url);
   const path = url.pathname.replace(/^\/ingest/, '') || '/';
   const host = path.startsWith('/static/') ? ASSET_HOST : API_HOST;

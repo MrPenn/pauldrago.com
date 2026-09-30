@@ -1,0 +1,18 @@
+# Response headers for Cloudflare Pages (https://developers.cloudflare.com/pages/configuration/headers/).
+# They don't reach /ingest, which a Pages Function answers.
+
+# Every page: HTTPS only for a year; only this site and PostHog's heatmap viewer may frame it;
+# no camera, microphone, location, payment or USB access for the page or anything it embeds.
+/*
+  Strict-Transport-Security: max-age=31536000
+  Content-Security-Policy: frame-ancestors 'self' https://us.posthog.com
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+# A font file never changes under the same name. A new cut gets a new file name.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Pages load scripts at ?v=<hash of the source> (src/layouts/script-url.ts), so a changed script
+# arrives at a new address and the old copy can be kept for a year.
+/assets/*.js
+  Cache-Control: public, max-age=31536000, immutable
