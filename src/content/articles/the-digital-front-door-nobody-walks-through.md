@@ -22,7 +22,7 @@ For most of a decade, community banks heard the same prescription. Make account 
 
 I ran marketing inside a community bank holding company for most of that decade, and I heard the prescription at every conference and in most vendor decks. I repeated it in a few.
 
-Banks responded with platform contracts, implementation projects and new digital capabilities. But removing a reason to choose someone else is not the same as creating a reason to choose you.
+Banks responded with platform contracts, implementation projects and new digital capabilities. But removing a reason to choose someone else does not create a reason to choose you.
 
 
 Digital banks and fintechs took 44 of every 100 checking accounts opened in 2024. Community banks took 4, by Cornerstone Advisors' estimate, across all ages.[^1] Younger customers did go digital: 63% of Gen Z respondents in the American Bankers Association's 2025 survey used mobile banking most often, and 3% used branches.[^2]
@@ -45,9 +45,9 @@ Removing that friction leaves a different question. Why would I open this accoun
   </picture>
 </figure>
 
-Those sound similar. Strategically, they are not close. One is about access; the other is about preference. A bank can solve the first without making much progress on the second.
+Those sound similar. Strategically, they are not close. The first question is about access and the second is about preference, and a bank can solve the first without making much progress on the second.
 
-> Removing a reason to choose someone else is not the same as creating a reason to choose you.
+> Removing a reason to choose someone else does not create a reason to choose you.
 
 Even Cornerstone, whose research produced the 44% figure, describes the challenge as a product problem that digital investment alone will not solve.[^1] I would go one step further: a bank can manage every product it offers without ever managing the institution itself as a product.
 
@@ -134,12 +134,12 @@ Call it a little over $400 a year from a primary checking account alone, before 
 </div>
 <div class="pd-scrolly__step" data-step="5">
 
-So the 25-year-old with $5,400 and a paycheck is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. Lending is upside. It was never the business case.
+So the 25-year-old with $5,400 and a paycheck is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. Lending is upside.
 
 </div>
 <div class="pd-scrolly__step" data-step="6">
 
-Chime's partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank's assets below $10 billion for the foreseeable future.[^8] Every community bank has the exemption. Few build the product around it.
+Chime's partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank's assets below $10 billion for the foreseeable future.[^8] Every community bank has the exemption, but few build the product around it.
 
 </div>
 </div>
@@ -370,7 +370,7 @@ The comparison with Chime is whether the features add up to one recognizable pro
 
 Once you see the problem this way, good enough becomes understandable. If the app is treated as a servicing channel, uptime, adoption and satisfaction are sensible measures. If checking is a deposit product, balances and cost of funds matter. If Marketing owns acquisition, applications and cost per account matter.
 
-No individual executive needs to be making a bad decision. The failure happens between the decisions.
+No individual executive needs to be making a bad decision.
 
 
 <figure class="pd-units" data-pd="units" data-value="34" data-of="100">
@@ -424,8 +424,6 @@ The photography gets younger. The palette gets brighter. Someone wants TikTok. T
 
 Age is the wrong diagnosis. A bank should not be embarrassed that it has existed for a century. Longevity signals stability, and stability matters when someone is deciding where to send a paycheck. The problem is confusing looking young with understanding someone who is young.
 
-Modern and young are different things. Building for the customer is a different job from casting them.
-
 
 ## What if the bank actually used all of its advantages?
 
@@ -452,7 +450,7 @@ Local employers, merchants and community relationships strengthen that further w
 
 Community banks do not need to copy Chime's palette, vocabulary or roadmap. The lesson is coherence: product, brand and experience that reinforce each other.
 
-A bank has several ways to do that. Digital provides speed, people provide judgment, lending expands the relationship and local knowledge makes advice more useful. But those capabilities need to feel like parts of one product. Otherwise, they are merely parts of one cost structure.
+A bank has several ways to do that. Digital provides speed, people provide judgment, lending expands the relationship and local knowledge makes advice more useful. But those capabilities need to feel like parts of one product.
 
 
 Getting there requires more than a rebrand or a new box on the organizational chart. These are the three decisions I could not make from the marketing seat, and the ones I would ask for first if I were back in it.
@@ -463,7 +461,7 @@ Getting there requires more than a rebrand or a new box on the organizational ch
 <li><strong>Start with one journey.</strong> Take the first paycheck arriving in a newly opened account and manage the surrounding experience as a single product for one quarter. Bring the relevant functions together, give the owner authority to decide and test the redesigned journey against a credible baseline. Use the quarter to evaluate execution and early activation, then follow those customers long enough to assess retention and economics. Prove that the bank can behave as one thing in one place before asking it to do so everywhere.</li>
 </ol>
 
-Community banks have built digital front doors. The question is no longer simply whether a 25-year-old can get in. It is whether anyone inside the building is responsible for what they find when they do.
+Community banks have built digital front doors. The question now is whether anyone inside the building is responsible for what a 25-year-old finds when they get in.
 
 <figure class="pd-img">
   <picture>

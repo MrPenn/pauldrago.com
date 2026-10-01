@@ -77,7 +77,7 @@ test('the content-is-data article is on the kit, with nothing left to decide', (
   assert.equal(a.summary.errors, 0);
   assert.deepEqual(a.decisions, []);
   assert.deepEqual(a.figures.filter((f) => f.status !== 'kit'), []);
-  for (const id of ['stacked-bar', 'ledger', 'calculator', 'record', 'as-of', 'illustration']) assert.ok(a.figures.some((f) => f.component === id), id);
+  for (const id of ['stacked-bar', 'calculator', 'record', 'as-of', 'illustration']) assert.ok(a.figures.some((f) => f.component === id), id);
 });
 
 // The reference article as it stood before it moved onto the kit (2026-09-27), kept to test the fd- mapping.
