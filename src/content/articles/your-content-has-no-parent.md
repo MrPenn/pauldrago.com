@@ -13,9 +13,9 @@ brief:
   - 'A four by six <data value="c:postcard">postcard</data> took two to three months. One executive got it to two weeks by sitting in every meeting. Componentizing it kept it under two weeks for two to three years with nobody senior in the room.'
   - '<data value="c:reg-dd">Regulation DD</data> says a bank must be able to reconstruct its disclosures. <data value="c:finra-2210">FINRA</data>, which covers a bank''s broker-dealer arm, spells out the whole record. A broker-dealer was fined <data value="c:h2c-fine">$250,000</data> for keeping one copy of its marketing emails and not the version each customer received.'
   - 'Content is data. Every asset is a record, every approved component is <data value="c:master-data">master data</data>, and the vocabulary for tracking, versioning, and owning records already exists in your data organization. In pharma, with approval attached to the claim, the measured average is <data value="c:veeva-review-cycles">1.3</data> review cycles per asset against the <data value="c:review-versions">3 to 5 versions</data> marketing tools report.'
-  - 'Dark content is dark data with a cost attached: assets with no declared parent, times cost per asset. As an example, at <data value="c:worked-assets">5,000</data> assets, <data value="c:worked-lineage">40 percent</data> with a parent, and <data value="c:worked-cost">$1,800</data> an asset, it is <data value="c:dark-content-cost">$5.4 million</data> a year. The last two numbers are stand-ins, and every input is yours to replace.'
-  - 'Buy generation last. In 2026, <data value="c:typeface-speed">34 percent</data> of marketing leaders needed one to two months to launch a campaign, while <data value="c:typeface-speed">92 percent</data> needed ten or more stakeholders to sign off. The tools made more, and the chain shipped it more slowly.'
-  - 'What changes: a person at intake who can close requests, a declared parent on every upload, variants in a day or two with new pieces through the full chain, and generation bought last.'
+  - 'An asset with no parent on file costs as much as any other and cannot be traced. As an example, at <data value="c:worked-assets">5,000</data> assets, <data value="c:worked-lineage">40 percent</data> with a parent, and <data value="c:worked-cost">$1,800</data> an asset, that is <data value="c:dark-content-cost">$5.4 million</data> a year. The last two numbers are stand-ins, and every input is yours to replace.'
+  - 'Buy AI tools last. In 2026, <data value="c:typeface-speed">34 percent</data> of marketing leaders needed one to two months to launch a campaign, while <data value="c:typeface-speed">92 percent</data> needed ten or more stakeholders to sign off. The tools made more, and the chain shipped it more slowly.'
+  - 'What changes: a person at intake who can close requests, a declared parent on every upload, variants in a day or two with new pieces through the full chain, and AI tools bought last.'
 ---
 
 A new marketing executive came in and found out that <data value="c:postcard">a holiday postcard</data>, end to end, was going to take two to three months. Her jaw dropped, and it should have. This was a product we had been promoting for years, on a four by six card, in our standard design system.
@@ -24,9 +24,9 @@ Nobody was revolutionizing the postcard. So she sat in every meeting. Brief, cop
 
 <figure class="pd-img pd-img--blend"><picture><source srcset="/assets/postcard-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/postcard.webp" width="1200" height="720" loading="lazy" alt="A postcard buried under approval stamps; one corner of the picture still shows."></picture></figure>
 
-Same people, same tools, same postcard. Nothing was bought and nobody was hired. It was a Herculean effort, and what it exposed was everything in this piece: a product that had not changed in years still went through the whole chain from a blank page every time, and no stage in that chain measured how long work waited in front of it.
+Same people, same tools, same postcard. Nothing was bought and nobody was hired. It was a Herculean effort. The product had not changed in years and still went through the whole chain from a blank page every time, and no stage in that chain measured how long work waited in front of it.
 
-She could not sit in every meeting for every postcard, and she did not have to. With what the first one exposed, we componentized everything on that card that could be componentized, and for the next two to three years the incremental postcard reviews stayed under two weeks without anyone senior in the room. She kept track by hand once. The system kept track after that.
+She could not sit in every meeting for every postcard. We componentized everything on that card that could be componentized, and for the next two to three years the incremental postcard reviews stayed under two weeks without anyone senior in the room. We tracked throughput via Workfront.
 
 <figure class="pd-figure pd-stack" data-pd="build" aria-label="Time to ship the same holiday postcard: two to three months from a blank page, two weeks with the executive in every meeting, and under two weeks once componentized, which held for two to three years.">
   <p class="pd-eyebrow">The same postcard, three times</p>
@@ -38,7 +38,7 @@ She could not sit in every meeting for every postcard, and she did not have to. 
     </div>
   </div>
   <div class="pd-bar" data-at="2">
-    <div class="pd-bar__head"><span class="label">The executive in the room<small class="pd-bar__what">Same people, same tools; nothing bought, nobody hired</small></span><span class="pd-num pd-num--s pd-bar__value">two weeks</span></div>
+    <div class="pd-bar__head"><span class="label">The executive in the room</span><span class="pd-num pd-num--s pd-bar__value">two weeks</span></div>
     <div class="pd-bar__track">
       <div class="pd-seg" data-at="2" data-value="2" style="left:0.0%;width:13.7%"></div>
     </div>
@@ -49,26 +49,26 @@ She could not sit in every meeting for every postcard, and she did not have to. 
       <div class="pd-seg pd-seg--accent" data-at="3" data-value="2" style="left:0.0%;width:13.7%"></div>
     </div>
   </div>
-  <figcaption>Totals from the story. The people, the tools and the postcard were the same in the first two bars.</figcaption>
+  <figcaption>Totals from the story.</figcaption>
 </figure>
 
 ## Most stages are never measured
 
-<p class="pd-deck">A routine asset took one to two months from request to use, and most of that time it sat in queues nobody measured.</p>
+<p class="pd-deck">A routine asset took <data value="c:routine-wait">one to two months</data> from request to use, and most of that time it sat in queues nobody measured.</p>
 
-I ran the content operation inside marketing at a bank holding company, and before that at a global industrial manufacturer. In both, a routine asset took <data value="c:routine-wait">one to two months</data> from request to use: a landing page, an email, a branch flyer.
+I ran the content operation inside marketing at a bank holding company, and before that at a global industrial manufacturer. In both, that was how long a landing page, an email or a branch flyer took.
 
 Requests waited at intake because nobody was allowed to say no, so everything was accepted and nothing was prioritized. Reviews had no clock, and nobody ever got in trouble for sitting on one.
 
-The product owner who has to approve the piece is <data value="c:plane">building the plane after jumping off the cliff</data>. It is the Wile E. Coyote moment. Reading a piece to work out what they don't like about it, what needs to change, and what has to be adjusted is real work, and when they prioritize their day it is never the top one or two things on the list.
+The product owner who has to approve the piece is <data value="c:plane">building the plane after jumping off the cliff</data>. It is the Wile E. Coyote moment. Reading a piece to work out what they don't like about it and what should change is real work, and when they plan their day it is never in the top one or two things on the list.
 
 So it sits. Nobody is being lazy. The chain just asked a person with a plane to build to do a second job with no deadline attached.
 
-Translation queued behind the last thing that was sent, and build queued behind everything above it. Six or seven review rounds was normal. Some assets never converged until someone senior said ship it.
+Translation queued behind the last thing that was sent, and build queued behind everything above it. Six or seven review rounds was normal. Some assets were never final until someone senior said ship it.
 
-In the libraries I have audited, somewhere between <data value="c:audited-reuse">a fifth and two fifths</data> of what got made was ever used again. Regions rebuilt what already existed because finding the thing was harder than making it, and both versions went through review and translation.
+In the libraries I have audited, somewhere between <data value="c:audited-reuse">a fifth and two fifths</data> of what got made was ever used again. We tracked reuse based on project submissions requiring no creative work beyond minor revisions in our "low" project queue. Regions rebuilt what already existed because finding the thing was harder than making it, and both versions went through review and translation.
 
-You will also see "<data value="c:folklore-60-70">60 to 70 percent of B2B content goes unused</data>" in every deck on this subject. It comes from a 2013 conference remark with no method or sample ever published, so it is folklore with a date.[^4] The CreativeX figure is measured, and <data value="c:creativex-unactivated">it says half</data>.[^3]
+You will also see "<data value="c:folklore-60-70">60 to 70 percent of B2B content goes unused</data>" in every deck on this subject. It comes from a 2013 conference remark, and nobody ever published a method or a sample for it.[^4] CreativeX tracked 1,284 core assets at consumer brands in 2023 and found <data value="c:creativex-unactivated">half</data> never showed up in any channel it monitors.[^3]
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">Content that goes unused</p>
@@ -105,21 +105,17 @@ You will also see "<data value="c:folklore-60-70">60 to 70 percent of B2B conten
 
 <p class="pd-deck">Every asset is a record and every approved component is master data, and your data team already has the vocabulary and the tools to track both.</p>
 
-**An asset is a file.** Nothing records what the file is made of, and nothing records where it went, so you can count the files and you cannot reconcile them.
+An approved component is a claim, a disclosure, a rate, a spec, or an image with its rights cleared. Data teams call that <data value="c:master-data">master data</data>: the one approved version that every asset built from it should point back to. Most content libraries store the file and nothing else, so you can count your files and cannot say what any of them is made of or where it ran.
 
-**Content is data.** Every asset is a record with fields. Every approved component (a claim, a disclosure, a rate, a spec, an image with its rights cleared) is what data teams call <data value="c:master-data">master data</data>: the one approved version that every asset built from it should point back to.
-
-Once you say that out loud, the vocabulary for tracking and owning it is already in the building, in the data organization, with tooling and thirty years of practice. Marketing never borrowed it because marketing has always thought of its output as creative, and creative work does not get IDs.
+Marketing never borrowed the data team's tools because it has always thought of its output as creative, and creative work does not get IDs.
 
 **<data value="c:lineage">Lineage</data>** is the record of what each asset is made of and where each part is used. Run it downward and you see what a change touches: before you change a rate or expire a disclosure, you see the 400 assets, in English and Spanish, that carry it. Data teams already have open tools for it.[^7]
 
-**Master data is the approved component.** Legal signs the disclosure block once and it is approved in every asset that uses it, and translation attaches the same way. That one move collapses six review rounds into one, and it is what makes AI safe to use, because a machine assembling from approved parts leaves only the connective copy for a human to read.
+**Legal approves each component once.** Every asset that uses the disclosure block inherits that approval, and translation attaches the same way. That is what cut pharma's review rounds, and it is what makes AI safe to use, because a machine assembling from approved parts leaves only the connective copy for a human to read.
 
-**<data value="c:version-history">Version history</data> is the audit.** A regulator does not ask what the disclosure says today. They pick a day in the past, <data value="c:march-14">say March 14</data>, and ask what the customer saw on it. A data warehouse answers that every day by keeping every version of a row with the dates it was current.[^8] A content system that keeps only the current published version cannot answer it, and most of them keep only the current published version.
+**<data value="c:version-history">Version history</data> is the audit.** A regulator picks a day in the past, <data value="c:march-14">say March 14</data>, and asks what the customer saw that day. This happens all the time, and people typically put on their archeologist hat and start <data value="c:workfront-dig">sniffing through Workfront</data> to find it. A data warehouse answers that every day by keeping every version of a row with the dates it was current.[^8] Most content systems keep only the version that is live today, so they cannot answer it.
 
-> In a data warehouse, "show me every asset that carried this disclosure between March and June" is a query. In a shared drive it is a month.
-
-Data engineers also <data value="c:pipeline">draw a pipeline as a chain of jobs</data>, each depending on the one before, with a timestamp on every handoff. The content chain fits it: brief, create, translate, review, build, publish. Drawn that way, queue time between jobs becomes a measurement.
+Data engineers also <data value="c:pipeline">draw a pipeline as a chain of jobs</data>, each depending on the one before, with a timestamp on every handoff. The content chain fits it: brief, create, translate, review, build, publish. Put a timestamp on each handoff and you can see how long work sat between steps, which the postcard executive tracked by hand.
 
 ## Pharma already runs review this way
 
@@ -152,9 +148,9 @@ Pharmaceutical promotion goes through medical, legal, and regulatory review, cal
   <figcaption>Veeva Pulse Content Metrics, anonymized system data across 350+ life sciences companies, 2021 through 2023, with an average review and approval time of <data value="c:veeva-approval-days">21 days</data>. Filestage platform data, 2021. Ziflow survey, 2023.</figcaption>
 </figure>
 
-A marketing version counts every draft that went back for changes. The claim was approved before the asset existed, so the review has less to read.[^9][^10][^2]
+Pharma's number is lower because each claim was approved before the asset existed, so the review has less to read.[^9][^10][^2]
 
-In 2016, <data value="c:veeva-2016-traceability">81 percent</data> of life sciences companies surveyed could not report where their claims and content were in use, and 70 percent had no central global library.[^13] A decade later they have the benchmarks above.
+In 2016, <data value="c:veeva-2016-traceability">81 percent</data> of life sciences companies surveyed could not report where their claims and content were in use, and 70 percent had no central global library.[^13]
 
 Veeva's own CRM data, the two Veeva rows in the unused-content chart above, shows that most approved field content is rarely or never used.[^14]
 
@@ -164,24 +160,17 @@ Approval attached to the component fixes the review. Deciding what to make, and 
 
 <p class="pd-deck">An asset with no parent costs as much as any other asset, and no lineage query can find it.</p>
 
-### Dark content
+### The cost
 
 <figure class="pd-img pd-img--blend"><picture><source srcset="/assets/no-parent-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/no-parent.webp" width="1200" height="720" loading="lazy" alt="A stack of identical documents with luggage tags; every tag is blank except one."></picture></figure>
 
-<data value="c:dark-content">Gartner defines dark data</data> as the information an organization collects, processes, and stores in the course of business and generally fails to use for anything else.[^21] An asset built from a downloaded file has no parent. It went through review and translation and cost what any asset costs, and it is invisible to every lineage query. The share of shipped assets with no parent is your dark content number.
+An asset built from a downloaded file has no parent. Pricing them takes three numbers: how many assets you ship, how many have a parent on file, and what an asset costs.
 
 Adobe's 2025 survey found <data value="c:adobe-asset-volume">70 percent</data> of organizations producing at least 1,000 assets a year and two fifths producing more than 10,000, so <data value="c:worked-assets">5,000</data> is a conservative figure for a mid-sized shop.[^1]
 
-Lineage coverage at a shop that has never had the field is generous at <data value="c:worked-lineage">40 percent</data>.
+For the share with a parent on file, I have no source. <data value="c:worked-lineage">40 percent</data> is my guess for a shop that has never asked for one, and a generous one.
 
 Fully loaded cost per asset, with agency fees, internal hours, translation, review time, and rework divided by what shipped, is a number finance has to build. No public benchmark for it exists; I looked. <data value="c:worked-cost">$1,800</data> is a round placeholder, and yours replaces it.
-
-<figure class="pd-figure">
-<div class="pd-ledger">
-  <div class="pd-ledger__row pd-ledger__row--total"><span class="pd-ledger__label">A year outside the system <span class="pd-ledger__src"><data value="c:worked-assets">5,000</data> assets x <data value="c:worked-lineage">60%</data> with no parent x <data value="c:worked-cost">$1,800</data></span></span><span class="pd-num pd-num--l pd-ledger__value"><data value="c:dark-content-cost">$5.4 million</data></span></div>
-</div>
-<figcaption>Two of the three inputs are placeholders: lineage coverage, informed by CreativeX and Veeva, and cost per asset, which is yours to replace. Asset volume is from Adobe's 2025 survey.</figcaption>
-</figure>
 
 <figure class="pd-figure pd-calc" data-pd="calc" data-rail="block" data-define="share = min(diff, 100) / 100; nc = create * rate; nr = rounds * reviewers * minutes / 60 * rate; nt = langs * words / max(wphNew, 1) * tRate; nw = rework * rate; N = round(nc) + round(nr) + round(nt) + round(nw); nOther = round(nc) + round(nt) + round(nw); vc = createVar * rate; vr = roundsVar * reviewers * minutes * share / 60 * rate; vt = langs * (words * share / max(wphNew, 1) + words * (1 - share) / max(wphMem, 1)) * tRate; vw = reworkVar * rate; V = vc + vr + vt + vw; vOther = vc + vt + vw; R = triage / 60 * rate; dark = assets * (1 - min(lineage, 100) / 100) * N; scale = max(N, max(V, R)) * 1.12">
   <div class="pd-calc__head">
@@ -263,8 +252,6 @@ Some of that spend was necessary. Nobody can say which part, and that is before 
 
 A bank with a broker-dealer arm answers to FINRA, and <data value="c:finra-2210">Rule 2210</data> spells out the whole record: every retail communication kept for three years, with a copy, the dates of first and last use, the name of the principal who approved it and the date they did, and the source of any statistical table or chart.[^15]
 
-That is the record, whichever rule binds: the asset, the dates it was live, who approved it, and the lineage of every figure in it.
-
 | Rule | Binds | What it requires | Retention |
 |---|---|---|---|
 | <data value="c:finra-2210">FINRA 2210(b)(4)</data> | Broker-dealers | Copy, dates of first and last use, approver and date, source of any statistic | 3 years |
@@ -318,7 +305,7 @@ H2C kept the template.[^18] The version each customer received was not kept, and
 
 <p class="pd-deck">A person at intake with the library in front of them closes requests that existing assets already cover, and small changes ship in a day or two.</p>
 
-A request queue will accept the same brochure from four regions. What stops that is <data value="c:triage">a person at intake</data> with the library in front of them and the authority to close a request.
+A request queue will accept the same brochure from four regions. <data value="c:triage">Triage</data> is the person at intake who stops that.
 
 Say a region asks for a flyer for the new small-business checking account, in Spanish, for the chamber breakfast in six weeks. Triage finds two, the business banking one that shipped in March and the Houston branches' adaptation of it in May, links both, and closes the request as fulfilled.
 
@@ -331,7 +318,7 @@ Then the region asks what happens if they need a new claim on it. Triage says th
 
 Give a person who is responsible for the outcome a choice between something new and something that exists, and they will pick new every time. They believe new gives them the best chance to stand out, and they are emotionally invested in the result, which they should be, because the P&L is theirs.
 
-The belief is still wrong. The people they are targeting have never seen the existing asset, or anything like it, so the perfect new version they are picturing is perfect for an audience of one: the requester.
+The belief is still wrong. The customers they are targeting have never seen the existing asset, or anything like it, so the new version only looks better to the person who asked for it.
 
 <!-- slop-ok: unsourced-figure (an operator's idiom, not a measurement; Paul kept it, 2026-09-25) -->
 Our job as their marketing partner is to tell them how long new really takes. New is six weeks, and it will get pushed, and it will get delayed. The one that is 90 percent right is in their hands by the end of the week.
@@ -363,13 +350,15 @@ Put those two next to each other and most people take the asset. Ask them "do ei
   <figcaption>The largest named languages in Census table C16001. The table also groups smaller languages into broader categories, which are not shown. U.S. Census Bureau, American Community Survey 2024 1-year estimates, Tables S1601 and C16001.</figcaption>
 </figure>
 
-A Spanish savings ad in Houston has to meet the same <data value="c:reg-dd">Regulation DD</data> advertising rules as the English one, and so does a Chinese one in San Francisco. The same compliance team owns the rate, the claim and the disclosure in every language, so each translation is a version of the approved English record, with the same owner, and a change to the English rate flags every translation of it.
+A Spanish savings ad in Houston has to meet the same <data value="c:reg-dd">Regulation DD</data> advertising rules as the English one, and so does a Chinese one in San Francisco. The same compliance team owns the rate, the claim and the disclosure in every language.
 
 The rule for account disclosures already assumes a parent. <data value="c:reg-dd-language">Regulation DD</data> lets a bank give them in another language "provided the disclosures are available in English upon request," and the NCUA's rule for credit unions uses the same words.
 
 Two rules go further. <data value="c:reg-z">Regulation Z</data> calls a mortgage ad misleading if it gives some required terms, such as the initial rate, only in another language and the rest only in English, and <data value="c:reg-e-language">Regulation E</data> requires remittance and prepaid disclosures in another language when the bank principally uses that language to market, package or sell those products.[^40] So every translated disclosure needs an English original behind it, and a translated mortgage ad cannot split its required terms between two languages.
 
-Voice belongs to the branches that know the customers. The headline can be post-edited by people who talk to those customers every day, while the rate and the disclosure under it are translated from the approved record and nobody rewrites them. Translation memory makes the repeat work cheap:[^23]
+We rarely did Spanish, and every time we did, it was <data value="c:spanish-failure">an unmitigated failure</data>. People always claimed the translations were wrong.
+
+The branch team can rewrite the headline in their own words, since they talk to those customers every day. The rate and the disclosure under it are translated from the approved record, and nobody rewrites them. Translators work faster on a sentence they have translated before:[^23]
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">Words translated per hour</p>
@@ -406,14 +395,14 @@ Voice belongs to the branches that know the customers. The headline can be post-
   <caption class="sr-only">One savings ad, three languages</caption>
   <thead><tr><th scope="col">Slot</th><th scope="col">English</th><th scope="col">Spanish and Chinese (Simplified)</th></tr></thead>
   <tbody>
-    <tr><th scope="row">Headline</th><td><strong>Source.</strong> Marketing</td><td><strong>Voice.</strong> Post-edited by the branch team</td></tr>
-    <tr><th scope="row">Rate and claim</th><td><strong>Source.</strong> Approved once by compliance</td><td><strong>Language.</strong> Translation of the approved claim</td></tr>
-    <tr><th scope="row">Disclosure</th><td><strong>Source.</strong> Compliance</td><td><strong>Language.</strong> Translated; compliance owns both</td></tr>
+    <tr><th scope="row">Headline</th><td>Written by marketing</td><td>Rewritten by the branch team</td></tr>
+    <tr><th scope="row">Rate and claim</th><td>Approved once by compliance</td><td>Translated from the approved claim</td></tr>
+    <tr><th scope="row">Disclosure</th><td>Written by compliance</td><td>Translated; compliance owns both</td></tr>
     <tr><th scope="row">Language services notice</th><td><strong>Not needed.</strong> The ad is in English</td><td><strong class="accent">Added.</strong> What the bank offers in that language</td></tr>
-    <tr><th scope="row">Call to action</th><td><strong>Source.</strong> Marketing</td><td><strong>Language.</strong> Translation</td></tr>
+    <tr><th scope="row">Call to action</th><td>Written by marketing</td><td>Translated</td></tr>
   </tbody>
 </table>
-<figcaption>Source is the English record; Language is the same record, translated; Voice is post-edited by the branch team; Added is a slot the English ad does not need. An example. For every slot the question is the same: does the version differ because of language or because of voice, and whose record is it?</figcaption>
+<figcaption>An example savings ad.</figcaption>
 </figure>
 
 <data value="c:cfpb-lep">The CFPB's 2021 statement</data> on customers with limited English proficiency suggests a notice, in the customer's language, of "the extent and limits of any language services" the bank offers, which is a slot the English ad never needed. The statement is guidance rather than a rule, and as of September 2026 it is not on the bureau's list of withdrawn guidance.
@@ -426,19 +415,19 @@ Its examples include a 2013 enforcement action against a card issuer that enroll
 
 <p class="pd-deck">Legal approves the template and its allowed combinations once, then gives a full read only to a combination that is new.</p>
 
-Two approved components next to each other can make a misleading whole, and a compliant disclosure under a new claim is what a regulator reads. So the template and its allowed combinations get pre-approved, assembly inside the template is covered, and only a novel combination triggers a full read. <data value="c:veeva-review-cycles">Pharma's 1.3 cycles</data> is what that looks like when it holds.
+Two approved components next to each other can still make a misleading ad, so the combinations need approval too. <data value="c:veeva-review-cycles">Pharma's 1.3 cycles</data> is what that looks like when it holds.
 
 Triage flags any combination that is new, and legal decides. Keeping that list of combinations short enough to read in an afternoon is the reason to model only the <data value="c:twenty-components">20 components</data> behind most of the volume and leave the rest as pages. And the assembly gets a name on it, because when a pre-approved combination turns out misleading in context, legal will ask whose.
 
 > Triage is a political job. Every diagram draws it as a box, and it is a person who says no to a regional director once a day and gets escalated over once a week.
 
-Triage holds only with an executive who has said, in front of the regions, that reuse is the default; with the reopen data published monthly; and with the agency contract rewritten around variants instead of rounds.
+Triage holds only with an executive who has said, in front of the regions, that reuse is the default; with a monthly count of requests reopened after triage closed them; and with the agency contract rewritten around variants instead of rounds.
 
-<data value="c:postcard">The postcard executive</data> was triage for two weeks. The job is making that permanent.
+<data value="c:postcard">The postcard executive</data> was triage for two weeks.
 
-### Buy generation last
+### Buy AI tools last
 
-The variant lane is where AI belongs: image and copy variants, assembled from approved parts inside a locked template. The tools that check generated work against brand and product guidelines are only as good as the guidelines they check against. If those guidelines are the approved components, the tools help. Buy them before the model exists and you get one-offs faster, each of which goes through full review and full translation, and the pile in front of legal gets taller.[^27]
+The variant lane is where AI belongs: image and copy variants, assembled from approved parts inside a locked template. The tools that check generated work against brand and product guidelines are only as good as the guidelines they check against. If those guidelines are the approved components, the tools help. Buy them before the approved components exist and you get one-offs faster, each of which goes through full review and full translation, and the pile in front of legal gets taller.[^27]
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">What marketing leaders report, 2026</p>
@@ -472,7 +461,7 @@ The variant lane is where AI belongs: image and copy variants, assembled from ap
 <li><strong>Put a person at intake who can close requests.</strong> They search the library before anything is made, link what already exists, and close the request when an existing asset covers it, backed by an executive who has told the regions that reuse is the default.</li>
 <li><strong>Every upload declares a parent, or it does not publish.</strong> New assets are allowed when they are marked new. Everything that ships after that has a parent on record.</li>
 <li><strong>Run two lanes.</strong> A photo swap or a new call to action ships in a day or two, with review reading only what changed. A new claim or a new layout takes the full chain.</li>
-<li><strong>Buy generation last.</strong> Model the 20 components behind most of the volume and have legal approve each one once. Then put AI in the variant lane, inside a locked template.</li>
+<li><strong>Buy AI tools last.</strong> Model the 20 components behind most of the volume and have legal approve each one once. Then put AI in the variant lane, inside a locked template.</li>
 </ol>
 
 ## About the numbers
@@ -481,7 +470,7 @@ Research, rules, and product documentation checked September 23, 2026. Every fig
 
 The <data value="c:dark-content-cost">$5.4 million</data> figure is an illustration: the lineage coverage and the cost per asset are placeholders. The regulatory table is read from the rules as published on eCFR and FINRA's rulebook; the content model and triage are analysis and recommendation from my own work, and the conclusions are mine.
 
-Every figure, rule, and story in this article is a component with a declared parent, and the site will not publish a page that points to a component it cannot find.
+Each figure, rule and story in this article is recorded with where it came from, whether a footnote, my own work or a stand-in for your number, and the SiriusDecisions figure is recorded as having no source at all. The site will not publish a page that points to a record it cannot find.
 
 [^1]: **Adobe.** "Adobe research finds demand for content will grow 5x by 2027," June 16, 2025. Survey of more than 1,600 marketers; fieldwork dates and survey firm not disclosed. 89 percent report three or more approval stages; 58 percent spend more than 40 percent of time on reviews; 47 percent report 51 to 200 people per asset; 70 percent produce at least 1,000 assets a year (29 percent at 1,000 to 10,000, 23 percent at 10,000 to 100,000, 18 percent at 100,000 to 500,000). Self-reported time shares, and Adobe sells the workflow and generation products the findings motivate. [Adobe research](https://business.adobe.com/blog/71-percent-of-marketers-say-content-demand-to-increase-5x)
 [^2]: **Ziflow with the American Marketing Association.** "State of Creative Workflow 2023," July 11, 2023. Most respondents (57 percent) report three to five versions before a project is done. Sample size and fieldwork dates not published; Ziflow sells proofing software; each version is a draft sent for review, which this piece counts as a review round. [Ziflow findings](https://www.ziflow.com/blog/the-2023-state-of-creative-workflow-report-key-findings-bonus-insights)
@@ -498,7 +487,6 @@ Every figure, rule, and story in this article is a component with a declared par
 [^17]: **Consumer Financial Protection Bureau.** Regulation Z, 12 CFR 1026.25(a): evidence of compliance retained two years, "other than advertising requirements under &sect;&sect; 1026.16 and 1026.24." UDAAP, 12 U.S.C. 5531 and 5536, sets the substantive standard with no retention period. [12 CFR 1026.25](https://www.ecfr.gov/current/title-12/chapter-X/part-1026/subpart-D/section-1026.25)
 [^18]: **FINRA.** Letter of Acceptance, Waiver and Consent No. 2021070970501, H2C Securities Inc., March 29, 2024. Censure and $250,000 fine for failing to preserve and review more than 1.25 million business communications, mostly mass marketing emails, from January 2013 to June 2021. FINRA fined the retention gap itself; there was no customer dispute in the record. [The AWC (PDF)](https://www.finra.org/sites/default/files/fda_documents/2021070970501%20H2C%20Securities%20Inc.%20CRD%207169%20AWC%20vr.pdf)
 [^19]: **FINRA.** "FINRA Fines M1 Finance $850,000 for Violations Regarding Use of Social Media Influencer Program," March 18, 2024. About 1,700 paid influencers, more than 39,400 accounts opened; posts not fair and balanced on margin; the firm did not review, approve, or retain the posts. [FINRA release](https://www.finra.org/media-center/newsreleases/2024/finra-fines-m1-finance-850000-violations-regarding-use-social-media)
-[^21]: **Gartner.** IT Glossary, "Dark Data." Gartner publishes no percentage; <data value="c:folklore-gartner-share">any share attributed to Gartner is misattributed</data>. Dark content, as used here, is my extension of the term to assets with no declared lineage. [Gartner glossary, archived](https://web.archive.org/web/20230605163555/https://www.gartner.com/en/information-technology/glossary/dark-data)
 [^23]: **Carla Parra Escart&iacute;n and Manuel Arcedillo; Samuel L&auml;ubli et al.** "Machine translation evaluation made fuzzier: A study on post-editing productivity and evaluation metrics in commercial settings," MT Summit XV, 2015: ten professional translators, English to Spanish, one commercial LSP; throughput from scratch 1,099 words an hour, 100 percent matches 2,461, 75 to 84 percent fuzzy matches 1,297, MT post-editing 1,329. "Post-editing Productivity with Neural Machine Translation," MT Summit XVII, 2019: four translators in a banking domain, German to French 934 words an hour with NMT post-editing versus 585 with translation memory alone. Small samples; single language pairs; the 2015 study predates neural MT. [2015 paper (PDF)](https://aclanthology.org/2015.mtsummit-papers.11.pdf), [2019 paper (PDF)](https://aclanthology.org/W19-6626.pdf)
 [^27]: **Typeface.** "Signal Report: The AI Speed Paradox," June 22, 2026. More than 200 marketing leaders at VP level and above, fieldwork May 2026: 92 percent need ten or more stakeholders to sign off, 88 percent say their teams make content quickly and struggle with sign-off, and 34 percent need one to two months to launch a campaign. Small sample; Typeface sells AI content generation. [Typeface report](https://www.typeface.ai/resources/reports/typeface-signal-report)
 [^38]: **Consumer Financial Protection Bureau.** "Statement Regarding the Provision of Financial Products and Services to Consumers with Limited English Proficiency," released January 13, 2021, and published in the Federal Register January 21, 2021. Guidance rather than a rule: it says institutions "may mitigate certain compliance risks" by giving consumers with limited English "clear and timely disclosures in non-English languages describing the extent and limits of any language services provided throughout the product lifecycle" (86 FR 6309). The 2013 enforcement action and the supervisory findings on card marketing to Spanish speakers are its examples, at 86 FR 6312 and 6309. As of September 25, 2026, the statement is not on the CFPB's withdrawn guidance list, which was last updated July 22, 2026. [Federal Register text](https://www.govinfo.gov/content/pkg/FR-2021-01-21/html/2021-01116.htm), [CFPB withdrawn guidance](https://www.consumerfinance.gov/compliance/guidance/withdrawn-guidance/)

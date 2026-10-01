@@ -85,9 +85,9 @@ const STEPS = [
   'Community banks earned a 3.81% net interest margin in the second quarter of 2026,{4} which makes that balance worth a little over $200 a year in spread before the customer does anything else.',
   'Then the debit card. Banks under $10 billion in assets are exempt from the Durbin interchange cap, and the Fed\'s Regulation II data shows exempt issuers earning an average of $0.51 per debit transaction against $0.23 for covered banks.{5} At the 34.6 transactions a month PULSE measured for an active debit card,{6} that is roughly another $200 a year.',
   'Call it a little over $400 a year from a primary checking account alone, before a single loan. That covers a typical checking acquisition cost of around $350 in the first year.{7}',
-  'So the 25-year-old with $5,400 and a paycheck is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. Lending is upside. It was never the business case.',
+  'So the 25-year-old with $5,400 and a paycheck is profitable now, and profitable at a community bank specifically, because of an exemption the big banks do not have. Lending is upside.',
   // slop-ok: tacked-on-tail-clause (published text from the reference article)
-  'Chime\'s partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank\'s assets below $10 billion for the foreseeable future.{8} Every community bank has the exemption. Few build the product around it.',
+  'Chime\'s partner banks are small enough to have the exemption too, and it is most of how Chime makes money: payments revenue was $430 million of $670 million in the second quarter of 2026. In September, Chime agreed to buy one of those partners, Stride Bank, for $590 million, and said in the same announcement that it will keep the bank\'s assets below $10 billion for the foreseeable future.{8} Every community bank has the exemption, but few build the product around it.',
 ];
 const WAIT_STEPS = [
   'Which makes the standard pitch worse than distant. The median first-time homebuyer is now 40 years old.{9}',
