@@ -1,15 +1,15 @@
 ---
-title: "The Digital Front Door Nobody Walks Through"
+title: "Community Banks Built the Digital Front Door and Still Lost the Younger Customer"
 description: "Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?"
 date: 2026-09-23
 draft: false
 kicker: "Financial services"
 topics: ["Community banking", "Digital banking", "Checking account acquisition", "Deposit economics", "Bank marketing leadership"]
 opener: "front-door"
-ogImage: "/assets/front-door-social.png"
+ogImage: "/assets/community-banks-front-door-social.png"
 ogImageAlt: "Of 100 new checking accounts opened in 2024, 44 went to digital banks and fintechs and 4 went to community banks."
 brief:
-  - "Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts."
+  - "In 2024, community banks took 4 of every 100 new checking accounts."
   - "The customer they lost is worth having now. A 25-year-old with the median balance earns a community bank a little over $400 a year before any loan, and covers a typical acquisition cost inside the first year."
   - "The bank's pitch waits for the mortgage anyway. The median first-time buyer is 40, and independent mortgage banks earned $973 per loan when it finally arrived."
   - "Nobody inside the bank owns that customer. Twelve departments own the pieces, every dashboard is green, and a third of new accounts are gone inside a year."
