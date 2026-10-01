@@ -1,5 +1,5 @@
 // The article kit's component registry: what each piece is, when to use it, and the HTML to paste.
-// The reference article is "The Digital Front Door Nobody Walks Through"; every example is its
+// The reference article is "Community Banks Built the Digital Front Door and Still Lost the Younger Customer"; every example is its
 // published text. /ui renders each story in an isolated frame and prints the same string as the
 // snippet, so the example and the code cannot disagree. The linter reads `classes` and `status`.
 //
@@ -17,7 +17,7 @@ import { AUTHOR } from '../data/author.ts';
 const BOOKING = AUTHOR.booking;
 // The booking attributes as HTML. A value that holds double quotes (the JSON config) goes in single quotes.
 const CAL = Object.entries(AUTHOR.calAttrs).map(([k, v]) => (v.includes('"') ? `${k}='${v}'` : `${k}="${v}"`)).join(' ');
-export const REFERENCE = { slug: 'the-digital-front-door-nobody-walks-through', title: 'The Digital Front Door Nobody Walks Through' };
+export const REFERENCE = { slug: 'community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer', title: 'Community Banks Built the Digital Front Door and Still Lost the Younger Customer' };
 
 // One primary checking customer, one year: the front door's first pinned sequence.
 const customer = (first: number) => ({
@@ -233,7 +233,7 @@ const calcFoldHtml = calcHtml
     '  <div class="pd-calc__row">',
   ].join('\n'));
 
-// The H2C fine from "Your Content Has No Parent".
+// The H2C fine from "Treat Bank Marketing Content as Data".
 export const RECORD_DEMO = {
   num: '$250,000',
   ref: 'h2c-fine',
@@ -242,7 +242,7 @@ export const RECORD_DEMO = {
   source: 'FINRA Letter of Acceptance, Waiver and Consent, March 2024.',
 };
 
-// The example disclosure from "Your Content Has No Parent": invented rates, a real question.
+// The example disclosure from "Treat Bank Marketing Content as Data": invented rates, a real question.
 export const ASOF_DEMO = {
   eyebrow: 'What rendered on a given day',
   question: 'The customer saw the rate disclosure on',
@@ -1254,7 +1254,7 @@ export const COMPONENTS: Component[] = [
     summary: 'Kicker, title, dek, date with reading time, and byline. The template builds it from the front matter.',
     use: ['Every article. You write front matter; the template writes this.'],
     avoid: ['A title that needs the dek to make sense.'],
-    rules: ['The title is short and in title case: "The Digital Front Door Nobody Walks Through".', 'The description is the dek: one or two sentences, 70 to 200 characters. It is also the search snippet.', 'The kicker names the topic area: "Financial services". It is a label.', 'The title climbs one step of the type scale at each breakpoint: 35, 41, 50 and 60px.'],
+    rules: ['The title is one literal sentence about what the piece argues, in title case: "Community Banks Built the Digital Front Door and Still Lost the Younger Customer".', 'The description is the dek: one or two sentences, 70 to 200 characters. It is also the search snippet.', 'The kicker names the topic area: "Financial services". It is a label.', 'The title climbs one step of the type scale at each breakpoint: 35, 41, 50 and 60px.'],
     a11y: ['The title is the page\'s only h1.'],
     classes: ['article__header', 'article__kicker', 'article__title', 'article__intro', 'article__date', 'article__byline'],
     parts: ['label'],
@@ -1263,8 +1263,8 @@ export const COMPONENTS: Component[] = [
       id: 'header',
       name: 'From front matter',
       wrap: 'article',
-      html: `<header class="article__header">\n  <p class="label article__kicker"><a href="/articles">Articles</a><span class="article__sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article__title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article__intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article__date"><time datetime="2026-09-23">September 23, 2026</time><span class="article__sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n  <p class="article__byline">By <a href="/">Paul Drago</a>, advisor to banks and credit unions</p>\n</header>`,
-      code: `---\ntitle: "The Digital Front Door Nobody Walks Through"\ndescription: "Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?"\ndate: 2026-09-23\nkicker: "Financial services"\ntopics: ["Community banking", "Digital banking", "Checking account acquisition"]\n---`,
+      html: `<header class="article__header">\n  <p class="label article__kicker"><a href="/articles">Articles</a><span class="article__sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article__title">Community Banks Built the Digital Front Door and Still Lost the Younger Customer</h1>\n  <p class="article__intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article__date"><time datetime="2026-09-23">September 23, 2026</time><span class="article__sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n  <p class="article__byline">By <a href="/">Paul Drago</a>, advisor to banks and credit unions</p>\n</header>`,
+      code: `---\ntitle: "Community Banks Built the Digital Front Door and Still Lost the Younger Customer"\ndescription: "Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?"\ndate: 2026-09-23\nkicker: "Financial services"\ntopics: ["Community banking", "Digital banking", "Checking account acquisition"]\n---`,
       lang: 'yaml',
     }],
   },
@@ -1376,7 +1376,7 @@ export const COMPONENTS: Component[] = [
       name: 'A specimen built from the kit',
       wrap: 'page',
       motion: true,
-      html: `<article class="article">\n<div class="container">\n<header class="article__header">\n  <p class="label article__kicker"><a href="/articles">Articles</a><span class="article__sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article__title">The Digital Front Door Nobody Walks Through</h1>\n  <p class="article__intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article__date"><time datetime="2026-09-23">September 23, 2026</time><span class="article__sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n</header>\n<div class="article__body" data-notes="custom">\n<aside class="brief" aria-label="The short version"><p class="label label--accent brief__label">The short version</p><ol><li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li><li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li></ol></aside>\n<p class="article__lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket.</p>\n<h2 id="the-48-star-trap">The 4.8-star trap</h2>\n<p class="pd-deck">Everyone's app is fine. Fine is where everyone already is.</p>\n<p>Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars.</p>\n${units(UNITS_DEMO)}\n<blockquote><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>\n<h3 id="what-the-customer-is-worth">What the customer is worth</h3>\n${stack(STACK_DEMO)}\n<h2 id="where-to-start">Somebody has to own the whole bank</h2>\n<p class="pd-deck">Where to start.</p>\n<ol class="pd-decisions"><li><strong>Someone owns the proposition.</strong> Give a senior leader responsibility for the chosen younger-customer proposition across product, digital, retail and marketing.</li><li><strong>Start with one journey.</strong> Take the first paycheck arriving in a newly opened account and manage the surrounding experience as a single product for one quarter.</li></ol>\n<p class="booking-line">If you want to see this with your organization's own numbers, <a href="${BOOKING}">book twenty minutes</a>.</p>\n</div>\n</div>\n</article>`,
+      html: `<article class="article">\n<div class="container">\n<header class="article__header">\n  <p class="label article__kicker"><a href="/articles">Articles</a><span class="article__sep" aria-hidden="true"> / </span><span>Financial services</span></p>\n  <h1 class="display-title article__title">Community Banks Built the Digital Front Door and Still Lost the Younger Customer</h1>\n  <p class="article__intro">Community banks have branches, lenders and local relationships. So why can Chime feel like the more complete bank?</p>\n  <p class="article__date"><time datetime="2026-09-23">September 23, 2026</time><span class="article__sep" aria-hidden="true"> / </span><span>14-minute read</span></p>\n</header>\n<div class="article__body" data-notes="custom">\n<aside class="brief" aria-label="The short version"><p class="label label--accent brief__label">The short version</p><ol><li>Community banks built the digital front door. In 2024 they took 4 of every 100 new checking accounts.</li><li>What changes: one senior owner for the younger-customer proposition, a scorecard that measures the relationship, and one journey run as a single product for a quarter.</li></ol></aside>\n<p class="article__lede">For most of a decade, community banks heard the same prescription. Make account opening digital. Put the bank in the customer's pocket.</p>\n<h2 id="the-48-star-trap">The 4.8-star trap</h2>\n<p class="pd-deck">Everyone's app is fine. Fine is where everyone already is.</p>\n<p>Ask a community bank executive about the mobile experience and the answer is usually reassuring. The app is pretty good. It has 4.8 stars.</p>\n${units(UNITS_DEMO)}\n<blockquote><p>Every department can be competent, every dashboard can be green, and the customer proposition can still be mediocre.</p></blockquote>\n<h3 id="what-the-customer-is-worth">What the customer is worth</h3>\n${stack(STACK_DEMO)}\n<h2 id="where-to-start">Somebody has to own the whole bank</h2>\n<p class="pd-deck">Where to start.</p>\n<ol class="pd-decisions"><li><strong>Someone owns the proposition.</strong> Give a senior leader responsibility for the chosen younger-customer proposition across product, digital, retail and marketing.</li><li><strong>Start with one journey.</strong> Take the first paycheck arriving in a newly opened account and manage the surrounding experience as a single product for one quarter.</li></ol>\n<p class="booking-line">If you want to see this with your organization's own numbers, <a href="${BOOKING}">book twenty minutes</a>.</p>\n</div>\n</div>\n</article>`,
       code: `---\ntitle: "Your Title in Title Case"\ndescription: "One or two sentences that state the argument. They double as the search snippet."\ndate: 2026-10-15\ndraft: true\nkicker: "Financial services"\ntopics: ["Community banking"]\nnotes: "rail"\nstylesheets: ["/assets/article-kit.css"]\nscripts: ["/assets/article-kit.js"]\nbrief:\n  - "The finding, with its number."\n  - "What changes: the changes, in one sentence."\n---\n\nThe opening paragraph: the situation the piece starts from. It takes the drop cap.\n\n## A section heading that states a claim\n\n<p class="pd-deck">One line that says what this section finds.</p>\n\nBody paragraphs in markdown, with footnotes.[^1]\n\n> The line a reader should carry out of the section.\n\n## Somebody has to own it\n\n<p class="pd-deck">Where to start.</p>\n\n<ol class="pd-decisions">\n<li><strong>The first change.</strong> What it involves and who has the authority.</li>\n</ol>\n\n## About the numbers\n\nWhen the research was checked, and which figures are estimates.\n\n[^1]: **Publisher.** Title, date. What was measured. What it does not show. [Report title](https://example.com)`,
       lang: 'markdown',
     }],
@@ -1396,16 +1396,16 @@ export const usedIn = (id: string) => COMPONENTS.filter((c) => (c.parts ?? []).i
 // articles or in two articles less than a month apart. `classes` are how the linter finds them;
 // the fd-, cd- and pd- names of one device count as the same device.
 export const SIGNATURE_DEVICES: { id: string; name: string; article: string; classes: string[]; selector?: string }[] = [
-  { id: 'unit-stat', name: 'Unit stats', article: 'the-digital-front-door-nobody-walks-through', classes: ['pd-units', 'fd-stat'] },
-  { id: 'pinned-sequence', name: 'Pinned sequences', article: 'the-digital-front-door-nobody-walks-through', classes: ['pd-scrolly', 'fd-scrolly'] },
-  { id: 'dialogue', name: 'Scripted dialogue', article: 'the-digital-front-door-nobody-walks-through', classes: ['pd-dialogue', 'fd-dialogue', 'cd-dialogue'] },
-  { id: 'unit-grid', name: 'Unit grids', article: 'the-digital-front-door-nobody-walks-through', classes: ['pd-grid', 'fd-opener-units', 'fd-grid-cells'] },
-  { id: 'org-fold', name: 'The org fold', article: 'the-digital-front-door-nobody-walks-through', classes: ['pd-fold', 'fd-g-org'] },
-  { id: 'record-card', name: 'Record cards', article: 'your-content-has-no-parent', classes: ['pd-record', 'cd-record'] },
-  { id: 'small-multiples', name: 'Small multiples', article: 'your-content-has-no-parent', classes: ['cd-markets'] },
-  { id: 'as-of', name: 'The as-of date slider', article: 'your-content-has-no-parent', classes: ['pd-asof'], selector: 'data-cd="asof"' },
-  { id: 'chain', name: 'The content chain self-check', article: 'your-content-has-no-parent', classes: [], selector: 'data-cd="focus"' },
-  { id: 'source-map', name: 'The source-to-sentence map', article: 'your-content-has-no-parent', classes: [], selector: 'data-cd="graph"' },
+  { id: 'unit-stat', name: 'Unit stats', article: 'community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer', classes: ['pd-units', 'fd-stat'] },
+  { id: 'pinned-sequence', name: 'Pinned sequences', article: 'community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer', classes: ['pd-scrolly', 'fd-scrolly'] },
+  { id: 'dialogue', name: 'Scripted dialogue', article: 'community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer', classes: ['pd-dialogue', 'fd-dialogue', 'cd-dialogue'] },
+  { id: 'unit-grid', name: 'Unit grids', article: 'community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer', classes: ['pd-grid', 'fd-opener-units', 'fd-grid-cells'] },
+  { id: 'org-fold', name: 'The org fold', article: 'community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer', classes: ['pd-fold', 'fd-g-org'] },
+  { id: 'record-card', name: 'Record cards', article: 'treat-bank-marketing-content-as-data', classes: ['pd-record', 'cd-record'] },
+  { id: 'small-multiples', name: 'Small multiples', article: 'treat-bank-marketing-content-as-data', classes: ['cd-markets'] },
+  { id: 'as-of', name: 'The as-of date slider', article: 'treat-bank-marketing-content-as-data', classes: ['pd-asof'], selector: 'data-cd="asof"' },
+  { id: 'chain', name: 'The content chain self-check', article: 'treat-bank-marketing-content-as-data', classes: [], selector: 'data-cd="focus"' },
+  { id: 'source-map', name: 'The source-to-sentence map', article: 'treat-bank-marketing-content-as-data', classes: [], selector: 'data-cd="graph"' },
 ];
 
 // Classes from articles written before the kit, and what happens to each. Paul's rule
@@ -1441,7 +1441,7 @@ export const LEGACY: Legacy[] = [
   { match: '^fd-(grid|opener|cell|legend|swatch)', kind: 'equivalent', kit: 'unit-grid' },
   { match: '^fd-wide$', kind: 'remove', name: 'Wide figure class', why: 'No stylesheet defines it, so it does nothing; the kit widens a calculator or pinned sequence on its own.' },
 
-  // Script-drawn figures in "Your Content Has No Parent" share one frame and differ by data-cd.
+  // Script-drawn figures in "Treat Bank Marketing Content as Data" share one frame and differ by data-cd.
   { attr: 'data-cd="calc"', kind: 'equivalent', kit: 'calculator', note: 'Rebuild the formulas with data-define and keep data-rail="block".' },
   { attr: 'data-cd="asof"', kind: 'equivalent', kit: 'as-of', note: 'Paul added it to the kit on 2026-09-26. Rebuild it with asof() in build.mjs: the versions go in the HTML and the kit script adds the slider.' },
   { attr: 'data-cd="focus"', kind: 'declined', name: 'Self-check', why: 'Paul decided on 2026-09-26 not to add it to the kit.', how: 'Cut it, and let the decisions close the piece.' },

@@ -1,0 +1,11 @@
+# Redirects for Cloudflare Pages (https://developers.cloudflare.com/pages/configuration/redirects/).
+
+# Both articles were renamed on 2026-09-30. Links already shared keep working.
+/articles/your-content-has-no-parent /articles/treat-bank-marketing-content-as-data 301
+/articles/your-content-has-no-parent/ /articles/treat-bank-marketing-content-as-data 301
+/articles/the-digital-front-door-nobody-walks-through /articles/community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer 301
+/articles/the-digital-front-door-nobody-walks-through/ /articles/community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer 301
+
+# Their social images were redrawn with the new titles.
+/assets/content-is-data-social.png /assets/content-as-data-social.png 301
+/assets/front-door-social.png /assets/community-banks-front-door-social.png 301

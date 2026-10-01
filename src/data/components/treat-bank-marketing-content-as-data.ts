@@ -1,9 +1,9 @@
 import type { Registry } from './types';
 
-// "Your Content Has No Parent": every figure, rule, story and term the article reuses.
+// "Treat Bank Marketing Content as Data": every figure, rule, story and term the article reuses.
 // `sources` are the article's footnote numbers. `match` lists the spellings the text may use.
-export const YOUR_CONTENT_HAS_NO_PARENT: Registry = {
-  article: 'your-content-has-no-parent',
+export const TREAT_BANK_MARKETING_CONTENT_AS_DATA: Registry = {
+  article: 'treat-bank-marketing-content-as-data',
   components: [
     // Stories and the article's own terms
     { id: 'postcard', kind: 'story', label: 'The postcard', status: 'firsthand' },

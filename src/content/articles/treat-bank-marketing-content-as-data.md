@@ -1,11 +1,11 @@
 ---
-title: "Your Content Has No Parent"
-description: "Bank marketing teams bought the stack and the wait never moved. Content is data, one regulated industry already runs it that way, and it measures the result."
+title: "Treat Bank Marketing Content as Data"
+description: "Bank marketing teams bought the stack and the wait never moved. One regulated industry already works this way, and it measures the result."
 date: 2026-09-25
 draft: false
 kicker: "Content operations"
 topics: ["Content operations", "Digital asset management", "Marketing compliance", "Data governance", "Marketing leadership"]
-ogImage: "/assets/content-is-data-social.png"
+ogImage: "/assets/content-as-data-social.png"
 ogImageAlt: "The same holiday postcard took two to three months from a blank page, two weeks with an executive in every meeting, and under two weeks once componentized."
 stylesheets: ["/assets/article-kit.css"]
 scripts: ["/assets/article-kit.js"]

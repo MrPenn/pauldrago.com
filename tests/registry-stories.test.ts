@@ -9,8 +9,8 @@ import { byId } from '../src/styleguide/components.ts';
 const root = fileURLToPath(new URL('..', import.meta.url));
 // HTML comments never render, so they are left out of the comparison.
 const read = (slug: string) => readFileSync(join(root, 'src/content/articles', `${slug}.md`), 'utf8').replace(/[ \t]*<!--[\s\S]*?-->/g, '');
-const FRONT_DOOR = read('the-digital-front-door-nobody-walks-through');
-const NO_PARENT = read('your-content-has-no-parent');
+const FRONT_DOOR = read('community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer');
+const NO_PARENT = read('treat-bank-marketing-content-as-data');
 
 const story = (id: string, sid: string) => byId(id)?.stories.find((s) => s.id === sid);
 // The first line of the story the article does not have, so a failure shows where they part.

@@ -72,7 +72,7 @@ test('the content-is-data article before the move: derivatives rebuild on the ki
 });
 
 test('the content-is-data article is on the kit, with nothing left to decide', () => {
-  const a = auditArticle(root, resolveArticle(root, 'your-content-has-no-parent')!);
+  const a = auditArticle(root, resolveArticle(root, 'treat-bank-marketing-content-as-data')!);
   assert.equal(a.summary.onKit, true);
   assert.equal(a.summary.errors, 0);
   assert.deepEqual(a.decisions, []);
@@ -96,7 +96,7 @@ test('the reference article before the move maps onto the kit, with nothing left
 });
 
 test('the reference article is on the kit, with nothing left to decide', () => {
-  const a = auditArticle(root, resolveArticle(root, 'the-digital-front-door-nobody-walks-through')!);
+  const a = auditArticle(root, resolveArticle(root, 'community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer')!);
   assert.equal(a.reference, true);
   assert.equal(a.summary.onKit, true);
   assert.equal(a.summary.errors, 0);

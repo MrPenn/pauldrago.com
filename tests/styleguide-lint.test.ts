@@ -100,13 +100,13 @@ test('readNumber reads printed values', () => {
 });
 
 test('the reference article, on the kit, has no errors', () => {
-  const path = join(root, 'src/content/articles/the-digital-front-door-nobody-walks-through.md');
+  const path = join(root, 'src/content/articles/community-banks-built-the-digital-front-door-and-still-lost-the-younger-customer.md');
   const found = lintArticle(path, readFileSync(path, 'utf8'), ctx);
   assert.deepEqual(errors(found), []);
 });
 
 test('the content-is-data article, on the kit, has no errors', () => {
-  const path = join(root, 'src/content/articles/your-content-has-no-parent.md');
+  const path = join(root, 'src/content/articles/treat-bank-marketing-content-as-data.md');
   const found = lintArticle(path, readFileSync(path, 'utf8'), ctx);
   assert.deepEqual(errors(found), []);
 });
@@ -207,7 +207,7 @@ test('faces, weights, line spacing and tracking come from the base tokens', () =
 
 test('image sizes are read from WebP and PNG headers', () => {
   assert.deepEqual(imageSize(join(root, 'public/assets/postcard.webp')), { w: 1200, h: 720 });
-  const png = imageSize(join(root, 'public/assets/front-door-social.png'));
+  const png = imageSize(join(root, 'public/assets/community-banks-front-door-social.png'));
   assert.deepEqual(png, { w: 1200, h: 630 });
 });
 
