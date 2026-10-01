@@ -1,6 +1,6 @@
 ---
 title: "Treat Bank Marketing Content as Data"
-description: "Bank marketing teams bought the stack and the wait never moved. One regulated industry already works this way, and it measures the result."
+description: "A routine bank marketing asset takes one to two months, mostly waiting in queues. Pharma approves each claim once and averages 1.3 review cycles an asset, against 3 to 5 versions in marketing tools."
 date: 2026-09-25
 draft: false
 kicker: "Content operations"
