@@ -14,7 +14,7 @@ brief:
   - '<data value="c:reg-dd">Regulation DD</data> says a bank must be able to reconstruct its disclosures. <data value="c:finra-2210">FINRA</data>, which covers a bank''s broker-dealer arm, spells out the whole record. A broker-dealer was fined <data value="c:h2c-fine">$250,000</data> for keeping one copy of its marketing emails and not the version each customer received.'
   - 'Content is data. Every asset is a record, every approved component is <data value="c:master-data">master data</data>, and the vocabulary for tracking, versioning, and owning records already exists in your data organization. In pharma, with approval attached to the claim, the measured average is <data value="c:veeva-review-cycles">1.3</data> review cycles per asset against the <data value="c:review-versions">3 to 5 versions</data> marketing tools report.'
   - 'An asset with no parent on file costs as much as any other and cannot be traced. As an example, at <data value="c:worked-assets">5,000</data> assets, <data value="c:worked-lineage">40 percent</data> with a parent, and <data value="c:worked-cost">$1,800</data> an asset, that is <data value="c:dark-content-cost">$5.4 million</data> a year. The last two numbers are stand-ins, and every input is yours to replace.'
-  - 'Buy AI tools last. In 2026, <data value="c:typeface-speed">34 percent</data> of marketing leaders needed one to two months to launch a campaign, while <data value="c:typeface-speed">92 percent</data> needed ten or more stakeholders to sign off. The tools made more, and the chain shipped it more slowly.'
+  - 'Buy AI tools last. In 2026, <data value="c:typeface-speed">34 percent</data> of marketing leaders needed one to two months to launch a campaign, while <data value="c:typeface-speed">92 percent</data> needed ten or more stakeholders to sign off.'
   - 'What changes: a person at intake who can close requests, a declared parent on every upload, variants in a day or two with new pieces through the full chain, and AI tools bought last.'
 ---
 
@@ -24,9 +24,9 @@ Nobody was revolutionizing the postcard. So she sat in every meeting. Brief, cop
 
 <figure class="pd-img pd-img--blend"><picture><source srcset="/assets/postcard-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/postcard.webp" width="1200" height="720" loading="lazy" alt="A postcard buried under approval stamps; one corner of the picture still shows."></picture></figure>
 
-Same people, same tools, same postcard. Nothing was bought and nobody was hired. It was a Herculean effort. The product had not changed in years and still went through the whole chain from a blank page every time, and no stage in that chain measured how long work waited in front of it.
+Same people, same tools, same postcard. Nothing was bought and nobody was hired. The product had not changed in years and still went through the whole chain from a blank page every time, and no stage in that chain measured how long work waited in front of it.
 
-She could not sit in every meeting for every postcard. We componentized everything on that card that could be componentized, and for the next two to three years the incremental postcard reviews stayed under two weeks without anyone senior in the room. We tracked throughput via Workfront.
+She could not sit in every meeting for every postcard. We componentized everything on that card that could be componentized, and for the next two to three years the incremental postcard reviews stayed under two weeks without anyone senior in the room. We tracked throughput via Workfront, which counted what shipped and did not time the waits.
 
 <figure class="pd-figure pd-stack" data-pd="build" aria-label="Time to ship the same holiday postcard: two to three months from a blank page, two weeks with the executive in every meeting, and under two weeks once componentized, which held for two to three years.">
   <p class="pd-eyebrow">The same postcard, three times</p>
@@ -60,13 +60,13 @@ I ran the content operation inside marketing at a bank holding company, and befo
 
 Requests waited at intake because nobody was allowed to say no, so everything was accepted and nothing was prioritized. Reviews had no clock, and nobody ever got in trouble for sitting on one.
 
-The product owner who has to approve the piece is <data value="c:plane">building the plane after jumping off the cliff</data>. It is the Wile E. Coyote moment. Reading a piece to work out what they don't like about it and what should change is real work, and when they plan their day it is never in the top one or two things on the list.
+The product owner who has to approve the piece is <data value="c:plane">building the plane after jumping off the cliff</data>. It is the Wile E. Coyote moment. Reading a piece to work out what they do not like about it and what should change is real work, and when they plan their day it is never in the top one or two things on the list.
 
-So it sits. Nobody is being lazy. The chain just asked a person with a plane to build to do a second job with no deadline attached.
+So it sits. Nobody is being lazy. The chain just asked a person with a full day of other work to do a second job with no deadline attached.
 
 Translation queued behind the last thing that was sent, and build queued behind everything above it. Six or seven review rounds was normal. Some assets were never final until someone senior said ship it.
 
-In the libraries I have audited, somewhere between <data value="c:audited-reuse">a fifth and two fifths</data> of what got made was ever used again. We tracked reuse based on project submissions requiring no creative work beyond minor revisions in our "low" project queue. Regions rebuilt what already existed because finding the thing was harder than making it, and both versions went through review and translation.
+In the libraries I have audited, somewhere between <data value="c:audited-reuse">a fifth and two fifths</data> of what got made was ever used again. We counted reuse as requests that needed no creative work beyond minor revisions. Regions rebuilt what already existed because finding the thing was harder than making it, and both versions went through review and translation.
 
 You will also see "<data value="c:folklore-60-70">60 to 70 percent of B2B content goes unused</data>" in every deck on this subject. It comes from a 2013 conference remark, and nobody ever published a method or a sample for it.[^4] CreativeX tracked 1,284 core assets at consumer brands in 2023 and found <data value="c:creativex-unactivated">half</data> never showed up in any channel it monitors.[^3]
 
@@ -109,15 +109,15 @@ An approved component is a claim, a disclosure, a rate, a spec, or an image with
 
 Marketing never borrowed the data team's tools because it has always thought of its output as creative, and creative work does not get IDs.
 
-**<data value="c:lineage">Lineage</data>** is the record of what each asset is made of and where each part is used. Run it downward and you see what a change touches: before you change a rate or expire a disclosure, you see the 400 assets, in English and Spanish, that carry it. Data teams already have open tools for it.[^7]
+**<data value="c:lineage">Lineage</data>** is the record of what each asset is made of and where each part is used. Run it downward and you see what a change touches: before you change a rate or expire a disclosure, you see every asset, in English and Spanish, that carries it. Data teams already have open tools for it.[^7]
 
-**Legal approves each component once.** Every asset that uses the disclosure block inherits that approval, and translation attaches the same way. That is what cut pharma's review rounds, and it is what makes AI safe to use, because a machine assembling from approved parts leaves only the connective copy for a human to read.
+**Legal approves each component once.** Every asset that uses the disclosure block inherits that approval, and translation attaches the same way. I read that as the reason pharma's review rounds are short, and it is why AI is safer to use here, because a machine assembling from approved parts leaves only the connective copy for a human to read.
 
-**<data value="c:version-history">Version history</data> is the audit.** A regulator picks a day in the past, <data value="c:march-14">say March 14</data>, and asks what the customer saw that day. This happens all the time, and people typically put on their archeologist hat and start <data value="c:workfront-dig">sniffing through Workfront</data> to find it. A data warehouse answers that every day by keeping every version of a row with the dates it was current.[^8] Most content systems keep only the version that is live today, so they cannot answer it.
+**<data value="c:version-history">Version history</data> is the audit.** A regulator picks a day in the past, <data value="c:march-14">say March 14</data>, and asks what the customer saw that day. This happens all the time, and people dig through old project records in <data value="c:workfront-dig">Workfront</data> by hand to find it. A data warehouse answers that every day by keeping every version of a row with the dates it was current.[^8] Most content systems keep only the version that is live today, so they cannot answer it.
 
-Data engineers also <data value="c:pipeline">draw a pipeline as a chain of jobs</data>, each depending on the one before, with a timestamp on every handoff. The content chain fits it: brief, create, translate, review, build, publish. Put a timestamp on each handoff and you can see how long work sat between steps, which the postcard executive tracked by hand.
+Data engineers also <data value="c:pipeline">draw a pipeline as a chain of jobs</data>, each depending on the one before, with a timestamp on every handoff. The content chain fits it: brief, create, translate, review, build, publish. Put a timestamp on each handoff and you can see how long work sat between steps, which the postcard executive did by hand, one meeting at a time.
 
-## Pharma already runs review this way
+## Pharma approves each claim once
 
 <p class="pd-deck">With each claim approved once, pharma averages 1.3 review cycles per asset, and most of the field content it approves is rarely or never used.</p>
 
@@ -148,9 +148,9 @@ Pharmaceutical promotion goes through medical, legal, and regulatory review, cal
   <figcaption>Veeva Pulse Content Metrics, anonymized system data across 350+ life sciences companies, 2021 through 2023, with an average review and approval time of <data value="c:veeva-approval-days">21 days</data>. Filestage platform data, 2021. Ziflow survey, 2023.</figcaption>
 </figure>
 
-Pharma's number is lower because each claim was approved before the asset existed, so the review has less to read.[^9][^10][^2]
+Pharma's number is lower, and I read the reason as each claim being approved before the asset existed, so the review has less to read.[^9][^10][^2]
 
-In 2016, <data value="c:veeva-2016-traceability">81 percent</data> of life sciences companies surveyed could not report where their claims and content were in use, and 70 percent had no central global library.[^13]
+In 2016, <data value="c:veeva-2016-traceability">81 percent</data> of life sciences companies surveyed could not report where their claims and content were in use, and 70 percent had no central global library.[^13] Approving each claim once did not give them lineage.
 
 Veeva's own CRM data, the two Veeva rows in the unused-content chart above, shows that most approved field content is rarely or never used.[^14]
 
@@ -166,7 +166,7 @@ Approval attached to the component fixes the review. Deciding what to make, and 
 
 An asset built from a downloaded file has no parent. Pricing them takes three numbers: how many assets you ship, how many have a parent on file, and what an asset costs.
 
-Adobe's 2025 survey found <data value="c:adobe-asset-volume">70 percent</data> of organizations producing at least 1,000 assets a year and two fifths producing more than 10,000, so <data value="c:worked-assets">5,000</data> is a conservative figure for a mid-sized shop.[^1]
+Adobe's 2025 survey found <data value="c:adobe-asset-volume">70 percent</data> of organizations producing at least 1,000 assets a year and two fifths producing more than 10,000, so <data value="c:worked-assets">5,000</data> a year is a round example inside that range.[^1]
 
 For the share with a parent on file, I have no source. <data value="c:worked-lineage">40 percent</data> is my guess for a shop that has never asked for one, and a generous one.
 
@@ -273,7 +273,7 @@ Regulation Z exempts advertising from its retention rule, so a lender's ability 
   <div class="pd-head pd-record__head">
     <span class="pd-num pd-num--xl"><data value="c:h2c-fine">$250,000</data></span>
     <div class="pd-head__text pd-record__text">
-      <p>FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails. It could not recover most of them.</p>
+      <p>FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails.</p>
       <p class="pd-record__quote">preserved at least one copy of many of the mass marketing communications, but it did not preserve a copy of each message sent to each recipient</p>
     </div>
   </div>
@@ -318,7 +318,7 @@ Then the region asks what happens if they need a new claim on it. Triage says th
 
 Give a person who is responsible for the outcome a choice between something new and something that exists, and they will pick new every time. They believe new gives them the best chance to stand out, and they are emotionally invested in the result, which they should be, because the P&L is theirs.
 
-The belief is still wrong. The customers they are targeting have never seen the existing asset, or anything like it, so the new version only looks better to the person who asked for it.
+In my experience the belief is wrong. The customers they are targeting have never seen the existing asset, or anything like it, so the new version looks better mainly to the person who asked for it.
 
 <!-- slop-ok: unsourced-figure (an operator's idiom, not a measurement; Paul kept it, 2026-09-25) -->
 Our job as their marketing partner is to tell them how long new really takes. New is six weeks, and it will get pushed, and it will get delayed. The one that is 90 percent right is in their hands by the end of the week.
@@ -356,9 +356,9 @@ The rule for account disclosures already assumes a parent. <data value="c:reg-dd
 
 Two rules go further. <data value="c:reg-z">Regulation Z</data> calls a mortgage ad misleading if it gives some required terms, such as the initial rate, only in another language and the rest only in English, and <data value="c:reg-e-language">Regulation E</data> requires remittance and prepaid disclosures in another language when the bank principally uses that language to market, package or sell those products.[^40] So every translated disclosure needs an English original behind it, and a translated mortgage ad cannot split its required terms between two languages.
 
-We rarely did Spanish, and every time we did, it was <data value="c:spanish-failure">an unmitigated failure</data>. People always claimed the translations were wrong.
+We rarely did Spanish, and every time we did, it was <data value="c:spanish-failure">an unmitigated failure</data>, because people always claimed the translations were wrong.
 
-The branch team can rewrite the headline in their own words, since they talk to those customers every day. The rate and the disclosure under it are translated from the approved record, and nobody rewrites them. Translators work faster on a sentence they have translated before:[^23]
+That complaint is why the branch team can rewrite the headline in their own words, since they talk to those customers every day. The rate and the disclosure under it are translated from the approved record, and nobody rewrites them. Translators work faster on a sentence they have translated before:[^23]
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">Words translated per hour</p>
@@ -387,7 +387,7 @@ The branch team can rewrite the headline in their own words, since they talk to 
       <div class="pd-seg pd-seg--accent" data-at="4" data-value="2461" style="left:0.0%;width:89.3%"></div>
     </div>
   </div>
-  <figcaption>The machine translation in this 2015 study predates neural systems. Parra Escart&iacute;n and Arcedillo, MT Summit 2015, ten professional translators. Small sample, single language pair.</figcaption>
+  <figcaption>The machine translation in this 2015 study predates neural systems. Parra Escart&iacute;n and Arcedillo, MT Summit 2015, ten professional translators, a small sample on a single language pair.</figcaption>
 </figure>
 
 <figure class="pd-figure"><p class="pd-eyebrow">One savings ad, three languages</p>
@@ -411,15 +411,15 @@ Its examples include a 2013 enforcement action against a card issuer that enroll
 
 > Every translated disclosure needs an English original behind it.
 
-## Shorten the review cycle by letting legal focus on what's changed
+## Shorten the review cycle by letting legal focus on what has changed
 
 <p class="pd-deck">Legal approves the template and its allowed combinations once, then gives a full read only to a combination that is new.</p>
 
-Two approved components next to each other can still make a misleading ad, so the combinations need approval too. <data value="c:veeva-review-cycles">Pharma's 1.3 cycles</data> is what that looks like when it holds.
+Two approved components next to each other can still make a misleading ad, so the combinations need approval too. <data value="c:veeva-review-cycles">Pharma's 1.3 cycles</data> is the number to beat, though the Veeva data does not say how it handles combinations.
 
 Triage flags any combination that is new, and legal decides. Keeping that list of combinations short enough to read in an afternoon is the reason to model only the <data value="c:twenty-components">20 components</data> behind most of the volume and leave the rest as pages. And the assembly gets a name on it, because when a pre-approved combination turns out misleading in context, legal will ask whose.
 
-> Triage is a political job. Every diagram draws it as a box, and it is a person who says no to a regional director once a day and gets escalated over once a week.
+Triage is a political job. Diagrams draw it as a box, and in practice it is a person who says no to regional directors and gets escalated over.
 
 Triage holds only with an executive who has said, in front of the regions, that reuse is the default; with a monthly count of requests reopened after triage closed them; and with the agency contract rewritten around variants instead of rounds.
 
@@ -466,9 +466,9 @@ The variant lane is where AI belongs: image and copy variants, assembled from ap
 
 ## About the numbers
 
-Research, rules, and product documentation checked September 23, 2026. Every figure is traced to a dated primary source and each footnote says what the figure does not show.
+Research, rules, and product documentation checked September 25, 2026. Every sourced figure is traced to a dated primary source and each footnote says what the figure does not show.
 
-The <data value="c:dark-content-cost">$5.4 million</data> figure is an illustration: the lineage coverage and the cost per asset are placeholders. The regulatory table is read from the rules as published on eCFR and FINRA's rulebook; the content model and triage are analysis and recommendation from my own work, and the conclusions are mine.
+The <data value="c:dark-content-cost">$5.4 million</data> figure is an illustration: the lineage coverage and the cost per asset are placeholders, and 5,000 assets is a round example. The 20 components is my judgment from my own work. The regulatory table is read from the rules as published on eCFR and FINRA's rulebook; the content model and triage are analysis and recommendation from my own work, and the conclusions are mine.
 
 Each figure, rule and story in this article is recorded with where it came from, whether a footnote, my own work or a stand-in for your number, and the SiriusDecisions figure is recorded as having no source at all. The site will not publish a page that points to a record it cannot find.
 
@@ -480,7 +480,7 @@ Each figure, rule and story in this article is recorded with where it came from,
 [^8]: **Kimball Group.** "Type 2: Add New Row," dimensional modeling techniques. [Kimball Group](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/type-2/)
 [^9]: **Veeva.** Veeva Pulse Content Metrics: 21-day average approval, April 15, 2021; 21.2 days, 2022; 1.3 MLR review cycles average with high performers slightly above one, Veeva Content Metrics 2023. Anonymized system data from Veeva Vault PromoMats across 350+ life sciences companies. System data rather than survey answers, but Veeva customers only, and Veeva sells the platform. [2021 benchmarks](https://www.veeva.com/eu/blog/establishing-the-industrys-first-industry-wide-content-benchmarks/), [2022 update, archived](https://web.archive.org/web/20260412140214/https://www.veeva.com/blog/using-content-benchmarks-to-drive-change/), [2023 benchmarks](https://www.veeva.com/eu/resources/using-benchmarks-to-speed-and-scale-life-sciences/)
 [^10]: **Filestage.** "Year in Review 2021," January 19, 2022. Platform data from one proofing vendor's users, which skew to agencies and mid-size teams: average 4 versions before approval, 23 minutes per review. [Filestage review](https://filestage.io/blog/year-in-review-2021/)
-[^13]: **Veeva.** Global survey of more than 250 regulatory, marketing, and medical leaders, February 10, 2016. A decade old and vendor-run; the only published figure on claim traceability. [Survey release](https://www.biospace.com/veeva-systems-inc-release-new-global-survey-sheds-light-on-pervasive-inefficiencies-in-life-sciences-commercial-content-management)
+[^13]: **Veeva.** Global survey of more than 250 regulatory, marketing, and medical leaders, February 10, 2016: 81 percent could not report where claims and content were in use, and 70 percent had no central global library. A decade old and vendor-run; the only published figure on claim traceability. [Survey release](https://www.biospace.com/veeva-systems-inc-release-new-global-survey-sheds-light-on-pervasive-inefficiencies-in-life-sciences-commercial-content-management)
 [^14]: **Veeva.** Veeva Pulse Field Trends Report Q4 2022, April 4, 2023 (77 percent of field content never or rarely used), and Veeva Pulse, May 29, 2025 (nearly 80 percent). "Used" means logged in Veeva CRM, so use outside the system is invisible, and Veeva sells the CRM. [2022 report](https://www.veeva.com/resources/veeva-pulse-field-trends-report-4q22/), [2025 release](https://ir.veeva.com/news/news-details/2025/Veeva-Pulse-Report-Finds-Content-Driven-Engagement-Lags-Despite-Proven-Boost-to-Treatment-Adoption/default.aspx)
 [^15]: **FINRA, SEC, and FDIC.** FINRA Rule 2210(b)(4): retail and institutional communications retained for the period in SEA Rule 17a-4(b), with "a copy of the communication and the dates of first and (if applicable) last use," the approving principal's name and approval date, and "the source of any statistical table, chart, graph or other illustration." SEC Rule 17a-4; the audit-trail alternative to WORM was adopted October 12, 2022. Advisers Act Rule 204-2(a)(11). FDIC Part 328, with the January 29, 2026 amendments. [FINRA Rule 2210](https://www.finra.org/rules-guidance/rulebooks/finra-rules/2210), [SEC Rule 17a-4](https://www.ecfr.gov/current/title-17/chapter-II/part-240/subpart-A/subject-group-ECFR4a9c1f1b3b4e1c1/section-240.17a-4), [Rule 204-2](https://www.ecfr.gov/current/title-17/chapter-II/part-275/section-275.204-2), [FDIC Part 328](https://www.ecfr.gov/current/title-12/chapter-III/subchapter-B/part-328), [2026 amendments (PDF)](https://www.govinfo.gov/content/pkg/FR-2026-01-29/pdf/2026-01806.pdf)
 [^16]: **Consumer Financial Protection Bureau.** Regulation DD, 12 CFR 1030.9(c), which covers depository institutions except credit unions (12 CFR 1030.1(c)); credit unions follow the NCUA's Truth in Savings rule, 12 CFR Part 707; official commentary 9(c)-1 lists "copies of advertisements" among the sample disclosures to retain, and 9(c)-2 says "institutions must be able to reconstruct the required disclosures." The commentary says sample copies suffice; it does not say every version. [12 CFR 1030.9](https://www.ecfr.gov/current/title-12/chapter-X/part-1030/section-1030.9)
