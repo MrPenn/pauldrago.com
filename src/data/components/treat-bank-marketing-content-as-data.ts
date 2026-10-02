@@ -63,7 +63,7 @@ export const TREAT_BANK_MARKETING_CONTENT_AS_DATA: Registry = {
 
 
     // The worked example: three placeholders and what they produce
-    { id: 'worked-assets', kind: 'figure', label: 'Assets a year', value: '5,000', status: 'placeholder', derivedFrom: ['adobe-asset-volume'], match: ['5,000'], note: 'A conservative volume informed by Adobe; replace with your own.' },
+    { id: 'worked-assets', kind: 'figure', label: 'Assets a year', value: '5,000', status: 'placeholder', derivedFrom: ['adobe-asset-volume'], match: ['5,000'], note: 'A round example inside the range Adobe reports; replace with your own.' },
     { id: 'worked-lineage', kind: 'figure', label: 'Share with a parent on file', value: '40%', status: 'placeholder', match: ['40 percent', '60%'], note: 'The author\'s guess for a shop that has never recorded parents; no source exists. Replace with your own.' },
     { id: 'worked-cost', kind: 'figure', label: 'Cost per asset', value: '$1,800', status: 'placeholder', match: ['$1,800'], note: 'No public benchmark exists; finance builds this number.' },
     { id: 'dark-content-cost', kind: 'figure', label: 'A year of assets with no parent', value: '$5.4 million', status: 'derived', derivedFrom: ['worked-assets', 'worked-lineage', 'worked-cost'], match: ['$5.4 million'] },

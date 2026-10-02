@@ -237,7 +237,7 @@ const calcFoldHtml = calcHtml
 export const RECORD_DEMO = {
   num: '$250,000',
   ref: 'h2c-fine',
-  lead: 'FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails. It could not recover most of them.',
+  lead: 'FINRA fined H2C Securities for failing to preserve 1.25 million communications, mostly mass marketing emails.',
   quote: 'preserved at least one copy of many of the mass marketing communications, but it did not preserve a copy of each message sent to each recipient',
   source: 'FINRA Letter of Acceptance, Waiver and Consent, March 2024.',
 };
