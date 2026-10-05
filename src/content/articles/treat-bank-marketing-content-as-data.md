@@ -24,7 +24,7 @@ Nobody was revolutionizing the postcard. So she sat in every meeting. Brief, cop
 
 <figure class="pd-img pd-img--blend"><picture><source srcset="/assets/postcard-dark.webp" type="image/webp" media="(prefers-color-scheme: dark)"><img src="/assets/postcard.webp" width="1200" height="720" loading="lazy" alt="A postcard buried under approval stamps; one corner of the picture still shows."></picture></figure>
 
-Same people, same tools, same postcard. Nothing was bought and nobody was hired. The product had not changed in years and still went through the whole chain from a blank page every time, and no stage in that chain measured how long work waited in front of it.
+She worked with the people and tools already there, and nothing was bought and nobody was hired. The product had not changed in years and still went through the whole chain from a blank page every time, and no stage in that chain measured how long work waited in front of it.
 
 She could not sit in every meeting for every postcard. We componentized everything on that card that could be componentized, and for the next two to three years the incremental postcard reviews stayed under two weeks without anyone senior in the room. We tracked throughput via Workfront, which counted what shipped and did not time the waits.
 
@@ -60,11 +60,11 @@ I ran the content operation inside marketing at a bank holding company, and befo
 
 Requests waited at intake because nobody was allowed to say no, so everything was accepted and nothing was prioritized. Reviews had no clock, and nobody ever got in trouble for sitting on one.
 
-The product owner who has to approve the piece is <data value="c:plane">building the plane after jumping off the cliff</data>. It is the Wile E. Coyote moment. Reading a piece to work out what they do not like about it and what should change is real work, and when they plan their day it is never in the top one or two things on the list.
+The product owner who has to approve the piece is <data value="c:plane">building the plane after jumping off the cliff</data>. Reading a piece to work out what they do not like about it and what should change is real work, and when they plan their day it is never in the top one or two things on the list.
 
-So it sits. Nobody is being lazy. The chain just asked a person with a full day of other work to do a second job with no deadline attached.
+So it sits. Nobody is being lazy. Review is a second job on top of a full day of other work, and it comes with no deadline.
 
-Translation queued behind the last thing that was sent, and build queued behind everything above it. Six or seven review rounds was normal. Some assets were never final until someone senior said ship it.
+Translation queued behind the last thing that was sent, and build queued behind everything above it. Six or seven review rounds were normal. Some assets were never final until someone senior said ship it.
 
 In the libraries I have audited, somewhere between <data value="c:audited-reuse">a fifth and two fifths</data> of what got made was ever used again. We counted reuse as requests that needed no creative work beyond minor revisions. Regions rebuilt what already existed because finding the thing was harder than making it, and both versions went through review and translation.
 
@@ -109,9 +109,9 @@ An approved component is a claim, a disclosure, a rate, a spec, or an image with
 
 Marketing never borrowed the data team's tools because it has always thought of its output as creative, and creative work does not get IDs.
 
-**<data value="c:lineage">Lineage</data>** is the record of what each asset is made of and where each part is used. Run it downward and you see what a change touches: before you change a rate or expire a disclosure, you see every asset, in English and Spanish, that carries it. Data teams already have open tools for it.[^7]
+**<data value="c:lineage">Lineage</data>** is the record of what each asset is made of and where each part is used. Run it downward and you see what a change touches: before you change a rate or expire a disclosure, you see every asset, in English and Spanish, that carries it. Data teams already use open tools for this in their own pipelines; none is built for content yet.[^7]
 
-**Legal approves each component once.** Every asset that uses the disclosure block inherits that approval, and translation attaches the same way. I read that as the reason pharma's review rounds are short, and it is why AI is safer to use here, because a machine assembling from approved parts leaves only the connective copy for a human to read.
+**Legal approves each component once.** Every asset that uses the disclosure block inherits that approval, and translation attaches the same way.
 
 **<data value="c:version-history">Version history</data> is the audit.** A regulator picks a day in the past, <data value="c:march-14">say March 14</data>, and asks what the customer saw that day. This happens all the time, and people dig through old project records in <data value="c:workfront-dig">Workfront</data> by hand to find it. A data warehouse answers that every day by keeping every version of a row with the dates it was current.[^8] Most content systems keep only the version that is live today, so they cannot answer it.
 
@@ -158,7 +158,7 @@ Approval attached to the component fixes the review. Deciding what to make, and 
 
 ## Content with no parent costs money and invites fines
 
-<p class="pd-deck">An asset with no parent costs as much as any other asset, and no lineage query can find it.</p>
+<p class="pd-deck">An asset with no parent costs as much as any other asset, and no lineage query can find it. The example below prices that with stand-in numbers for you to replace.</p>
 
 ### The cost
 
@@ -356,7 +356,7 @@ The rule for account disclosures already assumes a parent. <data value="c:reg-dd
 
 Two rules go further. <data value="c:reg-z">Regulation Z</data> calls a mortgage ad misleading if it gives some required terms, such as the initial rate, only in another language and the rest only in English, and <data value="c:reg-e-language">Regulation E</data> requires remittance and prepaid disclosures in another language when the bank principally uses that language to market, package or sell those products.[^40] So every translated disclosure needs an English original behind it, and a translated mortgage ad cannot split its required terms between two languages.
 
-We rarely did Spanish, and every time we did, it was <data value="c:spanish-failure">an unmitigated failure</data>, because people always claimed the translations were wrong.
+We rarely did Spanish, and when we did, it <data value="c:spanish-failure">went badly</data>, mostly because people claimed the translations were wrong.
 
 That complaint is why the branch team can rewrite the headline in their own words, since they talk to those customers every day. The rate and the disclosure under it are translated from the approved record, and nobody rewrites them. Translators work faster on a sentence they have translated before:[^23]
 
@@ -419,7 +419,7 @@ Two approved components next to each other can still make a misleading ad, so th
 
 Triage flags any combination that is new, and legal decides. Keeping that list of combinations short enough to read in an afternoon is the reason to model only the <data value="c:twenty-components">20 components</data> behind most of the volume and leave the rest as pages. And the assembly gets a name on it, because when a pre-approved combination turns out misleading in context, legal will ask whose.
 
-Triage is a political job. Diagrams draw it as a box, and in practice it is a person who says no to regional directors and gets escalated over.
+Triage is a political job. Diagrams draw it as a box, and in practice it is a person who says no to a regional director once a day and gets escalated over once a week.
 
 Triage holds only with an executive who has said, in front of the regions, that reuse is the default; with a monthly count of requests reopened after triage closed them; and with the agency contract rewritten around variants instead of rounds.
 
@@ -427,7 +427,7 @@ Triage holds only with an executive who has said, in front of the regions, that 
 
 ### Buy AI tools last
 
-The variant lane is where AI belongs: image and copy variants, assembled from approved parts inside a locked template. The tools that check generated work against brand and product guidelines are only as good as the guidelines they check against. If those guidelines are the approved components, the tools help. Buy them before the approved components exist and you get one-offs faster, each of which goes through full review and full translation, and the pile in front of legal gets taller.[^27]
+The variant lane is where AI belongs: image and copy variants, assembled from approved parts inside a locked template. The tools that check generated work against brand and product guidelines check it against whatever guidelines they are given. If those guidelines are the approved components, the tools help. Buy them before the approved components exist and you get one-offs faster, each of which goes through full review and full translation, and the pile in front of legal gets taller.[^27]
 
 <figure class="pd-figure pd-stack" data-pd="build">
   <p class="pd-eyebrow">What marketing leaders report, 2026</p>
@@ -455,7 +455,7 @@ The variant lane is where AI belongs: image and copy variants, assembled from ap
 
 ## Give every asset a parent
 
-<p class="pd-deck">Four changes to make first.</p>
+<p class="pd-deck">Componentizing kept the postcard under two weeks for two to three years with nobody senior in the room. These four changes are how to try the same on the rest of the library.</p>
 
 <ol class="pd-decisions">
 <li><strong>Put a person at intake who can close requests.</strong> They search the library before anything is made, link what already exists, and close the request when an existing asset covers it, backed by an executive who has told the regions that reuse is the default.</li>
